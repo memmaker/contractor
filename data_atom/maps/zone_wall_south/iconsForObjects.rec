@@ -80,3 +80,8 @@ Icon: ≡
 Foreground: gray_3
 Background: light_blue_2
 
+Name: StateChanger
+Icon: ±
+Foreground: neon_purple_2
+Background: gray_8
+
