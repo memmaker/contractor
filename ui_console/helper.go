@@ -102,7 +102,7 @@ func chooseSubDirMenuItems(savegameBaseDirectory string, onSubDirConfirmed func(
 	}
 	var menuItems []foundation.MenuItem
 	for _, entry := range entries {
-		if entry.IsDir() {
+		if entry.IsDir() && !strings.HasPrefix(entry.Name(), ".") { // hidden dirs are in-progress saves
 			subDir := entry.Name()
 			menuItems = append(menuItems, foundation.MenuItem{
 				Name: subDir,

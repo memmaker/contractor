@@ -3,6 +3,7 @@ package game
 import (
 	"contractor/foundation"
 	"contractor/gridmap"
+	"fmt"
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/recfile"
@@ -11,7 +12,38 @@ import (
 	"strings"
 )
 
-func (g *GameState) Save(directory string) error {
+// Save writes the game to a hidden sibling directory first and only swaps it in once
+// everything was written, so a failed or interrupted save never destroys the previous one.
+func (g *GameState) Save(directory string) (err error) {
+	parent, name := filepath.Split(filepath.Clean(directory))
+	tmpDir := filepath.Join(parent, "."+name+".saving")
+	oldDir := filepath.Join(parent, "."+name+".old")
+	os.RemoveAll(tmpDir)
+	defer func() {
+		// the map savers use fxtools.Must* helpers, which panic on I/O errors
+		if r := recover(); r != nil {
+			err = fmt.Errorf("%v", r)
+		}
+		if err != nil {
+			os.RemoveAll(tmpDir)
+		}
+	}()
+	if err = g.writeSave(tmpDir); err != nil {
+		return err
+	}
+	os.RemoveAll(oldDir)
+	if err = os.Rename(directory, oldDir); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if err = os.Rename(tmpDir, directory); err != nil {
+		os.Rename(oldDir, directory)
+		return err
+	}
+	os.RemoveAll(oldDir)
+	return nil
+}
+
+func (g *GameState) writeSave(directory string) error {
 	os.MkdirAll(directory, os.ModePerm)
 	// Global game state
 	globalRecord := recfile.Record{

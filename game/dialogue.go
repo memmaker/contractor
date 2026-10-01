@@ -16,7 +16,7 @@ func (g *GameState) PlayerStartDialogue(dialogueFile string, partner foundation.
 	}
 	conversation, err := convo.ParseConversation(conversationFilename, g)
 	if err != nil {
-		panic(err)
+		g.msg(foundation.Msg(fmt.Sprintf("Dialogue error in %s: %v", dialogueFile, err)))
 		return
 	}
 
@@ -47,7 +47,7 @@ func (g *GameState) NPCStartDialogue(dialogueFile string, partner foundation.Cha
 	}
 	conversation, err := convo.ParseConversation(conversationFilename, g)
 	if err != nil {
-		panic(err)
+		g.msg(foundation.Msg(fmt.Sprintf("Dialogue error in %s: %v", dialogueFile, err)))
 		return false
 	}
 
@@ -84,6 +84,11 @@ func (g *GameState) NPCStartDialogue(dialogueFile string, partner foundation.Cha
 }
 
 func (g *GameState) updateDialogueState(conversation *convo.Conversation, state convo.ConversationState, partner foundation.ChatterSource) {
+	for _, effect := range state.Effects {
+		if g.ApplyNodeEffect(effect, partner) {
+			state.Flow = convo.ConversationEndInstantlyWithChatter
+		}
+	}
 	var menuItems []foundation.MenuItem
 	switch state.Flow {
 	case convo.ConversationEndInstantlyWithChatter:
@@ -126,17 +131,25 @@ func (g *GameState) updateDialogueState(conversation *convo.Conversation, state 
 	g.ui.SetConversationState(state.NPCText, menuItems, partner, isTerminal)
 }
 
-func (g *GameState) ApplyNodeEffect(effect string, conversationPartner convo.ConversationPartner) {
+// ApplyNodeEffect handles the parameterless game effects of a dialogue node.
+// Returns true if the effect ends the conversation.
+func (g *GameState) ApplyNodeEffect(effect string, conversationPartner convo.ConversationPartner) (endsConversation bool) {
 	actor, isActor := conversationPartner.(*Actor)
 	if !isActor {
-		return
+		return false
 	}
 	switch effect {
 	case "StartCombat":
 		actor.FSM.SendEvent(NewProvokedEvent(g.Player))
-	case "EndCombat":
+		return true
+	case "EndHostility":
 		actor.FSM.SendEvent(NewCalmedEvent(g.Player))
+	case "HealPlayer":
+		g.Player.Heal(g.Player.GetHitPointsMax())
+		g.msg(foundation.Msg("You have been healed."))
+		g.updateUIStatus()
 	}
+	return false
 }
 
 func (g *GameState) ApplyOptionEffect(effect string, conversationPartner convo.ConversationPartner, followUp func()) {

@@ -35,7 +35,7 @@ name: GiveReferral
 npc:
 + Let me see that. Hmm, another one of these?
 + I'll take it. Have you been told what to expect?
-effect: TakeItemFromPlayer('doctors_referral')
+effect: StackTransferTo(NPC, 'doctors_referral')
 effect: RunScript('jeff_kills_winters')
 #
 o_text: No, not really.
@@ -61,7 +61,7 @@ npc:
 + But don't worry, we'll get to the bottom of it.
 #
 o_text: Hmm, I've read a few studies on the subject.
-o_cond: Skill('Doctor') > 50
+o_cond: Skill('BioChemistry') > 50
 o_goto: PlayerIsExpert
 #
 o_text: I'm kind of an expert on the subject myself.
@@ -94,20 +94,20 @@ npc:
 + Where did you get your degree?
 #
 o_text: Back in the day, I was a doctor.
-o_cond: Skill('Doctor') > 30
-o_test: RollSkill('Speech')
+o_cond: Skill('BioChemistry') > 30
+o_test: RollSkill('Social')
 o_fail: UnfriendlyGoodbye
 o_succ: PlayerIsExpert
 #
 o_text: I'm not a doctor, but I know a lot about the subject.
-o_cond: Skill('Speech') > 25
-o_test: RollSkill('Speech', 'Hard')
+o_cond: Skill('Social') > 25
+o_test: RollSkill('Social', 'Hard')
 o_fail: UnfriendlyGoodbye
 o_succ: PlayerIsExpert
 #
 o_text: You wouldn't know the place. It's in the city.
-o_cond: Skill('Speech') > 45
-o_test: RollSkill('Speech', 'VeryHard')
+o_cond: Skill('Social') > 45
+o_test: RollSkill('Social', 'VeryHard')
 o_succ: PlayerIsExpert
 o_fail: UnfriendlyGoodbye
 #
@@ -144,15 +144,15 @@ npc:
 + It's very promising, but it does have two drawbacks.
 + First, it's expensive. Second, it's not yet approved by the FDA.
 + However, I do know a guy who can get you in. I could pull some strings.
-+ For a price, of course. Let's say, 10,000 caps.
++ For a price, of course. Let's say, 10,000 sat.
 #
 o_text: All right, sign me up.
 o_cond: HasItem('gold', 10000)
 o_goto: SignUpReplacementTherapy
 #
-o_text: That's pretty arbitrary. How about I give you 5000 caps right now?
-o_cond: HasItem('caps', 5000) && !HasFlag('ReplacementTherapyHaggleFailed')
-o_test: RollSkill('Speech')
+o_text: That's pretty arbitrary. How about I give you 5000 sat right now?
+o_cond: HasItem('gold', 5000) && !HasFlag('ReplacementTherapyHaggleFailed')
+o_test: RollSkill('Social')
 o_succ: SignUpReplacementTherapyHalfPrice
 o_fail: ReplacementTherapyHaggleFailed
 #
@@ -227,19 +227,19 @@ npc:
 + You think there's another way? I'm willing to listen... but it better be good.
 #
 o_text: I could help with your experiments. Maybe we can speed things up.
-o_cond: Skill('Science') > 60
+o_cond: Skill('Technology') > 60
 o_goto: HelpExperiments
 #
 o_text: There's no cure, Dr. Winters. Your research is pointless.
-o_cond: Skill('Doctor') > 80 && HasItem('MedicalJournal')
+o_cond: Skill('BioChemistry') > 80 && HasItem('MedicalJournal')
 o_goto: NoCure
 #
 o_text: I have something that might work—a rare medicine.
-o_cond: Skill('Science') > 80 && HasItem('RareMedicine')
+o_cond: Skill('Technology') > 80 && HasItem('RareMedicine')
 o_goto: OfferCure
 #
 o_text: You need to stop this. Think of your daughter.
-o_cond: Skill('Speech') > 90 && HasItem('LetterFromDaughter')
+o_cond: Skill('Social') > 90 && HasItem('LetterFromDaughter')
 o_goto: PersuadeStop
 #
 o_text: You leave me no choice. I’m ending this.
@@ -291,15 +291,15 @@ npc:
 + But... if you think you have a better solution, I'm willing to listen.
 #
 o_text: There might be another way. Let me help.
-o_cond: Skill('Science') > 60
+o_cond: Skill('Technology') > 60
 o_goto: OfferHelp
 #
 o_text: This has to end, Dr. Winters. I'm taking you down.
 o_goto: FightWinters
 #
 o_text: Maybe you're right. But you can't keep doing this.
-o_cond: Skill('Speech') > 75
-o_test: RollSkill('Speech')
+o_cond: Skill('Social') > 75
+o_test: RollSkill('Social')
 o_succ: PersuadeStop
 o_fail: FightWinters
 
@@ -318,7 +318,7 @@ o_text: I'm fine. What's going on here?
 o_goto: ExplainJeffSituation
 #
 o_text: I took a few hits, you could fix me up.
-o_cond: NeedsHealing('player')
+o_cond: IsWounded()
 o_goto: OfferTreatment
 #
 o_text: I'm not here to chat. I have other business.
@@ -332,7 +332,7 @@ o_text: Whatever. What's going on here?
 o_goto: ExplainJeffSituation
 #
 o_text: Look, I tried. I'm not a fighter. Can you at least heal me?
-o_cond: PlayerNeedsHealing()
+o_cond: IsWounded()
 o_goto: OfferTreatment
 #
 o_text: I've got other things to do. Goodbye.
@@ -346,7 +346,7 @@ o_text: I didn't see him. What's going on here?
 o_goto: ExplainJeffSituation
 #
 o_text: Okay, I'm sorry. Can you heal me?
-o_cond: PlayerNeedsHealing()
+o_cond: IsWounded()
 o_goto: OfferTreatment
 #
 o_text: I have to leave. Goodbye.
@@ -394,11 +394,81 @@ o_goto: End
 name: OfferTreatment
 npc:
 + I can patch you up, but it'll cost you. I'm not running a charity here.
-+ The price is 100 caps. Take it or leave it.
++ The price is 100 sat. Take it or leave it.
 #
 o_text: I'll take it.
 o_cond: HasItem('gold', 100)
 o_goto: GetHealed
 #
 o_text: That's too steep for me. I'll pass.
+o_goto: End
+
+name: Transfusions
+npc:
++ Whole blood, twice a month, for as long as you can pay for it.
++ It keeps you upright. It doesn't fix anything.
++ Plenty of people in this city live that way. I wouldn't recommend it.
+#
+effect: ReturnToPreviousNode
+
+name: ExperimentalTreatments
+npc:
++ (She studies you for a moment before answering.)
++ Things that work, but that nobody has signed off on yet.
++ I'd need to know you better before I put a name to any of them.
+#
+o_text: What would it take to know me better?
+o_goto: AskAboutShadyWork
+#
+o_text: Never mind, then.
+effect: ReturnToPreviousNode
+
+name: AskAboutShadyWork
+npc:
++ (She holds your gaze.) I treat people the hospitals have written off.
++ Sometimes with supplies that were not exactly signed out to me.
++ Call that shady if you like. Jeff did.
+#
+o_text: Your secret is safe with me.
+o_goto: WintersNextSteps
+#
+o_text: That sounds like something people get killed over.
+o_goto: WintersNextSteps
+
+name: SignUpReplacementTherapy
+npc:
++ Good. I'll make the call tonight.
++ Come back in a few days and bring nothing but yourself.
+effect: StackTransferTo(NPC, 'gold', 10000)
+effect: SetFlag('signed_up_replacement_therapy')
+#
+o_text: I'll be here.
+o_goto: End
+
+name: SignUpReplacementTherapyHalfPrice
+npc:
++ (She exhales.) Five thousand. Fine. I must be getting soft.
++ Don't repeat that number to anyone, understood?
+effect: StackTransferTo(NPC, 'gold', 5000)
+effect: SetFlag('signed_up_replacement_therapy')
+#
+o_text: Understood.
+o_goto: End
+
+name: ReplacementTherapyHaggleFailed
+npc:
++ Ten thousand. I don't haggle over other people's favors.
++ Come back when you have it.
+effect: SetFlag('ReplacementTherapyHaggleFailed')
+#
+effect: ReturnToPreviousNode
+
+name: GetHealed
+npc:
++ (She works quickly and without much comment.)
++ There. Try not to undo it on your way out.
+effect: StackTransferTo(NPC, 'gold', 100)
+effect: HealPlayer
+#
+o_text: Thanks, doc.
 o_goto: End

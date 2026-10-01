@@ -17,6 +17,7 @@ type Armor struct {
 	Protection         map[DamageType]Protection
 	Encumbrance        int
 	RadiationReduction int
+	Style              string
 
 	ConcealSlots []WeaponSize
 }

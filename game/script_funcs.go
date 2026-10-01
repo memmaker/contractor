@@ -38,7 +38,7 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 		// o_test: DialogueCheck(NPC, 'intimidate')
 		"DialogueCheck": func(args ...interface{}) (interface{}, error) {
 			opponent := args[0].(*Actor)
-			skillName := args[0].(string)
+			skillName := args[1].(string)
 			skill := d100.SkillFromString(skillName)
 			skillValue := g.Player.GetCharSheet().GetSkill(skill)
 			mods := g.getDialogueCheckMods(g.Player, opponent, skill, nil)
@@ -119,6 +119,11 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 		},
 		"HasArmorEquipped": func(args ...interface{}) (interface{}, error) {
 			return g.Player.GetInventory().HasArmorEquipped(), nil
+		},
+		// eg. HasOutfit('business'), checks the armor_style of the worn body armor
+		"HasOutfit": func(args ...interface{}) (interface{}, error) {
+			armor := g.Player.GetInventory().GetArmor()
+			return armor != nil && armor.Style == args[0].(string), nil
 		},
 		"HasVisibleWeapon": func(args ...interface{}) (interface{}, error) {
 			return g.Player.IsOpenCarryWeapon(), nil
@@ -472,6 +477,39 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			g.actorTransition(currentMap, actor, transition)
 			return nil, nil
 		},
+		// Dialogue travel, eg. Transition('zone_commerce', 'taxi_stand'), followed by EndWithChatter
+		"Transition": func(args ...interface{}) (interface{}, error) {
+			g.ui.FadeToBlack()
+			g.transitionToMapLocation(args[0].(string), args[1].(string))
+			g.ui.FadeFromBlack()
+			return nil, nil
+		},
+		// eg. TransitionWithDriver(NPC, 'zone_commerce', 'taxi_stand'), the driver will be placed at 'taxi_driver'
+		"TransitionWithDriver": func(args ...interface{}) (interface{}, error) {
+			driver := args[0].(*Actor)
+			g.ui.FadeToBlack()
+			g.currentMap().RemoveActor(driver)
+			g.transitionToMapLocation(args[1].(string), args[2].(string))
+			g.currentMap().AddActor(driver, g.currentMap().GetNamedLocation("taxi_driver"))
+			g.ui.FadeFromBlack()
+			return nil, nil
+		},
+		"ActorSleep": func(args ...interface{}) (interface{}, error) {
+			args[0].(*Actor).SetSleeping()
+			return nil, nil
+		},
+		"ActorDie": func(args ...interface{}) (interface{}, error) {
+			actor := args[0].(*Actor)
+			damage := SourcedDamage{
+				NameOfThing:  "self-destruct",
+				Attacker:     actor,
+				DamageType:   DamageTypeNormal,
+				DamageAmount: actor.GetHitPoints() + actor.GetHitPointsMax(),
+				BodyPart:     d100.Body,
+			}
+			g.ui.AddAnimations(OneAnimation(g.damageActor(damage, actor)))
+			return nil, nil
+		},
 		"PlayerAddCyberware": func(args ...interface{}) (interface{}, error) {
 			cyberwareName := args[0].(string)
 			g.playerAddCyberware(NewCyberWareFromString(cyberwareName))
@@ -608,7 +646,7 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			return g.IsInTalkingRange(g.Player, actor), nil
 		},
 		"PlayerAddItem": func(args ...interface{}) (interface{}, error) {
-			newItem := g.NewItemFromString(args[1].(string))
+			newItem := g.NewItemFromString(args[0].(string))
 			g.Player.GetInventory().AddItem(newItem)
 			g.msg(foundation.HiLite("%s received.", newItem.Name()))
 			return nil, nil

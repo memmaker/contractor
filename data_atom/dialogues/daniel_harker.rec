@@ -145,7 +145,7 @@ o_goto: JacobMoneyWorkOut
 name: JacobMoneyNow
 npc: I am sorry, alright. Here is the money. Please don't hurt me.
 + (Daniel gives you the money.)
-effect: GiveItemToPlayer('gold', 500)
+effect: StackTransferFrom(NPC, 'gold', 500)
 effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
@@ -171,7 +171,7 @@ name: HalfTheMoney
 npc: That's still a whole month's rent for me.
 + If that will keep him off my back, I will give it to you.
 + (Daniel gives you the money.)
-effect: GiveItemToPlayer('gold', 250)
+effect: StackTransferFrom(NPC, 'gold', 250)
 effect: SetFlag('starter(money_collected)')
 effect: SetFlag('WorkFor(daniel_harker)')
 #
@@ -205,7 +205,7 @@ o_goto: JacobTerminalThreat
 name: JacobDoubleThreat
 npc: Alright, alright. No need to get nasty.
 + (Daniel gives you the money.)
-effect: GiveItemToPlayer('gold', 1000)
+effect: StackTransferFrom(NPC, 'gold', 1000)
 effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
@@ -215,7 +215,7 @@ o_goto: DefaultIntroduction
 name: JacobTerminalThreat
 npc: I see you are a smart one. Let's just keep this between us.
 + (Daniel gives you the money.)
-effect: GiveItemToPlayer('gold', 1000)
+effect: StackTransferFrom(NPC, 'gold', 1000)
 effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
@@ -276,3 +276,11 @@ o_goto: JacobMoney
 o_text: No, I am not.
 o_goto: DefaultIntroduction
 
+
+name: FreedDrakeNo
+npc: (He watches you for a moment too long.)
+npc: Of course not. Why would you.
++ Let's both pretend I believe that.
+#
+effect: SetFlag('lied_about_drake')
+effect: ReturnToPreviousNode

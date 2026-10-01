@@ -188,3 +188,20 @@ effect: EndConversation
 name: End
 npc: See you around.
 effect: EndConversation
+
+name: AskForName
+npc: Quinn Rix. I keep to myself and I'd appreciate the same courtesy.
++ (He does not offer a hand.)
+#
+effect: ReturnToPreviousNode
+
+name: FoodPlaces
+npc: There's a noodle stand two blocks over that hasn't poisoned me yet.
++ Everything else around here comes out of a vending machine.
+#
+effect: ReturnToPreviousNode
+
+name: Attack
+npc: (His hand moves before his face does.)
+npc: Wrong thing to say, stranger.
+effect: StartCombat

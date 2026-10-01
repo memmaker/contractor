@@ -33,34 +33,21 @@ o_text: Home
 o_cond: !IsMap('zone_residential_south')
 o_goto: HeadQuarters
 #
-# Starter Mission
-o_text: Jacob Thorne's home
-o_cond: HasFlag('LocationKnown(jacobs_home)') && !IsMap('jacobs_home')
-o_goto: JacobsHome
-#
 o_text: The eastern rim district (Cognetic Bastards & La Boom).
-#o_cond: HasFlag('LocationKnown(eastern_district)') && !IsMap('eastern_district')
+o_cond: !IsMap('zone_commerce')
 o_goto: EasternRim
 #
-o_text: Cryo Facility
-o_cond: HasFlag('LocationKnown(cryolab)') && !IsMap('cryolab')
-o_goto: CryoFacility
+o_text: The eastern residential district.
+o_cond: !IsMap('zone_residential_east')
+o_goto: ResidentialEast
 #
-o_text: The mansion outside Kelso
-o_cond: HasFlag('LocationKnown(mansion)') && !IsMap('mansion')
-o_goto: Mansion
+o_text: The western residential district.
+o_cond: !IsMap('zone_residential_west')
+o_goto: ResidentialWest
 #
-o_text: Drive to the BioPharmaceuticals lab.
-o_cond: HasFlag('LocationKnown(zombies)') && !IsMap('zombies')
-o_goto: ZombieLab
-#
-o_text: Kelso
-o_cond: HasFlag('LocationKnown(town)') && !IsMap('town')
-o_goto: Kelso
-#
-o_text: Rob a store
-o_cond: !IsMap('store_robbery')
-o_goto: StoreRobbery
+o_text: The Terra Vitae headquarters.
+o_cond: !IsMap('hq_terra_vitae')
+o_goto: TerraVitae
 #
 o_text: Leave
 o_goto: Bye
@@ -70,41 +57,31 @@ npc: (You decide to leave the taxi.)
 effect: EndConversation
 
 name: HeadQuarters
-npc: Alright, let's go.
+npc: (You drive back to the southern residential district.)
 effect: Transition('zone_residential_south', 'taxi_stand')
 effect: AdvanceTimeByMinutes(15)
+effect: EndWithChatter
 
 name: EasternRim
-npc: You got it.
+npc: (You drive over to the eastern rim district.)
 effect: Transition('zone_commerce', 'taxi_stand')
 effect: AdvanceTimeByMinutes(15)
+effect: EndWithChatter
 
-name: Kelso
-npc: Alright, let's go.
-effect: Transition('town', 'taxi_stand')
+name: ResidentialEast
+npc: (You drive over to the eastern residential district.)
+effect: Transition('zone_residential_east', 'taxi_stand')
 effect: AdvanceTimeByMinutes(15)
+effect: EndWithChatter
 
-name: CryoFacility
-npc: You got it.
-effect: Transition('cryolab', 'taxi_stand')
+name: ResidentialWest
+npc: (You drive over to the western residential district.)
+effect: Transition('zone_residential_west', 'taxi_stand')
 effect: AdvanceTimeByMinutes(15)
+effect: EndWithChatter
 
-name: ZombieLab
-npc: Here we go.
-effect: Transition('zombies', 'taxi_stand')
-effect: AdvanceTimeByMinutes(15)
-
-name: Mansion
-npc: You got it.
-effect: Transition('mansion', 'taxi_stand')
-effect: AdvanceTimeByMinutes(15)
-
-name: JacobsHome
-npc: (You arrive at Jacob Thorne's home.)
-effect: Transition('jacobs_home', 'taxi_stand')
-effect: AdvanceTimeByMinutes(25)
-
-name: StoreRobbery
-npc: You got it.
-effect: Transition('store_robbery', 'taxi_stand')
-effect: AdvanceTimeByMinutes(15)
+name: TerraVitae
+npc: (You drive up to the Terra Vitae headquarters.)
+effect: Transition('hq_terra_vitae', 'taxi_stand')
+effect: AdvanceTimeByMinutes(20)
+effect: EndWithChatter

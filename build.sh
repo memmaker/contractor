@@ -2,6 +2,9 @@
 
 find . -name ".DS_Store" -delete
 
+go run -tags ebitensinglethread,ebiten,terminal . val_dialogue || exit 1
+go run -tags ebitensinglethread,ebiten,terminal . val_ammo || exit 1
+
 rm -rf builds
 mkdir -p builds/contractor-mac
 mkdir -p builds/contractor-win
@@ -22,7 +25,7 @@ cp ./config.rec ./builds/contractor-win/config.rec
 #mkdir -p builds/linux
 #mkdir -p builds/wasi
 
-GOOS=darwin GOARCH=amd64 go build -tags ebitensinglethread,ebiten,terminal -trimpath -ldflags '-s -w' -o ./builds/contractor-mac/contractor .
+CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -tags ebitensinglethread,ebiten,terminal -trimpath -ldflags '-s -w' -o ./builds/contractor-mac/contractor .
 
 GOOS=windows GOARCH=amd64 go build -tags ebitensinglethread,ebiten,terminal -trimpath -ldflags '-s -w' -o ./builds/contractor-win/contractor.exe .
 

@@ -85,11 +85,6 @@ AudioCue: wood_door
 Description: a door
 Position: (45,16)
 
-Category: Terminal
-Description: a terminal
-Dialogue: terminal_test
-Position: (53,4)
-
 Category: ExplodingPushBox
 Description: a box
 Position: (75,18)
