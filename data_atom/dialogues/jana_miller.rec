@@ -10,3 +10,35 @@ npc: Welcome to the Bushido ArmaTech headquarters. How can I help you?
 #
 o_text: I'm looking for a job.
 o_goto: LookingForJob
+#
+o_text: Nothing, thanks.
+o_goto: End
+
+name: LookingForJob
+npc: Bushido-ArmaTech is always hiring. Security, logistics, field testing.
++ Though I have to be honest with you: we don't take walk-ins.
+#
+o_text: So how does one get in?
+o_goto: HowToGetIn
+#
+o_text: Field testing? Testing what, exactly?
+o_goto: FieldTesting
+#
+o_text: I'll come back another time.
+o_goto: End
+
+name: HowToGetIn
+npc: Someone inside has to vouch for you. That's the whole process, really.
++ Make yourself useful to the right people and the paperwork writes itself.
+#
+effect: ReturnToPreviousNode
+
+name: FieldTesting
+npc: Weapons, mostly. I'm not cleared to say more than that.
++ The pay is good. The turnover is better.
+#
+effect: ReturnToPreviousNode
+
+name: End
+npc: Have a pleasant day.
+effect: EndConversation

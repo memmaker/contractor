@@ -78,7 +78,11 @@ func main() {
             devStart = true
         } else if os.Args[1] == "val_dialogue" {
             gameState := game.NewGameState(config)
-            validation.ValidateDialogue(config.DataRootDir, gameState)
+            errorCount := validation.ValidateDialogue(config.DataRootDir, gameState)
+            errorCount += validation.ValidateSkillNames(config.DataRootDir)
+            if errorCount > 0 {
+                os.Exit(1)
+            }
             return
         } else if os.Args[1] == "graph_dialogue" {
             hideBackLinksToNode := ""
@@ -93,7 +97,9 @@ func main() {
             validation.GraphDialogue(config.DataRootDir, gameState, filename, hideBackLinksToNode)
             return
         } else if os.Args[1] == "val_ammo" {
-            validation.ValidateWeaponAndAmmoPairings(config.DataRootDir)
+            if validation.ValidateWeaponAndAmmoPairings(config.DataRootDir) > 0 {
+                os.Exit(1)
+            }
             return
         } else {
             mode = os.Args[1]

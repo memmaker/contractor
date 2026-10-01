@@ -11,7 +11,9 @@ type WeaponChecker struct {
 	rootDir string
 }
 
-func (c WeaponChecker) PrintReport() {
+// PrintReport prints the caliber pairings and returns the number of errors found.
+func (c WeaponChecker) PrintReport() int {
+	errorCount := 0
 	ammoPath := filepath.Join(c.rootDir, "definitions", "ammo.rec")
 	weaponPath := filepath.Join(c.rootDir, "definitions", "weapons.rec")
 
@@ -41,6 +43,7 @@ func (c WeaponChecker) PrintReport() {
 			caliberToWeapon[caliberIndex] = append(caliberToWeapon[caliberIndex], weaponIdentifier)
 			ammoTypes, hasAmmoForIndex := caliberToAmmo[caliberIndex]
 			if !hasAmmoForIndex || len(ammoTypes) == 0 {
+				errorCount++
 				println(fmt.Sprintf("ERR: Weapon %s has no ammo defined for caliber index %d", weaponIdentifier, caliberIndex))
 				continue
 			}
@@ -59,11 +62,16 @@ func (c WeaponChecker) PrintReport() {
 		ammoTypes, hasAmmoForIndex := caliberToAmmo[caliberIndex]
 		weaponTypes, hasWeaponsForIndex := caliberToWeapon[caliberIndex]
 
+		if !hasAmmoForIndex && !hasWeaponsForIndex {
+			continue // unused caliber index
+		}
 		if !hasAmmoForIndex {
+			errorCount++
 			println(fmt.Sprintf("ERR: No ammo defined for caliber index %d", caliberIndex))
 			continue
 		}
 		if !hasWeaponsForIndex {
+			errorCount++
 			println(fmt.Sprintf("ERR: No weapons defined for caliber index %d", caliberIndex))
 			continue
 		}
@@ -80,11 +88,12 @@ func (c WeaponChecker) PrintReport() {
 		println()
 
 	}
+	return errorCount
 }
 
-func ValidateWeaponAndAmmoPairings(rootDir string) {
+func ValidateWeaponAndAmmoPairings(rootDir string) int {
 	weaponChecker := NewWeaponChecker(rootDir)
-	weaponChecker.PrintReport()
+	return weaponChecker.PrintReport()
 }
 
 func NewWeaponChecker(dir string) *WeaponChecker {

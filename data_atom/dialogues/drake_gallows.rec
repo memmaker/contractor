@@ -24,7 +24,7 @@ name: EndNoPayment
 npc: Thank you! For what it's worth, there is a small stash in the operating room.
 + We both had a key, here is mine.
 #
-effect: GiveItemToPlayer('doc_stash_key')
+effect: StackTransferFrom(NPC, 'doc_stash_key')
 effect: SetFlag('drake_freed_without_payment')
 effect: EndWithChatter
 
@@ -110,7 +110,7 @@ name: EndWithPayment
 npc: Fine. I am leaving now.
 #
 effect: SetFlag('drake_promised_freedom')
-effect: GiveItemToPlayer('gold', 200)
+effect: StackTransferFrom(NPC, 'gold', 200)
 effect: EndWithChatter
 
 
@@ -197,3 +197,7 @@ o_goto: End
 #
 o_text: You’re full of it, Drake. This better not happen again.
 o_goto: End
+
+name: End
+npc: Take care of yourself out there.
+effect: EndConversation

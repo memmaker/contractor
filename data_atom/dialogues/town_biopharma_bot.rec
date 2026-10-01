@@ -47,8 +47,8 @@ o_cond: !HasFlag('TalkedTo(dr_winters)') && !HasFlag('KnowsWintersLocation')
 o_goto: DrWinters
 #
 o_text: Open Administrative Interface
-#o_cond: Skill('Science') > 25
-o_test: RollSkill('Science')
+#o_cond: Skill('Technology') > 25
+o_test: RollSkill('Technology')
 o_succ: AdminInterface
 o_fail: AdminInterfaceFail
 
@@ -152,17 +152,17 @@ effect: EndConversation
 
 name: SleepMode
 npc: Activating sleep mode. Goodbye.
-effect: ActorSleep('town_biopharma_bot')
+effect: ActorSleep(NPC)
 effect: EndConversation
 
 name: CombatSimulation
 npc: Activating combat simulation. Prepare for combat.
-effect: ActorFrenzy('town_biopharma_bot')
+effect: StartCombat
 effect: EndConversation
 
 name: SelfDestruct
 npc: Self-destruct sequence activated. Goodbye.
-effect: ActorDie('town_biopharma_bot')
+effect: ActorDie(NPC)
 effect: EndConversation
 
 name: AssassinProtocol
@@ -179,10 +179,10 @@ o_goto: AdminInterface
 
 name: DrWintersAssassination
 npc: Target selected. Initiating assassination protocol.
-effect: ActorKill('dr_winters')
+effect: RunScriptKill('town_biopharma_bot', 'dr_winters')
 effect: EndConversation
 
 name: SunshineAssassination
 npc: Target selected. Initiating assassination protocol.
-effect: ActorKill('town_sunshine')
+effect: RunScriptKill('town_biopharma_bot', 'town_sunshine')
 effect: EndConversation

@@ -1,4 +1,4 @@
-//go:build ebiten
+//go:build terminal
 
 package main
 

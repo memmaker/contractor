@@ -12,11 +12,11 @@ name: Start
 npc: Welcome to Shop-Mart, how can I help you?
 #
 o_text: This is a robbery, put the money in the bag!
-o_cond: !HasFlag('robberyAttempted') && Skill('Small_Guns') >= 50 || Skill('Big_Guns') >= 50
+o_cond: !HasFlag('robberyAttempted') && Skill('Ranged Combat') >= 50
 o_goto: RobSuccess
 #
 o_text: I really, reaaally need that key to the back room.
-o_cond: !HasFlag('keyAttempted') && Skill('Speech') >= 50
+o_cond: !HasFlag('keyAttempted') && Skill('Social') >= 50
 o_goto: KeySuccess
 #
 o_text: Just browsing for now.
@@ -26,7 +26,7 @@ name: RobSuccess
 npc: Please don't hurt me! Here's everything in the cash register!
 + (The shopkeeper empties the register into a plastic bag and hands it to you.)
 + >You receive $500.
-effect: GiveItemToPlayer('gold', 500)
+effect: StackTransferFrom(NPC, 'gold', 500)
 effect: SetFlag('robberyAttempted')
 effect: EndConversation
 
@@ -37,7 +37,7 @@ effect: EndConversation
 
 name: KeySuccess
 npc: Sure, here you go.
-effect: GiveItemToPlayer('storeBackRoom')
+effect: StackTransferFrom(NPC, 'storeBackRoom')
 effect: SetFlag('keyAttempted')
 #
 o_text: Thanks for the key!

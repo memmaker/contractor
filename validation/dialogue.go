@@ -3,9 +3,11 @@ package validation
 import (
 	"contractor/util"
 	"fmt"
+	"github.com/Knetic/govaluate"
 	"github.com/memmaker/go/convo"
 	"github.com/memmaker/go/fxtools"
 	"html"
+	"maps"
 	"os"
 	"path/filepath"
 	"slices"
@@ -19,6 +21,8 @@ import (
 type DialogueReport struct {
 	DialogueFile string
 	Nodes        map[string]NodeInfos
+	ParseError   error
+	EffectErrors []string
 }
 
 func (dr DialogueReport) FlagsQueried() []string {
@@ -172,6 +176,9 @@ func (dr DialogueReport) NodeNamesMentioned() map[string]bool {
 	names := make(map[string]bool)
 	for _, info := range dr.Nodes {
 		for mentioned := range info.Transition {
+			if mentioned == "" { // no goto means "stay on the current node"
+				continue
+			}
 			names[mentioned] = true
 		}
 	}
@@ -188,16 +195,30 @@ func GraphDialogue(rootDir string, handler convo.DialogueHandler, filename strin
 	report := checker.CheckSingleFile(filename, handler)
 	fmt.Println(report.AsDotGraph(false, hideBackLinksToNode))
 }
-func ValidateDialogue(rootDir string, handler convo.DialogueHandler) {
+
+// ValidateDialogue prints a report for all dialogue files and returns the number of errors found
+// (unparseable files and references to missing nodes).
+func ValidateDialogue(rootDir string, handler convo.DialogueHandler) int {
+	errorCount := 0
 	checker := NewDialogueChecker(filepath.Join(rootDir, "dialogues"))
 	reports := checker.CreateReports(handler)
 	for _, report := range reports {
+		if report.ParseError != nil {
+			println("ERR: ", report.DialogueFile, ": ", report.ParseError.Error())
+			errorCount++
+			continue
+		}
+		for _, effectError := range report.EffectErrors {
+			println("ERR: ", report.DialogueFile, ": ", effectError)
+		}
+		errorCount += len(report.EffectErrors)
 		missing := report.MissingNodes()
+		errorCount += len(missing)
 		unreferenced := report.UnreferencedNodes()
 		if len(missing) > 0 || len(unreferenced) > 0 || len(report.FlagsQueried()) > 0 || len(report.FlagsSet()) > 0 {
 			println("\nDialogue file: ", report.DialogueFile)
 			if len(missing) > 0 {
-				println("Missing nodes: ")
+				println("ERR: Missing nodes: ")
 				for _, name := range missing {
 					println("  ", name)
 				}
@@ -222,6 +243,7 @@ func ValidateDialogue(rootDir string, handler convo.DialogueHandler) {
 			}
 		}
 	}
+	return errorCount
 }
 
 func NewDialogueChecker(rootDir string) *DialogueChecker {
@@ -239,7 +261,7 @@ func (dc *DialogueChecker) CreateReports(handler convo.DialogueHandler) []Dialog
 	}
 	var reports []DialogueReport
 	for _, entry := range dir {
-		if entry.IsDir() || strings.HasPrefix(entry.Name(), "_") {
+		if entry.IsDir() || strings.HasPrefix(entry.Name(), "_") || filepath.Ext(entry.Name()) != ".rec" {
 			continue
 		}
 
@@ -251,7 +273,10 @@ func (dc *DialogueChecker) CreateReports(handler convo.DialogueHandler) []Dialog
 
 func DialogueReportFromFile(directory string, filename string, handler convo.DialogueHandler) DialogueReport {
 	filePath := filepath.Join(directory, filename)
-	conv, _ := convo.ParseConversation(filePath, handler)
+	conv, err := convo.ParseConversation(filePath, handler)
+	if err != nil {
+		return DialogueReport{DialogueFile: filename, ParseError: err}
+	}
 
 	rootNode := NodeInfos{
 		Name:         "START",
@@ -268,8 +293,29 @@ func DialogueReportFromFile(directory string, filename string, handler convo.Dia
 	report := DialogueReport{
 		DialogueFile: filename,
 		Nodes:        allNodes,
+		EffectErrors: effectErrors(conv, handler),
 	}
 	return report
+}
+
+// effectErrors reports node effects that the game cannot execute. Function style effects are
+// only parsed once their node is reached, so an unknown function crashes the game mid dialogue.
+func effectErrors(conv *convo.Conversation, handler convo.DialogueHandler) []string {
+	var errors []string
+	for _, nodeName := range slices.Sorted(maps.Keys(conv.GetAllNodes())) {
+		for _, effect := range conv.GetNodeByName(nodeName).Effects {
+			if !fxtools.LooksLikeAFunction(effect) {
+				continue
+			}
+			if name, _ := fxtools.GetNameAndArgs(effect); name == "GotoNode" {
+				continue // handled by the dialogue engine itself
+			}
+			if _, parseErr := govaluate.NewEvaluableExpressionWithFunctions(effect, handler.GetScriptFuncs()); parseErr != nil {
+				errors = append(errors, fmt.Sprintf("%s: %s: %v", nodeName, effect, parseErr))
+			}
+		}
+	}
+	return errors
 }
 
 func appendFromOpeningBranch(mentioned map[string]string, nodes []convo.OpeningBranch) map[string]string {

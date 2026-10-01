@@ -125,3 +125,30 @@ npc: You’ve got guts, but no brains. No more cash, choomba. Take the deal or w
 #
 o_text: You’ll regret this.
 o_goto: DefaultIntroduction
+
+name: CorporateSuccess
+npc: (He straightens his collar, suddenly very polite.)
+npc: A third party. Of course. I didn't realize this had gone that far up.
++ Tell your people the job is closed. No hard feelings, yeah?
+effect: SetFlag('jacob_backed_off')
+#
+o_text: Smart man.
+o_goto: DefaultIntroduction
+#
+o_text: I'll pass that along.
+o_goto: End
+
+name: CorporateFail
+npc: (He looks you up and down and laughs.)
+npc: Nice suit. It doesn't fit you, and neither does that story.
++ Nobody sent you. Now get out of my house.
+#
+o_text: Fine. We're done here.
+o_goto: End
+#
+o_text: Wrong answer.
+o_goto: KillClient
+
+name: End
+npc: (He shuts the door behind you.)
+effect: EndConversation

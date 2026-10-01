@@ -89,7 +89,7 @@ func (g *GameState) SaveGame(toDirectory string) {
 	if toDirectory != "" {
 		err := g.Save(toDirectory)
 		if err != nil {
-			panic(err)
+			g.msg(foundation.Msg("Saving failed: " + err.Error()))
 		} else {
 			g.msg(foundation.Msg("Game saved."))
 			if g.IsIronMan() {
@@ -358,7 +358,7 @@ func (g *GameState) OpenWizardMenu() {
 			Action: func() {
 				err := g.Save("savegame")
 				if err != nil {
-					panic(err)
+					g.msg(foundation.Msg("Saving failed: " + err.Error()))
 				}
 			},
 		},

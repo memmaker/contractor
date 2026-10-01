@@ -74,3 +74,72 @@ o_goto: ThoughtsOnBAT
 o_text: What can you tell me about Flesh & Bone?
 o_goto: FleshAndBone
 
+
+name: Bye
+npc: Connection closed by remote host. See you around, {{ .pcname }}.
+effect: EndConversation
+
+name: What
+npc: (She grins.) No, I just talk like one before my second coffee.
++ Solara Carter. I keep the machines in this district from eating people.
+effect: SetFlag('IntroducedTo(solara_carter)')
+#
+effect: ReturnToPreviousNode
+
+name: Helo
+npc: Oh, a person who reads RFCs. HELO accepted, {{ .pcname }}.
++ You have no idea how rare that is around here.
+effect: SetFlag('IntroducedTo(solara_carter)')
+#
+effect: ReturnToPreviousNode
+
+name: Ehlo
+npc: Extended handshake, even. Alright, you have my attention.
++ Most people around here think a protocol is something you break.
+effect: SetFlag('IntroducedTo(solara_carter)')
+#
+effect: ReturnToPreviousNode
+
+name: ContractorOffer
+npc: A contractor. So, a person-shaped script someone else runs.
++ No offense. I might have a job for you eventually, if you don't turn out to be a liability.
+#
+effect: ReturnToPreviousNode
+
+name: WhatIsThisPlace
+npc: The eastern rim. Officially a commerce district.
++ Practically, it's where the two big corps park the things they don't want on their own campus.
+#
+effect: ReturnToPreviousNode
+
+name: WhatDoYouDo
+npc: I fix what breaks. Terminals, drones, the odd cyberdeck.
++ And I listen to the traffic nobody thinks I can read.
+#
+effect: ReturnToPreviousNode
+
+name: TellMeAboutYourself
+npc: Not much to report. I was going to put people on the moon.
++ Someone with a better suit filed my idea under his own name, so now I'm here, fixing vending machines.
++ Machines don't do that to you. That's why I like them.
+#
+effect: ReturnToPreviousNode
+
+name: ThoughtsOnEBI
+npc: Eschaton Biotech? They own the water you drink and the doctor who tells you it's fine.
++ I'd rather not be on their network. Or their list.
+#
+effect: ReturnToPreviousNode
+
+name: ThoughtsOnBAT
+npc: Bushido-ArmaTech at least admit what they sell.
++ There's a kind of honesty in a weapons company. Not one I want to work for, mind you.
+#
+effect: ReturnToPreviousNode
+
+name: FleshAndBone
+npc: Purity of the flesh. (She taps the interface port behind her ear.)
++ To them I'm not a person, I'm a violation. So we don't talk much.
++ If you have chrome in you, don't go east after dark.
+#
+effect: ReturnToPreviousNode

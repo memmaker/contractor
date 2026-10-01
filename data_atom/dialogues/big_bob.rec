@@ -40,8 +40,8 @@ name: BuySMG
 npc: Good choice! It's a reliable weapon. You'll need some ammo for it, too.
 + That burst fire mode can be a real life saver, but it eats through ammo like crazy.
 #
-effect: TakeItemFromPlayer('gold', 500)
-effect: GiveItemToPlayer('10mm_smg')
+effect: StackTransferTo(NPC, 'gold', 500)
+effect: StackTransferFrom(NPC, '10mm_smg')
 #
 o_text: Thanks, I am good on ammo.
 o_goto: BasicSupply
@@ -59,8 +59,8 @@ o_goto: Exit
 
 name: BuyAmmo
 npc: Here you go. Enjoy your purchase!
-effect: TakeItemFromPlayer('gold', 50)
-effect: GiveItemToPlayer('10mm_jhp', 24)
+effect: StackTransferTo(NPC, 'gold', 50)
+effect: StackTransferFrom(NPC, '10mm_jhp', 24)
 #
 o_text: Nice doing business with you.
 o_goto: BasicSupply
@@ -72,7 +72,7 @@ name: BuySingleRound
 npc: Haha, that's original! Here you go. This one's on the house.
 + I am pretty sure you'll be back for more soon.
 + Or... maybe not.
-effect: GiveItemToPlayer('10mm_jhp', 1)
+effect: StackTransferFrom(NPC, '10mm_jhp', 1)
 effect: SetFlag('took_single_round')
 #
 o_text: Alright, show me what else you have.
@@ -108,7 +108,7 @@ o_text: I'll be back soon.
 o_goto: Exit
 #
 o_text: Why don't you join me?
-o_test: GetSkill('social') >= 25
+o_test: Skill('social') >= 25
 o_succ: AcceptJoin
 o_fail: DeclineJoin
 
@@ -124,3 +124,23 @@ npc: I appreciate the offer, but I have to stay here.
 #
 o_text: I understand. I'll be back soon.
 o_goto: Exit
+
+name: DefaultIntroduction
+npc: Welcome back to Big Bob's Supplies! The shelves are full again, thanks to you.
+#
+o_text: Show me what you have.
+o_effect: StartTrading
+o_goto: DefaultIntroduction
+#
+o_text: What's the neighborhood like?
+o_goto: TellMeAboutNeighborhood
+#
+o_text: I see, goodbye.
+o_goto: Exit
+
+name: TellMeAboutNeighborhood
+npc: Quiet, mostly. People here keep their heads down and their doors locked.
++ Quinn down the street is the exception. I'd give him room.
++ Other than that, the worst you'll meet around here is me, before my first coffee.
+#
+effect: ReturnToPreviousNode

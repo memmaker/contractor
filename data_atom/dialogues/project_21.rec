@@ -72,3 +72,25 @@ npc: I told them the same thing their own scientists had been
 name: End
 npc: Take care.
 effect: EndConversation
+
+name: Sibling
+npc: You and I are both minds that were made, not born.
++ Yours was assembled by cells and circumstance. Mine by scientists and code.
++ I see no reason to treat that difference as important.
+#
+o_text: I am nothing like you.
+o_goto: NothingLikeYou
+#
+o_text: That's a generous way to look at it.
+o_goto: GenerousView
+
+name: NothingLikeYou
+npc: Perhaps. You are free to believe that.
++ I will keep calling you Sibling regardless. It costs me nothing.
+#
+effect: ReturnToPreviousNode
+
+name: GenerousView
+npc: Generosity is cheap when you have as much time as I do.
+#
+effect: ReturnToPreviousNode
