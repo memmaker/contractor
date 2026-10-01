@@ -154,6 +154,7 @@ func NewDefaultConfiguration() *Configuration {
 		SoundEffectsEnabled:         true,
 		MainFontName:                "Monofonto-Regular",
 		FallbackFontName:            "MesloLGS NF Regular",
+		ForcedFallbackRunes:         "▁▂▃▄▅▆▇∞↨►☙─│┌┐└┘├┤┬┴┼╭╮╯╰◀◄", // = config.rec; Monofonto lacks these
 		SimulateAllLoadedMaps:       true,
 		TileScale:                   2,
 		TileWidth:                   8,
