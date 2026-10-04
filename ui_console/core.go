@@ -10,6 +10,7 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
 	"image/color"
+	"strings"
 )
 
 type UI struct {
@@ -339,6 +340,9 @@ func (u *UI) getLowerStatusBar(statusValues foundation.HudValueMap, flags map[fo
 		armorStr = u.colorIfDiff(armorStr, foundation.HudArmorRating, currentRating)
 
 		statusStr = fmt.Sprintf("%s %s %s %s %s", hpStr, fpStr, armorStr, equippedItem, flagString)
+		if width, _ := u.application.GetScreenSize(); cview.TaggedStringWidth(statusStr) > width { // tiny terminal: drop least important parts
+			statusStr = strings.Join(fitParts(width, hpStr, fpStr, equippedItem, armorStr, flagString), " ")
+		}
 	}
 
 	width, _ := u.application.GetScreenSize()
