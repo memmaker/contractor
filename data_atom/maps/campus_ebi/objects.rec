@@ -1,2 +1,9 @@
 %rec: default
 
+Category: Transition
+Description: the way back to the headquarters
+Location: hq_gate
+TargetMap: hq_ebi
+TargetLocation: campus_gate
+Position: (0,14)
+
