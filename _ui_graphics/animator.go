@@ -12,5 +12,5 @@ func (a Animator) Tick() {
 }
 
 func NewAnimator() *Animator {
-    return &Animator{}
+	return &Animator{}
 }

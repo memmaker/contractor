@@ -1,8 +1,8 @@
 package game
 
 import (
-    "contractor/foundation"
 	"cmp"
+	"contractor/foundation"
 	"encoding/gob"
 	"github.com/memmaker/go/fxtools"
 	"log"
