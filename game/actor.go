@@ -57,6 +57,7 @@ type Actor struct {
 	InitiateDialogueWithOpeningBranch string
 	ChatterFile                       string
 	Faction                           string
+	Aggressive                        bool
 
 	GuardingZone string
 
