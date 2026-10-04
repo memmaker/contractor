@@ -267,12 +267,7 @@ func (g *GameState) openInventoryOf(actor *Actor) {
 		g.openInventoryOf(actor)
 	}
 	takeAll := func() {
-		loot := actor.GetInventory().StackedItemsWithFilter(func(item foundation.Item) bool {
-			return !item.HasTag(foundation.TagNoLoot)
-		})
-		for _, item := range loot {
-			stackTransfer(actor.GetInventory(), g.Player.GetInventory(), item, item.GetStackSize())
-		}
+		takeAllLoot(actor.GetInventory(), g.Player.GetInventory())
 		g.openInventoryOf(actor)
 	}
 	playerItems := g.Player.GetInventory().GetItems()
