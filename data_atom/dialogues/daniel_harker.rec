@@ -5,6 +5,9 @@
 
 # When the game starts, Daniel is the Ripperdoc and Drake is locked away.
 
+cond: HasFlag('Killed(jacob_thorne)') && HasFlag('WorkFor(daniel_harker)') && !HasFlag('harker_paid_for_jacob')
+goto: JacobDead
+
 cond: HasFlag('TalkedTo(drake_gallows)') && !HasFlag('drake_freed')
 goto: TalkedToDrake
 
@@ -259,7 +262,7 @@ o_text: Thanks.
 o_goto: DefaultIntroduction
 
 name: JacobLocation
-npc: He lives in a small hut in the woods. You can't miss it.
+npc: He has an apartment in the eastern residential district. Take a taxi, you can't miss it.
 + (He marks the location on your map.)
 effect: SetFlag('LocationKnown(jacobs_home)')
 #
@@ -284,3 +287,13 @@ npc: Of course not. Why would you.
 #
 effect: SetFlag('lied_about_drake')
 effect: ReturnToPreviousNode
+
+name: JacobDead
+npc: (He exhales, long and slow.)
+npc: I heard about Jacob. I won't ask how.
++ Here. Consider us even, and my door is always open for you.
+effect: PlayerAddGold(300)
+effect: SetFlag('harker_paid_for_jacob')
+#
+o_text: Pleasure doing business.
+o_goto: End

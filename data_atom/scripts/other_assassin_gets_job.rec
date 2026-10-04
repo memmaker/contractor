@@ -1,0 +1,15 @@
+# The player declined Jacob's job, so Jacob hires Quinn Rix instead.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)') || HasFlag('Killed(quinn_rix)')
+do: SetFlag('starter(other_assassin_done)')
+
+%rec: cancel
+
+%rec: frames
+
+if: IsMap('zone_residential_south') && !HasFlag('Killed(quinn_rix)') && !HasFlag('Killed(daniel_harker)')
+do: RunScriptKill('quinn_rix', 'daniel_harker')

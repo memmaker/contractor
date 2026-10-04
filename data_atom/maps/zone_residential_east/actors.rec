@@ -1,6 +1,9 @@
 %rec: default
 
 Name: gun_thug
+faction: jacob
+equipment: 10mm_pistol
+equipment: 10mm_jhp
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug
@@ -42,6 +45,9 @@ SourceFile: 00000036.pro
 Position: (62,16)
 
 Name: gun_thug
+faction: jacob
+equipment: 10mm_pistol
+equipment: 10mm_jhp
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug
@@ -82,3 +88,39 @@ DRPoison: 25
 SourceFile: 00000036.pro
 Position: (65,16)
 
+Name: jacob_thorne
+Icon: J
+Foreground: light_gray_2
+Description: Jacob Thorne
+Dialogue: jacob_thorne
+faction: jacob
+LongDescription: 
+Age: 25
+BodyType: 0
+XP: 120
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 80
+ActionPoints: 8
+ArmorClass: 16
+MeleeDamage: 2
+CarryWeight: 200
+Sequence: 8
+HealingRate: 3
+CriticalChance: 7
+Strength: 7
+Perception: 4
+Endurance: 9
+Cool: 3
+Intelligence: 3
+Agility: 6
+Luck: 7
+SkillBonusRangedCombat: 34
+DRNormal: 20
+DREMP: 500
+equipment: street_wear(80)
+equipment: 10mm_pistol
+equipment: 10mm_jhp
+equipment: gold(300)
+Position: (45,16)

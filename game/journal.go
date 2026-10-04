@@ -57,6 +57,15 @@ func (q *Quest) getOutcome() *JournalEntry {
 	return nil
 }
 
+func (q *Quest) OutcomeXP() int {
+	for _, entry := range q.Outcomes {
+		if entry.Identifier == q.Outcome && entry.XP >= 0 {
+			return entry.XP
+		}
+	}
+	return q.RewardInXP
+}
+
 func (q *Quest) getStart() *JournalEntry {
 	return q.Starters[q.StartIndex]
 }
@@ -130,6 +139,7 @@ func (j *JournalEntry) GetCondition() *govaluate.EvaluableExpression {
 type NamedJournalEntry struct {
 	*JournalEntry
 	Identifier string
+	XP         int // -1: use the quest's XP
 }
 
 func (n *NamedJournalEntry) IsValid() bool {
@@ -137,7 +147,7 @@ func (n *NamedJournalEntry) IsValid() bool {
 }
 
 func (n *NamedJournalEntry) ToRecord(prefix string) recfile.Record {
-	return append(n.JournalEntry.ToRecord(prefix), recfile.Field{Name: prefix + "_id", Value: n.Identifier})
+	return append(n.JournalEntry.ToRecord(prefix), recfile.Field{Name: prefix + "_id", Value: n.Identifier}, recfile.Field{Name: prefix + "_xp", Value: recfile.IntStr(n.XP)})
 }
 func (j *JournalEntry) ToRecord(prefix string) recfile.Record {
 	return recfile.Record{
@@ -178,6 +188,7 @@ func NewQuestFromRecord(record recfile.Record, fMap map[string]govaluate.Express
 
 	currentJournalEntry := &NamedJournalEntry{
 		JournalEntry: &JournalEntry{},
+		XP:           -1,
 	}
 
 	stateFromFieldName := func(fieldName string) QuestState {
@@ -217,11 +228,16 @@ func NewQuestFromRecord(record recfile.Record, fMap map[string]govaluate.Express
 				panic(fmt.Sprintf("Unknown field name: %s", field.Name))
 			}
 
+			if strings.HasSuffix(field.Name, "_xp") { // belongs to the entry before it, so it must not start a new one
+				currentJournalEntry.XP = recfile.StrInt(field.Value)
+				continue
+			}
 			if (lastStateParsed == QuestCompleted && currentJournalEntry.IsValid()) ||
 				(lastStateParsed != QuestCompleted && currentJournalEntry.JournalEntry.IsValid()) {
 				commitCurrentEntry(currentJournalEntry)
 				currentJournalEntry = &NamedJournalEntry{
 					JournalEntry: &JournalEntry{},
+					XP:           -1,
 				}
 			}
 			lastStateParsed = stateFromFieldName(field.Name)
@@ -291,7 +307,7 @@ func (j *Journal) Update() []Reward {
 			if hasNewState {
 				sawChanges = true
 				if quest.CurrentState == QuestCompleted {
-					rewards = append(rewards, Reward{XP: quest.RewardInXP, Text: quest.DisplayName})
+					rewards = append(rewards, Reward{XP: quest.OutcomeXP(), Text: quest.DisplayName})
 					j.incrementFlag(fmt.Sprintf("QuestCompleted(%s)", quest.Identifier))
 				}
 				j.incrementFlag(flagToIncrement)
@@ -324,6 +340,18 @@ func (j *Journal) GetEntriesForViewing(context string) []string {
 		result = append(result, fmt.Sprintf("## [green]%s[-] ##\n%s", quest.DisplayName, entryString))
 	}
 	return result
+}
+
+// OutcomeText returns the final journal text of a completed quest, or "".
+func (j *Journal) OutcomeText(questID string) string {
+	for _, quests := range j.quests {
+		for _, q := range quests {
+			if q.Identifier == questID && q.CurrentState == QuestCompleted {
+				return q.getOutcome().Entry
+			}
+		}
+	}
+	return ""
 }
 
 func (j *Journal) getActiveQuests(context string) []*Quest {

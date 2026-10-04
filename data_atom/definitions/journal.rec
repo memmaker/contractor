@@ -36,25 +36,39 @@ id: starter
 name: Medical Extortion
 xp: 250
 #
-start_cond: !HasFlag('Killed(jacob_thorne)') && HasFlag('JobAccepted(starter)') && !HasFlag('JobCompleted(starter)')
+start_cond: HasFlag('JobAccepted(starter)')
 start_text: Jacob wants you to extract 500 Sat from the Ripperdoc in the northside residential area.
+#
+start_cond: HasFlag('JobDeclined(starter)')
+start_text: You turned down Jacob's job. Someone else will take it.
 #
 # Alternative Start: find Drake first
 #
 start_cond: HasFlag('TalkedTo(drake_gallows)') && !HasFlag('drake_freed')
 start_text: Drake Gallows, the original Ripperdoc, is locked away in the cellar of the hospital.
 #
+prog_cond: HasFlag('ContainerRemoved(jacob_safe, gold)')
+prog_text: You cleaned out Jacob's safe. Funny thought: he would never know if his own money showed up in the dead drop.
+#
 prog_cond: HasFlag('WorkFor(daniel_harker)')
-prog_text: You agreed to keep Doc Harker safe from Jacob.
+prog_text: You agreed to keep Doc Harker safe from Jacob. Jacob lives in the eastern residential district.
 #
 prog_cond: HasFlag('starter(money_collected)') || HasFlag('ContainerRemoved(ripperdoc_stash, gold)')
-prog_text: You have collected the money from the Ripperdoc.
+prog_text: You have the money. Deposit 250 Sat in the dead drop, or hand it to Jacob yourself.
 #
 prog_cond: HasFlag('drake_freed')
 prog_text: You have freed Drake Gallows, the Ripperdoc that was locked away in the cellar of the hospital.
 #
 prog_cond: HasFlag('Killed(daniel_harker)')
 prog_text: Daniel Harker, is dead. Jacob will still want his money though.
+#
+prog_cond: HasFlag('LocationKnown(jacobs_home)')
+prog_text: Jacob lives in the eastern residential district. Maybe there is more to be had from him.
+#
+end_cond: HasFlag('ContainerRemoved(jacob_safe, gold)') && HasFlag('ClientRewardReceived(starter)')
+end_text: You paid Jacob with his own money, and he paid you for it. Beautiful.
+end_id: paid_with_clients_money
+end_xp: 500
 #
 end_cond: HasFlag('ClientRewardReceived(starter)')
 end_text: You have received your payment from Jacob.
@@ -67,6 +81,19 @@ end_id: killed_client_for_daniel
 end_cond: HasFlag('Killed(jacob_thorne)')
 end_text: Your client is dead. So no payment for you.
 end_id: killed_client
+#
+end_cond: HasFlag('jacob_backed_off')
+end_text: Jacob called off the job. The Doc is safe, for now.
+end_id: client_backed_off
+#
+end_cond: HasFlag('starter(client_extorted)')
+end_text: Jacob paid you to go away. Not the deal he had in mind.
+end_id: client_extorted
+#
+end_cond: HasFlag('JobDeclined(starter)') && HasFlag('starter(other_assassin_done)')
+end_text: Jacob found someone else for the job. Quinn Rix did it his way.
+end_id: job_lost
+end_xp: 0
 
 
 

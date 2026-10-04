@@ -1,0 +1,24 @@
+# A few days after Harker dies, the clinic gets a new doctor:
+# Drake if he was freed and lives, otherwise EBI sends a medic.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('clinic(drake)') || HasFlag('clinic(ebi)')
+do: SetFlag('clinic_reopened')
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('Killed(daniel_harker)')
+do: SaveTimeNow('harker_died')
+
+if: IsDaysAfter('harker_died', 2) && HasFlag('drake_freed') && !HasFlag('Killed(drake_gallows)')
+do: MoveTo(ActorWithName('drake_gallows'), 'zone_residential_south', 'behind_counter_hospital')
+do: SetFlag('clinic(drake)')
+
+if: IsDaysAfter('harker_died', 2) && !HasFlag('clinic(drake)') && LoadMap('hq_ebi')
+do: MoveTo(ActorWithName('ebi_medic'), 'zone_residential_south', 'behind_counter_hospital')
+do: SetFlag('clinic(ebi)')
