@@ -1,0 +1,21 @@
+# Takeover branch: without Drake, EBI sends a medic. He walks over from the EBI
+# headquarters and, once behind the counter, hires a cleaner for any blood.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: (HasFlag('drake_freed') && !HasFlag('Killed(drake_gallows)')) || HasFlag('clinic_cleanup_started')
+
+%rec: cancel
+
+%rec: frames
+
+if: LoadMap('hq_ebi')
+do: MoveTo(ActorWithName('ebi_medic'), 'zone_residential_south', 'behind_counter_hospital')
+do: SetFlag('clinic(ebi)')
+
+if: IsActorAt(ActorWithName('ebi_medic'), 'zone_residential_south', 'behind_counter_hospital')
+do: AddChatter(ActorWithName('ebi_medic'), 'What a mess. I am calling sanitation.')
+do: SetFlag('clinic_cleanup_started')
+do: RunScript('clinic_cleanup')

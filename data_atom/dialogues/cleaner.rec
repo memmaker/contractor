@@ -1,0 +1,20 @@
+%rec: OpeningBranch
+
+cond: HasFlag('cleaner_called') && !HasFlag('clinic_cleaned')
+goto: Working
+
+cond: true
+goto: Idle
+
+%rec: Nodes
+%type: npc multiline
+
+name: Idle
+npc: (A tired man in stained coveralls sits on his bed, phone in hand.)
++ Blood, puke, worse. You make a mess, somebody calls me. Always somebody calls me.
+effect: EndConversation
+
+name: Working
+npc: (He doesn't look up from the floor.)
++ The new doc wants this place spotless before he sees patients. Mind your feet.
+effect: EndConversation

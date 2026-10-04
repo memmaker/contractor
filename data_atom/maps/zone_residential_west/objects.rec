@@ -513,3 +513,7 @@ Description: a bed
 Owner: CHANGEME
 Position: (11,3)
 
+
+Category: NamedLocation
+Identifier: cleaner_room
+Position: (13,19)

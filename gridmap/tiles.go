@@ -45,6 +45,8 @@ type Tile struct {
 	IsWalkable         bool // this
 	IsTransparent      bool // this
 	Flags              TileFlags
+	Stained            bool       // blood etc.; CleanFg/CleanBg hold the colors to restore
+	CleanFg, CleanBg   color.RGBA // only valid while Stained
 }
 
 func (t Tile) Destroyed() Tile {

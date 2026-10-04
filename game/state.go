@@ -140,9 +140,56 @@ func (g *GameState) makeMapBloody(mapPos geometry.Point) {
 		bloodColorBgInt = rand.Intn(6) + 5
 	}
 
-	currentTileIcon := g.currentMap().GetTileIconAt(mapPos)
-	g.currentMap().SetTileIcon(mapPos, currentTileIcon.WithBg(g.palette.Get(fmt.Sprintf("red_%d", bloodColorBgInt))).WithFg(g.palette.Get(fmt.Sprintf("red_%d", bloodColorFgInt))))
-	return
+	g.currentMap().StainTile(mapPos, g.palette.Get(fmt.Sprintf("red_%d", bloodColorFgInt)), g.palette.Get(fmt.Sprintf("red_%d", bloodColorBgInt)))
+}
+
+// cleanStainsStep makes the actor scrub one stain within reach per call, or walk towards the nearest reachable one.
+func (g *GameState) cleanStainsStep(actor *Actor, mapName string, zones []string) (done bool) {
+	if !actor.IsAlive() {
+		return true
+	}
+	gMap := g.ensureMapIsLoaded(mapName)
+	var stains []geometry.Point
+	for y := 0; y < gMap.GetHeight(); y++ {
+		for x := 0; x < gMap.GetWidth(); x++ {
+			if p := (geometry.Point{X: x, Y: y}); gMap.IsStained(p) && slices.ContainsFunc(zones, func(zone string) bool { return gMap.IsZoneAt(p, zone) }) {
+				stains = append(stains, p)
+			}
+		}
+	}
+	if len(stains) == 0 {
+		actor.FSM.SetState(StateIdle, NoEvent)
+		return true
+	}
+	if actor.currentMapName != mapName {
+		actor.FSM.SetState(StateScripted, LocationEvent{Event: EventNone, Location: MapPosition{MapName: mapName, Position: stains[0]}})
+		return false
+	}
+	for _, stain := range stains {
+		if geometry.DistanceChebyshev(actor.Position(), stain) <= 1 {
+			gMap.CleanTile(stain)
+			return false
+		}
+	}
+	var reachable map[geometry.Point]int
+	g.ExecuteOnMap(mapName, func() { reachable = actor.GetDijkstraMap() })
+	target, bestDist := actor.Position(), -1
+	for _, stain := range stains { // stand on or next to it; stained walls are only reachable from beside
+		for dy := -1; dy <= 1; dy++ {
+			for dx := -1; dx <= 1; dx++ {
+				p := stain.Add(geometry.Point{X: dx, Y: dy})
+				if dist, ok := reachable[p]; ok && (bestDist < 0 || dist < bestDist) {
+					target, bestDist = p, dist
+				}
+			}
+		}
+	}
+	if bestDist < 0 { // the rest is behind locked doors
+		actor.FSM.SetState(StateIdle, NoEvent)
+		return true
+	}
+	actor.FSM.SetState(StateScripted, LocationEvent{Event: EventNone, Location: MapPosition{MapName: mapName, Position: target}})
+	return false
 }
 
 func (g *GameState) makeMapBurned(mapPos geometry.Point) {
