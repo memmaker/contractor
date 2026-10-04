@@ -7,6 +7,7 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/recfile"
 	"github.com/memmaker/go/textiles"
+	"maps"
 	"slices"
 	"strings"
 	"time"
@@ -394,4 +395,13 @@ func stackTransfer(from ItemContainer, to ItemContainer, item foundation.Item, s
 	splitItem := multiItem.Split(splitAmount)
 
 	to.AddItem(splitItem)
+}
+
+// takeAllLoot moves the raw items, not the merged stacks view, which would leave the stack's siblings behind
+func takeAllLoot(from *Inventory, to ItemContainer) {
+	for _, item := range slices.Collect(maps.Values(from.items)) {
+		if !item.HasTag(foundation.TagNoLoot) {
+			stackTransfer(from, to, item, item.GetStackSize())
+		}
+	}
 }
