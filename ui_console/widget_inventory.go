@@ -74,10 +74,9 @@ func (u *UI) dropItemWithAmountSelection(item foundation.Item, after func()) {
 			}
 			if amount == item.GetStackSize() {
 				u.game.PlayerDropItem(item)
-				return
+			} else {
+				u.game.PlayerDropItem(item.Split(amount))
 			}
-			splitItem := item.Split(amount)
-			u.game.PlayerDropItem(splitItem)
 			if after != nil {
 				after()
 			}
@@ -112,6 +111,17 @@ func (u *UI) OpenInventoryForManagement() {
 		})
 	})
 	inv.SetControlSelection(u.game.PlayerExamineItem)
+	inv.SetContextMenu(func(item foundation.Item, done func()) { // gamepad X has no Shift or Ctrl
+		use := "Use"
+		if item.IsEquippable() {
+			use = "(Un)Equip"
+		}
+		u.openSimpleMenu([]foundation.MenuItem{
+			{Name: use, CloseMenus: true, Action: func() { inv.defaultSelection(item); done() }},
+			{Name: "Examine", CloseMenus: true, Action: func() { u.game.PlayerExamineItem(item) }},
+			{Name: "Drop", CloseMenus: true, Action: func() { u.dropItemWithAmountSelection(item, func() { inv.SetItems(getInventory()) }) }},
+		}, nil)
+	})
 
 	inv.SetCloseOnControlSelection(false)
 	inv.SetCloseOnShiftSelection(false)
@@ -250,7 +260,9 @@ func (i *TextInventory) updateListItems() {
 	currentItem := i.GetCurrentItemIndex()
 	labels := make([]fxtools.TableRow, len(i.items))
 	for lineIndex, invItem := range i.items {
-		namePart := invItem.InventoryNameWithColorsAndShortcut(textiles.RGBAToFgColorCode(i.lineColor(invItem.GetCategory())))
+		// The letter is the row, not item.Shortcut(): every inventory listing (side panel, ammo filter, ..)
+		// renumbers the items, so their own index goes stale while this window is open.
+		namePart := fmt.Sprintf("%c - %s", foundation.ShortCutFromIndex(lineIndex), invItem.InventoryNameWithColors(textiles.RGBAToFgColorCode(i.lineColor(invItem.GetCategory()))))
 		weightPart := fmt.Sprintf("[#00FF00]%d[-]lbs", invItem.GetCarryWeight())
 		row := fxtools.NewTableRow(namePart, weightPart)
 		labels[lineIndex] = row
@@ -280,7 +292,7 @@ func (i *TextInventory) updateListItems() {
 	for lineIndex, invItem := range i.items {
 		totalWeight += invItem.GetCarryWeight()
 		item := invItem
-		shortcut := invItem.Shortcut()
+		shortcut := foundation.ShortCutFromIndex(lineIndex)
 		line := i.stringLabelsWithWeight[lineIndex]
 		taggedStringWidth := cview.TaggedStringWidth(line)
 		if taggedStringWidth < i.listWidth {
@@ -330,6 +342,7 @@ func (i *TextInventory) updateListItems() {
 		if len(dropRunes) > 0 {
 			infoLines = append(infoLines, cview.Escape(fmt.Sprintf("[<SHFT> + letter] Drop")))
 		}
+		infoLines = append(infoLines, cview.Escape("[<SPACE> / pad X] Item menu"))
 	}
 
 	i.infoLines = infoLines
@@ -362,6 +375,8 @@ func (i *TextInventory) nextItem() {
 	i.SetCurrentItem(itemIndex + 1)
 }
 func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
+	event = parseControlCodes(event)
+
 	if i.closeHandler != nil && event.Key() == tcell.KeyEscape {
 		i.Close()
 		return nil
@@ -397,8 +412,6 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 		}
 	}
 
-	event = parseControlCodes(event)
-
 	runeReceived := event.Rune()
 
 	modCtrl := event.Modifiers() == tcell.ModAlt || event.Modifiers() == tcell.ModCtrl || event.Modifiers() == tcell.ModMeta
@@ -413,8 +426,8 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 		runeReceived = unicode.ToLower(runeReceived)
 	}
 
-	for _, invItem := range i.items {
-		if runeReceived == invItem.Shortcut() {
+	for row, invItem := range i.items {
+		if runeReceived == foundation.ShortCutFromIndex(row) {
 			if modShift {
 				if i.shiftSelection != nil {
 					if i.closeOnShiftSelect {
@@ -442,61 +455,20 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
+// parseControlCodes turns Ctrl+letter into the letter with ModCtrl. Terminals without the
+// modifier still send KeyCtrlA..Z; Ctrl+H/I/M only arrive with it (else they are Backspace/Tab/Enter).
 func parseControlCodes(event *tcell.EventKey) *tcell.EventKey {
-	if event.Key() == tcell.KeyCtrlA {
-		return tcell.NewEventKey(tcell.KeyRune, 'a', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlB {
-		return tcell.NewEventKey(tcell.KeyRune, 'b', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlC {
-		return tcell.NewEventKey(tcell.KeyRune, 'c', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlD {
-		return tcell.NewEventKey(tcell.KeyRune, 'd', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlE {
-		return tcell.NewEventKey(tcell.KeyRune, 'e', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlF {
-		return tcell.NewEventKey(tcell.KeyRune, 'f', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlG {
-		return tcell.NewEventKey(tcell.KeyRune, 'g', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlH {
-		return tcell.NewEventKey(tcell.KeyRune, 'h', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlI {
-		return tcell.NewEventKey(tcell.KeyRune, 'i', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlJ {
-		return tcell.NewEventKey(tcell.KeyRune, 'j', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlK {
-		return tcell.NewEventKey(tcell.KeyRune, 'k', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlL {
-		return tcell.NewEventKey(tcell.KeyRune, 'l', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlM {
-		return tcell.NewEventKey(tcell.KeyRune, 'm', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlN {
-		return tcell.NewEventKey(tcell.KeyRune, 'n', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlO {
-		return tcell.NewEventKey(tcell.KeyRune, 'o', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlP {
-		return tcell.NewEventKey(tcell.KeyRune, 'p', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlQ {
-		return tcell.NewEventKey(tcell.KeyRune, 'q', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlR {
-		return tcell.NewEventKey(tcell.KeyRune, 'r', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlS {
-		return tcell.NewEventKey(tcell.KeyRune, 's', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlT {
-		return tcell.NewEventKey(tcell.KeyRune, 't', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlU {
-		return tcell.NewEventKey(tcell.KeyRune, 'u', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlV {
-		return tcell.NewEventKey(tcell.KeyRune, 'v', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlW {
-		return tcell.NewEventKey(tcell.KeyRune, 'w', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlX {
-		return tcell.NewEventKey(tcell.KeyRune, 'x', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlY {
-		return tcell.NewEventKey(tcell.KeyRune, 'y', tcell.ModCtrl)
-	} else if event.Key() == tcell.KeyCtrlZ {
-		return tcell.NewEventKey(tcell.KeyRune, 'z', tcell.ModCtrl)
+	key := event.Key()
+	if key < tcell.KeyCtrlA || key > tcell.KeyCtrlZ {
+		return event
 	}
-	return event
+	switch key {
+	case tcell.KeyBackspace, tcell.KeyTab, tcell.KeyEnter:
+		if event.Modifiers()&tcell.ModCtrl == 0 {
+			return event
+		}
+	}
+	return tcell.NewEventKey(tcell.KeyRune, 'a'+rune(key-tcell.KeyCtrlA), tcell.ModCtrl)
 }
 
 func (i *TextInventory) SetCloseOnSelection(value bool) {

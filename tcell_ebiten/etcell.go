@@ -345,7 +345,9 @@ func (et *etcell) Update() (err error) {
 		}
 
 		// Only post on change; an idle mouse at 60/s clogs the queue ahead of keys.
-		if m := (mouseState{mouse_x, mouse_y, buttons, modMask()}); m != et.last_mouse {
+		// Modifiers ride along but don't count as a change: pressing Shift/Ctrl must not
+		// post a mouse move, which would make hovered lists jump to the row under the cursor.
+		if m := (mouseState{mouse_x, mouse_y, buttons, modMask()}); m.x != et.last_mouse.x || m.y != et.last_mouse.y || m.buttons != et.last_mouse.buttons {
 			et.last_mouse = m
 			et.PostEvent(tcell.NewEventMouse(mouse_x, mouse_y, buttons, m.mod))
 		}
@@ -369,7 +371,8 @@ func (et *etcell) Update() (err error) {
 				}
 				if e_key >= ebiten.KeyA && e_key <= ebiten.KeyZ {
 					t_key := tcell.KeyCtrlA + tcell.Key(e_key-ebiten.KeyA)
-					ev := tcell.NewEventKey(t_key, rune(0), mods & ^tcell.ModCtrl)
+					// keep ModCtrl: KeyCtrlH/I/M are also Backspace/Tab/Enter, the modifier tells them apart
+					ev := tcell.NewEventKey(t_key, rune(0), mods)
 					et.PostEvent(ev)
 					//posted = true
 				}
