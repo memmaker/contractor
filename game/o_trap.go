@@ -210,3 +210,7 @@ func (t *Trap) MinimalSkillNeededForDisarm() int {
 func (t *Trap) IsPlacedByPlayer() bool {
 	return t.placedByPlayer
 }
+
+func (t *Trap) IsMine() bool {
+	return t.InternalName == "frag_mine"
+}

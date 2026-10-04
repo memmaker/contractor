@@ -206,6 +206,10 @@ func (g *GameState) playerStopBecauseOfTrap(trap *Trap) bool {
 			result := d100.SuccessRoll(d100.Percentage(skill), 5)
 			if result.Success {
 				trap.Disarm()
+				if trap.IsMine() {
+					g.currentMap().RemoveObject(trap)
+					g.Player.GetInventory().AddItem(g.NewItemFromString("frag_mine"))
+				}
 				if trap.IsPlacedByPlayer() {
 					g.msg(foundation.HiLite("You disabled the %s", trap.DisplayName))
 				} else if !knownTrap {
