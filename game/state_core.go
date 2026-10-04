@@ -1163,12 +1163,15 @@ func (g *GameState) NewAmmo(name string, bullets int) *Ammo {
 }
 
 func (g *GameState) createSneakOverlay() map[geometry.Point]fxtools.HDRColor {
+	var watchers []*Actor
+	for _, actor := range g.currentMap().Actors() {
+		if actor != g.Player && !actor.HasFlag(foundation.FlagSleep) && actor.IsAlive() {
+			watchers = append(watchers, actor)
+		}
+	}
 	canBeDetectedHere := func(pos geometry.Point) bool {
-		for _, actor := range g.currentMap().Actors() {
-			if actor.HasFlag(foundation.FlagSleep) || !actor.IsAlive() {
-				continue
-			}
-			if actor != g.Player && actor.CanSee(pos) && actor.CanDetect(pos) {
+		for _, actor := range watchers {
+			if actor.CanSee(pos) && actor.CanDetect(pos) {
 				return true
 			}
 		}

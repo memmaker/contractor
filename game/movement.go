@@ -292,7 +292,7 @@ func (g *GameState) getObservers(mapPos geometry.Point) []*Actor {
 }
 
 func (g *GameState) updateFoVAndDijkstraMap(actor *Actor) {
-	actor.dijkstraMap = g.currentMap().GetDijkstraMapWithActorsNotBlocking(actor, 2000)
+	actor.SetDijkstraMapDirty() // rebuilt lazily by GetDijkstraMap; full-map Dijkstra per step was the cost
 
 	// new fov
 	g.updateFoV(actor)
