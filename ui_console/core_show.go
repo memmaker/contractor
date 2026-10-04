@@ -201,6 +201,13 @@ func (u *UI) UpdateStats() {
 }
 
 func (u *UI) ShowGiveAndTakeContainer(leftName string, leftItems []foundation.Item, rightName string, rightItems []foundation.Item, transferToLeft func(itemTaken foundation.Item, stackCount int), transferToRight func(itemTaken foundation.Item, stackCount int), takeAll func()) {
+	u.showGiveAndTakePage(pageTitle(leftName, u.ammoPage), onPage(leftItems, u.ammoPage), pageTitle(rightName, u.ammoPage), onPage(rightItems, u.ammoPage), transferToLeft, transferToRight, takeAll, func() {
+		u.ammoPage = !u.ammoPage
+		u.ShowGiveAndTakeContainer(leftName, leftItems, rightName, rightItems, transferToLeft, transferToRight, takeAll)
+	})
+}
+
+func (u *UI) showGiveAndTakePage(leftName string, leftItems []foundation.Item, rightName string, rightItems []foundation.Item, transferToLeft func(itemTaken foundation.Item, stackCount int), transferToRight func(itemTaken foundation.Item, stackCount int), takeAll func(), togglePage func()) {
 	leftPanel := "leftModal"
 	rightPanel := "rightModal"
 	var leftMenuItems []foundation.MenuItem
@@ -323,7 +330,13 @@ func (u *UI) ShowGiveAndTakeContainer(leftName string, leftItems []foundation.It
 		return action, event
 	})
 	leftMenu.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if isPageToggle(event) {
+			closeContainer()
+			togglePage()
+			return nil
+		}
 		if event.Key() == tcell.KeyEscape {
+			u.ammoPage = false
 			closeContainer()
 			return nil
 		}
@@ -359,7 +372,13 @@ func (u *UI) ShowGiveAndTakeContainer(leftName string, leftItems []foundation.It
 		return action, event
 	})
 	rightMenu.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if isPageToggle(event) {
+			closeContainer()
+			togglePage()
+			return nil
+		}
 		if event.Key() == tcell.KeyEscape {
+			u.ammoPage = false
 			closeContainer()
 			return nil
 		}
@@ -413,8 +432,9 @@ func (u *UI) ShowGiveAndTakeContainer(leftName string, leftItems []foundation.It
 
 func (u *UI) ShowTakeOnlyContainer(name string, containedItems []foundation.Item, transfer func(item foundation.Item)) {
 	var menuItems []foundation.MenuItem
-	menuLabels := u.uiTheme.menuLabelsFor(containedItems)
-	for index, i := range containedItems {
+	pageItems := onPage(containedItems, u.ammoPage)
+	menuLabels := u.uiTheme.menuLabelsFor(pageItems)
+	for index, i := range pageItems {
 		item := i
 		menuItems = append(menuItems, foundation.MenuItem{
 			Name: menuLabels[index],
@@ -426,14 +446,20 @@ func (u *UI) ShowTakeOnlyContainer(name string, containedItems []foundation.Item
 		})
 	}
 
-	menu := u.openSimpleMenu(menuItems, nil)
-	menu.SetTitle(name)
+	menu := u.openSimpleMenu(menuItems, func() { u.ammoPage = false })
+	menu.SetTitle(pageTitle(name, u.ammoPage))
 	keyForTakeAll := u.GetKeysForCommandAsString(KeyLayerMain, "pickup")
 	u.Print(foundation.HiLite("Press %s to take all items", keyForTakeAll))
 	originalCapture := menu.GetInputCapture() // will manage pressing escape
 	menu.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		uiKey := toUIKey(event)
 		command := u.getCommandForKey(uiKey)
+		if isPageToggle(event) {
+			u.popPanel("menu")
+			u.ammoPage = !u.ammoPage
+			u.ShowTakeOnlyContainer(name, containedItems, transfer)
+			return nil
+		}
 		if command == "pickup" {
 			for _, item := range containedItems {
 				transfer(item)
@@ -477,7 +503,8 @@ func (u *UI) ShowHelpScreen() {
 
 // Open Naming
 
-func (u *UI) OpenVendorMenu(title string, itemsForSale []foundation.Item, buyItem func(ui foundation.Item, amount int, price int), inspect func(item foundation.Item), onClose func()) {
+func (u *UI) OpenVendorMenu(title string, allForSale []foundation.Item, buyItem func(ui foundation.Item, amount int, price int), inspect func(item foundation.Item), onClose func()) {
+	itemsForSale := onPage(allForSale, u.ammoPage)
 	var menuItems []foundation.MenuItem
 	var tableRows []fxtools.TableRow
 	for _, i := range itemsForSale {
@@ -515,10 +542,21 @@ func (u *UI) OpenVendorMenu(title string, itemsForSale []foundation.Item, buyIte
 			CloseMenus: !tooExpensive,
 		})
 	}
-	menu := u.openSimpleMenu(menuItems, onClose)
-	menu.SetTitle(title)
+	menu := u.openSimpleMenu(menuItems, func() {
+		u.ammoPage = false
+		if onClose != nil {
+			onClose()
+		}
+	})
+	menu.SetTitle(pageTitle(title, u.ammoPage))
 	origCapture := menu.GetInputCapture()
 	menu.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if isPageToggle(event) {
+			u.popPanel("menu")
+			u.ammoPage = !u.ammoPage
+			u.OpenVendorMenu(title, allForSale, buyItem, inspect, onClose)
+			return nil
+		}
 		uiKey := toUIKey(event)
 		command := u.getCommandForKey(uiKey)
 		if command == "run_direction" {
