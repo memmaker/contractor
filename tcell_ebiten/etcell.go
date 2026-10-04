@@ -217,7 +217,15 @@ func init() {
     for e_key, t_key := range ebiten_key_map {
         tcell_key_map[t_key] = e_key
     }
+    if _, err := ebiten.UpdateStandardGamepadLayoutMappings(extra_gamepad_mappings); err != nil {
+        panic(err)
+    }
 }
+
+// SDL mappings for pads ebiten's built-in db misses; without one the pad is non-standard and ignored.
+// ponytail: add a line per unrecognised pad (GUID from ebiten.GamepadSDLID); load a gamecontrollerdb.txt if the list grows.
+const extra_gamepad_mappings = `030000005e0400008e02000014010000,Xbox 360 Controller,a:b0,b:b1,back:b9,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b10,leftshoulder:b4,leftstick:b6,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b7,righttrigger:a5,rightx:a3,righty:a4,start:b8,x:b2,y:b3,platform:Mac OS X,
+`
 
 // modMask gets the tcell.ModMask for the current ebiten key modifiers.
 func modMask() (mods tcell.ModMask) {
