@@ -293,12 +293,28 @@ func (b *Container) AddItems(items []foundation.Item) {
 }
 
 func (b *Container) GetItems() []foundation.Item {
+	b.consolidate()
 	return b.ContainedItems
+}
 
+// consolidate merges duplicate stacks in storage (e.g. from directly assigned ContainedItems).
+func (b *Container) consolidate() {
+	merged := make([]foundation.Item, 0, len(b.ContainedItems))
+outer:
+	for _, item := range b.ContainedItems {
+		for _, stack := range merged {
+			if stack.CanStackWith(item) {
+				stack.AddStacks(item)
+				continue outer
+			}
+		}
+		merged = append(merged, item)
+	}
+	b.ContainedItems = merged
 }
 
 func (b *Container) ItemsFiltered(keep func(item foundation.Item) bool) []foundation.Item {
-	return StackedFilteredAndSortedItems(b.ContainedItems, keep)
+	return StackedFilteredAndSortedItems(b.GetItems(), keep)
 }
 
 func (b *Container) ItemCountByPrefix(prefix string) int {
