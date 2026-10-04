@@ -560,12 +560,11 @@ func UIKeyFromString(s string) UIKey {
 			name: "Tab",
 			key:  tcell.KeyTAB,
 		}
-	case "backtab":
+	case "backtab": // tcell turns Shift+Tab into Backtab
 		return UIKey{
 			ch:   0,
-			name: "Tab",
-			key:  tcell.KeyTAB,
-			mod:  tcell.ModShift,
+			name: tcell.KeyNames[tcell.KeyBacktab],
+			key:  tcell.KeyBacktab,
 		}
 	}
 

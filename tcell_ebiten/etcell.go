@@ -9,6 +9,7 @@ import (
 	"slices"
 	"sync"
 	"time"
+	"unicode/utf8"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -1194,4 +1195,32 @@ func (et *etcell) pollGamepads() {
 	if isHeldTickRepeating(et.pad_held) {
 		et.PostEvent(tcell.NewEventKey(dir, 0, tcell.ModNone))
 	}
+}
+
+// tcell 2.13 string API, on top of the one-rune-per-cell grid.
+
+func (et *etcell) Get(x, y int) (string, tcell.Style, int) {
+	primary, combining, style, width := et.GetContent(x, y)
+	return string(append([]rune{primary}, combining...)), style, width
+}
+
+// Put draws the first rune of str at (x,y) and returns the rest.
+func (et *etcell) Put(x int, y int, str string, style tcell.Style) (string, int) {
+	for i, r := range str {
+		et.SetContent(x, y, r, nil, style)
+		return str[i+utf8.RuneLen(r):], 1
+	}
+	return "", 0
+}
+
+func (et *etcell) PutStrStyled(x int, y int, str string, style tcell.Style) {
+	for str != "" {
+		var w int
+		str, w = et.Put(x, y, str, style)
+		x += w
+	}
+}
+
+func (et *etcell) PutStr(x int, y int, str string) {
+	et.PutStrStyled(x, y, str, tcell.StyleDefault)
 }

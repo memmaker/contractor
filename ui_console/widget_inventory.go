@@ -375,7 +375,7 @@ func (i *TextInventory) nextItem() {
 	i.SetCurrentItem(itemIndex + 1)
 }
 func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
-	event = parseControlCodes(event)
+	ctrlLetter, modCtrl := ctrlLetterOf(event)
 
 	if i.closeHandler != nil && event.Key() == tcell.KeyEscape {
 		i.Close()
@@ -390,7 +390,7 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 		return nil
 	}
 
-	if event.Key() == tcell.KeyEnter {
+	if event.Key() == tcell.KeyEnter && !modCtrl { // Ctrl+M is KeyEnter too
 		currentIndex := i.GetCurrentItemIndex()
 		if i.defaultSelection != nil && currentIndex >= 0 && currentIndex < len(i.items) {
 			if i.closeOnSelect {
@@ -413,11 +413,8 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 	}
 
 	runeReceived := event.Rune()
-
-	modCtrl := event.Modifiers() == tcell.ModAlt || event.Modifiers() == tcell.ModCtrl || event.Modifiers() == tcell.ModMeta
-
-	if modCtrl && runeReceived < 97 { // 1 == a, 2 == b, etc
-		runeReceived = runeReceived + 96
+	if modCtrl {
+		runeReceived = ctrlLetter
 	}
 
 	modShift := unicode.IsUpper(runeReceived)
@@ -455,20 +452,23 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 	return event
 }
 
-// parseControlCodes turns Ctrl+letter into the letter with ModCtrl. Terminals without the
-// modifier still send KeyCtrlA..Z; Ctrl+H/I/M only arrive with it (else they are Backspace/Tab/Enter).
-func parseControlCodes(event *tcell.EventKey) *tcell.EventKey {
-	key := event.Key()
+// ctrlLetterOf returns the letter of Ctrl+letter (or Alt/Meta+letter). Terminals may send
+// KeyCtrlA..Z without the modifier; Ctrl+H/I/M only count with it, else they are Backspace/Tab/Enter.
+func ctrlLetterOf(event *tcell.EventKey) (rune, bool) {
+	key, mods := event.Key(), event.Modifiers()
+	if key == tcell.KeyRune && mods&(tcell.ModCtrl|tcell.ModAlt|tcell.ModMeta) != 0 {
+		return unicode.ToLower(event.Rune()), true
+	}
 	if key < tcell.KeyCtrlA || key > tcell.KeyCtrlZ {
-		return event
+		return 0, false
 	}
 	switch key {
 	case tcell.KeyBackspace, tcell.KeyTab, tcell.KeyEnter:
-		if event.Modifiers()&tcell.ModCtrl == 0 {
-			return event
+		if mods&tcell.ModCtrl == 0 {
+			return 0, false
 		}
 	}
-	return tcell.NewEventKey(tcell.KeyRune, 'a'+rune(key-tcell.KeyCtrlA), tcell.ModCtrl)
+	return 'a' + rune(key-tcell.KeyCtrlA), true
 }
 
 func (i *TextInventory) SetCloseOnSelection(value bool) {
