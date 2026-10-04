@@ -85,6 +85,8 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 			actor.InitiateDialogueWithOpeningBranch = field.Value
 		case "chatter":
 			actor.SetChatterFile(field.Value)
+		case "meleedamage":
+			actor.MeleeDamage = field.AsInt()
 		case "aggressive":
 			actor.Aggressive = strings.ToLower(field.Value) == "true"
 		case "faction":

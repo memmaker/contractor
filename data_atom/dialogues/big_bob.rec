@@ -20,6 +20,7 @@ npc: Welcome to Big Bob's Supplies!
 + So for now, I can only offer you a limited selection of items.
 #
 o_text: Show me what you have.
+o_id: show_wares
 o_effect: StartTrading
 o_goto: BasicSupply
 #
@@ -34,6 +35,7 @@ o_text: What's the neighborhood like?
 o_goto: TellMeAboutNeighborhood
 #
 o_text: I see, goodbye.
+o_id: bye
 o_goto: Exit
 
 name: BuySMG
@@ -96,6 +98,7 @@ o_text: I can help you with that.
 o_goto: OfferToHelp
 #
 o_text: I see, goodbye.
+o_id: bye
 o_goto: Exit
 
 name: OfferToHelp
@@ -129,6 +132,7 @@ name: DefaultIntroduction
 npc: Welcome back to Big Bob's Supplies! The shelves are full again, thanks to you.
 #
 o_text: Show me what you have.
+o_id: show_wares
 o_effect: StartTrading
 o_goto: DefaultIntroduction
 #
@@ -136,6 +140,7 @@ o_text: What's the neighborhood like?
 o_goto: TellMeAboutNeighborhood
 #
 o_text: I see, goodbye.
+o_id: bye
 o_goto: Exit
 
 name: TellMeAboutNeighborhood

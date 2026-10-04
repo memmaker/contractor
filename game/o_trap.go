@@ -47,6 +47,8 @@ type Trap struct {
 	zapEffect               string
 	triggerOnProximity      bool
 	placedByPlayer          bool
+	plantedBy               *Actor // a planted mine knows its owner and lets him pass
+	player                  *Actor
 	explode                 func() []foundation.Animation
 	state                   TrapState
 	minSkillNeededForDisarm int
@@ -84,11 +86,13 @@ func (t *Trap) String() string {
 	return t.DisplayName
 }
 
-func (t *Trap) SetPlacedByPlayer() {
+func (t *Trap) SetPlantedBy(actor *Actor) {
 	t.placedByPlayer = true
+	t.plantedBy = actor
 }
 
 func (t *Trap) InitWithGameState(g *GameState) {
+	t.player = g.Player
 	t.trigger = func() {
 		if !t.state.CanTrigger() {
 			return
@@ -162,10 +166,13 @@ func (t *Trap) IsProximityTriggered() bool {
 }
 
 func (t *Trap) OnProximity(actor *Actor) []foundation.Animation {
-	if t.state == TrapDisarmed {
+	if t.state == TrapDisarmed || actor == t.plantedBy {
 		return nil
 	}
 	t.trigger()
+	if actor != t.player { // the fuse is the player's one-turn chance to react; an NPC walks his whole round before the metronome ticks, so it blows at once
+		return t.explode()
+	}
 	return nil
 }
 func (t *Trap) IsHidden() bool {
@@ -176,10 +183,13 @@ func (t *Trap) OnDamage(damage SourcedDamage) []foundation.Animation {
 }
 
 func (t *Trap) OnWalkOver(actor *Actor) []foundation.Animation {
-	if t.state == TrapDisarmed {
+	if t.state == TrapDisarmed || actor == t.plantedBy {
 		return nil
 	}
 	t.trigger()
+	if actor != t.player {
+		return t.explode()
+	}
 	return nil
 }
 

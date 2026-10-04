@@ -220,8 +220,14 @@ func LoadIconsForObjects(dataDirectory string, colors textiles.ColorPalette) map
 		return convertMap
 	}
 
+	// the global definitions carry every category; a map's own file only overrides what it wants to look different
+	iconsForObjects := textiles.ReadIconRecordsIntoMap(fxtools.MustOpen(filepath.Join(dataDirectory, "..", "..", "definitions", "iconsForObjects.rec")))
 	objectTypeFile := filepath.Join(dataDirectory, "iconsForObjects.rec")
-	iconsForObjects := textiles.ReadIconRecordsIntoMap(fxtools.MustOpen(objectTypeFile))
+	if fxtools.FileExists(objectTypeFile) {
+		for name, rec := range textiles.ReadIconRecordsIntoMap(fxtools.MustOpen(objectTypeFile)) {
+			iconsForObjects[name] = rec
+		}
+	}
 
 	return convertObjectCategories(iconsForObjects)
 }

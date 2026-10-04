@@ -31,7 +31,7 @@ func NewRadialExplosionAnimation(dijkstra map[geometry.Point]int, lightColor fxt
 	}
 	return &RadialExplosionAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		drawables:       drawables,
 		dijkstra:        dijkstra,

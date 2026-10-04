@@ -82,6 +82,7 @@ Description: a door
 Position: (58,3)
 
 Category: UnknownContainer
+Name: hospital_filing_cabinet
 Description: filing cabinet
 item: brainz
 item: meld

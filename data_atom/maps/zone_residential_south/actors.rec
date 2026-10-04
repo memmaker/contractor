@@ -102,6 +102,7 @@ Selling: 10mm_smg(70)
 Selling: 10mm_jhp(240)
 Selling: 10mm_smg(70)
 Selling: red_green_glasses
+Selling: dynamite
 Equipment: rugged_trenchcoat(80)
 Equipment: explosive_rocket(5)
 Equipment: rocket_launcher(70)
@@ -197,7 +198,7 @@ DRRadiation: 12
 DRPoison: 30
 equipment: combat_knife
 equipment: binge
-equipment: 10mm_pistol
+equipment: 10mm_pistol(90)
 equipment: 10mm_jhp(48)
 equipment: light_leather_jacket(75)
 equipment: gold(34)
@@ -210,6 +211,7 @@ Icon: T
 Foreground: yellow_2
 Description: a friendly looking taxi driver
 Dialogue: taxi_driver
+faction: taxi
 Chatter: taxi_driver_chatter
 LongDescription: 
 Age: 25

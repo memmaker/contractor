@@ -1,0 +1,43 @@
+# Thief A: key from the filing cabinet, rob the stash, deposit.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+# Harker's schedule: 22:30 he walks down to the cage, 23:00 he comes back
+if: true
+do: WaitUntil('22:40')
+
+if: true
+do: Use('hospital_filing_cabinet')
+do: Take('doc_stash_key')
+
+if: true
+do: Use('ripperdoc_stash')
+do: Take('gold')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

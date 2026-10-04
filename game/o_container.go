@@ -435,3 +435,6 @@ func takeAllLoot(from *Inventory, to ItemContainer) {
 		}
 	}
 }
+
+func (b *Container) IsLocked() bool      { return b.Locked }
+func (b *Container) GetLockFlag() string { return b.LockedFlag }

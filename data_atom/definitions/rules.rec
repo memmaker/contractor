@@ -11,7 +11,7 @@ MaxArmorDT: 30
 AblationWithoutPenetration: 1
 AblationWithPenetration: 2
 #
-LockStrengthReductionPerSkill: 0.375
+LockStrengthReductionPerSkill: 0.5
 
 %rec: SkillDifficulty
 

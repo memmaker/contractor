@@ -58,6 +58,7 @@ type Actor struct {
 	ChatterFile                       string
 	Faction                           string
 	Aggressive                        bool
+	MeleeDamage                       int // animals: flat bite damage, humans punch/kick
 
 	GuardingZone string
 
@@ -420,7 +421,7 @@ func (a *Actor) TakeDamage(dmg SourcedDamage) (didCripple bool) {
 		a.CharSheet.Kill()
 	}
 
-	if !wasHeavilyInjured && a.IsHeavilyInjured() && dmg.Attacker != nil && a.FSM != nil {
+	if !wasHeavilyInjured && a.IsHeavilyInjured() && a.FSM != nil && !a.HasFlag(foundation.FlagRelentless) {
 		a.FSM.SendEvent(NewHeavilyInjuredEvent(dmg.Attacker))
 	}
 
@@ -482,6 +483,7 @@ func (a *Actor) RemoveLevelStatusEffects() {
 
 func (a *Actor) Heal(amount int) {
 	a.CharSheet.Heal(amount)
+	a.GetFlags().Unset(foundation.FlagBleeding)
 }
 
 func (a *Actor) GetInternalName() string {
@@ -1424,7 +1426,7 @@ func (a *Actor) ID() gridmap.ActorID {
 }
 
 func (a *Actor) hasTransitionsTo(location MapPosition) bool {
-	if a.CurrentMapPath == nil {
+	if len(a.CurrentMapPath) == 0 { // nil, or a search that found no way there
 		return false
 	}
 	lastStep := a.CurrentMapPath[len(a.CurrentMapPath)-1]

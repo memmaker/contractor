@@ -30,6 +30,8 @@ type TimedTransition struct {
 }
 
 type GameState struct {
+	dialogueOptionIDs map[string]string // o_id per "node|text" of the open conversation
+	ForcedChecks      string            // autoplay: "success" / "fail" overrides player dialogue and skill checks
 	// Global State (Needs to be saved)
 	gameTime             PointInTime
 	gameFlags            *fxtools.StringFlags
@@ -669,6 +671,7 @@ func (g *GameState) transitionToMapLocation(levelName string, location string) {
 	g.currentMap().UpdateDynamicLights()
 
 	g.ui.PlayMusic(filepath.Join(g.config.DataRootDir, "audio", "music", g.currentMap().GetMeta().MusicFile+".ogg"))
+	g.ui.ClearOverlays()
 
 	// Spawn Player
 	playerSpawnPosition := loadedMap.GetNamedLocation(location)
@@ -807,10 +810,9 @@ func (g *GameState) tryAddChatter(actor *Actor, text string) bool {
 	}
 	if actor.IsAlive() && !actor.IsSleeping() && g.Player.CanSee(actor.Position()) {
 		text = g.FillTemplatedText(text)
-		if g.ui.TryAddChatter(actor, text) {
-			g.msg(foundation.HiLite("%s: \"%s\"", actor.Name(), cview.Escape(text)))
-			return true
-		}
+		g.ui.TryAddChatter(actor, text) // whether the bubble fits on screen is cosmetic: the line is said either way
+		g.msg(foundation.HiLite("%s: \"%s\"", actor.Name(), cview.Escape(text)))
+		return true
 	}
 	return false
 }
@@ -1009,7 +1011,7 @@ func (g *GameState) actorHitMessage(victim *Actor, damage SourcedDamage) {
 	}
 	baseMessage := fmt.Sprintf("%s was hit for %d hit points", victim.Name(), damage.DamageAmount)
 	if damage.BodyPart != d100.Body {
-		baseMessage += fmt.Sprintf("%s was hit in the %s for %d hit points", victim.Name(), damage.BodyPart.String(), damage.DamageAmount)
+		baseMessage = fmt.Sprintf("%s was hit in the %s for %d hit points", victim.Name(), damage.BodyPart.String(), damage.DamageAmount)
 	}
 
 	if damage.IsKillingBlow {

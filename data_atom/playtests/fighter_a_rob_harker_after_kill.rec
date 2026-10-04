@@ -1,0 +1,61 @@
+# Fighter A variant: after a kill, Harker pays 1000.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter)') && !HasItem('gold', 750)
+do: Fail('Harker did not pay 1000')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+# fighter build: Perception 8 + tagged Ranged Combat = 46%, the pistol by the bed, the clip from the dead drop
+if: true
+do: PickUp('10mm_pistol')
+do: Equip('10mm_pistol')
+do: SetSkill('RangedCombat', 46)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+# a kill nobody saw: a sewer rat
+# Harker leaves the counter for the alley at 12:00 for ten minutes: slip into the toilet then.
+# The cellar's other exit is the locked cell door into the mined sewers, so wait down there for his next absence.
+if: true
+do: WaitUntil('12:01')
+do: GoTo('ripperdoc_toilet')
+do: Kill('rat')
+do: WaitUntil('12:01')
+do: GoTo('secret_ladder')
+
+if: HasFlag('PlayerKillCount')
+do: Talk('daniel_harker')
+do: Choose('yes_collecting')
+do: Choose('work_something_out')
+do: Choose('want_more')
+do: Choose('violence_1000')
+do: Choose('violence_1000_thanks')
+do: Choose('bye')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

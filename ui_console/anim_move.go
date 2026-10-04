@@ -25,7 +25,7 @@ type MovementAnimation struct {
 func NewMovementAnimation(actorIcon textiles.TextIcon, old, new geometry.Point, getColor func(colorName string) color.RGBA, done func()) *MovementAnimation {
 	return &MovementAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		icon:        actorIcon,
 		originalPos: old,

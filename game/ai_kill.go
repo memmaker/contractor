@@ -42,8 +42,15 @@ func (b KillBehaviour) Execute(g *GameState, actor *Actor) (TransitionEvent, int
 		return NewTargetLostEvent(victim), actor.TimeNeededForMovement()
 	}
 
+	if actor.currentMapName != victim.currentMapName {
+		if actor.HasFlag(foundation.FlagRelentless) { // a contract killer travels to the victim's map and knows where to find him
+			return g.actorTakeStepTowardsOther(actor, victim, 1)
+		}
+		return NewTargetLostEvent(victim), actor.TimeNeededForMovement() // everyone else loses a target that left the map
+	}
+
 	distanceToTarget := g.currentMap().MoveDistance(actor.Position(), victim.Position())
-	if !actor.CanSee(victim.Position()) { // ensure visibility, else -> target lost
+	if !actor.CanSee(victim.Position()) && !actor.HasFlag(foundation.FlagRelentless) { // ensure visibility, else -> target lost
 
 		targetIsMuchFaster := float64(victim.MovementSpeed()) > float64(actor.MovementSpeed())*2
 		fartherThanCanBeDeduced := distanceToTarget > (actor.GetCharSheet().GetStat(d100.Intelligence) * 3)

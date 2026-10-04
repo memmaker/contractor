@@ -41,6 +41,7 @@ o_text: I can help you deal with him.
 o_goto: OfferContract
 #
 o_text: No.
+o_id: drake_no
 o_goto: DefaultIntroduction
 
 name: WhyIsDrakeLockedAway
@@ -59,9 +60,11 @@ npc: We had a break-in last night.
 + Did you have anything to do with that?
 #
 o_text: Yes. I freed Drake.
+o_id: freed_drake_yes
 o_goto: FreedDrakeYes
 #
 o_text: No.
+o_id: freed_drake_no
 o_goto: FreedDrakeNo
 
 name: FreedDrakeYes
@@ -93,10 +96,12 @@ o_text: I need some cyberware.
 o_goto: Cyberware
 #
 o_text: Do you know a guy named 'Jacob'?
+o_id: ask_jacob
 o_cond: HasFlag('JobRead(starter)') && !HasFlag('LocationKnown(jacobs_home)')
 o_goto: JacobQuestion
 #
 o_text: Nothing.
+o_id: bye
 o_goto: End
 
 
@@ -120,10 +125,12 @@ name: JacobQuestion
 npc: Yes, I know Jacob. What's your business with him?
 #
 o_text: I am here to collect the money he owes you.
+o_id: collect_money
 o_cond: !HasFlag('starter(money_collected)')
 o_goto: JacobMoney
 #
 o_text: What is your relationship with him?
+o_id: relationship
 o_goto: JacobRelationship
 #
 o_text: None of your business.
@@ -137,12 +144,15 @@ o_text: I will come back later.
 o_goto: DefaultIntroduction
 #
 o_text: I insist. I will take the money from you now.
+o_id: insist
 o_goto: JacobMoneyNow
 #
 o_text: Money or violence. Choose.
+o_id: money_or_violence
 o_goto: JacobMoneyNow
 #
 o_text: Maybe we can work something out.
+o_id: work_something_out
 o_goto: JacobMoneyWorkOut
 
 name: JacobMoneyNow
@@ -153,6 +163,7 @@ effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
 o_text: Thanks.
+o_id: paid_thanks
 o_goto: DefaultIntroduction
 
 name: JacobMoneyWorkOut
@@ -162,12 +173,15 @@ o_text: I will think about it.
 o_goto: DefaultIntroduction
 #
 o_text: We have a deal.
+o_id: accept_discount
 o_goto: AcceptDiscount
 #
 o_text: Fine for me, but Jacob needs to see at least *some* money.
+o_id: half_the_money
 o_goto: HalfTheMoney
 #
 o_text: That's not enough.
+o_id: want_more
 o_goto: WantMore
 
 name: HalfTheMoney
@@ -179,6 +193,7 @@ effect: SetFlag('starter(money_collected)')
 effect: SetFlag('WorkFor(daniel_harker)')
 #
 o_text: Thanks.
+o_id: half_thanks
 o_goto: DefaultIntroduction
 
 
@@ -189,6 +204,7 @@ effect: SetFlag('Discount(daniel_harker)')
 effect: SetFlag('WorkFor(daniel_harker)')
 #
 o_text: You're welcome.
+o_id: discount_welcome
 o_goto: DefaultIntroduction
 
 name: WantMore
@@ -198,10 +214,12 @@ o_text: I will come back later.
 o_goto: DefaultIntroduction
 #
 o_text: My means of violence are not limited by morality. I want 1000 Sat on this table in 5 seconds.
+o_id: violence_1000
 o_cond: HasFlag('PlayerKillCount')
 o_goto: JacobDoubleThreat
 #
 o_text: I can see a list of solvent clients on your terminal. I am sure you can pay me 1000 sat right now.
+o_id: terminal_1000
 o_cond: Stat('Perception') > 6
 o_goto: JacobTerminalThreat
 
@@ -213,6 +231,7 @@ effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
 o_text: Nice doing business with you.
+o_id: violence_1000_thanks
 o_goto: DefaultIntroduction
 
 name: JacobTerminalThreat
@@ -223,6 +242,7 @@ effect: SetFlag('starter(money_collected)')
 effect: SetFlag('Angered(daniel_harker)')
 #
 o_text: Thanks.
+o_id: terminal_1000_thanks
 o_goto: DefaultIntroduction
 
 name: JacobRelationship
@@ -231,12 +251,15 @@ npc: I know him from the old days, his full name is Jacob Thorne.
 + He is a dangerous criminal. Better stay away from him.
 #
 o_text: Thanks.
+o_id: relationship_thanks
 o_goto: DefaultIntroduction
 #
 o_text: I will take care of him.
+o_id: take_care_of_jacob
 o_goto: JacobKill
 #
 o_text: Do you know where I can find him?
+o_id: jacob_location
 o_goto: JacobLocation
 
 name: JacobKill
@@ -247,6 +270,7 @@ o_text: I will think about it.
 o_goto: DefaultIntroduction
 #
 o_text: We have a deal.
+o_id: deal_kill_jacob
 o_goto: AcceptKillJacob
 #
 o_text: I can't do that.
@@ -259,6 +283,7 @@ effect: SetFlag('WorkFor(daniel_harker)')
 effect: SetFlag('LocationKnown(jacobs_home)')
 #
 o_text: Thanks.
+o_id: kill_deal_thanks
 o_goto: DefaultIntroduction
 
 name: JacobLocation
@@ -267,6 +292,7 @@ npc: He has an apartment in the eastern residential district. Take a taxi, you c
 effect: SetFlag('LocationKnown(jacobs_home)')
 #
 o_text: Thanks.
+o_id: location_thanks
 o_goto: DefaultIntroduction
 
 name: MoneyCollection
@@ -274,9 +300,11 @@ npc: (He looks a bit nervous.)
 + I'll take a wild guess and say you are here for the money.
 #
 o_text: Yes, I am.
+o_id: yes_collecting
 o_goto: JacobMoney
 #
 o_text: No, I am not.
+o_id: not_collecting
 o_goto: DefaultIntroduction
 
 
@@ -296,4 +324,5 @@ effect: PlayerAddGold(300)
 effect: SetFlag('harker_paid_for_jacob')
 #
 o_text: Pleasure doing business.
+o_id: jacob_dead_paid
 o_goto: End

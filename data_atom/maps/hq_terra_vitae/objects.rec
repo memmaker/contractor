@@ -38,12 +38,6 @@ Dialogue: taxi
 Tags: No_Sound
 Position: (19,4)
 
-Category: Transition
-Location: doc_stairs
-TargetMap: doc_basement
-TargetLocation: stairs_up
-Position: (53,6)
-
 Category: BakedLight
 Radius: 5
 Color: (1.0, 1.0, 1.0)
@@ -112,12 +106,6 @@ Name: MetalSign
 Description: a degraded handwritten note
 Text: Keep out! I am Drinking.
 Position: (25,16)
-
-Category: Transition
-Location: serpents_den_stairs
-TargetMap: serpents_den_cellar
-TargetLocation: stairs_up
-Position: (76,10)
 
 Category: OpenDoor
 AudioCue: wood_door

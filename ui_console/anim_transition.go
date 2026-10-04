@@ -26,7 +26,7 @@ func NewTransitionAnimation(target geometry.Rect, getColor func(colorName string
 
 	return &TransitionAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		bounds:    target,
 		drawables: drawables,

@@ -737,6 +737,7 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) Actors() []ActorType {
 		actors[i] = actor
 		i++
 	}
+	slices.SortFunc(actors, func(a, b ActorType) int { return cmp.Compare(a.ID(), b.ID()) }) // map order is random, turn order must not be
 
 	return actors
 }
@@ -752,6 +753,7 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) Items() []ItemType {
 		items[i] = item
 		i++
 	}
+	slices.SortFunc(items, func(a, b ItemType) int { return cmp.Compare(a.ID(), b.ID()) })
 	return items
 }
 
@@ -863,6 +865,40 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) GetJPSPath(start geometry.Poi
 		calcPath = calcPath[1:]
 	}
 
+	return calcPath
+}
+
+type aStarPather struct {
+	MapPather
+}
+
+func (a aStarPather) Estimation(from, to geometry.Point) int {
+	dx, dy := absInt(from.X-to.X), absInt(from.Y-to.Y)
+	return 10*max(dx, dy) + 4*min(dx, dy) // octile distance in 10/14 step costs
+}
+
+// GetAStarPath: like GetJPSPath, but diagonal steps cost 1.4, so a straight corridor yields a straight path.
+func (m *GridMap[ActorType, ItemType, ObjectType]) GetAStarPath(start geometry.Point, end geometry.Point, isWalkable func(geometry.Point) bool) []geometry.Point {
+	neighbors := m.GetAllCardinalNeighbors
+	if !m.cardinalMovementOnly {
+		neighbors = func(pos geometry.Point) []geometry.Point {
+			return append(m.GetAllCardinalNeighbors(pos), m.GetAllDiagonalNeighbors(pos)...)
+		}
+	}
+	pather := aStarPather{MapPather{
+		neighborPredicate: func(p geometry.Point) bool { return m.Contains(p) && (isWalkable(p) || p == start || p == end) },
+		allNeighbors:      neighbors,
+		pathCostFunc: func(from, to geometry.Point) int {
+			if from.X != to.X && from.Y != to.Y {
+				return 14
+			}
+			return 10
+		},
+	}}
+	calcPath := m.pathfinder.AstarPath(pather, start, end)
+	if len(calcPath) > 1 {
+		calcPath = calcPath[1:]
+	}
 	return calcPath
 }
 
@@ -1256,6 +1292,15 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) GetNamedLocation(name string)
 func (m *GridMap[ActorType, ItemType, ObjectType]) TryGetNamedLocation(name string) (geometry.Point, bool) {
 	pos, ok := m.namedLocations[name]
 	return pos, ok
+}
+
+func (m *GridMap[ActorType, ItemType, ObjectType]) NamedLocationNames() []string {
+	names := make([]string, 0, len(m.namedLocations))
+	for name := range m.namedLocations {
+		names = append(names, name)
+	}
+	slices.Sort(names)
+	return names
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) GetNamedLocationByPos(pos geometry.Point) string {
@@ -2096,9 +2141,15 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) GetMoveTowardsActor(mover Act
 		return mover.Position()
 	}
 
-	nextStep := m.GetMoveOnOtherDijkstraMap(mover, true, other.GetDijkstraMap())
+	if _, known := other.GetDijkstraMap()[mover.Position()]; !known { // the other can't reach us, e.g. we stand behind a door only we can open: find our own way
+		path := m.GetJPSPath(mover.Position(), other.Position(), func(p geometry.Point) bool { return m.IsWalkableIgnoringActors(p, mover) })
+		if len(path) > 0 {
+			return path[0]
+		}
+		return mover.Position()
+	}
 
-	return nextStep
+	return m.GetMoveOnOtherDijkstraMap(mover, true, other.GetDijkstraMap())
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) GetMoveAwayFromActor(mover ActorType, other ActorType) geometry.Point {
@@ -2148,4 +2199,11 @@ func filterSlice[T any](s []T, f func(T) bool) []T {
 		}
 	}
 	return result
+}
+
+func absInt(v int) int {
+	if v < 0 {
+		return -v
+	}
+	return v
 }

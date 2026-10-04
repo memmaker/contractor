@@ -1,0 +1,43 @@
+# Diplomat A variant: Perception 7 spots the solvent clients, Harker pays 1000.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+if: true
+do: SetStat('Perception', 7)
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Talk('daniel_harker')
+do: Choose('yes_collecting')
+do: Choose('work_something_out')
+do: Choose('want_more')
+do: Choose('terminal_1000')
+do: Choose('terminal_1000_thanks')
+do: Choose('bye')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

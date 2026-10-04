@@ -1,9 +1,11 @@
 package game
 
 import (
+	"cmp"
 	"contractor/foundation"
 	"contractor/gridmap"
 	"github.com/memmaker/go/geometry"
+	"maps"
 	"slices"
 )
 
@@ -44,7 +46,7 @@ func (p *Pathfinder) getNeighbors(actor *Actor, from MapPosition, to MapPosition
 			}
 		}
 
-		for locationOfTransition, _ := range gMap.Transitions() {
+		for _, locationOfTransition := range slices.SortedFunc(maps.Keys(gMap.Transitions()), comparePoints) {
 			if locationOfTransition == location {
 				continue
 			}
@@ -84,40 +86,30 @@ func (p *Pathfinder) FindPath(actor *Actor, currentMap string, to MapPosition) [
 	reachable := actor.GetDijkstraMap()
 	gMap := p.getMap(currentMap)
 	reachableTransitions := make(map[MapPosition]int)
-	openTransitions := make(map[MapPosition]int)
-	for pos, _ := range reachable {
+	var queue []MapPosition // breadth first, in a fixed order: map iteration would pick routes at random between runs
+	seen := make(map[MapPosition]bool)
+	for _, pos := range slices.SortedFunc(maps.Keys(reachable), comparePoints) {
 		if _, exists := gMap.GetTransitionAt(pos); exists {
-
-			locationName := gMap.GetNamedLocationByPos(pos)
-
-			transition := MapPosition{MapName: currentMap, LocationName: locationName, Position: pos}
-
-			openTransitions[transition] = 1
+			transition := MapPosition{MapName: currentMap, LocationName: gMap.GetNamedLocationByPos(pos), Position: pos}
+			queue = append(queue, transition)
+			seen[transition] = true
 			reachableTransitions[transition] = 1
 		}
 	}
 	closedTransitions := make(map[MapPosition]int)
 	parents := make(map[MapPosition]MapPosition) // first-discovered predecessor; start nodes have none
 
-	for {
-		if len(openTransitions) == 0 {
-			break
-		}
-		for transition, dist := range openTransitions {
-			closedTransitions[transition] = dist
-			delete(openTransitions, transition)
-
-			neighbors := p.getNeighbors(actor, transition, to)
-			for _, neighbor := range neighbors {
-				if _, exists := closedTransitions[neighbor]; exists {
-					continue
-				}
-				if _, exists := openTransitions[neighbor]; exists {
-					continue
-				}
-				openTransitions[neighbor] = dist + 1
-				parents[neighbor] = transition
+	for len(queue) > 0 {
+		transition := queue[0]
+		queue = queue[1:]
+		closedTransitions[transition] = 1
+		for _, neighbor := range p.getNeighbors(actor, transition, to) {
+			if seen[neighbor] {
+				continue
 			}
+			seen[neighbor] = true
+			parents[neighbor] = transition
+			queue = append(queue, neighbor)
 		}
 	}
 
@@ -141,4 +133,8 @@ func (p *Pathfinder) FindPath(actor *Actor, currentMap string, to MapPosition) [
 	slices.Reverse(path)
 
 	return path
+}
+
+func comparePoints(a, b geometry.Point) int {
+	return cmp.Or(cmp.Compare(a.Y, b.Y), cmp.Compare(a.X, b.X))
 }

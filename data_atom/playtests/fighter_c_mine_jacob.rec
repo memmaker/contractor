@@ -1,0 +1,45 @@
+# Fighter C: no duel. Fetch the three mines from the sewers under the east manhole, plant them on Jacob's doorstep,
+# wait for his evening walk to the bar, finish him if the blast leaves anything.
+%rec: outcomes
+if: HasFlag('QuestCompleted(starter, killed_client)')
+%rec: frames
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+# fighter build with a mechanics tag: the pistol by the bed, the clip from the dead drop
+if: true
+do: PickUp('10mm_pistol')
+do: Equip('10mm_pistol')
+do: SetSkill('RangedCombat', 46)
+do: SetSkill('Mechanics', 90)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+# a mine lies in the sewers under the east manhole: disarm it and take it along
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Use('frag_mine')
+do: GoTo('man_hole_east')
+
+if: true
+do: GoTo('street_to_east')
+
+# one mine on his doorstep: Jacob leaves for the bar at 20:00, the blast takes his legs and he bleeds out on the street
+if: true
+do: GoTo('jacobs_doorstep')
+do: Drop('frag_mine')
+do: GoTo('taxi_stand')
+do: WaitUntil('20:15')
+
+# the blast missed his legs: finish the cripple off by hand
+if: !HasFlag('Killed(jacob_thorne)')
+do: Kill('jacob_thorne')

@@ -1,0 +1,20 @@
+# Thief D: decline the job. Quinn kills Harker.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, job_lost)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('decline_job')
+do: Choose('declined_leave')
+
+if: true
+do: WaitMinutes(5)

@@ -1,0 +1,37 @@
+# Fighter C: walk east, threaten Jacob, fail (forced), kill him.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, killed_client)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+# fighter build: Perception 8 + tagged Ranged Combat = 46%, the pistol by the bed, the clip from the dead drop
+if: true
+do: PickUp('10mm_pistol')
+do: Equip('10mm_pistol')
+do: SetSkill('RangedCombat', 46)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('jacob_thorne')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('jacob_thorne')

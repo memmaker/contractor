@@ -43,7 +43,7 @@ func NewLaserAnimation(path []geometry.Point, laserColor fxtools.HDRColor, done 
 
 	return &LaserAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		drawables:  drawables,
 		lights:     lights,
