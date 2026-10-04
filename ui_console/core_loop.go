@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const autoRunStepDelay = 16 * time.Millisecond
+
 func (u *UI) handleMainInput(ev *tcell.EventKey) *tcell.EventKey {
 	mod, _, ch := ev.Modifiers(), ev.Key(), ev.Rune()
 	if ev.Key() == tcell.KeyCtrlC {
@@ -21,13 +23,13 @@ func (u *UI) handleMainInput(ev *tcell.EventKey) *tcell.EventKey {
 
 	u.mapOverlay.ClearAll()
 	if u.autoRun && mod == 128 && ev.Key() == tcell.KeyF40 {
-		time.Sleep(64 * time.Millisecond)
+		time.Sleep(autoRunStepDelay)
 		u.autoRun = u.game.RunPlayerPath()
 		return nil
 	}
 	if mod == 64 && u.autoRun && strings.ContainsRune("12346789", ch) {
 		direction := runeToDirection(ch)
-		time.Sleep(64 * time.Millisecond)
+		time.Sleep(autoRunStepDelay)
 		u.autoRun = u.game.RunPlayer(direction, false)
 		return nil
 	}
@@ -182,17 +184,22 @@ func (u *UI) updateUntilDone() bool {
 	screen := u.application.GetScreen()
 	//u.application.Unlock()
 
+	if len(u.animator.runningAnimations) == 0 {
+		return false // nothing to animate: skip the extra full draw (called 3x per turn)
+	}
+
 	u.isAnimationFrame = true
 	var breakingKey *tcell.EventKey
 outerLoop:
 	for len(u.animator.runningAnimations) > 0 {
+		frameEnd := time.Now().Add(u.settings.AnimationDelay) // draw time counts toward the delay
 		u.application.Lock()
 		u.mapWindow.Draw(screen)
+		u.lastFrameDirty = false
 		screen.Show()
 		u.application.Unlock()
 
-		var waited time.Duration
-		for waited < u.settings.AnimationDelay {
+		for time.Now().Before(frameEnd) {
 			if screen.HasPendingEvent() {
 				ev := screen.PollEvent()
 				if keyEvent, ok := ev.(*tcell.EventKey); ok {
@@ -203,7 +210,6 @@ outerLoop:
 			}
 
 			time.Sleep(duration)
-			waited += duration
 		}
 
 		shouldMapFrameBeUpdated := u.animator.Tick()

@@ -58,6 +58,9 @@ type UI struct {
 	lastFrameIcons     map[geometry.Point]rune
 	lastFrameStyle     map[geometry.Point]tcell.Style
 	isAnimationFrame   bool
+	lastFrameDirty     bool // next animation frame refreshes the lastFrame cache
+	gammaLUT           [256]uint8
+	gammaLUTFor        float64
 	lastHudStats       foundation.HudValueMap
 	dialogueText       *cview.TextView
 	dialogueOptions    *cview.List
