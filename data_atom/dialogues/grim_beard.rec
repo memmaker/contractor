@@ -30,6 +30,10 @@ o_text: I got this message from a guy named Jacob. What's the deal?
 o_cond: HasFlag('JobRead(starter)')
 o_goto: TellAboutJacob
 #
+o_text: About that job for Jacob. How should I play it?
+o_cond: HasFlag('JobAccepted(starter)') && !HasFlag('QuestCompleted(starter)')
+o_goto: JobAdvice
+#
 o_text: So what can you tell me about the neighborhood?
 o_goto: AreaKnowledge
 #
@@ -82,6 +86,44 @@ o_goto: Goodbye
 #
 o_text: I wanted to ask something else.
 o_goto: SmallTalk
+
+name: JobAdvice
+npc: (Grim scratches his beard.) The Ripperdoc, Daniel Harker. Runs the clinic at the hospital.
++ Jacob wants his money. You drop 250 sat in the dead drop by the tree, you keep the rest.
++ How you get it? Three ways I know of. Muscle, mouth or fingers.
+#
+o_text: Muscle?
+o_goto: AdviceForce
+#
+o_text: Mouth?
+o_goto: AdviceTalk
+#
+o_text: Fingers?
+o_goto: AdviceSneak
+#
+o_text: Got it, thanks.
+o_goto: Goodbye
+
+name: AdviceForce
+npc: Walk in, tell the Doc it's money or violence. Most folks pay.
++ Or skip the middleman. Jacob lives over in the eastern residential district.
++ A client who's dead doesn't collect any debts. Just know he doesn't come alone.
+#
+effect: ReturnToPreviousNode
+
+name: AdviceTalk
+npc: Harker is not stupid. Talk to him and he might cut you a deal.
++ Or go talk to Jacob himself. Renegotiate, or convince him to drop the whole thing.
++ A sharp suit makes people listen. A gun in plain sight makes them stop listening.
+#
+effect: ReturnToPreviousNode
+
+name: AdviceSneak
+npc: Nobody has to know where the money came from.
++ The Doc keeps a stash in his operating room. Jacob keeps a safe in his apartment.
++ Paying a man with his own sat. Now that has style.
+#
+effect: ReturnToPreviousNode
 
 ### Starter Mission END ###
 
