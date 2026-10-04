@@ -50,7 +50,7 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 	if actor.IsHostileTowards(g.Player) || distance > 1 {
 		return buffer
 	}
-	if g.Player.HasPerk(d100.PerkPickpocket) {
+	if g.Player.HasPerk(d100.PerkPickpocket) && !actor.HasFlag(foundation.FlagAnimal) {
 		buffer = append(buffer, foundation.MenuItem{
 			Name: "Pickpocket",
 			Action: g.animatedActionFromMenu(func() {

@@ -32,6 +32,11 @@ func (b IdleBehaviour) Execute(g *GameState, actor *Actor) (TransitionEvent, int
 		actor.GetFlags().Unset(foundation.FlagTurnsSinceLastIdleChatter)
 	}
 
+	// aggressive actors attack the player on sight
+	if actor.Aggressive && actor.CanSee(g.Player.Position()) && g.isDetectedByObserver(g.Player, actor) {
+		return NewProvokedEvent(g.Player), actor.TimeNeededForActions()
+	}
+
 	// random animal movement
 	if actor.HasFlag(foundation.FlagAnimal) {
 		consequencesOfConfusion := g.actConfused(actor)
