@@ -585,3 +585,15 @@ func setListItemsFromMenuItems(list *cview.List, menuItems []foundation.MenuItem
 	}
 	return longestItem
 }
+
+// fitParts keeps parts in order until the next one would exceed width.
+func fitParts(width int, parts ...string) []string {
+	used := 0
+	for i, part := range parts {
+		used += cview.TaggedStringWidth(part) + 1
+		if used-1 > width {
+			return parts[:i]
+		}
+	}
+	return parts
+}
