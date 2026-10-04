@@ -16,7 +16,7 @@ import (
 
 func (u *UI) appInputCapture(event *tcell.EventKey) *tcell.EventKey {
 	if u.onMoreKey != nil {
-		if event.Key() == tcell.KeyRune && event.Rune() == ' ' {
+		if event.Key() == tcell.KeyEnter || event.Key() == tcell.KeyRune && event.Rune() == ' ' {
 			call := u.onMoreKey
 			u.onMoreKey = nil
 			call()
@@ -308,68 +308,90 @@ func (u *UI) setupCommandTable() {
 	u.commandTable["run_direction"] = u.ChooseDirectionForRun
 	u.commandTable["wait"] = u.game.Wait
 	u.commandTable["show_key_bindings"] = u.showKeyBindings
+	u.commandTable["command_menu"] = u.openCommandMenu
 	u.commandTable["open_pip_boy"] = u.openPipBoy
 
 	u.commandTable["wiz_advance_time"] = u.game.WizardAdvanceTime
 }
 
-func (u *UI) showKeyBindings() {
-	friendlyNames := map[string]string{
-		"quit":              "Quit",
-		"inventory":         "Inventory",
-		"show_ammo":         "Ammo Inventory",
-		"tactics":           "Tactics Menu",
-		"cyberware":         "Cyberware Menu",
-		"repair":            "Repair Menu",
-		"wait_menu":         "Wait Menu",
-		"character":         "Character",
-		"wizard":            "Wizard",
-		"themes":            "Themes",
-		"log":               "Log",
-		"quip":              "Drop Quip",
-		"monsters":          "Monster List",
-		"items":             "Item List",
-		"help":              "Help",
-		"show_key_bindings": "Key Bindings",
-		"toggle_run":        "Toggle Run",
-		"toggle_sneak":      "Toggle Sneak",
-		"north":             "North",
-		"south":             "South",
-		"west":              "West",
-		"east":              "East",
-		"northwest":         "Northwest",
-		"northeast":         "Northeast",
-		"southwest":         "Southwest",
-		"southeast":         "Southeast",
-		"run_north":         "Run North",
-		"run_south":         "Run South",
-		"run_west":          "Run West",
-		"run_east":          "Run East",
-		"run_northwest":     "Run Northwest",
-		"run_northeast":     "Run Northeast",
-		"run_southwest":     "Run Southwest",
-		"run_southeast":     "Run Southeast",
-		"look":              "Look",
-		"overlay_monsters":  "Overlay Monsters",
-		"overlay_items":     "Overlay GetItems",
-		"gamma_up":          "Gamma Up",
-		"gamma_down":        "Gamma Down",
-		"system_menu":       "System Menu",
-		"throw":             "Throw",
-		"use":               "Use",
-		"drop":              "Drop",
-		"eat":               "Eat",
-		"attack":            "Ranged Attack",
-		"quick_attack":      "Ranged Attack Nearest",
-		"pickup":            "Pickup",
-		"run_direction":     "Run Direction",
-		"wait":              "Wait",
-		"cycle_target_mode": "Cycle Weapon Mode",
-		"apply_skill":       "Apply Skill",
-		"reload_weapon":     "Reload Weapon",
-		"apply":             "Apply",
-	}
+var friendlyNames = map[string]string{
+	"quit":              "Quit",
+	"inventory":         "Inventory",
+	"show_ammo":         "Ammo Inventory",
+	"tactics":           "Tactics Menu",
+	"cyberware":         "Cyberware Menu",
+	"repair":            "Repair Menu",
+	"wait_menu":         "Wait Menu",
+	"character":         "Character",
+	"wizard":            "Wizard",
+	"themes":            "Themes",
+	"log":               "Log",
+	"quip":              "Drop Quip",
+	"monsters":          "Monster List",
+	"items":             "Item List",
+	"help":              "Help",
+	"show_key_bindings": "Key Bindings",
+	"toggle_run":        "Toggle Run",
+	"toggle_sneak":      "Toggle Sneak",
+	"north":             "North",
+	"south":             "South",
+	"west":              "West",
+	"east":              "East",
+	"northwest":         "Northwest",
+	"northeast":         "Northeast",
+	"southwest":         "Southwest",
+	"southeast":         "Southeast",
+	"run_north":         "Run North",
+	"run_south":         "Run South",
+	"run_west":          "Run West",
+	"run_east":          "Run East",
+	"run_northwest":     "Run Northwest",
+	"run_northeast":     "Run Northeast",
+	"run_southwest":     "Run Southwest",
+	"run_southeast":     "Run Southeast",
+	"look":              "Look",
+	"overlay_monsters":  "Overlay Monsters",
+	"overlay_items":     "Overlay GetItems",
+	"gamma_up":          "Gamma Up",
+	"gamma_down":        "Gamma Down",
+	"system_menu":       "System Menu",
+	"throw":             "Throw",
+	"use":               "Use",
+	"drop":              "Drop",
+	"eat":               "Eat",
+	"attack":            "Ranged Attack",
+	"quick_attack":      "Ranged Attack Nearest",
+	"pickup":            "Pickup",
+	"run_direction":     "Run Direction",
+	"wait":              "Wait",
+	"cycle_target_mode": "Cycle Weapon Mode",
+	"apply_skill":       "Apply Skill",
+	"reload_weapon":     "Reload Weapon",
+	"apply":             "Apply",
+	"journal":           "Journal",
+	"open_pip_boy":      "Pip-Boy",
+}
 
+// openCommandMenu lists every command, so a gamepad can reach what has no button.
+func (u *UI) openCommandMenu() {
+	var items []foundation.MenuItem
+	for cmd, name := range friendlyNames {
+		action, ok := u.commandTable[cmd]
+		if !ok || cmd == "command_menu" || strings.HasPrefix(cmd, "run_") || directionIsCmd(cmd) {
+			continue
+		}
+		items = append(items, foundation.MenuItem{Name: name, Action: action, CloseMenus: true})
+	}
+	slices.SortFunc(items, func(a, b foundation.MenuItem) int { return cmp.Compare(a.Name, b.Name) })
+	u.OpenMenu(items)
+}
+
+func directionIsCmd(cmd string) bool {
+	_, ok := directionFromCommand(cmd)
+	return ok
+}
+
+func (u *UI) showKeyBindings() {
 	leftColCommands := []string{
 		"help",
 		"show_key_bindings",
@@ -609,6 +631,17 @@ func ParseNonPrintableKey(s string) (tcell.Key, bool) {
 		"f10":     tcell.KeyF10,
 		"f11":     tcell.KeyF11,
 		"f12":     tcell.KeyF12,
+		"up":      tcell.KeyUp,
+		"down":    tcell.KeyDown,
+		"left":    tcell.KeyLeft,
+		"right":   tcell.KeyRight,
+		"home":    tcell.KeyHome,
+		"end":     tcell.KeyEnd,
+		"pgup":    tcell.KeyPgUp,
+		"pgdn":    tcell.KeyPgDn,
+	}
+	for k := tcell.KeyF13; k <= tcell.KeyF20; k++ { // gamepad buttons
+		nonPrintable[strings.ToLower(tcell.KeyNames[k])] = k
 	}
 	if key, ok := nonPrintable[s]; ok {
 		return key, true

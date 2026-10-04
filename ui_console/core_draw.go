@@ -75,14 +75,20 @@ func (u *UI) drawMap(screen tcell.Screen, x int, y int, width int, height int) (
 	return x, y, width, height
 }
 
+// updateLastFrame marks the cache stale; the next map draw refreshes it
+// instead of rendering the whole map twice.
 func (u *UI) updateLastFrame() {
-	// iterate the map and force and update of the last frame
-	for y := 0; y < u.settings.MapHeight; y++ {
-		for x := 0; x < u.settings.MapWidth; x++ {
-			pos := geometry.Point{X: x, Y: y}
-			u.renderMapPosition(pos, false, u.uiTheme.GetMapDefaultStyle())
+	u.lastFrameDirty = true
+}
+
+func (u *UI) gammaTable() *[256]uint8 {
+	if u.gammaLUTFor != u.gamma {
+		for i := range u.gammaLUT {
+			u.gammaLUT[i] = applyGamma(uint8(i), u.gamma)
 		}
+		u.gammaLUTFor = u.gamma
 	}
+	return &u.gammaLUT
 }
 
 func (u *UI) renderMapPosition(mapPos geometry.Point, isAnimationFrame bool, style tcell.Style) (rune, tcell.Style) {
@@ -131,15 +137,16 @@ func (u *UI) renderMapPosition(mapPos geometry.Point, isAnimationFrame bool, sty
 		bg = existingBG.Multiply(bgColor.MultiplyWithScalar(scaleFactor)).ToRGBA()
 	}
 
-	style = style.Foreground(tcell.NewRGBColor(int32(applyGamma(fg.R, u.gamma)), int32(applyGamma(fg.G, u.gamma)), int32(applyGamma(fg.B, u.gamma))))
-	style = style.Background(tcell.NewRGBColor(int32(applyGamma(bg.R, u.gamma)), int32(applyGamma(bg.G, u.gamma)), int32(applyGamma(bg.B, u.gamma))))
+	g := u.gammaTable()
+	style = style.Foreground(tcell.NewRGBColor(int32(g[fg.R]), int32(g[fg.G]), int32(g[fg.B])))
+	style = style.Background(tcell.NewRGBColor(int32(g[bg.R]), int32(g[bg.G]), int32(g[bg.B])))
 
-	if isAnimationFrame && !isPositionAnimated {
+	if isAnimationFrame && !isPositionAnimated && !u.lastFrameDirty {
 		ch = u.lastFrameIcons[mapPos]
 		style = u.lastFrameStyle[mapPos]
 	}
 
-	if !isAnimationFrame {
+	if !isAnimationFrame || (u.lastFrameDirty && !isPositionAnimated) {
 		u.lastFrameStyle[mapPos] = style
 		u.lastFrameIcons[mapPos] = ch
 	}

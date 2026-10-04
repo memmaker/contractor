@@ -6,6 +6,7 @@ import (
     "image"
     "image/color"
     "math"
+    "slices"
     "sync"
     "time"
 
@@ -14,6 +15,12 @@ import (
     "github.com/hajimehoshi/ebiten/v2/inpututil"
     "github.com/hajimehoshi/ebiten/v2/text/v2"
 )
+
+type mouseState struct {
+    x, y    int
+    buttons tcell.ButtonMask
+    mod     tcell.ModMask
+}
 
 type cell struct {
     Style     tcell.Style
@@ -37,6 +44,7 @@ type etcell struct {
     grid_image  *ebiten.Image // Image of the grid.
     blink_image *ebiten.Image // Blink cells.
     grid_lock   sync.Mutex
+    last_mouse  mouseState
 
     cursor image.Point // Position of cursor, in grid cells
 
@@ -67,6 +75,9 @@ type etcell struct {
     suspended    bool // Input/output is suspended.
     closed       bool // Closed by Close()
     fallbackFace text.Face
+
+    pad_dir  tcell.Key // direction currently held on d-pad/left stick
+    pad_held int       // ticks pad_dir has been held
 }
 
 func (et *etcell) SetTitle(s string) {
@@ -221,6 +232,11 @@ func modMask() (mods tcell.ModMask) {
 
 // isKeyJustPressedOrRepeating keys simulate repeated keys.
 func isKeyJustPressedOrRepeating(key ebiten.Key) bool {
+    return isHeldTickRepeating(inpututil.KeyPressDuration(key))
+}
+
+// isHeldTickRepeating: true on the first tick and then at key-repeat intervals.
+func isHeldTickRepeating(d int) bool {
     tps := ebiten.ActualTPS()
     delay_ticks := int(0.500 /*sec*/ * tps)
     interval_ticks := int(0.050 /*sec*/ * tps)
@@ -232,7 +248,6 @@ func isKeyJustPressedOrRepeating(key ebiten.Key) bool {
     }
 
     // Down for one tick? Then just pressed.
-    d := inpututil.KeyPressDuration(key)
     if d == 1 {
         return true
     }
@@ -321,11 +336,17 @@ func (et *etcell) Update() (err error) {
             buttons |= tcell.WheelUp
         }
 
-        et.PostEvent(tcell.NewEventMouse(mouse_x, mouse_y, buttons, modMask()))
+        // Only post on change; an idle mouse at 60/s clogs the queue ahead of keys.
+        if m := (mouseState{mouse_x, mouse_y, buttons, modMask()}); m != et.last_mouse {
+            et.last_mouse = m
+            et.PostEvent(tcell.NewEventMouse(mouse_x, mouse_y, buttons, m.mod))
+        }
 
         in_focus = true
         //posted = true
     }
+
+    et.pollGamepads()
 
     if et.key_capture.Empty() || cursor.In(et.key_capture) {
         if !et.focused {
@@ -525,6 +546,9 @@ func (et *etcell) Clear() {
 // is called (or Sync).
 func (et *etcell) Fill(r rune, style tcell.Style) {
     for n := 0; n < len(et.grid); n++ {
+        if c := &et.grid[n]; c.Rune == r && c.Style == style && len(c.Combining) == 0 {
+            continue
+        }
         et.grid[n] = cell{
             Style: style,
             Rune:  r,
@@ -596,6 +620,9 @@ func (et *etcell) SetContent(x int, y int, primary rune, combining []rune, style
 
     n := y*et.grid_size.X + x
 
+    if c := &et.grid[n]; c.Rune == primary && c.Style == style && slices.Equal(c.Combining, combining) {
+        return // unchanged: keep synced, Show skips it
+    }
     et.grid[n] = cell{
         Rune:      primary,
         Combining: combining,
@@ -804,16 +831,16 @@ func (et *etcell) Show() {
             cell := &et.grid[n]
             n++
 
+            if cell.synced {
+                continue
+            }
+            cell.synced = true
+
             style := cell.Style
             if style == tcell.StyleDefault {
                 style = et.style_default
             }
             fg, bg, attr := style.Decompose()
-
-            if cell.synced {
-                continue
-            }
-            cell.synced = true
 
             if (attr & tcell.AttrInvalid) != 0 {
                 // Ignore all attributes.
@@ -1085,4 +1112,75 @@ func (et *etcell) Tty() (tty tcell.Tty, is_tty bool) {
     tty = nil
     is_tty = false
     return
+}
+
+// Standard-layout gamepad buttons become key events; bind the F13+ keys in data_atom/keymaps.
+var gamepad_button_map = map[ebiten.StandardGamepadButton]tcell.Key{
+    ebiten.StandardGamepadButtonRightBottom:      tcell.KeyEnter,   // A
+    ebiten.StandardGamepadButtonRightRight:       tcell.KeyEscape,  // B
+    ebiten.StandardGamepadButtonRightLeft:        tcell.KeyF13,     // X
+    ebiten.StandardGamepadButtonRightTop:         tcell.KeyF14,     // Y
+    ebiten.StandardGamepadButtonCenterLeft:       tcell.KeyF15,     // Back/Select
+    ebiten.StandardGamepadButtonCenterRight:      tcell.KeyF16,     // Start
+    ebiten.StandardGamepadButtonFrontBottomLeft:  tcell.KeyF17,     // LT
+    ebiten.StandardGamepadButtonFrontBottomRight: tcell.KeyF18,     // RT
+    ebiten.StandardGamepadButtonLeftStick:        tcell.KeyF19,     // L3
+    ebiten.StandardGamepadButtonRightStick:       tcell.KeyF20,     // R3
+    ebiten.StandardGamepadButtonFrontTopRight:    tcell.KeyTab,     // RB
+    ebiten.StandardGamepadButtonFrontTopLeft:     tcell.KeyBacktab, // LB, sent as Shift+Tab like the keyboard does
+}
+
+// [dy+1][dx+1] -> key; diagonals use the classic numpad-off keys.
+var gamepad_dir_keys = [3][3]tcell.Key{
+    {tcell.KeyHome, tcell.KeyUp, tcell.KeyPgUp},
+    {tcell.KeyLeft, 0, tcell.KeyRight},
+    {tcell.KeyEnd, tcell.KeyDown, tcell.KeyPgDn},
+}
+
+// ponytail: fixed dead zone; make it a config value if some stick drifts past it
+const stick_dead_zone = 0.5
+
+func (et *etcell) pollGamepads() {
+    var dir tcell.Key
+    for _, id := range ebiten.AppendGamepadIDs(nil) {
+        if !ebiten.IsStandardGamepadLayoutAvailable(id) {
+            continue
+        }
+        for button, key := range gamepad_button_map {
+            if !isHeldTickRepeating(inpututil.StandardGamepadButtonPressDuration(id, button)) {
+                continue
+            }
+            if key == tcell.KeyBacktab {
+                et.PostEvent(tcell.NewEventKey(tcell.KeyTab, 0, tcell.ModShift))
+            } else {
+                et.PostEvent(tcell.NewEventKey(key, 0, tcell.ModNone))
+            }
+        }
+        dx, dy := 0, 0
+        sx := ebiten.StandardGamepadAxisValue(id, ebiten.StandardGamepadAxisLeftStickHorizontal)
+        sy := ebiten.StandardGamepadAxisValue(id, ebiten.StandardGamepadAxisLeftStickVertical)
+        if sx < -stick_dead_zone || ebiten.IsStandardGamepadButtonPressed(id, ebiten.StandardGamepadButtonLeftLeft) {
+            dx = -1
+        } else if sx > stick_dead_zone || ebiten.IsStandardGamepadButtonPressed(id, ebiten.StandardGamepadButtonLeftRight) {
+            dx = 1
+        }
+        if sy < -stick_dead_zone || ebiten.IsStandardGamepadButtonPressed(id, ebiten.StandardGamepadButtonLeftTop) {
+            dy = -1
+        } else if sy > stick_dead_zone || ebiten.IsStandardGamepadButtonPressed(id, ebiten.StandardGamepadButtonLeftBottom) {
+            dy = 1
+        }
+        if d := gamepad_dir_keys[dy+1][dx+1]; d != 0 {
+            dir = d
+        }
+    }
+    if dir != et.pad_dir {
+        et.pad_dir, et.pad_held = dir, 0
+    }
+    if dir == 0 {
+        return
+    }
+    et.pad_held++
+    if isHeldTickRepeating(et.pad_held) {
+        et.PostEvent(tcell.NewEventKey(dir, 0, tcell.ModNone))
+    }
 }

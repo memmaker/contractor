@@ -17,7 +17,10 @@ type KeyPad struct {
 	onCompletion    func(success bool)
 	audioPlayer     foundation.AudioCuePlayer
 	specialString   string
+	selected        int // index into keypadLabels, moved with arrow keys / gamepad
 }
+
+var keypadLabels = []rune{'7', '8', '9', '4', '5', '6', '1', '2', '3', '*', '0', '#'}
 
 func (u *UI) OpenKeypad(specialAction string, correctSequence []rune, onSpecialAction func() bool, onCompletion func(success bool)) {
 	width, height := u.application.GetScreen().Size()
@@ -35,7 +38,9 @@ func (u *UI) OpenKeypad(specialAction string, correctSequence []rune, onSpecialA
 	origCapt := keyPad.GetInputCapture()
 	keyPad.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		command := u.getCommandForKey(toUIKey(event))
-		if command == "look" {
+		if event.Key() == tcell.KeyEnter { // press the selected key
+			event = tcell.NewEventKey(tcell.KeyRune, keypadLabels[keyPad.selected], tcell.ModNone)
+		} else if command == "look" {
 			u.popPanel(panelName)
 		} else if command == "pickup" {
 			if onSpecialAction() {
@@ -99,7 +104,7 @@ func (k *KeyPad) drawKeyPad(screen tcell.Screen, x int, y int, width int, height
 }
 
 func (k *KeyPad) drawKeys(screen tcell.Screen, x int, y int, width int, height int) {
-	labelRunes := []rune{'7', '8', '9', '4', '5', '6', '1', '2', '3', '*', '0', '#'}
+	labelRunes := keypadLabels
 	popRune := func() rune {
 		r := labelRunes[0]
 		labelRunes = labelRunes[1:]
@@ -144,7 +149,11 @@ func (k *KeyPad) drawKeys(screen tcell.Screen, x int, y int, width int, height i
 		for col := x; col < x+width; col++ {
 			// detect border
 			if isLabelPos(col, row) {
-				screen.SetContent(col, row, popRune(), nil, tcell.StyleDefault.Foreground(tcell.ColorBlack).Background(tcell.ColorGray))
+				style := tcell.StyleDefault.Foreground(tcell.ColorBlack).Background(tcell.ColorGray)
+				if len(labelRunes) == len(keypadLabels)-k.selected {
+					style = style.Reverse(true)
+				}
+				screen.SetContent(col, row, popRune(), nil, style)
 			} else {
 				screen.SetContent(col, row, chooseBorderChar(col, row), nil, tcell.StyleDefault.Background(tcell.ColorGray).Foreground(tcell.ColorBlack))
 			}
@@ -177,6 +186,14 @@ func (k *KeyPad) handleKeys(event *tcell.EventKey) *tcell.EventKey {
 		return nil
 	}
 	switch event.Key() {
+	case tcell.KeyUp:
+		k.selected = (k.selected + 9) % 12
+	case tcell.KeyDown:
+		k.selected = (k.selected + 3) % 12
+	case tcell.KeyLeft:
+		k.selected = k.selected/3*3 + (k.selected+2)%3
+	case tcell.KeyRight:
+		k.selected = k.selected/3*3 + (k.selected+1)%3
 	case tcell.KeyRune:
 		switch event.Rune() {
 		case '0':
