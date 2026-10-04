@@ -613,6 +613,30 @@ weapon_sound_id: grenade_frag
 zap_effect: explode
 chance_to_break_on_throw: 100
 
+Name: frag_mine
+Description: Frag Mine
+Long_Description: A disarmed fragmentation mine. Contains a small amount of high explosives, the container itself forming most of the damaging fragments. Explodes on contact. Min ST: 3.
+Category: Weapons
+Size: 1
+Weight: 1
+Cost: 150
+weapon_type: Throwing
+weapon_damage: 20-35
+weapon_magazine_size: 0
+weapon_burst_rounds: 0
+weapon_damage_type: Explosive
+weapon_min_str: 3
+weapon_attack_mode_one: Throw
+weapon_attack_mode_two: None
+weapon_ap_cost_one: 4
+weapon_ap_cost_two: 0
+weapon_max_range_one: 8
+weapon_max_range_two: 0
+weapon_uses_ammo: none
+weapon_sound_id: grenade_frag
+zap_effect: explode
+chance_to_break_on_throw: 100
+
 Name: grenade_plasma
 Description: Grenade (Plasma)
 Long_Description: A magnetically sealed plasma delivery unit, with detonating explosives. Creates a blast of superheated plasma on contact. Min ST: 4.
