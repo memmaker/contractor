@@ -21,6 +21,10 @@ o_goto: GoodbyeGoOn
 
 name: SmallTalk
 npc: What do you want, youngster?
+#
+o_text: Can I have the keys to the apartment?
+o_cond: !HasFlag('grimKeysGiven')
+o_goto: GiveKeys
 # Starter Mission
 o_text: I got this message from a guy named Jacob. What's the deal?
 o_cond: HasFlag('JobRead(starter)')
