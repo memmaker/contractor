@@ -86,6 +86,9 @@ func (g *GameState) calculateRangedDamage(attacker *Actor, weaponItem *Weapon, a
 			totalDamage += damageDone
 		}
 	}
+	if weaponItem.PelletCount > 1 { // armor applies per pellet, not per shell
+		damagePerBullet = splitIntoPellets(damagePerBullet, weaponItem.PelletCount)
+	}
 	damageFactor := 1.0
 	bonusDamage := 0
 
@@ -222,4 +225,21 @@ func (g *GameState) getMeleeDamage(attacker *Actor, cth int, victim *Actor, part
 	}
 
 	return damageWithSource
+}
+
+func splitIntoPellets(damagePerShell []int, pellets int) []int {
+	var result []int
+	for _, shell := range damagePerShell {
+		for p := 0; p < pellets; p++ {
+			result = append(result, shell/pellets+boolToInt(p < shell%pellets))
+		}
+	}
+	return result
+}
+
+func boolToInt(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }

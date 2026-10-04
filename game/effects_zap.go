@@ -716,7 +716,7 @@ func (d SourcedDamage) ModifyDamageByArmor(target *Actor) SourcedDamage {
 		}
 	} else {
 		newDamageAmount = int(max(1, float64(originalDamageAmount)*reductionFactor))
-		newDamageAmount = max(0, originalDamageAmount-threshold)
+		newDamageAmount = max(0, newDamageAmount-threshold)
 	}
 
 	// degrade armor
