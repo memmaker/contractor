@@ -508,7 +508,7 @@ func (g *GameState) PlayerDropItem(item foundation.Item) {
 }
 
 func (g *GameState) PlayerExamineItem(item foundation.Item) {
-	g.ui.OpenTextWindow(item.FullDescription(g.inventoryColorCode(item)))
+	g.ui.OpenTextWindow(g.fillTemplatedTextCustom(item.FullDescription(g.inventoryColorCode(item)), item.TextVariables(g.GetScriptFuncs())))
 }
 
 // EQUIP / UNEQUIP
