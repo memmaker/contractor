@@ -822,7 +822,7 @@ weapon_max_range_two: 1
 weapon_uses_ammo: c_energy_cell
 weapon_caliber_index: 3
 weapon_sound_id: tear
-weapon_skill_used: ranged_combat
+weapon_skill_used: melee_combat
 
 Name: laser_rifle
 Description: Laser Rifle
@@ -1103,7 +1103,7 @@ weapon_max_range_two: 0
 weapon_uses_ammo: c_energy_cell
 weapon_caliber_index: 3
 weapon_sound_id: punch
-weapon_skill_used: ranged_combat
+weapon_skill_used: melee_combat
 
 Name: scalpel
 Description: a scalpel
@@ -2151,7 +2151,7 @@ weapon_max_range_two: 1
 weapon_uses_ammo: c_energy_cell
 weapon_caliber_index: 3
 weapon_sound_id: cattle_prod
-weapon_skill_used: ranged_combat
+weapon_skill_used: melee_combat
 
 Name: improved_flamer
 Description: Improved Flamer
@@ -2346,7 +2346,7 @@ weapon_max_range_two: 0
 weapon_uses_ammo: c_energy_cell
 weapon_caliber_index: 3
 weapon_sound_id: punch
-weapon_skill_used: ranged_combat
+weapon_skill_used: melee_combat
 
 Name: holy_hand_grenade
 Description: Holy Hand Grenade
