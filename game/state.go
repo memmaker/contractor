@@ -423,7 +423,7 @@ func (g *GameState) buyItemFromVendor(vendor *Actor, onClose func()) func(item f
 			g.openVendorMenu(vendor, onClose)
 			return
 		}
-		if player.GetInventory().IsFull() {
+		if player.GetInventory().IsFull() && !player.GetInventory().CanStack(item) {
 			g.msg(foundation.Msg("You cannot carry more items"))
 			g.openVendorMenu(vendor, onClose)
 			return

@@ -501,7 +501,11 @@ func (u *UI) OpenVendorMenu(title string, itemsForSale []foundation.Item, buyIte
 					return
 				}
 				if item.IsMultipleStacks() {
-					u.openAmountWidget(item.Name(), item.GetStackSize(), func(amount int) {
+					affordable := item.GetStackSize()
+					if item.GetPrice() > 0 {
+						affordable = min(affordable, u.game.PlayerGold()/item.GetPrice())
+					}
+					u.openAmountWidget(item.Name(), affordable, func(amount int) {
 						buyItem(item, amount, item.GetPrice()*amount)
 					})
 				} else {

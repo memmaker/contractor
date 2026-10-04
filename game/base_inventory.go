@@ -168,6 +168,16 @@ func (i *Inventory) addItemInternally(item foundation.Item) {
 	i.items[item.ID()] = item
 }
 
+// CanStack reports whether item would merge into an existing stack instead of taking a new slot.
+func (i *Inventory) CanStack(item foundation.Item) bool {
+	for _, invItem := range i.items {
+		if invItem.CanStackWith(item) {
+			return true
+		}
+	}
+	return false
+}
+
 func (i *Inventory) IsEmpty() bool {
 	return len(i.items) == 0
 }
