@@ -251,7 +251,7 @@ npc:
 + But there's no turning back once you're involved. Are you sure?
 #
 o_text: I'm sure. Let's get to work.
-effect: JoinExperiments
+o_effect: JoinExperiments
 o_goto: End
 #
 o_text: On second thought, this isn't right.
@@ -264,11 +264,10 @@ npc:
 + *[He seems lost, utterly defeated.]* What do I do now?
 #
 o_text: Stop this madness. It's over.
-effect: StopExperiments
+o_effect: StopExperiments
 o_goto: End
 #
 o_text: I'm sorry, Dr. Winters. There's nothing left to do.
-effect: EndConversation
 o_goto: End
 
 name: OfferCure
