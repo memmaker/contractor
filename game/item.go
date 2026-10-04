@@ -67,14 +67,9 @@ type GenericItem struct {
 
 	Alive bool
 
-	InvIndex int
-
 	Hidden bool
 }
 
-func (i *GenericItem) SetInventoryIndex(index int) {
-	i.InvIndex = index
-}
 func (i *GenericItem) AddStacks(item foundation.Item) {
 	i.StackSize += item.GetStackSize()
 }
@@ -203,16 +198,8 @@ func NewKey(keyID, description string, icon textiles.TextIcon) *GenericItem {
 	}
 }
 
-func (i *GenericItem) InventoryNameWithColorsAndShortcut(lineColorCode string) string {
-	return fmt.Sprintf("%c - %s", i.Shortcut(), i.InventoryNameWithColors(lineColorCode))
-}
-
-func (i *GenericItem) Shortcut() rune {
-	return foundation.ShortCutFromIndex(i.InvIndex)
-}
-
 func (i *GenericItem) DisplayLength() int {
-	return cview.TaggedStringWidth(i.InventoryNameWithColorsAndShortcut("[red]"))
+	return len("a - ") + cview.TaggedStringWidth(i.InventoryNameWithColors("[red]"))
 }
 
 func (i *GenericItem) FullDescription(colorCode string) string {

@@ -128,10 +128,6 @@ func StackedFilteredAndSortedItems(items []foundation.Item, filter func(foundati
 
 	SortInventory(stacks)
 
-	for i, stack := range stacks {
-		stack.SetInventoryIndex(i)
-	}
-
 	return stacks
 }
 

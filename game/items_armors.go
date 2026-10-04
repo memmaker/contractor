@@ -97,10 +97,6 @@ func (i *Armor) FullDescription(colorCode string) string {
 
 	return strings.Join(lines, "\n")
 }
-func (i *Armor) InventoryNameWithColorsAndShortcut(lineColorCode string) string {
-	return fmt.Sprintf("%c - %s", i.Shortcut(), i.InventoryNameWithColors(lineColorCode))
-}
-
 func (i *Armor) LongNameWithColors(colorCode string) string {
 	var baseName string
 	if len(i.Protection) == 0 || !i.HasProtectionValue() {
@@ -147,7 +143,7 @@ func (i *Armor) InventoryName() string {
 	return baseName
 }
 func (i *Armor) DisplayLength() int {
-	return cview.TaggedStringWidth(i.InventoryNameWithColorsAndShortcut("[red]"))
+	return len("a - ") + cview.TaggedStringWidth(i.InventoryNameWithColors("[red]"))
 }
 func (i *Armor) GetArmorProtection(damageType DamageType) Protection {
 	/*
