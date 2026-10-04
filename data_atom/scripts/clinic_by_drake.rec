@@ -1,0 +1,15 @@
+# Takeover branch: Drake runs the clinic if he was freed and is alive.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: !HasFlag('drake_freed') || HasFlag('Killed(drake_gallows)') || HasFlag('clinic(drake)')
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: MoveTo(ActorWithName('drake_gallows'), 'zone_residential_south', 'behind_counter_hospital')
+do: SetFlag('clinic(drake)')

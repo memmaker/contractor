@@ -1,0 +1,28 @@
+# The cleaner gets a call in his room in the west, walks to the hospital,
+# scrubs the blood away one tile per turn and goes home to wait for the next call.
+# Re-runnable: RunScript('clinic_cleanup') calls him again.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: IsActorDead(ActorWithName('cleaner'))
+do: SetFlag('cleaner_dead')
+
+if: HasFlag('cleaner_called') && IsActorAt(ActorWithName('cleaner'), 'zone_residential_west', 'cleaner_room') && HasFlag('clinic_cleaned')
+do: ClearFlag('cleaner_called')
+do: SetIdle(ActorWithName('cleaner'))
+
+%rec: cancel
+
+%rec: frames
+
+if: LoadMap('zone_residential_west')
+do: SetFlag('cleaner_called')
+do: ClearFlag('clinic_cleaned')
+do: AddChatter(ActorWithName('cleaner'), '(His phone buzzes.) Hospital? On my way.')
+
+if: CleanStains(ActorWithName('cleaner'), 'zone_residential_south', 'public_hospital', 'trespass_hospital')
+do: SetFlag('clinic_cleaned')
+do: AddChatter(ActorWithName('cleaner'), 'All clean. Heading home.')
+do: MoveTo(ActorWithName('cleaner'), 'zone_residential_west', 'cleaner_room')

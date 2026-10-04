@@ -6,6 +6,7 @@ import (
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
+	"image/color"
 	"maps"
 	"math"
 	"math/rand"
@@ -1452,6 +1453,27 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) GetNamedTriggerAt(pos geometr
 }
 func (m *GridMap[ActorType, ItemType, ObjectType]) SetTileIcon(pos geometry.Point, index textiles.TextIcon) {
 	m.cells[pos.Y*m.mapWidth+pos.X].TileType.Icon = index
+}
+
+// StainTile recolors a tile, remembering its clean colors the first time so CleanTile can restore them.
+func (m *GridMap[ActorType, ItemType, ObjectType]) StainTile(pos geometry.Point, fg, bg color.RGBA) {
+	tile := &m.cells[pos.Y*m.mapWidth+pos.X].TileType
+	if !tile.Stained {
+		tile.Stained, tile.CleanFg, tile.CleanBg = true, tile.Icon.Fg, tile.Icon.Bg
+	}
+	tile.Icon = tile.Icon.WithFg(fg).WithBg(bg)
+}
+
+func (m *GridMap[ActorType, ItemType, ObjectType]) CleanTile(pos geometry.Point) {
+	tile := &m.cells[pos.Y*m.mapWidth+pos.X].TileType
+	if tile.Stained {
+		tile.Icon = tile.Icon.WithFg(tile.CleanFg).WithBg(tile.CleanBg)
+		tile.Stained = false
+	}
+}
+
+func (m *GridMap[ActorType, ItemType, ObjectType]) IsStained(pos geometry.Point) bool {
+	return m.Contains(pos) && m.cells[pos.Y*m.mapWidth+pos.X].TileType.Stained
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) GetTileIconAt(pos geometry.Point) textiles.TextIcon {

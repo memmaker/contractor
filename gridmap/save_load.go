@@ -21,6 +21,9 @@ type TileDataOnDisk struct {
 	IsTransparent bool
 	IsExplored    bool
 	Flags         TileFlags
+	Stained       bool
+	CleanFg       color.RGBA
+	CleanBg       color.RGBA
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) Save(directory string) error {
@@ -73,6 +76,9 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) Save(directory string) error 
 			IsTransparent: cell.TileType.IsTransparent,
 			Flags:         cell.TileType.Flags,
 			IsExplored:    cell.IsExplored,
+			Stained:       cell.TileType.Stained,
+			CleanFg:       cell.TileType.CleanFg,
+			CleanBg:       cell.TileType.CleanBg,
 		}
 	}
 
@@ -198,6 +204,9 @@ func Load[ActorType interface {
 				IsWalkable:         cell.IsWalkable,
 				IsTransparent:      cell.IsTransparent,
 				Flags:              cell.Flags,
+				Stained:            cell.Stained,
+				CleanFg:            cell.CleanFg,
+				CleanBg:            cell.CleanBg,
 			},
 			IsExplored:    cell.IsExplored,
 			Actor:         nil,

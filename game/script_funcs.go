@@ -405,8 +405,8 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			return lastPos == loc, nil
 		},
 		"IsActorDead": func(args ...interface{}) (interface{}, error) {
-			actor := args[0].(*Actor)
-			return !actor.IsAlive(), nil
+			actor, ok := args[0].(*Actor)
+			return ok && actor != nil && !actor.IsAlive(), nil
 		},
 		"IsActorInCombat": func(args ...interface{}) (interface{}, error) {
 			actor := args[0].(*Actor)
@@ -650,6 +650,26 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			g.Player.GetInventory().AddItem(newItem)
 			g.msg(foundation.HiLite("%s received.", newItem.Name()))
 			return nil, nil
+		},
+		// CleanStains(actor, mapName, zone...) is called every turn; true once the zones are clean (or the rest is out of reach).
+		"CleanStains": func(args ...interface{}) (interface{}, error) {
+			actor, ok := args[0].(*Actor)
+			if !ok || actor == nil {
+				return false, nil
+			}
+			var zones []string
+			for _, zone := range args[2:] {
+				zones = append(zones, zone.(string))
+			}
+			return g.cleanStainsStep(actor, args[1].(string), zones), nil
+		},
+		"IsActorAt": func(args ...interface{}) (interface{}, error) {
+			actor, ok := args[0].(*Actor)
+			if !ok || actor == nil {
+				return false, nil
+			}
+			mapName, locName := args[1].(string), args[2].(string)
+			return actor.currentMapName == mapName && actor.Position() == g.ensureMapIsLoaded(mapName).GetNamedLocation(locName), nil
 		},
 		"LoadMap": func(args ...interface{}) (interface{}, error) {
 			g.ensureMapIsLoaded(args[0].(string))

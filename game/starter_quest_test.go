@@ -4,8 +4,8 @@ import (
 	"contractor/d100"
 	"contractor/foundation"
 	"github.com/memmaker/go/textiles"
-	"time"
 	"testing"
+	"time"
 )
 
 // Every ending of the starter quest "The Debt" resolves from its flags, with the right XP.
@@ -72,7 +72,7 @@ func TestStarterQuestActorsArePlaced(t *testing.T) {
 	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
 	g.init()
 	g.Player = NewPlayer("tester", textiles.TextIcon{}, d100.NewCharSheet())
-	for actorName, mapName := range map[string]string{"jacob_thorne": "zone_residential_east", "beggar": "zone_residential_east", "ebi_medic": "hq_ebi", "quinn_rix": "zone_residential_south"} {
+	for actorName, mapName := range map[string]string{"jacob_thorne": "zone_residential_east", "beggar": "zone_residential_east", "ebi_medic": "hq_ebi", "cleaner": "zone_residential_west", "quinn_rix": "zone_residential_south"} {
 		found := false
 		for _, actor := range g.ensureMapIsLoaded(mapName).Actors() {
 			found = found || actor.GetInternalName() == actorName

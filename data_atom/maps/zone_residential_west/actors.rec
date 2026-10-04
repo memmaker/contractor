@@ -38,3 +38,23 @@ DRPoison: 5
 SourceFile: 00000011.pro
 Position: (16,22)
 
+
+Name: cleaner
+Icon: c
+Foreground: light_gray_2
+Description: Sanitation guy for hire
+Dialogue: cleaner
+Long_Description: 
+BodyType: 0
+XP: 10
+KillType: 0
+DamageType: 0
+TeamNum: 0
+HitPoints: 20
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+HealingRate: 1
+CriticalChance: 1
+Position: (13,19)
