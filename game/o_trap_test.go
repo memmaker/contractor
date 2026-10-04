@@ -17,3 +17,10 @@ func TestTrapWalkOverTriggers(t *testing.T) {
 		t.Fatalf("expected triggered, got %s", trap.state)
 	}
 }
+
+func TestFragMineItemExists(t *testing.T) {
+	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
+	if item := g.NewItemFromString("frag_mine"); item == nil {
+		t.Fatal("frag_mine item not defined")
+	}
+}
