@@ -184,15 +184,15 @@ type GridMap[ActorType interface {
 	cardinalMovementOnly bool
 
 	// LIGHTING
-	DynamicLights        map[geometry.Point]*LightSource
-	BakedLights          map[geometry.Point]*LightSource
-	lightfov             *geometry.FOV
-	MaxLightIntensity    float64
-	dynamicallyLitCells  map[geometry.Point]fxtools.HDRColor
-	lightScratch         map[geometry.Point]fxtools.HDRColor
-	zones                map[string]map[geometry.Point]bool
-	zoneAt               map[geometry.Point]string // first zone per cell, see SetZones
-	zoneMetadata         map[string]ZoneMetadata
+	DynamicLights       map[geometry.Point]*LightSource
+	BakedLights         map[geometry.Point]*LightSource
+	lightfov            *geometry.FOV
+	MaxLightIntensity   float64
+	dynamicallyLitCells map[geometry.Point]fxtools.HDRColor
+	lightScratch        map[geometry.Point]fxtools.HDRColor
+	zones               map[string]map[geometry.Point]bool
+	zoneAt              map[geometry.Point]string // first zone per cell, see SetZones
+	zoneMetadata        map[string]ZoneMetadata
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) SetCardinalMovementOnly(cardinalMovementOnly bool) {
