@@ -6,6 +6,9 @@
 
 %rec: OpeningBranch
 
+cond: HasFlag('jacob_backed_off')
+goto: BackedOff
+
 cond: true
 goto: DefaultIntroduction
 
@@ -54,6 +57,11 @@ o_fail: IntimidateFail
 name: IntimidateSuccess
 npc: (He looks scared.) Okay, okay. I'll leave the Ripperdoc alone.
 + If that's what you want, I'll call off the job.
+effect: SetFlag('jacob_backed_off')
+#
+o_text: You've got guts, at least. Got any real work for someone like me?
+o_cond: HasFlag('PlayerKillCount')
+o_goto: BetterJob
 #
 o_text: You're damn right you will.
 o_goto: DefaultIntroduction
@@ -64,6 +72,18 @@ o_goto: KillClient
 name: IntimidateFail
 npc: You piece of shit. You think you can intimidate me?
 + I am going to rip you apart, choomba.
+#
+o_text: <Fight>
+o_cond: !HasFlag('PlayerKillCount')
+o_goto: KillClient
+#
+o_text: <Fight>
+o_cond: HasFlag('PlayerKillCount')
+o_goto: CallGoons
+
+name: CallGoons
+npc: I heard about you. That's why I didn't come alone. BOYS!
+effect: ProvokeFaction('jacob')
 effect: StartCombat
 
 name: KillClient
@@ -75,14 +95,17 @@ npc: I was told to use the dead drop? I am not sure why you are here.
 + But ok, let's go with it. So, did you get my money?
 #
 o_text: Sure, it's right here.
-o_cond: HasItem('gold', 500)
+o_cond: HasItem('gold', 250)
 o_goto: GiveMoney
 #
 o_text: Not yet, still working on it.
-o_gogo: DefaultIntroduction
+o_goto: DefaultIntroduction
 
 name: GiveMoney
 npc: (He takes the cash, eyes gleaming with greed.)
+effect: StackTransferTo(NPC, 'gold', 250)
+effect: PlayerAddItem('binge(3)')
+effect: SetFlag('ClientRewardReceived(starter)')
 npc: Well, well, looks like you're not completely useless after all.
 + Now, I trust you’ll get out of my sight.
 #
@@ -112,8 +135,10 @@ o_goto: DefaultIntroduction
 
 name: NegotiateSuccess
 npc: (He sighs, clearly annoyed but willing to concede.)
-npc: Fine. You drive a hard bargain. I’ll wire the creds now, but don’t expect any favors next time.
+npc: Fine. You drive a hard bargain. Here, take it, but don’t expect any favors next time.
 + You better not screw me over.
+effect: StackTransferFrom(NPC, 'gold', 250)
+effect: SetFlag('starter(client_extorted)')
 #
 o_text: You made the right choice.
 o_goto: DefaultIntroduction
@@ -152,3 +177,24 @@ o_goto: KillClient
 name: End
 npc: (He shuts the door behind you.)
 effect: EndConversation
+
+name: BetterJob
+npc: (He studies you, then grins.)
+npc: Real work. Fine. Some rich bastard is hiding up in a mansion outside the wall.
++ Nobody knows where exactly. Find it and there's more sat in it than this whole block has ever seen.
++ I'll send the details to your terminal.
+effect: SetFlag('jacob_better_job')
+#
+o_text: I'll be in touch.
+o_goto: End
+
+name: BackedOff
+npc: (He flinches when he sees you.)
++ I told you, the Doc is off the table. What else do you want?
+#
+o_text: Nothing. Just checking.
+o_goto: End
+#
+o_text: Got any real work for someone like me?
+o_cond: !HasFlag('jacob_better_job')
+o_goto: BetterJob

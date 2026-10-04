@@ -16,6 +16,11 @@ o_cond: !HasFlag('JobAccepted(starter)') && !HasFlag('JobDeclined(starter)') && 
 o_goto: starter_mission
 #
 #
+# Chapter 1 hook
+o_text: (New job offer) A mansion outside the wall.
+o_cond: HasFlag('QuestCompleted(starter)')
+o_goto: chapter1_offer
+#
 # Dead Man's Switch
 o_text: (IMPORTANT) Last message from Grim
 o_cond: HasFlag('Killed(grim_beard)')
@@ -95,6 +100,7 @@ name: starter_decline
 npc: ** Contractor Client Interface **
 + > The client has been informed.
 effect: SetFlag('JobDeclined(starter)')
+effect: RunScript('other_assassin_gets_job')
 #
 o_text: Go back.
 o_goto: DefaultIntroduction
@@ -108,3 +114,22 @@ npc: ** Contractor Client Interface **
 effect: EndConversation
 
 ### Starter Mission END ###
+
+### Chapter 1 hook ###
+
+name: chapter1_offer
+npc: ** Contractor Client Interface **
++ > Somebody rich is hiding in a mansion outside the wall.
++ > Nobody knows where. Find it.
++ > Payment: more sat than you have ever seen.
+#
+o_text: Take the job. (Ends the demo)
+o_goto: chapter1_accept
+#
+o_text: Not yet.
+o_goto: DefaultIntroduction
+
+name: chapter1_accept
+npc: ** Contractor Client Interface **
++ > Job accepted. Good luck, contractor.
+effect: EndDemo

@@ -748,6 +748,17 @@ func (g *GameState) calculateTotalNetWorth() int {
 	return g.Player.GetGold()
 }
 
+// endDemo closes the playable demo after the starter quest with a summary of its outcome.
+func (g *GameState) endDemo() {
+	scoreInfo := foundation.ScoreInfo{
+		PlayerName:         g.Player.Name(),
+		Gold:               g.calculateTotalNetWorth(),
+		DescriptiveMessage: g.journal.OutcomeText("starter"),
+		Escaped:            true,
+	}
+	g.ui.ShowGameOver(scoreInfo, g.writePlayerScore(scoreInfo))
+}
+
 func (g *GameState) gameWon() {
 	scoreInfo := foundation.ScoreInfo{
 		PlayerName:         g.Player.Name(),

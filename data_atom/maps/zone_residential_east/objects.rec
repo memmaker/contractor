@@ -50,3 +50,11 @@ Category: ClosedDoor
 Description: a door
 Position: (66,10)
 
+Category: UnknownContainer
+Name: jacob_safe
+Description: wall safe
+flag_removal_of: gold
+lockdifficulty: medium
+lockflag: jacob_safe_key
+item: gold(250)
+Position: (56,15)

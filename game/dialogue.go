@@ -134,6 +134,10 @@ func (g *GameState) updateDialogueState(conversation *convo.Conversation, state 
 // ApplyNodeEffect handles the parameterless game effects of a dialogue node.
 // Returns true if the effect ends the conversation.
 func (g *GameState) ApplyNodeEffect(effect string, conversationPartner convo.ConversationPartner) (endsConversation bool) {
+	if effect == "EndDemo" {
+		g.endDemo()
+		return true
+	}
 	actor, isActor := conversationPartner.(*Actor)
 	if !isActor {
 		return false

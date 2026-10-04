@@ -5,3 +5,4 @@ MusicFile: 22vcity
 IsOutdoor: true
 IndoorAmbientLight: (0.2, 0.2, 0.2)
 RunScript: tutorial
+RunScript: clinic_takeover

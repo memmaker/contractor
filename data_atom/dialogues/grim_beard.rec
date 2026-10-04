@@ -68,7 +68,7 @@ o_goto: SmallTalk
 
 
 name: TellJacobLocation
-npc: He lives in a small hut in the woods. You can't miss it.
+npc: He has an apartment in the eastern residential district. Take a taxi, you can't miss it.
 + I see you want to re-negotiate the contract? Clever.
 + (He marks the location on your map.)
 effect: SetFlag('LocationKnown(jacobs_home)')

@@ -651,6 +651,19 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			g.msg(foundation.HiLite("%s received.", newItem.Name()))
 			return nil, nil
 		},
+		"LoadMap": func(args ...interface{}) (interface{}, error) {
+			g.ensureMapIsLoaded(args[0].(string))
+			return true, nil
+		},
+		"ProvokeFaction": func(args ...interface{}) (interface{}, error) {
+			faction := args[0].(string)
+			for _, actor := range g.currentMap().Actors() {
+				if actor.Faction == faction && actor.IsAlive() {
+					actor.FSM.SendEvent(NewProvokedEvent(g.Player))
+				}
+			}
+			return nil, nil
+		},
 		"PlayerAddGold": func(args ...interface{}) (interface{}, error) {
 			goldAmount := int(args[0].(float64))
 			g.Player.GetInventory().AddItem(g.NewGold(goldAmount))

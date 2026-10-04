@@ -26,6 +26,7 @@ npc: Thank you! For what it's worth, there is a small stash in the operating roo
 #
 effect: StackTransferFrom(NPC, 'doc_stash_key')
 effect: SetFlag('drake_freed_without_payment')
+effect: SetFlag('drake_promised_freedom')
 effect: EndWithChatter
 
 

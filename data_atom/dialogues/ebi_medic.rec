@@ -1,0 +1,27 @@
+%rec: OpeningBranch
+
+cond: true
+goto: DefaultIntroduction
+
+%rec: Nodes
+
+name: DefaultIntroduction
+npc: This clinic is now operated by Eschaton Biotech International.
++ Meld is available at the standard corporate rate. Cyberware services are suspended.
+#
+o_text: What happened to the old doctors?
+o_goto: OldDoctors
+#
+o_text: Leave.
+o_goto: End
+
+name: OldDoctors
+npc: (She doesn't look up from her tablet.)
++ The previous management is no longer relevant. EBI thanks you for your patience.
+#
+o_text: Leave.
+o_goto: End
+
+name: End
+npc: Stay healthy.
+effect: EndConversation
