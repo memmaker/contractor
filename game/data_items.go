@@ -39,6 +39,7 @@ func NewItemFromRecord(record recfile.Record, itemFromString func(name string) f
 	var tuCosts [2]int
 	var maxRanges [2]int
 	var preLoadedAmmoName string
+	skillGiven := false
 
 	itemArmor := &Armor{}
 	for _, field := range record {
@@ -171,6 +172,7 @@ func NewItemFromRecord(record recfile.Record, itemFromString func(name string) f
 			itemWeapon.SoundID = field.Value
 		case "weapon_skill_used":
 			itemWeapon.SkillUsed = d100.SkillFromString(field.Value)
+			skillGiven = true
 		case "weapon_damage":
 			itemWeapon.DamageDice = fxtools.ParseInterval(field.Value)
 		case "weapon_magazine_size":
@@ -266,6 +268,9 @@ func NewItemFromRecord(record recfile.Record, itemFromString func(name string) f
 		noAim := item.Tags.Contains(foundation.TagNoAim)
 		itemWeapon.AttackModes = GetAttackModes(targetModes, tuCosts, maxRanges, noAim)
 		itemWeapon.GenericItem = item
+		if !skillGiven { // the zero value is whatever skill comes first in rules.rec, e.g. melee for a pistol
+			itemWeapon.SkillUsed = defaultSkillForAttackMode(targetModes[0])
+		}
 
 		noReload := item.Tags.Contains(foundation.TagNoReload)
 		if noReload && preLoadedAmmoName != "" {
@@ -282,4 +287,15 @@ func NewItemFromRecord(record recfile.Record, itemFromString func(name string) f
 	}
 
 	return item
+}
+
+func defaultSkillForAttackMode(mode TargetingMode) d100.Skill {
+	switch {
+	case mode == TargetingModeThrow:
+		return d100.SkillForThrowing
+	case mode.IsMelee():
+		return d100.SkillForUnarmed
+	default:
+		return d100.SkillForRangedAttack
+	}
 }
