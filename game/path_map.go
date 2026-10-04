@@ -34,9 +34,10 @@ func (p *Pathfinder) getNeighbors(actor *Actor, from MapPosition, to MapPosition
 		location := gMap.GetNamedLocation(from.LocationName)
 
 		if transitionTo, exists := gMap.GetTransitionAt(location); exists {
-			targetMap := p.getMap(transitionTo.TargetMap)
-			targetLocation := targetMap.GetNamedLocation(transitionTo.TargetLocation)
-			neighbors = append(neighbors, MapPosition{MapName: transitionTo.TargetMap, LocationName: transitionTo.TargetLocation, Position: targetLocation})
+			if targetMap := p.getMap(transitionTo.TargetMap); targetMap != nil { // dangling transition to a deleted map
+				targetLocation := targetMap.GetNamedLocation(transitionTo.TargetLocation)
+				neighbors = append(neighbors, MapPosition{MapName: transitionTo.TargetMap, LocationName: transitionTo.TargetLocation, Position: targetLocation})
+			}
 		}
 
 		for locationOfTransition, _ := range gMap.Transitions() {
@@ -92,6 +93,7 @@ func (p *Pathfinder) FindPath(actor *Actor, currentMap string, to MapPosition) [
 		}
 	}
 	closedTransitions := make(map[MapPosition]int)
+	parents := make(map[MapPosition]MapPosition) // first-discovered predecessor; start nodes have none
 
 	for {
 		if len(openTransitions) == 0 {
@@ -110,6 +112,7 @@ func (p *Pathfinder) FindPath(actor *Actor, currentMap string, to MapPosition) [
 					continue
 				}
 				openTransitions[neighbor] = dist + 1
+				parents[neighbor] = transition
 			}
 		}
 	}
@@ -120,22 +123,12 @@ func (p *Pathfinder) FindPath(actor *Actor, currentMap string, to MapPosition) [
 
 	path := make([]MapPosition, 0)
 
+	// Walk the recorded parents back; transitions are one-way, so re-deriving
+	// predecessors from forward neighbors can dead-end and spin forever.
 	current := to
-	_, isReachable := reachableTransitions[current]
 	path = append(path, current)
-	for !isReachable {
-		minDist := closedTransitions[current]
-
-		for _, neighbor := range p.getNeighbors(actor, current, MapPosition{}) {
-			if dist, exists := closedTransitions[neighbor]; exists {
-				if dist < minDist {
-					minDist = dist
-					current = neighbor
-				}
-			}
-		}
-
-		isReachable = reachableTransitions[current] == 1
+	for reachableTransitions[current] != 1 {
+		current = parents[current]
 		if current.MapName != path[len(path)-1].MapName {
 			path = append(path, current)
 		}
