@@ -58,3 +58,23 @@ lockdifficulty: medium
 lockflag: jacob_safe_key
 item: gold(250)
 Position: (56,15)
+
+Category: NamedLocation
+Identifier: jacobs_home
+Position: (45,16)
+
+Category: NamedLocation
+Identifier: bar_stool
+Position: (20,16)
+
+Category: NamedLocation
+Identifier: jacobs_doorstep_west
+Position: (50,13)
+
+Category: NamedLocation
+Identifier: jacobs_doorstep
+Position: (51,13)
+
+Category: NamedLocation
+Identifier: jacobs_doorstep_east
+Position: (52,13)

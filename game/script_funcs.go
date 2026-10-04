@@ -33,7 +33,7 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 				diff = d100.DifficultyFromString(args[1].(string))
 			}
 			result := g.Player.GetCharSheet().SkillRollVsDiff(d100.SkillFromString(skillName), diff)
-			return (bool)(result.Success), nil
+			return g.forcedCheck(result.Success), nil
 		},
 		// o_test: DialogueCheck(NPC, 'intimidate')
 		"DialogueCheck": func(args ...interface{}) (interface{}, error) {
@@ -44,7 +44,7 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			mods := g.getDialogueCheckMods(g.Player, opponent, skill, nil)
 			chance := mods.Apply(skillValue)
 			result := d100.SuccessRoll(d100.Percentage(chance), 0)
-			return (bool)(result.Success), nil
+			return g.forcedCheck(result.Success), nil
 		},
 
 		// Player Inventory & Equipment
@@ -243,6 +243,15 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			killer := g.actorWithName(killerName)
 			victim := g.actorWithName(victimName)
 			g.msg(foundation.HiLite("%s kills %s.", killerName, victimName))
+			if victim == nil && len(args) > 2 { // victim lives on another map: the killer walks over there
+				if otherMap := g.ensureMapIsLoaded(args[2].(string)); otherMap != nil {
+					for _, actor := range otherMap.Actors() {
+						if actor.GetInternalName() == victimName {
+							victim = actor
+						}
+					}
+				}
+			}
 			killScript := g.NewScriptKill(killer, victim)
 			g.Scripts.Run(killScript)
 			return nil, nil
@@ -691,4 +700,14 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			return nil, nil
 		},
 	}
+}
+
+func (g *GameState) forcedCheck(rolled bool) bool {
+	switch g.ForcedChecks {
+	case "success":
+		return true
+	case "fail":
+		return false
+	}
+	return rolled
 }

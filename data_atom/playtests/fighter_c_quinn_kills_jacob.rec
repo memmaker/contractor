@@ -1,0 +1,40 @@
+# Fighter C alternative: rob Harker for 500, pay Quinn Rix to kill Jacob.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, killed_client)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Talk('daniel_harker')
+do: Choose('yes_collecting')
+do: Choose('money_or_violence')
+do: Choose('paid_thanks')
+do: Choose('bye')
+
+if: true
+do: WaitHours(19)
+
+# wait for noon at home; standing on his meeting spot would keep Quinn off it
+if: IsActorAtNamedLocation(ActorWithName('quinn_rix'), 'zone_residential_south', 'dark_alley_meeting_spot_two')
+do: Talk('quinn_rix')
+do: Choose('gun_collection')
+do: Choose('gun_for_hire')
+do: Choose('need_someone_dead')
+do: Choose('job_details')
+do: Choose('job_jacob')
+do: Choose('deal_jacob')
+
+if: true
+do: WaitHours(24)

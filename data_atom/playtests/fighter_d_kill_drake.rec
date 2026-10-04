@@ -1,0 +1,35 @@
+# Fighter D: find Drake in the cellar and execute him. Harker reacts.
+
+%rec: outcomes
+
+if: HasFlag('Killed(drake_gallows)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+# fighter build: Perception 8 + tagged Ranged Combat = 46%, the pistol by the bed, the clip from the dead drop
+if: true
+do: PickUp('10mm_pistol')
+do: Equip('10mm_pistol')
+do: SetSkill('RangedCombat', 46)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+if: true
+do: GoTo('ripperdoc_toilet')
+
+if: true
+do: Talk('drake_gallows')
+do: Choose('executioner')
+
+if: true
+do: Kill('drake_gallows')

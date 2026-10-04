@@ -304,6 +304,10 @@ func (g *GameState) afterActorMovedOnMap(actor *Actor, oldPos geometry.Point) []
 		actor.consumePathStep()
 	}
 
+	if actor.HasFlag(foundation.FlagBleeding) {
+		g.makeMapBloody(oldPos)
+	}
+
 	var animations []foundation.Animation
 
 	if objectAt, hasObj := g.currentMap().TryGetObjectAt(newPos); hasObj {
@@ -592,6 +596,9 @@ func (g *GameState) getWeaponAttackAnim(attacker *Actor, targetPos geometry.Poin
 		attackAnim = g.ui.GetAnimMuzzleFlash(sourcePos, fxtools.NewColorFromRGBA(g.palette.Get("White")).MultiplyWithScalar(0.7), 2, bulletCount, nil)
 	}
 
+	if attackAnim == nil { // animations off (or headless): hit effects must not hang off a missing projectile
+		return nil, false
+	}
 	attackAnim.SetAudioCue(weapon.GetFireAudioCue(attackMode.Mode))
 	return attackAnim, isProjectile
 }

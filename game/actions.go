@@ -8,6 +8,7 @@ import (
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/recfile"
+	"github.com/memmaker/go/textiles"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -497,6 +498,13 @@ func (g *GameState) DropItemFromInventory(uiItem foundation.Item) {
 
 func (g *GameState) PlayerDropItem(item foundation.Item) {
 	holder := g.Player
+	if item.IsWeapon() && item.ZapEffect() != "" && !g.currentMap().IsObjectAt(holder.Position()) { // a mine or grenade set down is a planted, armed trap
+		holder.Inventory.RemoveItem(item.Split(1))
+		g.plantTrap(holder, item)
+		g.msg(foundation.HiLite("You plant %s", item.Name()))
+		g.endPlayerTurn(g.Player.TimeNeededForActions())
+		return
+	}
 	holder.Inventory.RemoveItem(item)
 
 	g.addItemToMap(item, holder.Position())
@@ -807,4 +815,16 @@ func (g *GameState) couldPlayerSeeActor(actor *Actor) bool {
 	}
 
 	return true
+}
+
+func (g *GameState) plantTrap(planter *Actor, explosive foundation.Item) {
+	icons := gridmap.LoadIconsForObjects(filepath.Join(g.config.DataRootDir, "maps", g.currentMapName), g.palette)
+	trap := g.NewTrap(recfile.Record{
+		{Name: "Name", Value: explosive.GetInternalName()},
+		{Name: "Description", Value: explosive.Name()},
+		{Name: "ZapEffect", Value: explosive.ZapEffect()},
+		{Name: "TriggerOnProximity", Value: "true"},
+	}, func(objType string) textiles.TextIcon { return icons[objType] })
+	trap.SetPlantedBy(planter)
+	g.currentMap().AddObject(trap, planter.Position())
 }

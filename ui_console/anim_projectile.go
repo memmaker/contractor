@@ -10,14 +10,14 @@ import (
 type BaseAnimation struct {
 	finishedOrCancelled bool
 	followUp            []foundation.Animation
-	done                func()
+	done                []func() // every callback set runs, like the headless animation
 	calledDone          bool
 	requestMapUpdate    bool
 	audioCue            string
 }
 
 func (p *BaseAnimation) SetDoneCallback(done func()) {
-	p.done = done
+	p.done = append(p.done, done)
 }
 func (p *BaseAnimation) GetLights() []*gridmap.LightSource {
 	return nil
@@ -39,9 +39,13 @@ func (p *BaseAnimation) RequestMapUpdateOnFinish() {
 }
 func (p *BaseAnimation) onFinishedOrCancelled() {
 	p.finishedOrCancelled = true
-	if !p.calledDone && p.done != nil {
-		p.done()
+	if !p.calledDone {
 		p.calledDone = true
+		for _, done := range p.done {
+			if done != nil {
+				done()
+			}
+		}
 	}
 }
 func (p *BaseAnimation) SetFollowUp(animations []foundation.Animation) {
@@ -74,7 +78,7 @@ type ProjectileAnimation struct {
 func NewProjectileAnimation(path []geometry.Point, icon textiles.TextIcon, lookup func(loc geometry.Point) (textiles.TextIcon, bool), done func()) *ProjectileAnimation {
 	return &ProjectileAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		path:   path,
 		icon:   icon,

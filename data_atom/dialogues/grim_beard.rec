@@ -13,6 +13,7 @@ name: DuringTutorial
 npc: I am trying to teach you something here. Pay attention.
 #
 o_text: Cut the crap, Grim. Just give me the keys.
+o_id: keys_now
 o_cond: !HasFlag('grimKeysGiven')
 o_goto: GiveKeys
 #
@@ -23,14 +24,17 @@ name: SmallTalk
 npc: What do you want, youngster?
 #
 o_text: Can I have the keys to the apartment?
+o_id: ask_keys
 o_cond: !HasFlag('grimKeysGiven')
 o_goto: GiveKeys
 # Starter Mission
 o_text: I got this message from a guy named Jacob. What's the deal?
+o_id: ask_jacob
 o_cond: HasFlag('JobRead(starter)')
 o_goto: TellAboutJacob
 #
 o_text: About that job for Jacob. How should I play it?
+o_id: job_advice
 o_cond: HasFlag('JobAccepted(starter)') && !HasFlag('QuestCompleted(starter)')
 o_goto: JobAdvice
 #
@@ -41,6 +45,7 @@ o_text: What did you say we were doing last night?
 o_goto: LastNight
 #
 o_text: Never mind.
+o_id: bye
 o_goto: Goodbye
 #
 
@@ -69,6 +74,7 @@ o_text: I see, thanks.
 o_goto: Goodbye
 #
 o_text: Do you know where I can find him?
+o_id: jacob_location
 o_goto: TellJacobLocation
 #
 o_text: I wanted to ask something else.
@@ -82,6 +88,7 @@ npc: He has an apartment in the eastern residential district. Take a taxi, you c
 effect: SetFlag('LocationKnown(jacobs_home)')
 #
 o_text: Thanks.
+o_id: location_thanks
 o_goto: Goodbye
 #
 o_text: I wanted to ask something else.
@@ -93,15 +100,19 @@ npc: (Grim scratches his beard.) The Ripperdoc, Daniel Harker. Runs the clinic a
 + How you get it? Three ways I know of. Muscle, mouth or fingers.
 #
 o_text: Muscle?
+o_id: advice_muscle
 o_goto: AdviceForce
 #
 o_text: Mouth?
+o_id: advice_mouth
 o_goto: AdviceTalk
 #
 o_text: Fingers?
+o_id: advice_fingers
 o_goto: AdviceSneak
 #
 o_text: Got it, thanks.
+o_id: advice_done
 o_goto: Goodbye
 
 name: AdviceForce

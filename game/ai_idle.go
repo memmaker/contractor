@@ -33,7 +33,7 @@ func (b IdleBehaviour) Execute(g *GameState, actor *Actor) (TransitionEvent, int
 	}
 
 	// aggressive actors attack the player on sight
-	if actor.Aggressive && actor.CanSee(g.Player.Position()) && g.isDetectedByObserver(g.Player, actor) {
+	if actor.Aggressive && g.Player.currentMapName == actor.currentMapName && actor.CanSee(g.Player.Position()) && g.isDetectedByObserver(g.Player, actor) {
 		return NewProvokedEvent(g.Player), actor.TimeNeededForActions()
 	}
 

@@ -69,7 +69,15 @@ func (g *GameState) OpenContextMenuFor(mapPos geometry.Point) bool {
 }
 func (g *GameState) PlayerRest(isHealing bool, duration time.Duration) {
 	g.ui.FadeToBlack()
-	g.advanceTime(duration)
+	for rest := duration; rest > 0; rest -= time.Minute { // resting is the same simulation, headless, in minute ticks
+		g.tickWorld(min(time.Minute, rest), true, func() {})
+		if g.playerAttacker() != nil {
+			g.msg(foundation.HiLite("You are attacked!"))
+			break
+		}
+	}
+	g.updateFoVAndDijkstraMap(g.Player)
+	g.ui.ClearOverlays() // whatever was said before the rest is long over
 	if g.Player.HasWatch() {
 		g.ShowDateTime()
 	}
@@ -83,6 +91,31 @@ func (g *GameState) PlayerRest(isHealing bool, duration time.Duration) {
 		g.ui.UpdateStats()
 		g.msg(foundation.HiLite("You have recovered %s hit points.", strconv.Itoa(healedPoints)))
 	}
+}
+
+// PlayerRestUntil rests until the clock next shows hour:minute (tomorrow if that already passed today).
+func (g *GameState) PlayerRestUntil(isHealing bool, hour, minute int) {
+	g.PlayerRest(isHealing, g.NextClockTime(hour, minute).Sub(g.gameTime.Time))
+}
+
+// NextClockTime: the next moment the game clock shows hour:minute.
+func (g *GameState) NextClockTime(hour, minute int) time.Time {
+	now := g.gameTime.Time
+	at := time.Date(now.Year(), now.Month(), now.Day(), hour, minute, 0, 0, now.Location())
+	if !at.After(now) {
+		at = at.Add(24 * time.Hour)
+	}
+	return at
+}
+
+// playerAttacker: the nearest visible actor that is fighting the player, nil when nobody is.
+func (g *GameState) playerAttacker() *Actor {
+	for _, actor := range g.playerVisibleActorsByDistance() {
+		if actor.IsHostileTowards(g.Player) && actor.IsInCombat() {
+			return actor
+		}
+	}
+	return nil
 }
 
 func (g *GameState) SaveGame(toDirectory string) {
@@ -117,6 +150,16 @@ func (g *GameState) openRestMenu(isHealing bool) {
 		waitWord = "Rest"
 	}
 	g.ui.OpenMenu([]foundation.MenuItem{
+		{
+			Name:       fmt.Sprintf("%s until noon", waitWord),
+			Action:     func() { g.PlayerRestUntil(isHealing, 12, 0) },
+			CloseMenus: true,
+		},
+		{
+			Name:       fmt.Sprintf("%s until midnight", waitWord),
+			Action:     func() { g.PlayerRestUntil(isHealing, 0, 0) },
+			CloseMenus: true,
+		},
 		{
 			Name: fmt.Sprintf("%s for ten minutes", waitWord),
 			Action: func() {

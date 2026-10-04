@@ -340,6 +340,7 @@ func (g *GameState) NewScriptKill(killer, victim *Actor) ActionScript {
 	}
 
 	killer.TryEquipRangedWeaponFirst()
+	killer.GetFlags().Set(foundation.FlagRelentless) // a hired killer: no panic, follows the victim across maps, never loses him
 
 	return ActionScript{
 		Name: fmt.Sprintf("%s_kills_%s", killer.GetInternalName(), victim.GetInternalName()),

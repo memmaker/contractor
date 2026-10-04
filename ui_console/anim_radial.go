@@ -31,7 +31,7 @@ func NewRadialAnimation(origin geometry.Point, dijkstra map[geometry.Point]int, 
 	}
 	return &RadialAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		drawables:       drawables,
 		origin:          origin,

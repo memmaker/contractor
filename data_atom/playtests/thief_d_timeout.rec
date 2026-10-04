@@ -1,0 +1,17 @@
+# Thief D variant: ignore the offer for 48 hours, then come back to the south district.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, job_lost)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: WaitHours(49)
+
+if: true
+do: WaitMinutes(5)

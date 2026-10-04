@@ -8,7 +8,6 @@ import (
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/textiles"
 	"image/color"
-	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -95,7 +94,7 @@ func (u *UI) UpdateVisibleActors() {
 
 		hallucinating := u.isPlayerHallucinating()
 		if hallucinating {
-			asPercent = rand.Float64()
+			asPercent = uiRand.Float64()
 		}
 		barIcon := '*'
 		if enemy.HasFlag(foundation.FlagSleep) {

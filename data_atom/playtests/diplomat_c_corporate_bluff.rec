@@ -1,0 +1,32 @@
+# Diplomat C: business outfit, weapon holstered, corporate bluff (social Easy, forced).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, client_backed_off)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: PlayerAddItem('armatech_executive_suit')
+do: Equip('armatech_executive_suit')
+do: Unequip('10mm_smg')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: ForceChecks('success')
+do: Talk('jacob_thorne')
+do: Choose('corporate_unarmed')
+do: Choose('smart_man')
+do: Leave()

@@ -1,0 +1,39 @@
+# Diplomat A: Harker gives 250, you keep him safe. Deposit it.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Talk('daniel_harker')
+do: Choose('yes_collecting')
+do: Choose('work_something_out')
+do: Choose('half_the_money')
+do: Choose('half_thanks')
+do: Choose('bye')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

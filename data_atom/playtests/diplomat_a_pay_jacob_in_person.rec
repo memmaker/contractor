@@ -1,0 +1,38 @@
+# Diplomat A variant: Harker deal, then hand the 250 to Jacob yourself.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Talk('daniel_harker')
+do: Choose('yes_collecting')
+do: Choose('work_something_out')
+do: Choose('half_the_money')
+do: Choose('half_thanks')
+do: Choose('bye')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: Talk('jacob_thorne')
+do: Choose('collect_reward')
+do: Choose('pay_jacob')
+do: Choose('done_with_you')
+do: Leave()

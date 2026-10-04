@@ -4,7 +4,6 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
 	"image/color"
-	"math/rand"
 	"strconv"
 )
 
@@ -100,13 +99,13 @@ func (d *DamageAnimation) GetDrawables() map[geometry.Point]textiles.TextIcon {
 	})
 
 	for i := 0; i < d.bloodPerTick; i++ {
-		randomNeighbor := neighbors[rand.Intn(len(neighbors))]
+		randomNeighbor := neighbors[uiRand.Intn(len(neighbors))]
 		icon := textiles.TextIcon{
-			Char: []rune{'.', ',', ';', ':'}[rand.Intn(4)],
-			Fg:   d.bloodColors[rand.Intn(len(d.bloodColors))],
+			Char: []rune{'.', ',', ';', ':'}[uiRand.Intn(4)],
+			Fg:   d.bloodColors[uiRand.Intn(len(d.bloodColors))],
 		}
-		if rand.Intn(4) == 0 {
-			icon.Bg = d.bloodColors[rand.Intn(len(d.bloodColors))]
+		if uiRand.Intn(4) == 0 {
+			icon.Bg = d.bloodColors[uiRand.Intn(len(d.bloodColors))]
 		}
 		drawables[randomNeighbor] = icon
 	}
@@ -132,5 +131,5 @@ func (d *DamageAnimation) IsDone() bool {
 }
 
 func (d *DamageAnimation) SetDoneCallback(done func()) {
-	d.done = done
+	d.BaseAnimation.SetDoneCallback(done)
 }

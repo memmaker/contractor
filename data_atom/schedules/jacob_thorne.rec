@@ -1,0 +1,20 @@
+# Jacob is home most of the day; every evening he walks over to his favourite bar for a few drinks.
+%rec: slots
+
+day: every_day
+time: 08:00
+location: jacobs_home
+map: zone_residential_east
+description: lounging on the couch
+
+day: every_day
+time: 20:00
+location: bar_stool
+map: zone_residential_east
+description: drinking, loudly
+
+day: every_day
+time: 23:30
+location: jacobs_home
+map: zone_residential_east
+description: sleeping off the drinks

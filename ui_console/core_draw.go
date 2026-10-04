@@ -7,7 +7,6 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
 	"image/color"
-	"math/rand"
 	"unicode"
 )
 
@@ -219,8 +218,8 @@ func (u *UI) getIconForActor(actor foundation.ActorForUI) textiles.TextIcon {
 
 	isHallucinating := u.isPlayerHallucinating()
 	if isHallucinating {
-		randomLetter := rune('A' + rand.Intn(26))
-		if rand.Intn(2) == 0 {
+		randomLetter := rune('A' + uiRand.Intn(26))
+		if uiRand.Intn(2) == 0 {
 			randomLetter = unicode.ToLower(randomLetter)
 		}
 		return textiles.TextIcon{

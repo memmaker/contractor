@@ -206,6 +206,7 @@ type GameUI interface {
 	SetColors(palette textiles.ColorPalette, colors map[ItemCategory]color.RGBA)
 
 	PlayMusic(fileName string)
+	ClearOverlays() // barks and other on-map text, dropped on a map change
 	PlayCue(cue string)
 
 	SetSneakOverlay(overlay map[geometry.Point]fxtools.HDRColor)
@@ -265,6 +266,7 @@ type Animation interface {
 }
 
 type MenuItem struct {
+	ID         string // optional stable id (dialogue o_id), used by autoplay scripts
 	Name       string
 	Action     func()
 	CloseMenus bool

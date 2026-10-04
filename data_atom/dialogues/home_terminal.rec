@@ -12,12 +12,14 @@ effect: None
 #
 # Starter Mission
 o_text: (Job offer) Extract money, reward: 50% cut.
+o_id: job_offer
 o_cond: !HasFlag('JobAccepted(starter)') && !HasFlag('JobDeclined(starter)') && !HasFlag('Killed(jacob_thorne)')
 o_goto: starter_mission
 #
 #
 # Chapter 1 hook
 o_text: (New job offer) A mansion outside the wall.
+o_id: chapter1_offer
 o_cond: HasFlag('QuestCompleted(starter)')
 o_goto: chapter1_offer
 #
@@ -27,6 +29,7 @@ o_cond: HasFlag('Killed(grim_beard)')
 o_goto: DeadMansSwitch
 #
 o_text: Leave.
+o_id: leave
 o_goto: End
 
 ### Main Quest Delivery if grim_beard dies ###
@@ -72,9 +75,11 @@ npc: ** Contractor Client Interface **
 effect: SetFlag('JobRead(starter)')
 #
 o_text: Accept the job.
+o_id: accept_job
 o_goto: starter_accept
 #
 o_text: Decline the job.
+o_id: decline_job
 o_goto: starter_decline
 #
 o_text: Go back.
@@ -94,6 +99,7 @@ o_text: Go back.
 o_goto: DefaultIntroduction
 #
 o_text: Leave.
+o_id: accepted_leave
 o_goto: End
 
 name: starter_decline
@@ -106,6 +112,7 @@ o_text: Go back.
 o_goto: DefaultIntroduction
 #
 o_text: Leave.
+o_id: declined_leave
 o_goto: End
 
 name: End
@@ -124,6 +131,7 @@ npc: ** Contractor Client Interface **
 + > Payment: more sat than you have ever seen.
 #
 o_text: Take the job. (Ends the demo)
+o_id: chapter1_accept
 o_goto: chapter1_accept
 #
 o_text: Not yet.

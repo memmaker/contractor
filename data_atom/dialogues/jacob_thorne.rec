@@ -19,40 +19,51 @@ npc: Wait, I recognize you. You're the contractor I hired.
 + What the hell are *you* doing here?
 #
 o_text: I'm here to collect my reward.
+o_id: collect_reward
 o_cond: !HasFlag('ClientRewardReceived(starter)')
 o_goto: CollectPayment
 #
 o_text: I'm here to renegotiate the terms of our contract.
+o_id: renegotiate
 o_goto: NegotiateContract
 #
 o_text: I represent some bigger third party. You better listen carefully now.
+o_id: corporate_armed
 o_cond: HasOutfit('business') && HasVisibleWeapon()
 o_test: RollSkill('social', 'Hard')
 o_succ: CorporateSuccess
 o_fail: CorporateFail
 #
 o_text: I represent some bigger third party. You better listen carefully now.
+o_id: corporate_unarmed
 o_cond: HasOutfit('business') && !HasVisibleWeapon()
 o_test: RollSkill('social', 'Easy')
 o_succ: CorporateSuccess
 o_fail: CorporateFail
 #
 o_text: You'll leave the Ripperdoc alone, is that clear?
+o_id: intimidate
 o_test: RollSkill('intimidate', 'Hard')
 o_succ: IntimidateSuccess
 o_fail: IntimidateFail
 #
 o_text: I've got a bullet with your name on it.
+o_id: bullet_easy
 o_cond: HasFlag('took_single_round') && !HasFlag('PlayerKillCount')
 o_test: RollSkill('intimidate', 'Easy')
 o_succ: IntimidateSuccess
 o_fail: IntimidateFail
 #
 o_text: I've got a bullet with your name on it.
+o_id: bullet_hard
 o_cond: HasFlag('took_single_round') && HasFlag('PlayerKillCount')
 o_test: RollSkill('intimidate', 'Hard')
 o_succ: IntimidateSuccess
 o_fail: IntimidateFail
+#
+o_text: Nothing. Just checking in.
+o_id: leave
+o_goto: End
 
 name: IntimidateSuccess
 npc: (He looks scared.) Okay, okay. I'll leave the Ripperdoc alone.
@@ -60,13 +71,16 @@ npc: (He looks scared.) Okay, okay. I'll leave the Ripperdoc alone.
 effect: SetFlag('jacob_backed_off')
 #
 o_text: You've got guts, at least. Got any real work for someone like me?
+o_id: ask_real_work
 o_cond: HasFlag('PlayerKillCount')
 o_goto: BetterJob
 #
 o_text: You're damn right you will.
+o_id: damn_right
 o_goto: DefaultIntroduction
 #
 o_text: You know what? I have to be sure. A bullet to your forehead should do the trick.
+o_id: kill_anyway
 o_goto: KillClient
 
 name: IntimidateFail
@@ -74,6 +88,7 @@ npc: You piece of shit. You think you can intimidate me?
 + I am going to rip you apart, choomba.
 #
 o_text: <Fight>
+o_id: fight
 o_cond: !HasFlag('PlayerKillCount')
 o_goto: KillClient
 #
@@ -95,10 +110,12 @@ npc: I was told to use the dead drop? I am not sure why you are here.
 + But ok, let's go with it. So, did you get my money?
 #
 o_text: Sure, it's right here.
+o_id: pay_jacob
 o_cond: HasItem('gold', 250)
 o_goto: GiveMoney
 #
 o_text: Not yet, still working on it.
+o_id: not_yet
 o_goto: DefaultIntroduction
 
 name: GiveMoney
@@ -110,6 +127,7 @@ npc: Well, well, looks like you're not completely useless after all.
 + Now, I trust you’ll get out of my sight.
 #
 o_text: I'm done with you. Don’t forget our deal.
+o_id: done_with_you
 o_goto: DefaultIntroduction
 #
 o_text: This better buy me some loyalty, or I’ll be back.
@@ -121,16 +139,19 @@ npc: The deal was already set. What makes you think you deserve more?
 + I’m not in the habit of paying twice.
 #
 o_text: The risk was higher than expected. I want double.
+o_id: want_double
 o_test: RollSkill('social', 'Hard')
 o_succ: NegotiateSuccess
 o_fail: NegotiateFail
 #
 o_text: I know your dirty secrets. Pay up, or I spill them all.
+o_id: dirty_secrets
 o_test: RollSkill('intimidate', 'Easy')
 o_succ: NegotiateSuccess
 o_fail: NegotiateFail
 #
 o_text: Fine, let’s call it even. I’ll take the original payment.
+o_id: call_it_even
 o_goto: DefaultIntroduction
 
 name: NegotiateSuccess
@@ -141,6 +162,7 @@ effect: StackTransferFrom(NPC, 'gold', 250)
 effect: SetFlag('starter(client_extorted)')
 #
 o_text: You made the right choice.
+o_id: right_choice
 o_goto: DefaultIntroduction
 
 name: NegotiateFail
@@ -149,6 +171,7 @@ npc: You’ve got guts, but no brains. No more cash, choomba. Take the deal or w
 + I’m done negotiating.
 #
 o_text: You’ll regret this.
+o_id: regret
 o_goto: DefaultIntroduction
 
 name: CorporateSuccess
@@ -158,9 +181,11 @@ npc: A third party. Of course. I didn't realize this had gone that far up.
 effect: SetFlag('jacob_backed_off')
 #
 o_text: Smart man.
+o_id: smart_man
 o_goto: DefaultIntroduction
 #
 o_text: I'll pass that along.
+o_id: pass_along
 o_goto: End
 
 name: CorporateFail
@@ -169,9 +194,11 @@ npc: Nice suit. It doesn't fit you, and neither does that story.
 + Nobody sent you. Now get out of my house.
 #
 o_text: Fine. We're done here.
+o_id: corporate_done
 o_goto: End
 #
 o_text: Wrong answer.
+o_id: wrong_answer
 o_goto: KillClient
 
 name: End
@@ -186,6 +213,7 @@ npc: Real work. Fine. Some rich bastard is hiding up in a mansion outside the wa
 effect: SetFlag('jacob_better_job')
 #
 o_text: I'll be in touch.
+o_id: in_touch
 o_goto: End
 
 name: BackedOff
@@ -193,8 +221,10 @@ npc: (He flinches when he sees you.)
 + I told you, the Doc is off the table. What else do you want?
 #
 o_text: Nothing. Just checking.
+o_id: just_checking
 o_goto: End
 #
 o_text: Got any real work for someone like me?
+o_id: ask_real_work_later
 o_cond: !HasFlag('jacob_better_job')
 o_goto: BetterJob

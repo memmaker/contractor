@@ -33,6 +33,7 @@ const (
 	FlagUnconscious
 	FlagIgnoresCrime
 	FlagDistracted
+	FlagBleeding // seconds of bleeding accrued, see bleed in core_loop
 
 	// Bookkeeping Flags
 	FlagHunger
@@ -50,6 +51,7 @@ const (
 	FlagChase
 	FlagSpawnDead
 	FlagProhibitsOpenCarry
+	FlagRelentless // never panics when heavily injured (contract killers)
 
 	// Perks
 	FlagSlowDigestion
@@ -73,6 +75,8 @@ func (f ActorFlag) String() string { // Nice strings for display
 		return "Starving"
 	case FlagStun:
 		return "Stun"
+	case FlagBleeding:
+		return "Bleeding"
 	case FlagSlow:
 		return "Slow"
 	case FlagHaste:
@@ -113,6 +117,8 @@ func (f ActorFlag) String() string { // Nice strings for display
 		return "Knocked Down"
 	case FlagZombie:
 		return "Zombie"
+	case FlagRelentless:
+		return "Relentless"
 	case FlagAnimal:
 		return "Animal"
 	case FlagRunning:
@@ -149,6 +155,8 @@ func (f ActorFlag) StringShort() string { // short abbreviated strings (2-3 lett
 		return "Sta"
 	case FlagStun:
 		return "Stn"
+	case FlagBleeding:
+		return "Bld"
 	case FlagSlow:
 		return "Slw"
 	case FlagHaste:
@@ -220,6 +228,8 @@ func (f ActorFlag) ShowInHud() bool {
 		return true
 	case FlagStun:
 		return true
+	case FlagBleeding:
+		return true
 	case FlagSlow:
 		return true
 	case FlagHaste:
@@ -285,6 +295,8 @@ func ActorFlagFromString(flag string) ActorFlag {
 		return FlagStarving
 	case "stun":
 		return FlagStun
+	case "bleeding":
+		return FlagBleeding
 	case "slow":
 		return FlagSlow
 	case "haste":

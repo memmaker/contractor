@@ -187,6 +187,10 @@ func (g *GameState) getMeleeDamage(attacker *Actor, cth int, victim *Actor, part
 		damage = kickBaseDamage + meleeDamageBonus
 	}
 
+	if attacker.HasFlag(foundation.FlagAnimal) && attacker.MeleeDamage > 0 { // a rat bites, it does not kick
+		targetingMode, damage = TargetingModePunch, attacker.MeleeDamage
+	}
+
 	itemInHand, hasItem := attacker.GetInventory().GetMeleeWeapon()
 
 	if hasItem && itemInHand.IsMeleeWeapon() {

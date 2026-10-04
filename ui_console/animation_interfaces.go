@@ -7,7 +7,6 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
 	"image/color"
-	"math/rand"
 )
 
 func (u *UI) GetAnimMove(actor foundation.ActorForUI, old geometry.Point, new geometry.Point) foundation.Animation {
@@ -249,11 +248,11 @@ func (u *UI) GetAnimConfuse(location geometry.Point, done func()) foundation.Ani
 
 	confuseRune := []rune("?¿¡!")
 	randomRune := func() rune {
-		return confuseRune[rand.Intn(len(confuseRune))]
+		return confuseRune[uiRand.Intn(len(confuseRune))]
 	}
 	confuseColors := []color.RGBA{u.uiTheme.GetColorByName("LightMagenta"), u.uiTheme.GetColorByName("LightRed"), u.uiTheme.GetColorByName("Yellow_1"), u.uiTheme.GetColorByName("LightGreen"), u.uiTheme.GetColorByName("light_blue_3")}
 	randomColor := func() color.RGBA {
-		return confuseColors[rand.Intn(len(confuseColors))]
+		return confuseColors[uiRand.Intn(len(confuseColors))]
 	}
 	cycleCount := 4
 
@@ -312,8 +311,8 @@ func (u *UI) GetAnimBreath(path []geometry.Point, done func()) []foundation.Anim
 	aroundDest = append(aroundDest, dest)
 
 	for _, point := range path {
-		randomAroundPath = append(randomAroundPath, point.Add(geometry.Point{X: rand.Intn(3) - 1, Y: rand.Intn(3) - 1}))
-		randomAroundPath = append(randomAroundPath, point.Add(geometry.Point{X: rand.Intn(3) - 1, Y: rand.Intn(3) - 1}))
+		randomAroundPath = append(randomAroundPath, point.Add(geometry.Point{X: uiRand.Intn(3) - 1, Y: uiRand.Intn(3) - 1}))
+		randomAroundPath = append(randomAroundPath, point.Add(geometry.Point{X: uiRand.Intn(3) - 1, Y: uiRand.Intn(3) - 1}))
 	}
 
 	smokeAnim := u.GetAnimTiles(randomAroundPath, []textiles.TextIcon{

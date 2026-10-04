@@ -1,0 +1,40 @@
+# Thief A variant: pick the stash lock.
+
+%rec: outcomes
+
+if: HasFlag('Killed(daniel_harker)')
+do: Fail('Harker died')
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+# thief build: 5 lockpicks must beat the lock
+
+if: true
+do: SetSkill('Mechanics', 46)
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Use('ripperdoc_stash')
+do: Take('gold')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

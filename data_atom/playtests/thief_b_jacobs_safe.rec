@@ -1,0 +1,48 @@
+# Thief B (best ending): pick Jacob's safe, pay him with his own money. Then take the chapter 1 job.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, paid_with_clients_money)') && GameOver()
+
+%rec: frames
+
+# thief build: 5 lockpicks must beat the lock
+
+if: true
+do: SetSkill('Mechanics', 110)
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: Use('jacob_safe')
+do: Take('gold')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')
+
+if: true
+do: Use('home_terminal')
+do: Choose('chapter1_offer')
+do: Choose('chapter1_accept')

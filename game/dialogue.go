@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"github.com/memmaker/go/convo"
 	"github.com/memmaker/go/fxtools"
+	"github.com/memmaker/go/recfile"
 	"path/filepath"
+	"strings"
 )
 
 func (g *GameState) PlayerStartDialogue(dialogueFile string, partner foundation.ChatterSource) {
@@ -35,8 +37,30 @@ func (g *GameState) PlayerStartDialogue(dialogueFile string, partner foundation.
 	conversation.MergeVariables(params)
 	rootNode := conversation.GetRootNode()
 
+	g.dialogueOptionIDs = g.loadDialogueOptionIDs(conversationFilename)
 	state := conversation.OpenDialogueNode(rootNode)
 	g.updateDialogueState(conversation, state, partner)
+}
+
+// loadDialogueOptionIDs maps "node|option text" to the option's o_id.
+// convo ignores unknown o_ fields, so we read them here.
+func (g *GameState) loadDialogueOptionIDs(filename string) map[string]string {
+	ids := make(map[string]string)
+	records, _ := recfile.ReadMultiAndClose(fxtools.MustOpen(filename))
+	for _, node := range records["Nodes"] {
+		nodeName, optionText := "", ""
+		for _, field := range node {
+			switch strings.ToLower(field.Name) {
+			case "name":
+				nodeName = field.Value
+			case "o_text":
+				optionText = g.FillTemplatedText(strings.TrimSpace(field.Value))
+			case "o_id":
+				ids[nodeName+"|"+optionText] = field.Value
+			}
+		}
+	}
+	return ids
 }
 
 func (g *GameState) NPCStartDialogue(dialogueFile string, partner foundation.ChatterSource, tryInitiateWith string, isTerminal bool) bool {
@@ -70,7 +94,9 @@ func (g *GameState) NPCStartDialogue(dialogueFile string, partner foundation.Cha
 	openingCondition, openingErr := opening.BranchCondition.Evaluate(conversation.Variables)
 	asBool, isBool := openingCondition.(bool)
 	if asBool && isBool && openingErr == nil {
+		optionIDs := g.loadDialogueOptionIDs(conversationFilename)
 		g.QueueActionAfterAnimation(func() {
+			g.dialogueOptionIDs = optionIDs
 			g.msg(foundation.HiLite("%s is addressing you.", partner.Name()))
 			g.ui.IndicateConversationStartByNPC(partner, func() {
 				state := conversation.OpenDialogueNode(opening.BranchName)
@@ -106,6 +132,7 @@ func (g *GameState) updateDialogueState(conversation *convo.Conversation, state 
 	default:
 		for _, option := range state.PlayerOptions {
 			menuItems = append(menuItems, foundation.MenuItem{
+				ID:   g.dialogueOptionIDs[state.NodeName+"|"+option.PlayerText],
 				Name: option.PlayerText,
 				Action: func() {
 					nextState := conversation.OpenDialogueNode(option.FollowUpBranch)

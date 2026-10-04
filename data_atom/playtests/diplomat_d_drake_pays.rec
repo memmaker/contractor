@@ -1,0 +1,35 @@
+# Diplomat D variant: nothing is free, Drake pays 200.
+
+%rec: outcomes
+
+if: HasFlag('drake_freed') && HasItem('gold', 200)
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: GoTo('ripperdoc_toilet')
+
+if: true
+do: Talk('drake_gallows')
+do: Choose('sure_thing')
+do: Choose('nothing_is_free')
+do: Choose('want_cash')
+do: Choose('cash_deal')
+
+if: true
+do: Use('cellar_toolbox')
+do: Take('hospital_cell_door')
+
+if: true
+do: Use('hospital_cell_door')
+do: GoTo('next_to_the_cage')

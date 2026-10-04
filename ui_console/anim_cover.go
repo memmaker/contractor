@@ -16,7 +16,7 @@ func NewCoverAnimation(position geometry.Point, icon textiles.TextIcon, turnCoun
 	drawables[position] = icon
 	return &CoverAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		framesLeft: turnCount,
 		drawables:  drawables,

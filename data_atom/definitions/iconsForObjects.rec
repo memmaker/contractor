@@ -80,3 +80,7 @@ Name: PosterGreen
 Icon: ≡
 Foreground: neon_green_1
 Background: white
+
+Name: Trap
+Icon: ☼
+Foreground: yellow_2

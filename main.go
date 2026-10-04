@@ -1,3 +1,4 @@
+//go:debug randseednop=0
 package main
 
 import (
@@ -96,6 +97,8 @@ func main() {
 			gameState := game.NewGameState(config)
 			validation.GraphDialogue(config.DataRootDir, gameState, filename, hideBackLinksToNode)
 			return
+		} else if os.Args[1] == "autoplay" {
+			os.Exit(runAutoplay(config, os.Args[2:]))
 		} else if os.Args[1] == "val_ammo" {
 			if validation.ValidateWeaponAndAmmoPairings(config.DataRootDir) > 0 {
 				os.Exit(1)

@@ -40,22 +40,27 @@ o_text: Just drive.
 o_goto: Drive
 #
 o_text: Take me home.
+o_id: go_home
 o_cond: !IsMap('zone_residential_south')
 o_goto: DriveHome
 #
 o_text: Get me to the eastern rim district (Cognetic Bastards & La Boom).
+o_id: go_eastern_rim
 o_cond: !IsMap('zone_commerce')
 o_goto: EasternRim
 #
 o_text: Drop me off in the eastern residential district.
+o_id: go_residential_east
 o_cond: !IsMap('zone_residential_east')
 o_goto: ResidentialEast
 #
 o_text: Take me to the western residential district.
+o_id: go_residential_west
 o_cond: !IsMap('zone_residential_west')
 o_goto: ResidentialWest
 #
 o_text: Get me to the Terra Vitae headquarters.
+o_id: go_terra_vitae
 o_cond: !IsMap('hq_terra_vitae')
 o_goto: TerraVitae
 #

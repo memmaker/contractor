@@ -1,0 +1,55 @@
+# Thief C: buy dynamite from Big Bob, blast into his cellar from the sewers, pick his safe, pay the dead drop out of pocket.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(starter, reward_received)')
+
+%rec: frames
+
+# thief build: tagged Mechanics on an agile, sturdy starter
+if: true
+do: SetSkill('Mechanics', 46)
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: Talk('big_bob')
+do: Choose('show_wares')
+do: Buy('dynamite')
+do: Choose('bye')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: GoTo('bob_cellar_wall')
+do: UseItem('dynamite', 5)
+do: Drop('dynamite')
+do: GoTo('bob_cellar_cover')
+do: WaitMinutes(1)
+
+if: true
+do: Use('bob_safe')
+do: Take('gold')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Use('dead_drop')
+do: Put('gold', 250)
+
+if: true
+do: WaitHours(7)
+
+if: true
+do: Use('dead_drop')
+do: Take('binge')

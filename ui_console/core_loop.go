@@ -155,11 +155,12 @@ func (u *UI) AfterPlayerMoved(moveInfo foundation.MoveInfo) {
 }
 
 func (u *UI) AddAnimations(animations []foundation.Animation) {
-	if !u.game.MapContainsPlayer() {
-		return
-	}
 	for _, animation := range animations {
 		if textAnim, isTextAnim := animation.(TextAnimation); isTextAnim && textAnim != nil {
+			if !u.game.MapContainsPlayer() { // nothing to show, but the game logic hanging off the animation (damage, follow-ups) must still run
+				cancelRecursive(textAnim)
+				continue
+			}
 			u.animator.AddAnimation(textAnim)
 		}
 	}

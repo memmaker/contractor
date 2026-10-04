@@ -22,7 +22,7 @@ func NewTilesAnimation(positions []geometry.Point, icons []textiles.TextIcon, do
 	}
 	return &TilesAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 		positions: positions,
 		drawables: drawables,

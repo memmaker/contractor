@@ -17,7 +17,7 @@ func NewMuzzleAnimation(position geometry.Point, lightColor fxtools.HDRColor, ra
 	bulletCount = min(bulletCount, 3)
 	return &MuzzleAnimation{
 		BaseAnimation: &BaseAnimation{
-			done: done,
+			done: []func(){done},
 		},
 
 		framesLeft: bulletCount * 2,

@@ -64,7 +64,7 @@ Description: a stick of dynamite
 Long_Description: A stick of dynamite. It's a powerful explosive, but it's also very unstable. Handle with care.
 Category: Other
 Weight: 1
-Cost: 350
+Cost: 150
 zap_effect: explode
 tags: timed
 chance_to_break_on_throw: 10

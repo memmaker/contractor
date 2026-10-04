@@ -1,0 +1,34 @@
+# Diplomat D: free Drake for nothing, pick his cell door, he escapes.
+
+%rec: outcomes
+
+if: HasFlag('drake_freed') && HasItem('doc_stash_key')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('job_offer')
+do: Choose('accept_job')
+do: Choose('accepted_leave')
+
+if: true
+do: GoTo('ripperdoc_toilet')
+
+if: true
+do: Talk('drake_gallows')
+do: Choose('who_are_you')
+do: Choose('stay_calm')
+do: Choose('free_for_nothing')
+
+if: true
+do: Use('cellar_toolbox')
+do: Take('hospital_cell_door')
+
+if: true
+do: Use('hospital_cell_door')
+do: GoTo('next_to_the_cage')

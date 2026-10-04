@@ -130,3 +130,25 @@ Description: plastic boxes
 item: meld(10)
 Position: (30,1)
 
+Category: UnknownContainer
+Name: bob_safe
+Description: wall safe
+flag_removal_of: gold
+lockdifficulty: easy
+lockflag: bob_safe_key
+item: gold(300)
+Position: (34,12)
+
+Category: NamedLocation
+Identifier: bob_cellar_wall
+Position: (45,15)
+
+Category: NamedLocation
+Identifier: bob_cellar_cover
+Position: (47,10)
+
+Category: UnknownContainer
+Name: cellar_toolbox
+Description: a dusty toolbox
+item: key('hospital_cell_door', "Cell door key")
+Position: (20,5)

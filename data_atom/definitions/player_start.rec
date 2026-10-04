@@ -4,6 +4,7 @@ mapName: zone_residential_south
 mapLocation: spawn
 #item: combat_knife
 item: rugged_trenchcoat
+item: gold(150)
 item: 10mm_jhp
 item: 10mm_ap
 #item: food_ration

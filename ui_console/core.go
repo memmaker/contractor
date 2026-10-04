@@ -10,7 +10,9 @@ import (
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/textiles"
 	"image/color"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 type UI struct {
@@ -354,6 +356,8 @@ func (u *UI) getLowerStatusBar(statusValues foundation.HudValueMap, flags map[fo
 	return statusStr
 }
 
+func (u *UI) ClearOverlays() { u.mapOverlay.ClearAll() }
+
 func (u *UI) PlayMusic(fileName string) {
 	if !u.settings.AudioEnabled || !u.settings.MusicEnabled {
 		return
@@ -367,3 +371,6 @@ func (u *UI) PlayCue(cueName string) {
 	}
 	u.audioPlayer.PlayCue(cueName)
 }
+
+// uiRand feeds purely cosmetic effects. The game's own rolls use the seeded global source, so a visual run plays out exactly like a headless one.
+var uiRand = rand.New(rand.NewSource(time.Now().UnixNano()))

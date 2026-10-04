@@ -210,6 +210,10 @@ func explosion(g *GameState, zapper *Actor, loc geometry.Point, params foundatio
 		DamageAmount:    damageAmount,
 	}
 	for point, _ := range affected {
+		damage.BodyPart = d100.Body
+		if rand.Intn(4) > 0 { // a blast at ground level mostly takes the legs; the limb damage threshold then cripples
+			damage.BodyPart = d100.Legs
+		}
 		damageAnims := g.damageLocation(damage, point)
 		deferredAnimations = append(deferredAnimations, damageAnims...)
 		affectedPoints = append(affectedPoints, point)

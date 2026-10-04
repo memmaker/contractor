@@ -525,8 +525,10 @@ func (g *GameState) applyDamageToActorAnimated(damageWithSource SourcedDamage, d
 		}
 
 		evade := g.ui.GetAnimEvade(defender, playMissSound)
-		evade.SetAudioCue(defender.GetDodgedAudioCue())
-		damageAnims = []foundation.Animation{evade}
+		if evade != nil {
+			evade.SetAudioCue(defender.GetDodgedAudioCue())
+			damageAnims = []foundation.Animation{evade}
+		}
 		if attacker == g.Player {
 			g.msg(foundation.Msg("You miss"))
 		} else {
@@ -559,6 +561,9 @@ func (g *GameState) damageActor(damage SourcedDamage, victim *Actor) foundation.
 	}
 	if didCripple {
 		damage = damage.WithCrippling()
+		if !victim.HasFlag(foundation.FlagRobot) && !victim.HasFlag(foundation.FlagZombie) {
+			victim.GetFlags().Set(foundation.FlagBleeding)
+		}
 	}
 
 	isOverKill := victim.GetHitPoints() <= (-victim.GetHitPointsMax() / 2)

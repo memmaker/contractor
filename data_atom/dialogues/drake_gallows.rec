@@ -34,9 +34,11 @@ name: FoundInCellar
 npc: Damn, get me out of here already.
 #
 o_text: Sure thing.
+o_id: sure_thing
 o_goto: FreeDrake
 #
 o_text: So, who are you?
+o_id: who_are_you
 o_goto: WhoAreYou
 #
 o_text: Do you know a guy named 'Jacob'?
@@ -44,15 +46,18 @@ o_cond: HasFlag('JobRead(starter)')
 o_goto: DrakeJacobQuestion
 #
 o_text: I am your executioner.
+o_id: executioner
 o_goto: EndKillDrake
 
 name: FreeDrake
 npc: You are busting me out? This must be my lucky day.
 #
 o_text: You are welcome.
+o_id: free_for_nothing
 o_goto: EndNoPayment
 #
 o_text: Nothing is free. I need something from you.
+o_id: nothing_is_free
 o_goto: NothingIsFree
 
 name: WhoAreYou
@@ -60,15 +65,18 @@ npc: I am Drake Gallows, I work here.
 + Daniel, the bastard, locked me away in the cellar.
 #
 o_text: Stay calm. I will get you out.
+o_id: stay_calm
 o_goto: FreeDrake
 #
 o_text: So you have no idea why he did this?
 o_goto: WhyDidHeDoThis
 #
 o_text: I have no running contract involving you. I am leaving.
+o_id: no_contract
 o_goto: NoContract
 #
 o_text: I just don't get why he didn't kill you. I will correct this mistake right here.
+o_id: correct_mistake
 o_goto: EndKillDrake
 
 name: WhyDidHeDoThis
@@ -87,9 +95,11 @@ name: NothingIsFree
 npc: Figures. So what is it?
 #
 o_text: You owe me 1000 sat for my troubles.
+o_id: want_cash
 o_goto: WantCash
 #
 o_text: You owe me a favor. You'll see me again.
+o_id: want_favor
 o_goto: EndWithFavor
 
 name: WantCash
@@ -98,9 +108,11 @@ npc: Listen, I obviously don't run this hospital anymore,
 + It's all yours if you just open that damned door.
 #
 o_text: Fine, we have a deal.
+o_id: cash_deal
 o_goto: EndWithPayment
 #
 o_text: Let's just say you owe me a favor then.
+o_id: cash_favor
 o_goto: EndWithFavor
 #
 o_text: I'll think about it.
