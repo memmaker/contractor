@@ -67,8 +67,7 @@ func (b KillBehaviour) Execute(g *GameState, actor *Actor) (TransitionEvent, int
 		isLoaded := mainHandItem.IsLoadedWeapon()
 		canBeReloaded := actor.GetInventory().HasAmmoWithCaliber(mainHandItem.GetCaliber())
 		doesntNeedAmmo := !mainHandItem.NeedsAmmo()
-		if !isLoaded && canBeReloaded { // reload
-			g.actorReloadMainHandWeapon(actor)
+		if !isLoaded && canBeReloaded && g.actorReloadMainHandWeapon(actor) { // reload; a failed reload falls through to melee
 			return NoEvent, actor.TimeNeededForActions()
 		}
 
