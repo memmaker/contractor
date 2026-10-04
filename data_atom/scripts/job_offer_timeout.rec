@@ -1,0 +1,19 @@
+# Jacob's offer expires after 48 hours without an answer: it counts as declined and Quinn takes the job.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('JobAccepted(starter)') || HasFlag('JobDeclined(starter)')
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('starter_offered')
+
+if: IsHoursAfter('starter_offered', 48)
+do: SetFlag('JobDeclined(starter)')
+do: Hilite('>>> Jacob gave the job to someone else <<<')
+do: RunScript('other_assassin_gets_job')
