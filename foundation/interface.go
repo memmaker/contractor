@@ -80,6 +80,7 @@ type GameForUI interface {
 	GetHudFlags() map[ActorFlag]int
 	GetMapInfo(pos geometry.Point) HiLiteString
 	LightAt(p geometry.Point) fxtools.HDRColor
+	LightReach(origin geometry.Point, radius int) []geometry.Point
 
 	GetInventoryForUI() []Item
 

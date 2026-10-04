@@ -93,6 +93,7 @@ type GameState struct {
 
 func NewGameState(config *foundation.Configuration) *GameState {
 	// stuff initialised here will stay the same between resets
+	gridmap.LightFalloff = config.LightFalloff
 	loadD100Rules(filepath.Join(config.DataRootDir, "definitions"))
 
 	paletteFile := filepath.Join(config.DataRootDir, "definitions", "palette.rec")
@@ -458,6 +459,10 @@ func (g *GameState) ShowDateTime() {
 	g.msg(foundation.Msg(fmt.Sprintf("Time is now %s", g.gameTime.Time.Format("Monday 15:04, 2006-01-02"))))
 }
 
+func (g *GameState) LightReach(origin geometry.Point, radius int) []geometry.Point {
+	return g.currentMap().LightReach(origin, radius)
+}
+
 func (g *GameState) LightAt(p geometry.Point) fxtools.HDRColor {
 	return g.currentMap().LightAt(p, g.Player.Position(), g.Player.CanSee(p), g.gameTime.Time)
 }
@@ -644,6 +649,7 @@ func (g *GameState) transitionToMapLocation(levelName string, location string) {
 	// Remove Player from Old Map
 	if g.currentMap() != nil && g.Player != nil {
 		g.currentMap().RemoveActor(g.Player)
+		g.currentMap().RemoveDynamicLightSource(g.playerLightSource)
 		g.Player.RemoveLevelStatusEffects()
 		g.currentMap().SetLastVisited(g.gameTime.Time)
 	}
@@ -695,6 +701,12 @@ func (g *GameState) playerAttachHooks() {
 	})
 
 	g.Player.GetInventory().SetOnChangeHandler(g.ui.UpdateInventory)
+	g.Player.GetInventory().maxItemStacks = InventorySlots // saves from before the limit was 26 carry 23
+	// Scripted gifts and loot must not vanish or softlock a quest: what doesn't fit lands at the player's feet.
+	g.Player.GetInventory().SetOnFull(func(item foundation.Item) {
+		g.addItemToMap(item, g.Player.Position())
+		g.msg(foundation.Msg(fmt.Sprintf("Your pack is full. %s lands at your feet.", item.Name())))
+	})
 
 	equipment := g.Player.GetInventory()
 

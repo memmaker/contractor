@@ -37,6 +37,7 @@ type Configuration struct {
 	FallbackFontName      string
 	ForcedFallbackRunes   string
 	SimulateAllLoadedMaps bool
+	LightFalloff          bool // false: lights are flat up to their radius
 	TileScale             float64
 	TileWidth             int
 	TileHeight            int
@@ -110,6 +111,8 @@ func NewConfigurationFromFile(file string) *Configuration {
 			configuration.ForcedFallbackRunes += string(rune(field.AsInt()))
 		case "SimulateAllLoadedMaps":
 			configuration.SimulateAllLoadedMaps = field.AsBool()
+		case "LightFalloff":
+			configuration.LightFalloff = field.AsBool()
 		case "TileScale":
 			configuration.TileScale = field.AsFloat()
 		case "TileWidth":

@@ -397,16 +397,10 @@ func (g *GameState) afterPlayerMoved(oldPos geometry.Point, wasMapTransition boo
 
 func (g *GameState) updatePlayerLightSource() {
 	if g.Player.GetInventory().HasLightSource() || g.Player.IsCyberWareActive(CyberWareLight) {
-		wasOff := g.playerLightSource.MaxIntensity == 0
-		wasAtPos := g.playerLightSource.Pos == g.Player.Position()
-		g.playerLightSource.MaxIntensity = 1
 		g.currentMap().MoveLightSource(g.playerLightSource, g.Player.Position())
-		if wasAtPos && wasOff {
-			g.currentMap().UpdateDynamicLights()
-		}
-	} else if g.playerLightSource.MaxIntensity > 0 {
-		g.playerLightSource.MaxIntensity = 0
-		g.currentMap().UpdateDynamicLights()
+	} else {
+		// unregister instead of zeroing intensity, so a switched-off light costs nothing
+		g.currentMap().RemoveDynamicLightSource(g.playerLightSource)
 	}
 }
 
@@ -470,7 +464,7 @@ func (g *GameState) buyItemFromVendor(vendor *Actor, onClose func()) func(item f
 			g.openVendorMenu(vendor, onClose)
 			return
 		}
-		if player.GetInventory().IsFull() && !player.GetInventory().CanStack(item) {
+		if !player.GetInventory().HasRoomFor(item) {
 			g.msg(foundation.Msg("You cannot carry more items"))
 			g.openVendorMenu(vendor, onClose)
 			return
@@ -513,7 +507,7 @@ func (g *GameState) buyItemFromVendingMachine(machine *Container) func(item foun
 			g.openVendingMachineMenu(machine)
 			return
 		}
-		if player.GetInventory().IsFull() {
+		if !player.GetInventory().HasRoomFor(item) {
 			g.msg(foundation.Msg("You cannot carry more items"))
 			g.openVendingMachineMenu(machine)
 			return

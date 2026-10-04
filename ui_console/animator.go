@@ -26,6 +26,7 @@ type Animator struct {
 	lightState        map[geometry.Point]fxtools.HDRColor
 	runningAnimations []TextAnimation
 	audioCuePlayer    foundation.AudioCuePlayer
+	lightReach        func(origin geometry.Point, radius int) []geometry.Point
 }
 
 func NewAnimator() *Animator {
@@ -97,22 +98,20 @@ func (a *Animator) CancelAll() {
 	}
 	a.runningAnimations = nil
 	clear(a.animationState)
+	clear(a.lightState)
 }
 
 func (a *Animator) updateDynamicLight(lights []*gridmap.LightSource) {
+	if a.lightReach == nil {
+		return
+	}
 	for _, light := range lights {
-		radius := light.Radius
-		for x := -radius; x <= radius; x++ {
-			for y := -radius; y <= radius; y++ {
-				if x*x+y*y > radius*radius {
-					continue
-				}
-				pos := geometry.Point{X: x, Y: y}.Add(light.Pos)
-				existingLight := a.lightAt(pos)
-				thisLight := light.Color.MultiplyWithScalar(light.MaxIntensity)
-				mixedLight := existingLight.Add(thisLight)
-				a.lightState[pos] = mixedLight
+		for _, pos := range a.lightReach(light.Pos, light.Radius) {
+			dist := geometry.Distance(light.Pos, pos)
+			if dist > float64(light.Radius) {
+				continue
 			}
+			a.lightState[pos] = a.lightAt(pos).Add(light.ColorAt(dist))
 		}
 	}
 }

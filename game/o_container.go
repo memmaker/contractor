@@ -351,7 +351,9 @@ func (g *GameState) openContainer(container ItemContainer) {
 	transferToPlayer := func(itemTaken foundation.Item, amount int) {
 		itemName := transferredName(itemTaken, amount)
 
-		if amount > 0 {
+		if amount > 0 && !g.Player.GetInventory().HasRoomFor(itemTaken) {
+			g.msg(foundation.Msg("You cannot carry any more items"))
+		} else if amount > 0 {
 			stackTransfer(container, g.Player.GetInventory(), itemTaken, amount)
 
 			g.ui.PlayCue("world/pickup")
@@ -377,6 +379,10 @@ func (g *GameState) openContainer(container ItemContainer) {
 	takeAll := func() {
 		allItems := slices.Clone(container.GetItems())
 		for _, item := range allItems {
+			if !g.Player.GetInventory().HasRoomFor(item) {
+				g.msg(foundation.Msg("You cannot carry any more items"))
+				break
+			}
 			container.RemoveItem(item)
 			g.Player.GetInventory().AddItem(item)
 		}

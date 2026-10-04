@@ -14,9 +14,13 @@ import (
 	"strings"
 )
 
+// InventorySlots is one stack per letter a-z: the inventory window has no keys beyond that.
+const InventorySlots = 26
+
 type Inventory struct {
 	items          map[gridmap.ItemID]foundation.Item
 	maxItemStacks  int
+	onFull         func(item foundation.Item) // gets items that need a new slot when full; nil adds them anyway
 	displayName    string
 	onChanged      func()
 	onBeforeRemove func(equippableItem foundation.Equippable) bool
@@ -164,8 +168,22 @@ func (i *Inventory) addItemInternally(item foundation.Item) {
 		}
 	}
 
+	if i.onFull != nil && i.IsFull() {
+		i.onFull(item)
+		return
+	}
+
 	item.SetPositionHandler(i.getCarrierPos)
 	i.items[item.ID()] = item
+}
+
+func (i *Inventory) SetOnFull(onFull func(item foundation.Item)) {
+	i.onFull = onFull
+}
+
+// HasRoomFor reports whether item fits: it stacks onto a carried one or a slot is free.
+func (i *Inventory) HasRoomFor(item foundation.Item) bool {
+	return !i.IsFull() || i.CanStack(item)
 }
 
 // CanStack reports whether item would merge into an existing stack instead of taking a new slot.
@@ -183,7 +201,7 @@ func (i *Inventory) IsEmpty() bool {
 }
 
 func (i *Inventory) IsFull() bool {
-	return len(i.items) == i.maxItemStacks
+	return len(i.items) >= i.maxItemStacks
 }
 
 func (i *Inventory) SetOnChangeHandler(onChanged func()) {

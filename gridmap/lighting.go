@@ -4,7 +4,6 @@ import (
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/geometry"
 	"github.com/memmaker/go/recfile"
-	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -15,6 +14,19 @@ type LightSource struct {
 	Radius       int
 	Color        fxtools.HDRColor
 	MaxIntensity float64
+}
+
+// LightFalloff switches all lights between flat (full intensity up to the radius)
+// and linear falloff with distance. Set from the LightFalloff config option.
+var LightFalloff bool
+
+// ColorAt returns the light's contribution at the given distance from its center.
+func (s *LightSource) ColorAt(dist float64) fxtools.HDRColor {
+	intensity := s.MaxIntensity
+	if LightFalloff {
+		intensity *= 1 - dist/float64(s.Radius+1)
+	}
+	return s.Color.MultiplyWithScalar(intensity)
 }
 
 func (s LightSource) ToRecord() []recfile.Field {
@@ -43,7 +55,7 @@ func NewLightSourceFromRecord(record []recfile.Field) *LightSource {
 	return &result
 }
 
-// AddDynamicLightSource adds a light source to the map. It will automatically call UpdateDynamicLights.
+// AddDynamicLightSource adds a light source to the map. Call UpdateDynamicLights afterwards.
 func (m *GridMap[ActorType, ItemType, ObjectType]) AddDynamicLightSource(pos geometry.Point, light *LightSource) {
 	if m.IsDynamicLightSource(pos) {
 		return
@@ -52,7 +64,7 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) AddDynamicLightSource(pos geo
 	light.Pos = pos
 }
 
-// AddBakedLightSource adds a light source to the map. It will automatically call UpdateBakedLights and UpdateDynamicLights.
+// AddBakedLightSource adds a light source to the map. Call UpdateBakedLights afterwards.
 func (m *GridMap[ActorType, ItemType, ObjectType]) AddBakedLightSource(pos geometry.Point, light *LightSource) {
 	if m.IsBakedLightSource(pos) {
 		return
@@ -72,15 +84,34 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) IsBakedLightSource(pos geomet
 	return ok
 }
 
-// MoveLightSource moves a light source to a new position. It will automatically call UpdateDynamicLights.
+// MoveLightSource moves (or registers) a light source on this map and recasts the dynamic lights.
+// It is a no-op if a light (this one or another) already occupies the target.
 func (m *GridMap[ActorType, ItemType, ObjectType]) MoveLightSource(lightSource *LightSource, to geometry.Point) {
 	if m.IsDynamicLightSource(to) {
 		return
 	}
-	delete(m.DynamicLights, lightSource.Pos)
+	if m.DynamicLights[lightSource.Pos] == lightSource {
+		delete(m.DynamicLights, lightSource.Pos)
+	}
 	lightSource.Pos = to
 	m.DynamicLights[to] = lightSource
 	m.UpdateDynamicLights()
+}
+
+// RemoveDynamicLightSource unregisters the light from this map and recasts the dynamic lights.
+func (m *GridMap[ActorType, ItemType, ObjectType]) RemoveDynamicLightSource(lightSource *LightSource) {
+	if m.DynamicLights[lightSource.Pos] != lightSource {
+		return
+	}
+	delete(m.DynamicLights, lightSource.Pos)
+	m.UpdateDynamicLights()
+}
+
+// LightReach returns the cells a light at origin can reach; walls and actors cast shadows.
+func (m *GridMap[ActorType, ItemType, ObjectType]) LightReach(origin geometry.Point, radius int) []geometry.Point {
+	return m.lightfov.SSCVisionMap(origin, radius, true, func(p geometry.Point) bool {
+		return p == origin || (m.IsTransparent(p) && !m.IsActorAt(p))
+	})
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) IndoorLightAt(p geometry.Point) fxtools.HDRColor {
@@ -190,9 +221,7 @@ func GetAmbientLightFromDayTime(timeOfDay time.Time) fxtools.HDRColor {
 
 // we use the value stored in cell.Lighting for lighting the tile later on..
 func (m *GridMap[ActorType, ItemType, ObjectType]) UpdateDynamicLights() {
-	for key, _ := range m.dynamicallyLitCells {
-		delete(m.dynamicallyLitCells, key)
-	}
+	clear(m.dynamicallyLitCells)
 	if len(m.DynamicLights) == 0 {
 		return
 	}
@@ -202,7 +231,6 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) UpdateDynamicLights() {
 		}
 	}
 	m.updateLightMap(m.DynamicLights, setLightAt)
-	m.DynamicLightsChanged = false
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) UpdateBakedLights() {
@@ -212,55 +240,21 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) UpdateBakedLights() {
 	m.updateLightMap(m.BakedLights, setLightAt)
 }
 func (m *GridMap[ActorType, ItemType, ObjectType]) updateLightMap(lightSources map[geometry.Point]*LightSource, setLightAt func(p geometry.Point, light fxtools.HDRColor)) {
-	lightAt := make(map[geometry.Point]fxtools.HDRColor)
-	isTransparent := func(p geometry.Point) bool {
-		if lightSources[p] != nil {
-			return true
-		}
-		return m.IsTransparent(p) && !m.IsActorAt(p)
+	if m.lightScratch == nil {
+		m.lightScratch = make(map[geometry.Point]fxtools.HDRColor)
 	}
+	lightAt := m.lightScratch
+	clear(lightAt)
 	for _, lightSource := range lightSources {
-		for _, nodePos := range m.lightfov.SSCVisionMap(lightSource.Pos, lightSource.Radius, true, isTransparent) {
-
-			//for _, node := range m.lightfov.LightMap(&MapLighter[VictimType, ItemType, ObjectType]{gridmap: m, sources: lightSources}, []geometry.Point{lightSource.Pos}) {
-			pos := nodePos
+		for _, pos := range m.LightReach(lightSource.Pos, lightSource.Radius) {
 			dist := geometry.Distance(lightSource.Pos, pos)
-			//pos := node.P
-			//dist := node.Cost
-			if dist < 0 {
-				dist = 0
-			}
 			if dist > float64(lightSource.Radius) {
 				continue
 			}
-			if _, hasValue := lightAt[pos]; !hasValue {
-				lightAt[pos] = lightSource.Color.MultiplyWithScalar(lightSource.MaxIntensity)
-				continue
+			light := lightSource.ColorAt(dist)
+			if existing, has := lightAt[pos]; !has || lightReplaces(existing, light) {
+				lightAt[pos] = light
 			}
-
-			existingLight := lightAt[pos]
-
-			existingIsBrighter := existingLight.Brightness() > lightSource.Color.Brightness()
-
-			existingHue := hasHue(existingLight)
-			sourceHue := hasHue(lightSource.Color)
-
-			sameHues := existingHue == sourceHue
-
-			if sameHues {
-				if existingIsBrighter {
-					continue
-				} else {
-					lightAt[pos] = lightSource.Color.MultiplyWithScalar(lightSource.MaxIntensity)
-					continue
-				}
-			}
-
-			if existingHue { // existing light has hue, source has no hue
-				continue
-			}
-
-			lightAt[pos] = lightSource.Color.MultiplyWithScalar(lightSource.MaxIntensity)
 		}
 	}
 	for pos, light := range lightAt {
@@ -268,48 +262,18 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) updateLightMap(lightSources m
 	}
 }
 
+// lightReplaces decides overlap: colored light beats white, otherwise the brighter one wins.
+func lightReplaces(existing, incoming fxtools.HDRColor) bool {
+	existingHue, incomingHue := hasHue(existing), hasHue(incoming)
+	if existingHue == incomingHue {
+		return incoming.Brightness() >= existing.Brightness()
+	}
+	return incomingHue
+}
+
+// hasHue is relative to brightness, so a dimmed (falloff) colored light keeps its hue.
 func hasHue(light fxtools.HDRColor) bool {
-	return !floatEquals(light.R, light.G, 0.1) || !floatEquals(light.G, light.B, 0.1)
-}
-
-func floatEquals(a, b, err float64) bool {
-	return math.Abs(a-b) < err
-}
-
-type MapLighter[ActorType interface {
-	comparable
-	MapActor
-}, ItemType interface {
-	comparable
-	MapItem
-}, ObjectType interface {
-	comparable
-	MapObjectWithProperties[ActorType]
-}] struct {
-	gridmap *GridMap[ActorType, ItemType, ObjectType]
-	sources map[geometry.Point]*LightSource
-}
-
-func (m *MapLighter[ActorType, ItemType, ObjectType]) Cost(src geometry.Point, from geometry.Point, to geometry.Point) float64 {
-	if src == from {
-		return 1
-		return geometry.Distance(from, to)
-	}
-	currentMap := m.gridmap
-	switch {
-	case !currentMap.cells[to.Y*currentMap.mapWidth+to.X].TileType.IsTransparent || !currentMap.cells[from.Y*currentMap.mapWidth+from.X].TileType.IsTransparent:
-		return 1000
-	case currentMap.IsActorAt(from):
-		return geometry.Distance(from, to) + 2
-	}
-
-	return geometry.Distance(from, to)
-}
-
-// needed for lighting
-func (m *MapLighter[ActorType, ItemType, ObjectType]) MaxCost(src geometry.Point) float64 {
-	if light, ok := m.sources[src]; ok {
-		return float64(light.Radius) + 0.5
-	}
-	return 0
+	hi := max(light.R, light.G, light.B)
+	lo := min(light.R, light.G, light.B)
+	return hi-lo > 0.1*hi
 }

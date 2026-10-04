@@ -189,8 +189,9 @@ type GridMap[ActorType interface {
 	lightfov             *geometry.FOV
 	MaxLightIntensity    float64
 	dynamicallyLitCells  map[geometry.Point]fxtools.HDRColor
-	DynamicLightsChanged bool
+	lightScratch         map[geometry.Point]fxtools.HDRColor
 	zones                map[string]map[geometry.Point]bool
+	zoneAt               map[geometry.Point]string // first zone per cell, see SetZones
 	zoneMetadata         map[string]ZoneMetadata
 }
 
@@ -715,12 +716,7 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) ObjectAt(location geometry.Po
 	return *m.cells[location.X+location.Y*m.mapWidth].Object
 }
 func (m *GridMap[ActorType, ItemType, ObjectType]) FirstZoneAt(p geometry.Point) string {
-	for zone, points := range m.zones {
-		if _, ok := points[p]; ok {
-			return zone
-		}
-	}
-	return ""
+	return m.zoneAt[p]
 }
 func (m *GridMap[ActorType, ItemType, ObjectType]) IsZoneAt(p geometry.Point, zone string) bool {
 	if _, ok := m.zones[zone][p]; ok {
@@ -2062,6 +2058,15 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) IsEmptyTile(pos geometry.Poin
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) SetZones(zones map[string]map[geometry.Point]bool) {
 	m.zones = zones
+	// Index once; overlapping zones resolve by name so the result is deterministic.
+	m.zoneAt = make(map[geometry.Point]string)
+	for _, name := range slices.Sorted(maps.Keys(zones)) {
+		for p := range zones[name] {
+			if _, taken := m.zoneAt[p]; !taken {
+				m.zoneAt[p] = name
+			}
+		}
+	}
 }
 
 func (m *GridMap[ActorType, ItemType, ObjectType]) SetLastVisited(t time.Time) {
