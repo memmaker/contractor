@@ -14,6 +14,7 @@ import (
 )
 
 type UI struct {
+	ammoPage bool // see item_pages.go
 	settings *foundation.Configuration
 	game     foundation.GameForUI
 

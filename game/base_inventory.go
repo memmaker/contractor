@@ -15,6 +15,7 @@ import (
 )
 
 // InventorySlots is one stack per letter a-z: the inventory window has no keys beyond that.
+// Items and ammo are separate lists, each gets this many slots.
 const InventorySlots = 26
 
 type Inventory struct {
@@ -164,7 +165,7 @@ func (i *Inventory) addItemInternally(item foundation.Item) {
 		}
 	}
 
-	if i.onFull != nil && i.IsFull() {
+	if i.onFull != nil && !i.HasRoomFor(item) {
 		i.onFull(item)
 		return
 	}
@@ -179,7 +180,7 @@ func (i *Inventory) SetOnFull(onFull func(item foundation.Item)) {
 
 // HasRoomFor reports whether item fits: it stacks onto a carried one or a slot is free.
 func (i *Inventory) HasRoomFor(item foundation.Item) bool {
-	return !i.IsFull() || i.CanStack(item)
+	return i.stacksOfKind(item.IsAmmo()) < i.maxItemStacks || i.CanStack(item)
 }
 
 // CanStack reports whether item would merge into an existing stack instead of taking a new slot.
@@ -196,8 +197,15 @@ func (i *Inventory) IsEmpty() bool {
 	return len(i.items) == 0
 }
 
-func (i *Inventory) IsFull() bool {
-	return len(i.items) >= i.maxItemStacks
+// stacksOfKind counts ammo stacks or item stacks; each kind has its own maxItemStacks.
+func (i *Inventory) stacksOfKind(ammo bool) int {
+	n := 0
+	for _, item := range i.items {
+		if item.IsAmmo() == ammo {
+			n++
+		}
+	}
+	return n
 }
 
 func (i *Inventory) SetOnChangeHandler(onChanged func()) {

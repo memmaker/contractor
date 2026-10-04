@@ -586,7 +586,7 @@ func (g *GameState) ChooseItemForApply() {
 
 func (g *GameState) ChooseItemForDrop() {
 	inventory := g.GetFilteredInventory(func(item foundation.Item) bool {
-		return true
+		return !item.IsAmmo() // ammo has its own list (OpenAmmoInventory)
 	})
 	if len(inventory) == 0 {
 		g.msg(foundation.Msg("You are not carrying anything."))
