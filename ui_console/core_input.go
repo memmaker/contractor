@@ -309,7 +309,6 @@ func (u *UI) setupCommandTable() {
 	u.commandTable["wait"] = u.game.Wait
 	u.commandTable["show_key_bindings"] = u.showKeyBindings
 	u.commandTable["command_menu"] = u.openCommandMenu
-	u.commandTable["open_pip_boy"] = u.openPipBoy
 
 	u.commandTable["wiz_advance_time"] = u.game.WizardAdvanceTime
 }
@@ -369,7 +368,6 @@ var friendlyNames = map[string]string{
 	"reload_weapon":     "Reload Weapon",
 	"apply":             "Apply",
 	"journal":           "Journal",
-	"open_pip_boy":      "Pip-Boy",
 }
 
 // openCommandMenu lists every command, so a gamepad can reach what has no button.
