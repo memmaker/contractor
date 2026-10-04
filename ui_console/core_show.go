@@ -41,13 +41,13 @@ func (u *UI) UpdateInventory() {
 	}
 	longest := longestInventoryLineWithoutColorCodes(items)
 
-	var getItemName func(item foundation.Item, isEquipped bool) string
+	var getItemName func(index int, item foundation.Item, isEquipped bool) string
 
 	if !u.isRightPanelWidthAtLeast(longest) {
 		if u.getRightPanelWidth() == 0 {
 			return
 		}
-		getItemName = func(item foundation.Item, isEquipped bool) string {
+		getItemName = func(index int, item foundation.Item, isEquipped bool) string {
 			itemIcon := item.GetIcon().WithFg(u.uiTheme.GetInventoryItemColor(item.GetCategory())).WithBg(u.uiTheme.GetUIColor(UIColorUIBackground))
 			if isEquipped {
 				itemIcon = itemIcon.Reversed()
@@ -56,8 +56,8 @@ func (u *UI) UpdateInventory() {
 			return iconString
 		}
 	} else {
-		getItemName = func(item foundation.Item, isEquipped bool) string {
-			nameWithColorsAndShortcut := item.InventoryNameWithColorsAndShortcut(u.uiTheme.GetInventoryItemColorCode(item.GetCategory()))
+		getItemName = func(index int, item foundation.Item, isEquipped bool) string {
+			nameWithColorsAndShortcut := fmt.Sprintf("%c - %s", foundation.ShortCutFromIndex(index), item.InventoryNameWithColors(u.uiTheme.GetInventoryItemColorCode(item.GetCategory())))
 			if isEquipped {
 				nameWithColorsAndShortcut = nameWithColorsAndShortcut[:2] + "+" + nameWithColorsAndShortcut[3:]
 			}
@@ -67,9 +67,9 @@ func (u *UI) UpdateInventory() {
 	}
 
 	var asString []string
-	for _, item := range items {
+	for index, item := range items { // letters by position in the sorted list, like the inventory window
 		isEquipped := u.game.IsEquipped(item)
-		appendString := getItemName(item, isEquipped)
+		appendString := getItemName(index, item, isEquipped)
 		asString = append(asString, appendString)
 	}
 	u.rightPanel.SetTextAlign(cview.AlignRight)

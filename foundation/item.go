@@ -75,11 +75,9 @@ type Item interface {
 	Name() string
 	String() string
 	InventoryNameWithColors(lineColorCode string) string
-	InventoryNameWithColorsAndShortcut(invItemColorCode string) string
 	LongNameWithColors(colorCode string) string
 	ShortNameWithColors(colorCode string) string
 	FullDescription(colorCode string) string
-	Shortcut() rune
 	DisplayLength() int
 	Position() geometry.Point
 	SetPosition(position geometry.Point)
@@ -153,7 +151,6 @@ type Item interface {
 	IsBreakingNow() bool
 	IsThrowable() bool
 	IsStackable() bool
-	SetInventoryIndex(i int)
 	IsRepairable() bool
 	IsHidden() bool
 	SetHidden(isHidden bool)

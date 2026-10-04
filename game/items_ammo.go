@@ -58,12 +58,8 @@ func (i *Ammo) bonusDamageEquals(tags map[foundation.ActorFlag]int) bool {
 	}
 	return true
 }
-func (i *Ammo) InventoryNameWithColorsAndShortcut(lineColorCode string) string {
-	return fmt.Sprintf("%c - %s", i.Shortcut(), i.InventoryNameWithColors(lineColorCode))
-}
-
 func (i *Ammo) DisplayLength() int {
-	return cview.TaggedStringWidth(i.InventoryNameWithColorsAndShortcut("[red]"))
+	return len("a - ") + cview.TaggedStringWidth(i.InventoryNameWithColors("[red]"))
 }
 
 func (i *Ammo) Split(bullets int) foundation.Item {

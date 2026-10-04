@@ -131,9 +131,6 @@ func (i *Weapon) FullDescription(colorCode string) string {
 
 	return strings.Join(lines, "\n")
 }
-func (i *Weapon) InventoryNameWithColorsAndShortcut(lineColorCode string) string {
-	return fmt.Sprintf("%c - %s", i.Shortcut(), i.InventoryNameWithColors(lineColorCode))
-}
 func (i *Weapon) InventoryNameWithColors(colorCode string) string {
 	line := cview.Escape(fmt.Sprintf("%s [%s]", i.Name(), i.GetWeaponDamage().ShortString()))
 
@@ -169,7 +166,7 @@ func (i *Weapon) ShortNameWithColors(colorCode string) string {
 	return colorCode + line + "[-]"
 }
 func (i *Weapon) DisplayLength() int {
-	return cview.TaggedStringWidth(i.InventoryNameWithColorsAndShortcut("[red]"))
+	return len("a - ") + cview.TaggedStringWidth(i.InventoryNameWithColors("[red]"))
 }
 func (i *Weapon) ammoDegradeFactor() float64 {
 	factor := 1.0

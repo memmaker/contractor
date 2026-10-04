@@ -260,8 +260,7 @@ func (i *TextInventory) updateListItems() {
 	currentItem := i.GetCurrentItemIndex()
 	labels := make([]fxtools.TableRow, len(i.items))
 	for lineIndex, invItem := range i.items {
-		// The letter is the row, not item.Shortcut(): every inventory listing (side panel, ammo filter, ..)
-		// renumbers the items, so their own index goes stale while this window is open.
+		// letters are assigned on the fly, in the order of the (sorted) rows
 		namePart := fmt.Sprintf("%c - %s", foundation.ShortCutFromIndex(lineIndex), invItem.InventoryNameWithColors(textiles.RGBAToFgColorCode(i.lineColor(invItem.GetCategory()))))
 		weightPart := fmt.Sprintf("[#00FF00]%d[-]lbs", invItem.GetCarryWeight())
 		row := fxtools.NewTableRow(namePart, weightPart)

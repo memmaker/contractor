@@ -11,7 +11,6 @@ type fakeItem struct {
 	key rune
 }
 
-func (f fakeItem) Shortcut() rune                        { return f.key }
 func (f fakeItem) InventoryNameWithColors(string) string { return "thing" }
 func (f fakeItem) GetCarryWeight() int                   { return 1 }
 func (f fakeItem) GetCategory() foundation.ItemCategory  { return 0 }
@@ -33,10 +32,10 @@ func inventoryKeys(t *testing.T, keymap string) {
 	var got []string
 	inv := NewTextInventory(80, 25, func() bool { return false })
 	inv.SetItems([]foundation.Item{fakeItem{key: 'a'}, fakeItem{key: 'b'}, fakeItem{key: 'c'}, fakeItem{key: 'd'}, fakeItem{key: 'e'}, fakeItem{key: 'f'}, fakeItem{key: 'g'}})
-	inv.SetDefaultSelection(func(i foundation.Item) { got = append(got, "use "+string(i.Shortcut())) })
-	inv.SetShiftSelection(func(i foundation.Item) { got = append(got, "drop "+string(i.Shortcut())) })
-	inv.SetControlSelection(func(i foundation.Item) { got = append(got, "examine "+string(i.Shortcut())) })
-	inv.SetContextMenu(func(i foundation.Item, done func()) { got = append(got, "menu "+string(i.Shortcut())) })
+	inv.SetDefaultSelection(func(i foundation.Item) { got = append(got, "use "+string(i.(fakeItem).key)) })
+	inv.SetShiftSelection(func(i foundation.Item) { got = append(got, "drop "+string(i.(fakeItem).key)) })
+	inv.SetControlSelection(func(i foundation.Item) { got = append(got, "examine "+string(i.(fakeItem).key)) })
+	inv.SetContextMenu(func(i foundation.Item, done func()) { got = append(got, "menu "+string(i.(fakeItem).key)) })
 	in := u.directionalWrapperWithoutAlphabet(inv.handleInput)
 
 	check := func(name string, ev *tcell.EventKey, want string) {
