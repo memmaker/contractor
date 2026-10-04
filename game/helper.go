@@ -1,7 +1,7 @@
 package game
 
 import (
-    "contractor/foundation"
+	"contractor/foundation"
 	"math/rand"
 )
 
