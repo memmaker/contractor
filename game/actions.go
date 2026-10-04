@@ -3,9 +3,12 @@ package game
 import (
 	"contractor/d100"
 	"contractor/foundation"
+	"contractor/gridmap"
 	"fmt"
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/geometry"
+	"github.com/memmaker/go/recfile"
+	"os"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -748,7 +751,7 @@ func (g *GameState) CheckTransition() {
 
 	doTransition := func() {
 		title := "Move to another area"
-		message := fmt.Sprintf("Do you want to leave %s?", g.currentMap().GetDisplayName())
+		message := fmt.Sprintf("Do you want to go to %s?", g.mapDisplayName(transition.TargetMap))
 		g.ui.AskForConfirmation(title, message, func(didConfirm bool) {
 			if didConfirm {
 				currentMapName := g.currentMap().GetName()
@@ -770,6 +773,22 @@ func (g *GameState) CheckTransition() {
 }
 
 // HELPER STUFF
+
+// mapDisplayName reads only meta.rec for unloaded maps; loading the map would start its scripts.
+func (g *GameState) mapDisplayName(mapName string) string {
+	if loaded, ok := g.activeMaps[mapName]; ok {
+		return loaded.GetDisplayName()
+	}
+	metaFile := filepath.Join(g.config.DataRootDir, "maps", mapName, "meta.rec")
+	if file, err := os.Open(metaFile); err == nil { // missing for transitions to deleted maps
+		if records, _ := recfile.ReadAndClose(file); len(records) > 0 {
+			if meta, _ := gridmap.NewMapMetaData(records[0]); meta.DisplayName != "" {
+				return meta.DisplayName
+			}
+		}
+	}
+	return mapName
+}
 
 func OneAnimation(anim foundation.Animation) []foundation.Animation {
 	if anim == nil {
