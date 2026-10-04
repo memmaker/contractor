@@ -349,7 +349,7 @@ func (g *GameState) openContainer(container ItemContainer) {
 	playerItems := StackedFilteredAndSortedItems(g.Player.GetInventory().GetItems(), func(item foundation.Item) bool { return true })
 
 	transferToPlayer := func(itemTaken foundation.Item, amount int) {
-		itemName := itemTaken.Name()
+		itemName := transferredName(itemTaken, amount)
 
 		if amount > 0 {
 			stackTransfer(container, g.Player.GetInventory(), itemTaken, amount)
@@ -362,7 +362,7 @@ func (g *GameState) openContainer(container ItemContainer) {
 		g.openContainer(container)
 	}
 	transferToContainer := func(itemTaken foundation.Item, amount int) {
-		itemName := itemTaken.Name()
+		itemName := transferredName(itemTaken, amount)
 
 		if amount > 0 {
 			stackTransfer(g.Player.GetInventory(), container, itemTaken, amount)
@@ -383,6 +383,14 @@ func (g *GameState) openContainer(container ItemContainer) {
 		g.openContainer(container)
 	}
 	g.ui.ShowGiveAndTakeContainer(g.Player.Name(), playerItems, container.Name(), containerItems, transferToPlayer, transferToContainer, takeAll)
+}
+
+// transferredName names only the moved part of a stack; gold's Name() carries the whole stack's amount.
+func transferredName(item foundation.Item, amount int) string {
+	if item.IsGold() {
+		return fmt.Sprintf("%d sat", amount)
+	}
+	return item.Name()
 }
 
 type ItemContainer interface {
