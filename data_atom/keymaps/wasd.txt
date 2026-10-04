@@ -13,7 +13,7 @@ Enter -> look
 Esc -> system_menu
 F13 -> pickup
 F14 -> inventory
-F15 -> open_pip_boy
+F15 -> character
 F16 -> command_menu
 F17 -> reload_weapon
 F18 -> quick_attack
@@ -52,7 +52,6 @@ j -> journal
 t -> tactics
 z -> wait_menu
 
-? -> open_pip_boy
 
 m -> monsters
 I -> items
