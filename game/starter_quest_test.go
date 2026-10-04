@@ -4,6 +4,7 @@ import (
 	"contractor/d100"
 	"contractor/foundation"
 	"github.com/memmaker/go/textiles"
+	"time"
 	"testing"
 )
 
@@ -60,7 +61,7 @@ func TestStarterQuestOutcomes(t *testing.T) {
 func TestStarterQuestContentLoads(t *testing.T) {
 	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
 	g.init()
-	for _, name := range []string{"other_assassin_gets_job", "clinic_takeover", "dead_drop_01", "drakes_escape"} {
+	for _, name := range []string{"other_assassin_gets_job", "job_offer_timeout", "clinic_takeover", "dead_drop_01", "drakes_escape"} {
 		if LoadScript("../data_atom", name, g.GetScriptFuncs()).IsEmpty() {
 			t.Errorf("script %s has no frames", name)
 		}
@@ -79,5 +80,27 @@ func TestStarterQuestActorsArePlaced(t *testing.T) {
 		if !found {
 			t.Errorf("%s not found on %s", actorName, mapName)
 		}
+	}
+}
+
+// Leaving Jacob's offer unanswered for 48 hours counts as declining it.
+func TestStarterJobOfferTimesOut(t *testing.T) {
+	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
+	g.init()
+	g.Player = NewPlayer("tester", textiles.TextIcon{}, d100.NewCharSheet())
+	g.mapContainsPlayer = false // no UI in tests: keep log messages out
+	g.Scripts.RunScriptByName("../data_atom", "job_offer_timeout", g.GetScriptFuncs())
+	g.Scripts.CheckAndRunFrames() // offer time saved
+
+	g.gameTime = g.gameTime.AddDuration(47 * time.Hour)
+	g.Scripts.CheckAndRunFrames()
+	if g.gameFlags.HasFlag("JobDeclined(starter)") {
+		t.Fatal("declined before 48 hours")
+	}
+
+	g.gameTime = g.gameTime.AddDuration(2 * time.Hour)
+	g.Scripts.CheckAndRunFrames()
+	if !g.gameFlags.HasFlag("JobDeclined(starter)") || !g.Scripts.IsScriptRunning("other_assassin_gets_job") {
+		t.Fatal("offer did not time out into Quinn taking the job")
 	}
 }

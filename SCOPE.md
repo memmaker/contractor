@@ -30,4 +30,4 @@ Small commits on `agent-tries-to-finish`, no PR.
 - The Debt: every branch is wired, and each ending is checked by `game/starter_quest_test.go`.
 - Not done, and not a bug: "Actor AI in general / interaction markers / sandbox behaviours" is a feature wish.
 - Not playtested by hand: Bob's melee fallback, the vendor buy fix, the goons fight, and the clinic takeover timing.
-- Not done: ignoring the job without explicitly declining it has no timeout. Only an explicit decline sends Quinn.
+- Ignoring the job: declining it, or leaving the offer unanswered for 48 game hours, sends Quinn after Harker.
