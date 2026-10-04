@@ -6,6 +6,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/memmaker/go/cview"
 	"path/filepath"
+	"time"
 )
 
 // Main Menu
@@ -145,7 +146,7 @@ func (u *UI) ChooseSaveDir(savegameBaseDirectory string, onSubDirConfirmed func(
 		})
 	})
 	if len(menuItems) == 0 {
-		u.AskForString("Enter new savegame name", "", func(entered string) {
+		u.AskForString("Enter new savegame name", time.Now().Format("2006-01-02_15-04"), func(entered string) {
 			onSubDirConfirmed(filepath.Join(savegameBaseDirectory, entered))
 		})
 		return
@@ -153,7 +154,7 @@ func (u *UI) ChooseSaveDir(savegameBaseDirectory string, onSubDirConfirmed func(
 	newEntryItem := foundation.MenuItem{
 		Name: "<New Savegame..>",
 		Action: func() {
-			u.AskForString("Enter new savegame name", "", func(entered string) {
+			u.AskForString("Enter new savegame name", time.Now().Format("2006-01-02_15-04"), func(entered string) {
 				onSubDirConfirmed(filepath.Join(savegameBaseDirectory, entered))
 			})
 		},

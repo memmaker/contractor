@@ -1,5 +1,27 @@
 % main
 
+# gamepad (sticks/d-pad send arrows + Home/PgUp/End/PgDn, buttons send F13-F20, Tab, Shift+Tab, Enter, Esc)
+Up -> north
+Down -> south
+Left -> west
+Right -> east
+Home -> northwest
+PgUp -> northeast
+End -> southwest
+PgDn -> southeast
+Enter -> look
+Esc -> system_menu
+F13 -> pickup
+F14 -> inventory
+F15 -> open_pip_boy
+F16 -> command_menu
+F17 -> reload_weapon
+F18 -> quick_attack
+F19 -> toggle_sneak
+F20 -> wait
+Tab -> attack
+BackTab -> cycle_target_mode
+
 w -> north
 s -> south
 a -> west
@@ -52,6 +74,15 @@ F12 -> gamma_up
 
 % advanced_targeting
 
+Up -> north
+Down -> south
+Left -> west
+Right -> east
+Home -> northwest
+PgUp -> northeast
+End -> southwest
+PgDn -> southeast
+
 Tab -> target_next
 + -> target_next
 BackTab -> target_previous
@@ -78,6 +109,16 @@ F9 -> target_confirm_body_part_8
 F10 -> target_confirm_body_part_9
 
 % directional_targeting
+
+Up -> north
+Down -> south
+Left -> west
+Right -> east
+Home -> northwest
+PgUp -> northeast
+End -> southwest
+PgDn -> southeast
+Enter -> target_cancel
 
 Esc -> target_cancel
 Escape -> target_cancel

@@ -387,7 +387,7 @@ func (i *TextInventory) handleInput(event *tcell.EventKey) *tcell.EventKey {
 		}
 	}
 
-	if event.Key() == tcell.KeyRune && event.Rune() == ' ' {
+	if event.Key() == tcell.KeyF13 || event.Key() == tcell.KeyRune && event.Rune() == ' ' { // F13: gamepad X
 		currentIndex := i.GetCurrentItemIndex()
 		if i.defaultSelection != nil && currentIndex >= 0 && currentIndex < len(i.items) {
 			i.contextMenu(i.items[currentIndex], func() {
