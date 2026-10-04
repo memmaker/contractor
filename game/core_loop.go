@@ -70,6 +70,11 @@ func (g *GameState) endPlayerTurn(playerTimeTakenForTurn int) {
 
 	g.afterAnimationActions = nil
 
+	// actors moved and doors changed this turn; shadows must follow
+	if len(g.currentMap().DynamicLights) > 0 {
+		g.currentMap().UpdateDynamicLights()
+	}
+
 	g.checkPlayerCanAct()
 
 	g.gameFlags.Set("ActorsComputed", g.actorsComputed)

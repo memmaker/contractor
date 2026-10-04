@@ -28,6 +28,7 @@ func NewTextUI(state *game.GameState, uiImpl UILifeCycler, settings *foundation.
 		lastFrameIcons: make(map[geometry.Point]rune),
 		lastFrameStyle: make(map[geometry.Point]tcell.Style),
 	}
+	u.animator.lightReach = state.LightReach
 	u.loadAudioSfxInBackground()
 
 	cview.TrueColorTags = true

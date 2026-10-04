@@ -186,7 +186,7 @@ func NewActor() *Actor {
 		AudioBaseName:     "human_male",
 		foV:               make(map[geometry.Point]bool),
 	}
-	a.Inventory = NewInventory(23)
+	a.Inventory = NewInventory(InventorySlots)
 
 	return a
 }

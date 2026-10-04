@@ -472,12 +472,11 @@ func (g *GameState) PlayerPickupItem() {
 
 func (g *GameState) PlayerPickupItemAt(itemPos geometry.Point) {
 	inventory := g.Player.GetInventory()
-	if inventory.IsFull() {
-		g.msg(foundation.Msg("You cannot carry any more items"))
-		return
-	}
-
 	if item, exists := g.currentMap().TryGetItemAt(itemPos); exists {
+		if !inventory.HasRoomFor(item) {
+			g.msg(foundation.Msg("You cannot carry any more items"))
+			return
+		}
 		g.currentMap().RemoveItem(item)
 		inventory.AddItem(item)
 

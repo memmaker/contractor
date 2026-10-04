@@ -23,6 +23,7 @@ DefaultToAdvancedTargeting: false
 KeyMap: numpad
 DialogueShortcutsAreNumbers: false
 SimulateAllLoadedMaps: true
+LightFalloff: false
 MainFontName: Monofonto-Regular
 FallbackFontName: MesloLGS NF Regular
 ForcedFallbackRunes: ▁▂▃▄▅▆▇∞↨►☙─│┌┐└┘├┤┬┴┼╭╮╯╰
