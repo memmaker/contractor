@@ -266,26 +266,11 @@ func (g *GameState) afterActorMovedOnMap(actor *Actor, oldPos geometry.Point) []
 		}
 	}
 
-	/* Mines should instead scan their neighbors for actors..
-	   neighbors := actor.GetAllNeighbors()
-	   for _, neighbor := range neighbors {
-	   	if objectAt, hasObj := g.currentMap().TryGetObjectAt(neighbor); hasObj {
-	   		if objectAt.IsProximityTriggered() {
-	   			triggeredEffectAnimations := objectAt.OnProximity(actor)
-	   			animations = append(animations, triggeredEffectAnimations...)
-	   		}
-
-	   		if isPlayer && objectAt.IsHidden() && g.Player.GetCharSheet().GetStat(d100.Perception) > 1 {
-	   			objectAt.SetHidden(false)
-	   			g.msg(foundation.HiLite("You notice %s", objectAt.Name()))
-	   		}
-	   	}
-	   	if itemAt, hasItem := g.currentMap().TryGetItemAt(neighbor); isPlayer && hasItem && itemAt.IsHidden() && g.Player.GetCharSheet().GetStat(d100.Perception) > 1 {
-	   		itemAt.SetHidden(false)
-	   		g.msg(foundation.HiLite("You notice %s", itemAt.Name()))
-	   	}
-	   }
-	*/
+	for _, neighbor := range actor.GetAllNeighbors() {
+		if objectAt, hasObj := g.currentMap().TryGetObjectAt(neighbor); hasObj && objectAt.IsProximityTriggered() {
+			animations = append(animations, objectAt.OnProximity(actor)...)
+		}
+	}
 	currentZone := g.currentMap().FirstZoneAt(newPos)
 
 	g.forDetectingOtherFactionObserversOf(actor, func(observer *Actor) (continueIteration bool) {
