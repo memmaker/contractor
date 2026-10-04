@@ -72,7 +72,7 @@ func TestStarterQuestActorsArePlaced(t *testing.T) {
 	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
 	g.init()
 	g.Player = NewPlayer("tester", textiles.TextIcon{}, d100.NewCharSheet())
-	for mapName, actorName := range map[string]string{"zone_residential_east": "jacob_thorne", "hq_ebi": "ebi_medic", "zone_residential_south": "quinn_rix"} {
+	for actorName, mapName := range map[string]string{"jacob_thorne": "zone_residential_east", "beggar": "zone_residential_east", "ebi_medic": "hq_ebi", "quinn_rix": "zone_residential_south"} {
 		found := false
 		for _, actor := range g.ensureMapIsLoaded(mapName).Actors() {
 			found = found || actor.GetInternalName() == actorName

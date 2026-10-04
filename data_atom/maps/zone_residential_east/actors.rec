@@ -124,3 +124,33 @@ equipment: 10mm_pistol
 equipment: 10mm_jhp
 equipment: gold(300)
 Position: (45,16)
+
+Name: beggar
+Icon: b
+Foreground: light_gray_2
+Description: a beggar
+Dialogue: beggar
+LongDescription: 
+Age: 60
+BodyType: 0
+XP: 10
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 15
+ActionPoints: 5
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 50
+Sequence: 3
+HealingRate: 1
+CriticalChance: 1
+Strength: 3
+Perception: 3
+Endurance: 3
+Cool: 2
+Intelligence: 4
+Agility: 3
+Luck: 2
+equipment: gold(7)
+Position: (8,21)

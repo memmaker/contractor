@@ -1,0 +1,48 @@
+%rec: OpeningBranch
+
+cond: HasFlag('beggar_helped')
+goto: Thankful
+
+cond: true
+goto: Begging
+
+%rec: Nodes
+%type: npc multiline
+
+name: Begging
+npc: (A hunched man in a soaked blanket rattles a cup with a few coins in it.)
++ Spare some sat, choomba? Anything helps.
+#
+o_text: Here, take 5 sat.
+o_cond: HasItem('gold', 5)
+o_goto: GiveSmall
+#
+o_text: Here, take 50 sat. Get yourself something warm.
+o_cond: HasItem('gold', 50)
+o_goto: GiveBig
+#
+o_text: Sorry, not today.
+o_goto: Goodbye
+
+name: GiveSmall
+npc: (He nods and pockets the coins.) Thanks. You're alright.
+effect: StackTransferTo(NPC, 'gold', 5)
+effect: SetFlag('beggar_helped')
+effect: EndConversation
+
+name: GiveBig
+npc: (He stares at the money, then at you.) That's... more than I see in a week.
++ Bless you, choomba. I won't forget this.
+effect: StackTransferTo(NPC, 'gold', 50)
+effect: SetFlag('beggar_helped')
+effect: EndConversation
+
+name: Thankful
+npc: Hey, it's you again. Still alive out here, thanks to you.
+#
+o_text: Take care.
+o_goto: Goodbye
+
+name: Goodbye
+npc: (He goes back to rattling his cup.)
+effect: EndConversation
