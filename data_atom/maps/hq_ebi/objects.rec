@@ -37,3 +37,10 @@ Description: a terminal
 Dialogue: CHANGEME
 Position: (75,10)
 
+Category: Transition
+Description: the way onto the campus
+Location: campus_gate
+TargetMap: campus_ebi
+TargetLocation: hq_gate
+Position: (79,14)
+
