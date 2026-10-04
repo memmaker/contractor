@@ -6,6 +6,7 @@ import (
     "image"
     "image/color"
     "math"
+    "slices"
     "sync"
     "time"
 
@@ -14,6 +15,12 @@ import (
     "github.com/hajimehoshi/ebiten/v2/inpututil"
     "github.com/hajimehoshi/ebiten/v2/text/v2"
 )
+
+type mouseState struct {
+    x, y    int
+    buttons tcell.ButtonMask
+    mod     tcell.ModMask
+}
 
 type cell struct {
     Style     tcell.Style
@@ -37,6 +44,7 @@ type etcell struct {
     grid_image  *ebiten.Image // Image of the grid.
     blink_image *ebiten.Image // Blink cells.
     grid_lock   sync.Mutex
+    last_mouse  mouseState
 
     cursor image.Point // Position of cursor, in grid cells
 
@@ -328,7 +336,11 @@ func (et *etcell) Update() (err error) {
             buttons |= tcell.WheelUp
         }
 
-        et.PostEvent(tcell.NewEventMouse(mouse_x, mouse_y, buttons, modMask()))
+        // Only post on change; an idle mouse at 60/s clogs the queue ahead of keys.
+        if m := (mouseState{mouse_x, mouse_y, buttons, modMask()}); m != et.last_mouse {
+            et.last_mouse = m
+            et.PostEvent(tcell.NewEventMouse(mouse_x, mouse_y, buttons, m.mod))
+        }
 
         in_focus = true
         //posted = true
@@ -534,6 +546,9 @@ func (et *etcell) Clear() {
 // is called (or Sync).
 func (et *etcell) Fill(r rune, style tcell.Style) {
     for n := 0; n < len(et.grid); n++ {
+        if c := &et.grid[n]; c.Rune == r && c.Style == style && len(c.Combining) == 0 {
+            continue
+        }
         et.grid[n] = cell{
             Style: style,
             Rune:  r,
@@ -605,6 +620,9 @@ func (et *etcell) SetContent(x int, y int, primary rune, combining []rune, style
 
     n := y*et.grid_size.X + x
 
+    if c := &et.grid[n]; c.Rune == primary && c.Style == style && slices.Equal(c.Combining, combining) {
+        return // unchanged: keep synced, Show skips it
+    }
     et.grid[n] = cell{
         Rune:      primary,
         Combining: combining,
@@ -813,16 +831,16 @@ func (et *etcell) Show() {
             cell := &et.grid[n]
             n++
 
+            if cell.synced {
+                continue
+            }
+            cell.synced = true
+
             style := cell.Style
             if style == tcell.StyleDefault {
                 style = et.style_default
             }
             fg, bg, attr := style.Decompose()
-
-            if cell.synced {
-                continue
-            }
-            cell.synced = true
 
             if (attr & tcell.AttrInvalid) != 0 {
                 // Ignore all attributes.
