@@ -1256,6 +1256,11 @@ func (m *GridMap[ActorType, ItemType, ObjectType]) GetNamedLocation(name string)
 	return m.namedLocations[name]
 }
 
+func (m *GridMap[ActorType, ItemType, ObjectType]) TryGetNamedLocation(name string) (geometry.Point, bool) {
+	pos, ok := m.namedLocations[name]
+	return pos, ok
+}
+
 func (m *GridMap[ActorType, ItemType, ObjectType]) GetNamedLocationByPos(pos geometry.Point) string {
 	for name, location := range m.namedLocations {
 		if location == pos {

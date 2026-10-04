@@ -31,7 +31,11 @@ func (p *Pathfinder) getNeighbors(actor *Actor, from MapPosition, to MapPosition
 
 	if !cacheExists {
 		gMap := p.getMap(from.MapName)
-		location := gMap.GetNamedLocation(from.LocationName)
+		// The name is authoritative (named locations can move); unnamed targets like spawn points only have a position.
+		location := from.Position
+		if pos, named := gMap.TryGetNamedLocation(from.LocationName); named {
+			location = pos
+		}
 
 		if transitionTo, exists := gMap.GetTransitionAt(location); exists {
 			if targetMap := p.getMap(transitionTo.TargetMap); targetMap != nil { // dangling transition to a deleted map
