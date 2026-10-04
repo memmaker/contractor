@@ -25,3 +25,9 @@ existing validation must pass. The wasm build must boot in a browser.
 
 ## Delivery
 Small commits on `agent-tries-to-finish`, no PR.
+
+## Status (2026-10-04)
+- The Debt: every branch is wired, and each ending is checked by `game/starter_quest_test.go`.
+- Not done, and not a bug: "Actor AI in general / interaction markers / sandbox behaviours" is a feature wish.
+- Not playtested by hand: Bob's melee fallback, the vendor buy fix, the goons fight, and the clinic takeover timing.
+- Not done: ignoring the job without explicitly declining it has no timeout. Only an explicit decline sends Quinn.
