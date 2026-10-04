@@ -113,21 +113,11 @@ func StackedFilteredAndSortedItems(items []foundation.Item, filter func(foundati
 	if len(items) == 0 {
 		return []foundation.Item{}
 	}
-	stacks := make([]foundation.Item, 0)
+	// Callers pass already-consolidated storage (Inventory and Container merge on add),
+	// so this only filters; merging here would mutate real items on every view.
+	stacks := make([]foundation.Item, 0, len(items))
 	for _, item := range items {
-		if !filter(item) {
-			continue
-		}
-		found := false
-		for stackIndex, stack := range stacks {
-			if stack.CanStackWith(item) {
-				stack.AddStacks(item)
-				stacks[stackIndex] = stack
-				found = true
-				break
-			}
-		}
-		if !found {
+		if filter(item) {
 			stacks = append(stacks, item)
 		}
 	}
