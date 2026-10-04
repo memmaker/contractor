@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Debt Walkthrough</title>
+<style>
+  :root { --bg:#111; --fg:#d8d8d8; --dim:#888; --accent:#6c6; --warn:#e8b04a; --card:#1b1b1b; --line:#333; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.55 ui-monospace, Menlo, monospace; }
+  main { max-width:860px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { color:var(--accent); margin:0 0 4px; font-size:22px; }
+  h2 { margin:32px 0 8px; font-size:18px; }
+  h3 { margin:20px 0 6px; font-size:15px; color:var(--accent); }
+  p, li { margin:4px 0; }
+  .dim { color:var(--dim); }
+  nav { display:flex; gap:8px; flex-wrap:wrap; margin:16px 0; }
+  nav button { background:var(--card); color:var(--fg); border:1px solid var(--line); padding:8px 14px; font:inherit; cursor:pointer; }
+  nav button[aria-selected=true] { border-color:var(--accent); color:var(--accent); }
+  section[hidden] { display:none; }
+  .card { background:var(--card); border:1px solid var(--line); padding:12px 16px; margin:12px 0; }
+  ol, ul { padding-left:22px; }
+  label { display:flex; gap:8px; align-items:flex-start; cursor:pointer; }
+  input[type=checkbox] { margin-top:4px; accent-color:var(--accent); }
+  q { color:#fff; quotes:"“" "”"; }
+  code { color:var(--accent); }
+  .warn { color:var(--warn); }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  td, th { border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top; }
+</style>
+</head>
+<body>
+<main>
+<h1>The Debt: walkthrough</h1>
+<p class="dim">Starter quest "Medical Extortion", plus the Chapter 1 hook. Tick the steps as you playtest; the ticks are saved in this browser.</p>
+
+<div class="card">
+  <h3>Common start</h3>
+  <ol>
+    <li>You start in the south residential district. Talk to Grim, take the apartment keys.</li>
+    <li>Use the home terminal: <q>(Job offer) Extract money, reward: 50% cut.</q> Jacob wants 500 sat from Daniel Harker, the Ripperdoc at the hospital.</li>
+    <li>Accept: you deposit <b>250 sat</b> in the dead drop and keep the rest. Six game hours later the drop holds your reward (3× binge) and the quest completes.</li>
+    <li>Ask Grim or Harker about Jacob to learn where he lives: <b>eastern residential district</b>, by taxi.</li>
+    <li>When the quest is done, the home terminal shows <q>(New job offer) A mansion outside the wall.</q> Taking it ends the demo with your outcome on screen.</li>
+  </ol>
+  <p class="warn">Not taking the job for 48 game hours counts as declining: Quinn Rix goes after Harker and the quest ends with 0 XP.</p>
+</div>
+
+<nav role="tablist">
+  <button role="tab" data-tab="fight">1 · Fighter</button>
+  <button role="tab" data-tab="talk">2 · Diplomat</button>
+  <button role="tab" data-tab="sneak">3 · Thief</button>
+  <button role="tab" data-tab="endings">Endings</button>
+</nav>
+
+<section id="fight">
+  <h2>Fighter: take it by force</h2>
+  <h3>A. Rob Harker</h3>
+  <ol class="steps">
+    <li>Accept the job, go to the hospital, talk to Harker: <q>Do you know a guy named 'Jacob'?</q> → <q>I am here to collect the money he owes you.</q></li>
+    <li><q>Money or violence. Choose.</q> He hands over 500 sat (and is angry with you).</li>
+    <li><i>Variant, after you've killed anyone:</i> <q>Maybe we can work something out.</q> → <q>That's not enough.</q> → <q>My means of violence are not limited by morality…</q> → 1000 sat.</li>
+    <li>Put 250 sat in the dead drop, wait 6 hours, collect the reward. <b>Ending: reward_received, 250 XP.</b></li>
+  </ol>
+  <h3>B. Kill Harker</h3>
+  <ol class="steps">
+    <li>Kill Harker, loot his gold (or open his stash), deposit 250 in the dead drop.</li>
+    <li>Wait 2+ days: the clinic reopens with <b>Drake</b> (if you freed him and he lives) or an <b>EBI medic</b>.</li>
+  </ol>
+  <h3>C. Kill the client</h3>
+  <ol class="steps">
+    <li>Get Jacob's location from Grim or Harker. Optional: Harker → <q>What is your relationship with him?</q> → <q>I will take care of him.</q> → <q>We have a deal.</q> (you now work for Harker).</li>
+    <li>Taxi to the eastern district, talk to Jacob: <q>You'll leave the Ripperdoc alone, is that clear?</q> (intimidate, Hard). On failure, if you've already killed someone, his two goons outside join the fight.</li>
+    <li>Kill Jacob. <b>Ending: killed_client</b>, or <b>killed_client_for_daniel</b> if you work for Harker. Return to Harker for <b>300 sat</b>.</li>
+    <li><i>Alternative:</i> pay Quinn Rix 500 sat to do it. Get him talking about his guns → <q>Let's say someone would drop some money…</q> → <q>I might have a job for you.</q></li>
+  </ol>
+  <h3>D. Drake</h3>
+  <ol class="steps">
+    <li>Find Drake in the hospital cellar. <q>I am your executioner.</q> kills him; Harker reacts the next time you talk.</li>
+  </ol>
+</section>
+
+<section id="talk" hidden>
+  <h2>Diplomat: talk your way through</h2>
+  <h3>A. Make a deal with Harker</h3>
+  <ol class="steps">
+    <li>Harker → collect the money → <q>Maybe we can work something out.</q> → <q>Fine for me, but Jacob needs to see at least *some* money.</q> He gives 250 sat, and you agree to keep him safe.</li>
+    <li><i>Variant with Perception 7+:</i> → <q>That's not enough.</q> → <q>I can see a list of solvent clients on your terminal…</q> → 1000 sat.</li>
+    <li>Deposit 250 in the dead drop (or hand it to Jacob yourself: <q>I'm here to collect my reward.</q> → <q>Sure, it's right here.</q>). <b>Ending: reward_received.</b></li>
+  </ol>
+  <h3>B. Squeeze the client</h3>
+  <ol class="steps">
+    <li>Talk to Jacob: <q>I'm here to renegotiate the terms of our contract.</q></li>
+    <li><q>The risk was higher than expected. I want double.</q> (social, Hard) or <q>I know your dirty secrets…</q> (intimidate, Easy). Success: 250 sat. <b>Ending: client_extorted.</b></li>
+  </ol>
+  <h3>C. Make the client back off</h3>
+  <ol class="steps">
+    <li>Wear a business outfit: <q>I represent some bigger third party…</q> (social, Easy unarmed / Hard with a visible weapon).</li>
+    <li>Or intimidate: <q>You'll leave the Ripperdoc alone, is that clear?</q></li>
+    <li>Jacob calls off the job. <b>Ending: client_backed_off.</b> If you've killed someone, ask <q>Got any real work for someone like me?</q> to hear about the mansion.</li>
+  </ol>
+  <h3>D. Free Drake for nothing</h3>
+  <ol class="steps">
+    <li>Cellar → <q>So, who are you?</q> → <q>Stay calm. I will get you out.</q> → <q>You are welcome.</q> He gives you the stash key and tells you about the stash.</li>
+    <li>Alternatives: <q>Nothing is free…</q> → 200 sat, or a favor. Escort him to the secret ladder to free him.</li>
+  </ol>
+</section>
+
+<section id="sneak" hidden>
+  <h2>Thief: nobody gets hurt, nobody gets paid twice</h2>
+  <h3>A. Rob the doctor's stash</h3>
+  <ol class="steps">
+    <li>The stash is in the hospital's operating room, locked (easy). Holds 750 sat and 3× binge.</li>
+    <li>Get a key from the filing cabinet, from Drake (free him, see Diplomat D), or pick the lock.</li>
+    <li>Deposit 250 sat in the dead drop. <b>Ending: reward_received.</b></li>
+  </ol>
+  <h3>B. Pay the client with his own money (best ending)</h3>
+  <ol class="steps">
+    <li>Accept the job. Take a taxi to the eastern district; Jacob's apartment has a <b>wall safe</b> (medium lock, 250 sat).</li>
+    <li>Pick it without being caught; his goons wait outside.</li>
+    <li>Deposit that money in the dead drop. <b>Ending: paid_with_clients_money, 500 XP.</b></li>
+  </ol>
+  <h3>C. Pay out of pocket</h3>
+  <ol class="steps">
+    <li>Bring 250 sat from anywhere to the dead drop, without touching Harker. <b>Ending: reward_received.</b></li>
+  </ol>
+  <h3>D. Walk away</h3>
+  <ol class="steps">
+    <li>Decline the job (or leave it unanswered for 48 hours). Quinn Rix attacks Harker the next time you're in the south district. <b>Ending: job_lost, 0 XP.</b></li>
+  </ol>
+</section>
+
+<section id="endings" hidden>
+  <h2>All endings</h2>
+  <p class="dim">First match wins, top to bottom.</p>
+  <table>
+    <tr><th>Ending</th><th>How</th><th>XP</th></tr>
+    <tr><td>paid_with_clients_money</td><td>Emptied Jacob's safe + dead drop paid</td><td>500</td></tr>
+    <tr><td>reward_received</td><td>Dead drop paid or Jacob paid in person</td><td>250</td></tr>
+    <tr><td>killed_client_for_daniel</td><td>Jacob dead while working for Harker</td><td>250</td></tr>
+    <tr><td>killed_client</td><td>Jacob dead</td><td>250</td></tr>
+    <tr><td>client_backed_off</td><td>Jacob intimidated / corporate bluff</td><td>250</td></tr>
+    <tr><td>client_extorted</td><td>Jacob paid you extra to go away</td><td>250</td></tr>
+    <tr><td>job_lost</td><td>Declined or ignored 48h, Quinn did it</td><td>0</td></tr>
+  </table>
+  <h3>Not yet playtested</h3>
+  <ul class="steps">
+    <li>Jacob's goons joining the fight</li>
+    <li>Clinic takeover after 2 days (Drake / EBI medic)</li>
+    <li>"To be continued" screen from the home terminal</li>
+    <li>Big Bob melee when out of rockets; buying a single bullet</li>
+    <li>Quinn attacking Harker after the 48h timeout</li>
+  </ul>
+</section>
+</main>
+<script>
+  const tabs = document.querySelectorAll('[role=tab]');
+  function show(id) {
+    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.tab === id));
+    document.querySelectorAll('main > section').forEach(s => s.hidden = s.id !== id);
+    try { localStorage.setItem('debt-tab', id); } catch (e) {}
+  }
+  tabs.forEach(t => t.onclick = () => show(t.dataset.tab));
+  let saved = null; try { saved = localStorage.getItem('debt-tab'); } catch (e) {}
+  show(saved || 'fight');
+
+  // turn every step into a checkbox remembered per browser
+  document.querySelectorAll('.steps li').forEach((li, i) => {
+    const key = 'debt-step-' + i;
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    try { box.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+    box.onchange = () => { try { localStorage.setItem(key, box.checked ? '1' : '0'); } catch (e) {} };
+    const label = document.createElement('label');
+    const span = document.createElement('span');
+    span.append(...li.childNodes);
+    label.append(box, span);
+    li.append(label);
+    li.style.listStyle = 'none';
+  });
+</script>
+</body>
+</html>
