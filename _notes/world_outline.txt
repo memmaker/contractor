@@ -1,0 +1,147 @@
+WORLD PASS: density, side contracts, reactivity, closing the gaps
+================================================================
+Binding spec for the content packages A-E. Every package owns its own files:
+  data_atom/definitions/journal_<pkg>.rec, actors_<pkg>.rec, items_<pkg>.rec (loaded by glob),
+  data_atom/dialogues/<new npc>.rec, data_atom/scripts/<pkg>_*.rec, data_atom/playtests/<pkg>_*.rec,
+  data_atom/text/<pkg>_*.txt, and the map files (actors.rec/objects.rec/items.rec) of the maps it is assigned.
+Shared files that may be edited: ONLY the ones named in the package. No engine changes without asking.
+Every quest: fighter, avoider and manipulator route, at least one grey choice, consequences in the world,
+no fail state except death, journal entries in a journal_<pkg>.rec. Every route gets a headless playtest.
+Flags the engine sets for free: TalkedTo(npc), Killed(npc) (a counter per internal name),
+KilledByPlayer(npc), ContainerRemoved(container, item), item PickupFlag, QuestCompleted(id, outcome),
+QuestStarted(id), LocationKnown(map) via item PickupFlag or SetFlag, ebi_strike_landed etc. by scripts.
+Reward money: PlayerAddGold(n) in dialogue effects; items: PlayerAddItem('name').
+Time: scripts with SaveTimeNow('x') + IsHoursAfter('x', n)/IsDaysAfter. People: SpawnActor('def','map','loc'),
+RemoveActor('internal_name'), MoveTo(actor,'map','loc'), RunScriptKill, SpawnTeamHunting(team,map,loc,victim),
+ProvokeFaction('f'). Doors: a LockedDoor opens when its LockFlag game flag is cleared (ClearFlag).
+
+LORE ANCHORS
+- The dome. EBI (Eschaton Biotech) runs the "cleansing": the corpses at the southern wall are its work.
+- Bushido-ArmaTech (BAT) sells weapons and "Meld" cyberware; Terra Vitae is a cult-like commune in the west.
+- The golden ticket (1 million sat to the stars) is a scam; the spaceport ships leave empty.
+- Logan Faust (mansion) sleeps in a cryo lab; E. (EBI) wants him silenced. Chapter 1-3 exist and work.
+
+PACKAGE A: SIDE CONTRACTS SOUTH (maps: zone_residential_south, zone_residential_south_underground, zone_wall_south, hq_terra_vitae)
+A1 "The Duck" (150 XP). Anna Whitaker's synth duck wandered into the sewers (move synth_duck to the underground
+   among the rats; named location duck_pond). Fighter: shoot through rats, carry the duck back (duck follows when
+   talked to: dialogue effect that uses Approach/follow or PickUp of a 'synth_duck' item placed when you talk to it;
+   simplest: talking to the duck in the sewers gives item 'synth_duck_item', duck actor removed; giving it to Anna
+   via StackTransferTo). Avoider: sneak past the rats. Manipulator: sell the duck to Big Bob for 300 instead
+   (he wants the parts) and tell Anna it is dead (social Easy) -> she grieves (chatter changes), Bob's wares improve.
+   Grey: Bob pays more than Anna.
+A2 "Tags" (200 XP). Lucy (hq_terra_vitae, town_lucy gets a dialogue) lost her son in the cleansing. She wants his
+   dog tag from the dead at the southern wall. Place item 'burton_dog_tag' at a corpse (items.rec of zone_wall_south)
+   under the gate captain's eye: taking anything from the dead is a crime there. Fighter: kill the captain/guards.
+   Avoider: sneak at night. Manipulator: bribe the captain (200 sat) or claim to be EBI records. Return the tag
+   (she pays 100 and the Terra Vitae folks start greeting you) or sell it to Richard Shaw (zone_commerce, collector
+   of cleansing relics, 400 sat) and lie to Lucy (social Hard; fail -> she knows, Terra Vitae turns cold: Father Olaf
+   refuses to talk). Grey.
+A3 "Rats" (100 XP). The cleaner (zone_residential_west) is also hired to clear the sewer rats but is afraid. He
+   pays 150 sat for 6 dead rats (Killed(rat) >= 6 as a counter; govaluate: GetFlag('Killed(rat)') >= 6).
+   Avoider/manipulator: buy rat poison from Big Bob (item 'rat_poison'), put it in the container 'sewer_trash'
+   (script: IsItemInContainer -> after 2 hours ActorDie on every rat on that map via a script frame list) or talk
+   the cleaner into doing his own job (intimidate Easy -> he goes down and dies to the rats after an hour,
+   RunScriptKill style, and his widow... no: he simply dies; his body is found; the west loses its cleaner).
+Reactive instances in A: R1 Anna grieves/thanks (chatter+dialogue), R2 Terra Vitae warms or cools to you,
+R3 the cleaner dies and zone_residential_west gets dirtier over 2 days (CleanStains stops; a new sign
+"Sanitation suspended" readable? objects cannot be added by script, so: spawn 2 more rats in the west after 2 days
+via SpawnActor), R4 the wall: after killing the gate captain a new one (actor def gate_captain_2, harsher
+dialogue, demands 50 sat toll to pass the gate) spawns after 1 day.
+
+PACKAGE B: SIDE CONTRACTS COMMERCE & SPACEPORT (maps: zone_commerce, zone_spaceport, zone_industry)
+B1 "Bar Tab" (150 XP). The bartender of La Boom (dialogue) wants Dec Vega's 400 sat debt. Fighter: beat it out of
+   him (Kill or intimidate Hard). Avoider: Dec's stash is a container 'vega_stash' (medium lock) in the back.
+   Manipulator: persuade (Easy) Dec to pay in instalments -> the bartender pays you half; or side with Dec, tell the
+   bartender he is broke (social Hard) and Dec gives you 100 and a tip about the ticket scam. Grey: Dec is broke.
+B2 "Dead Freight" (300 XP). Richard Shaw (collector, dialogue) wants a flight manifest from the spaceport
+   terminal 'manifest_terminal' guarded by two sentry bots. Fighter: destroy the bots (EMP ammo exists? use what
+   is in the game). Avoider: sneak. Manipulator: hack the 'spaceport_console' (technology Hard) to power the bots
+   down (ClearFlag on a door flag is the only engine-level door effect; for bots use ActorSleep or RemoveActor via
+   dialogue effect RunScript('b_bots_down')). The manifest (readable text spaceport_manifest.txt) proves the
+   ships leave empty -> sets KnowsAbout(ticket_scam) (a second way to learn it). Shaw pays 500. Grey: sell it to
+   Solara Carter instead (she sells tickets! give her a dialogue: ticket seller for the golden ticket) for 800
+   and she buries it; the scam continues; Quest outcome 'buried'.
+B3 "Shift Change" (200 XP). zone_industry: 14 EBI guards and nobody else. Add 3 'ebi_worker' and a foreman
+   'foreman_okafor' (dialogue). He wants a stolen pallet of medical supplies (container 'stolen_pallet' in
+   zone_commerce behind the gun_thugs) back without EBI noticing. Fighter: kill thugs. Avoider: lockpick at night.
+   Manipulator: buy it off the thugs' leader (gun_thug leader gets dialogue; 300 sat) or sell the foreman out
+   to the EBI officer in hq_ebi (ebi_security_officer gets dialogue; 400 sat; the foreman is removed from the
+   world next day, replaced by 'foreman_ebi_loyal'). Grey.
+Reactive in B: R5 Solara leaves town (RemoveActor) the day after the manifest is public (KnowsAbout(ticket_scam)
+set via Shaw), a readable? no: her stall spot gets a 'gun_thug' squatter spawned. R6 the foreman replacement.
+R7 Dec Vega dead -> the bartender's chatter mourns him and drinks cost more (vendor price flag if possible, else
+chatter only).
+
+PACKAGE C: DENSITY FOR THE EMPTY MAPS (maps: zone_corporate, campus_ebi, zone_residential_west,
+hq_project_21, hq_bat). Each gets at least 3 named NPCs with dialogue and chatter, 2 readables, 2 containers
+with loot, and one small contract:
+C1 zone_corporate: a street preacher 'brother_cassius' (sermons on the cleansing; join Terra Vitae hint),
+   a corpo security chief 'chief_landry' (BAT faction), a ticket tout 'tout_benny' selling fake golden ticket
+   lottery slips (100 sat; grey). Contract "Lost Badge" (150 XP): Landry lost his access badge; it is in the
+   tout's pocket (pickpocket? no verb: kill, or buy for 200, or persuade Easy). Returning it: Landry owes you,
+   the BAT lobby door opens for you (ClearFlag on hq_bat door flag). Keeping it: you get in yourself.
+C2 campus_ebi: 3 students 'student_*' with chatter, a protester 'protester_ines' with a dialogue about the
+   cleansing and a readable protest banner. Contract "Silence" (200 XP): Adrian Voss (hq_ebi, extend his dialogue)
+   wants the protester gone. Fighter: kill. Manipulator: pay her to leave (300) or convince her to protest at the
+   BAT campus instead (social Hard; she moves there with MoveTo/SpawnActor). Avoider: warn her: she leaves and
+   Voss learns nothing (and you get nothing). Grey.
+C3 zone_residential_west: 'widow_marla' (lost her husband at the wall), 'kid_tobias' (chatter), 'pawn_rook'
+   (vendor dialogue with StartTrading, buys relics). Contract "Rent" (100 XP): Marla cannot pay the pawn-broker;
+   pay it (150), intimidate Rook (Easy), or tell Marla to sell her husband's watch to Rook (she does; grey).
+C4 hq_project_21 server room: a sysadmin 'sysop_vee' hiding there, dialogue about Project 21, a readable.
+C5 hq_bat: the receptionist gets a dialogue; Haruki and Jana get 2 new topics each about Faust (former board).
+No reactive instance required, but C1's door opening counts as R8.
+
+PACKAGE D: CLOSING THE GAPS AT THE MANSION & LAB (maps: mansion, cryo_lab; dialogues logan_faust, mira_sykes,
+mansion_guard, ark_terminal, cryo_pod, home_terminal, gate_captain; journal.rec recluse/cryo may be edited)
+D1 Failed persuasion recovers: after persuade_faust fails (flag faust_persuade_failed set by the fail branch),
+   Faust gives a condition: bring him the EBI gate log (item gate_log) or Mira's word. Mira's dialogue: do her a
+   favour (the gate guards are skimming: option to confront the guards for her, intimidate Easy -> flag
+   mira_favour) -> Faust's AlliedSuccess becomes reachable again (o_cond on faust_persuade_failed && (HasItem
+   gate_log || mira_favour)).
+D2 Warn Faust after selling him out: logan_faust option 'warn_faust' when faust_sold_out && !ebi_strike_landed:
+   Faust and Mira flee to the lab (MoveTo both to cryo_lab 'pod_room', set flag faust_warned). The strike team
+   finds the house empty and hunts the player instead (ebi_strike.rec frame branch). New recluse outcome
+   'warned' (text: you sold him and then saved him; E. will not forget) placed BEFORE sold_out in file order.
+   Faust in the lab: dialogue continues, he still gives the keycard if allied. Grey: E.'s money stays with you,
+   EBI faction is provoked against you.
+D3 Thief has a cost: cracking faust_safe sets flag 'safe_cracked' (ContainerRemoved(faust_safe, cryo_keycard)
+   is free); a mansion script: IsHoursAfter of the removal -> Mira notices, the household is on alert: guards
+   become aggressive to the player on sight (ProvokeFaction('faust')) unless Faust is allied. Journal line.
+D4 Dead guards are seen: Faust and Mira get opening-branch lines when GetFlag('Killed(mansion_guard)') > 0
+   (Faust: "You came through my people." -> persuade becomes Hard-only, extort becomes Easy). Mira when the
+   gate captain is dead (Killed(gate_captain)): "The wall lost a captain today. Your work?" (yes -> she respects
+   you, intimidate Easy; no -> nothing).
+D5 Broadcast ending gets a cost: ARK says the broadcast draws the grid down; the sleepers in the other pods die
+   (ending text in journal cryo 'against_all_odds' mentions it; set Killed(sleeper_1..3) before EndGame). Grey.
+D6 Freeing a sleeper without killing: ark_terminal gets 'wake_sleeper' already; add 'move_sleeper' (technology
+   Hard, needs cryo_fuse): move a sleeper's body to the spare pod 3 once fixed; both live. PodFree(1) without
+   Killed(sleeper_1). Journal cryo outcome text for the clean path.
+Reactive in D: R9 the household on alert; R10 Faust flees the house.
+
+PACKAGE E: LIVING WORLD (maps: zone_residential_south, zone_residential_east, hq_ebi; dialogues public_terminal,
+home_terminal, beggar, taxi_driver_chatter, jacob_thorne)
+E1 News: public_terminal gets a news node with items conditional on flags: Killed(jacob_thorne) ("Eastside man
+   found dead"), Killed(daniel_harker), Killed(gate_captain), faust_sold_out/ebi_strike_landed ("EBI operation
+   outside the wall"), KnowsAbout(ticket_scam) made public via Shaw ("Spaceport manifest leak"), clinic_reopened,
+   Killed(logan_faust). At least 8 items. Plus a default "quiet day" item.
+E2 Jacob's house after his death: 2 days later a squatter 'squatter_lenny' (dialogue, buys the house's leftovers)
+   moves in via SpawnActor and the gun_thugs in the east become aggressive (they lost their paymaster; ProvokeFaction
+   or set aggressive via a spawned replacement team 'east_thugs_wild'). 
+E3 The beggar: give 3 times (dialogue option StackTransferTo 10 sat each, counter flag beggar_gifts) -> he becomes
+   an informant: a dialogue node with rumours (where the duck is, who Shaw is, the mansion address: sets
+   LocationKnown(mansion) as a fourth chapter-1 route). Kill him -> a candle shrine: SpawnActor('mourner', ...) a
+   silent mourner with chatter at his spot after 1 day.
+E4 The taxi driver remembers: chatter conditional on flags (you killed Faust, you paid him, you are wanted by EBI:
+   he refuses to drive to the mansion while ebi_strike_landed && !Killed(logan_faust)? no: he charges double).
+E5 Wanted by the wall: Killed(gate_captain) -> for 2 days the wall guards (zone_wall_south) attack on sight
+   (ProvokeFaction('wall_guard') at map entry via a script frame with PlayerInZone), then it blows over.
+E6 Grim's bar stool: Grim (grim_beard) leaves town 3 days after giving you the keys (RemoveActor) and a note
+   appears in your apartment container 'home_desk' (ContainerAddItem note item) — if home_desk does not exist,
+   use an existing container in the apartment.
+Reactive in E: R11-R16 (news, squatter, thugs wild, informant/shrine, taxi memory, wall wanted, Grim leaves).
+
+ACCEPTANCE
+- Every route of every contract has a headless playtest that PASSES; existing playtests still pass.
+- walkthrough.html gets one section per package (routes, outcomes, reactive instances).
+- _notes/world_checklist.md ticked by the orchestrator only.
