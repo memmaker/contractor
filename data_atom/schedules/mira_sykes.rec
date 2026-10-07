@@ -1,0 +1,27 @@
+# Mira Sykes walks a round through the house every hour: hall, Faust's study, kitchen, the gate.
+
+%rec: slots
+
+day: every_hour
+time: 00:00
+map: mansion
+location: mansion_hall
+description: standing in the hall, one hand near her holster
+
+day: every_hour
+time: 00:15
+map: mansion
+location: faust_study
+description: checking on Faust
+
+day: every_hour
+time: 00:30
+map: mansion
+location: mansion_kitchen
+description: looking over the kitchen and the service door
+
+day: every_hour
+time: 00:45
+map: mansion
+location: mansion_gate
+description: having a word with the gate guards

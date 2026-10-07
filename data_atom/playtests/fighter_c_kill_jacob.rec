@@ -16,11 +16,11 @@ do: Choose('job_offer')
 do: Choose('accept_job')
 do: Choose('accepted_leave')
 
-# fighter build: Perception 8 + tagged Ranged Combat = 46%, the pistol by the bed, the clip from the dead drop
+# fighter build: Jacob has 80 hit points under 20 DR, so a frontal duel takes the SMG on burst, not the bedside pistol
 if: true
-do: PickUp('10mm_pistol')
-do: Equip('10mm_pistol')
-do: SetSkill('RangedCombat', 46)
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
 do: Use('dead_drop')
 do: Take('10mm_jhp')
 
@@ -33,5 +33,7 @@ do: Talk('jacob_thorne')
 do: Choose('intimidate')
 do: Choose('fight')
 
+# the forced failure was for the intimidation only; the duel is fought with real dice
 if: true
+do: ForceChecks('random')
 do: Kill('jacob_thorne')

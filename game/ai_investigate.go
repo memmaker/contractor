@@ -47,7 +47,11 @@ func (b InvestigateBehaviour) Execute(g *GameState, actor *Actor) (TransitionEve
 		}
 	}
 
-	return g.actorMakeMove(actor, actor.getMoveTowards(g.currentMap(), interestingPos), false)
+	nextMove := actor.getMoveTowards(g.currentMap(), interestingPos)
+	if nextMove == actor.Position() { // no way there (locked door, blocked corridor): lose interest instead of standing guard forever
+		return EmptyEvent{Event: EventCalmed}, actor.TimeNeededForMovement()
+	}
+	return g.actorMakeMove(actor, nextMove, false)
 }
 
 func (b InvestigateBehaviour) Init(g *GameState, actor *Actor) {

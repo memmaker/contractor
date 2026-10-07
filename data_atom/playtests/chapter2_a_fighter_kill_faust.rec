@@ -1,4 +1,4 @@
-# Chapter 2 A (fighter): shoot the gate guards, Mira in the hall, take her keys, and finish Faust in his study.
+# Chapter 2 A (fighter): shoot the gate guards, drop everyone the gunfire draws out, take Mira's keys, and finish Faust in his study.
 
 %rec: outcomes
 
@@ -6,8 +6,11 @@ if: HasFlag('Killed(logan_faust)') && HasFlag('QuestCompleted(recluse, faust_dea
 
 %rec: frames
 
+# a fighter packs every clip he can find: the one in the dead drop first
 if: true
 do: ForceChecks('success')
+do: Use('dead_drop')
+do: Take('10mm_jhp')
 do: Talk('taxi_driver')
 do: Choose('ask_mansion')
 do: Choose('mansion_persuade')
@@ -22,14 +25,12 @@ do: SetStat('Strength', 10)
 do: Kill('mansion_guard')
 do: Kill('mansion_guard')
 
-# nobody inside heard the gate: kick the front door in, drop the hall guard and Mira, take her keys
+# the shots carry: Mira comes running to the gate and dies there. Restock from the dead, take her keys,
+# and let yourself in: the hall guard heard everything but cannot reach you without a key, so go and get him
 if: true
-do: Kick('mansion_front_door')
-do: Kill('mansion_guard')
-do: Kill('mira_sykes')
-
-if: !HasItem('mansion_key')
+do: PickUp('10mm_jhp')
 do: PickUp('mansion_key')
+do: Kill('mansion_guard')
 
 if: true
 do: GoTo('faust_study')
