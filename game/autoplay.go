@@ -310,7 +310,7 @@ func itemNames(items []foundation.Item) string {
 func (a *Autoplay) withAnswer(ans answer, action func()) {
 	a.answers = append([]answer{ans}, a.answers...)
 	action()
-	wants := map[string][]string{"target": {"target"}, "choose": {"menu", "conversation"}, "text": {"string"}, "buy": {"vendor"}}[ans.kind]
+	wants := map[string][]string{"target": {"target"}, "choose": {"menu", "conversation"}, "text": {"string"}, "buy": {"vendor"}, "take": {"container"}}[ans.kind]
 	wrongModal := a.modal != nil && !slices.Contains(wants, a.modal.kind) // e.g. a jam-confirm opened instead of the target picker
 	if (a.modal == nil || wrongModal) && len(a.answers) > 0 && a.answers[0] == ans {
 		a.answers = a.answers[1:]
@@ -604,6 +604,22 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 				return true
 			})
 		},
+		// Kick('object'): walk up and kick it until it breaks (doors have hit points; a locked one opens for good).
+		"Kick": func(args ...interface{}) (interface{}, error) {
+			name := str(args, 0)
+			return a.approach("Kick "+name, name, func() bool {
+				obj := a.object(name)
+				if door, isDoor := obj.(*Door); isDoor && (door.IsBroken() || !door.IsLocked()) {
+					return true
+				}
+				if a.tries++; a.tries > 30 {
+					return a.fail("Kick: %s does not give", name)
+				}
+				a.logf("kick %s", name)
+				g.playerMeleeAttackLocation(obj.Position())
+				return false
+			})
+		},
 		// Interact('actor_or_object', 'context menu entry')
 		"Interact": func(args ...interface{}) (interface{}, error) {
 			name, label := str(args, 0), str(args, 1)
@@ -711,7 +727,7 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 				return true
 			})
 		},
-		// PickUp('item'): walk to an item lying on this map and pick it up.
+		// PickUp('item'): walk to an item lying on this map (or on a corpse) and pick it up.
 		"PickUp": func(args ...interface{}) (interface{}, error) {
 			name := str(args, 0)
 			return a.queue("PickUp "+name, func() bool {
@@ -726,6 +742,12 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 						a.logf("pick up %s", name)
 						g.PlayerPickupItemAt(item.Position())
 						return true
+					}
+				}
+				for _, corpse := range g.currentMap().DownedActors() { // or loot it off a corpse: step onto it with the take queued
+					if corpse.GetInventory().GetItemByName(name) != nil {
+						a.withAnswer(answer{kind: "take", label: name}, func() { a.walkStep(corpse.Position(), false) })
+						return false
 					}
 				}
 				return a.fail("PickUp: no %q lying on %s (items: %s)", name, g.currentMapName, itemNames(g.currentMap().Items()))
@@ -918,7 +940,9 @@ func (u autoplayUI) OpenInventoryForSelection(_ []foundation.Item, prompt string
 func (u autoplayUI) OpenInventoryForSelectionWithClose(_ []foundation.Item, prompt string, _ func(foundation.Item), _ func()) {
 	u.unexpected("OpenInventoryForSelection " + prompt)
 }
-func (u autoplayUI) OpenKeypad(string, []rune, func() bool, func(bool)) { u.unexpected("OpenKeypad") }
+
+// a keypad is hacked with e-picks, never answered with the code: the script has no way to know it
+func (u autoplayUI) OpenKeypad(_ string, _ []rune, hack func() bool, done func(bool)) { done(hack()) }
 func (u autoplayUI) OpenVendorMenu(title string, items []foundation.Item, buy func(foundation.Item, int, int), _ func(foundation.Item), onClose func()) {
 	u.open(&modal{kind: "vendor", title: title, theirs: items, buy: buy, onClose: onClose})
 }

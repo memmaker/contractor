@@ -31,6 +31,7 @@ type TimedTransition struct {
 
 type GameState struct {
 	dialogueOptionIDs map[string]string // o_id per "node|text" of the open conversation
+	pendingEnding     string            // set by the EndGame('<id>') dialogue effect, consumed after the node's effects ran
 	ForcedChecks      string            // autoplay: "success" / "fail" overrides player dialogue and skill checks
 	// Global State (Needs to be saved)
 	gameTime             PointInTime
@@ -763,13 +764,20 @@ func (g *GameState) calculateTotalNetWorth() int {
 	return g.Player.GetGold()
 }
 
-// endDemo closes the playable demo after the starter quest with a summary of its outcome.
-func (g *GameState) endDemo() {
+// endGame ends the game with the outcome text of the `cryo` quest; the Ending(<id>) flag resolves it.
+func (g *GameState) endGame(endingID string) {
+	for i := 0; i < 3; i++ { // a quest moves one state per update: started, in progress, completed
+		g.checkJournal()
+	}
+	text := g.journal.OutcomeText("cryo")
+	if text == "" {
+		text = endingID
+	}
 	scoreInfo := foundation.ScoreInfo{
 		PlayerName:         g.Player.Name(),
 		Gold:               g.calculateTotalNetWorth(),
-		DescriptiveMessage: g.journal.OutcomeText("starter"),
-		Escaped:            true,
+		DescriptiveMessage: text,
+		Escaped:            endingID != "against_all_odds",
 	}
 	g.ui.ShowGameOver(scoreInfo, g.writePlayerScore(scoreInfo))
 }

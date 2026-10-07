@@ -1,0 +1,45 @@
+# Chapter 3 B (thief): the hacked terminal opens the cellar, no keycard needed. Pick the generator room, fetch the spare fuse, bring pod 3 back to life.
+
+%rec: outcomes
+
+if: GameOver() && HasFlag('Ending(cryo_sleep)') && HasFlag('PodFixed(3)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+# thief build: the service door is an easy lock, the safe a hard one, the terminal a hard hack
+if: true
+do: SetSkill('Mechanics', 200)
+do: SetSkill('Technology', 200)
+do: SetSkill('Stealth', 200)
+do: Use('mansion_service_door')
+
+# Faust sits in his study: the five starting picks have to last, so leave his safe alone and open the cellar through the terminal
+if: true
+do: Sneak()
+do: GoTo('faust_study')
+
+if: true
+do: Use('faust_terminal')
+do: Choose('hack_terminal')
+do: Choose('hacked_back')
+do: Choose('terminal_leave')
+
+if: true
+do: GoTo('cellar_stairs')
+
+if: true
+do: Use('generator_door')
+do: Use('spare_parts')
+do: Take('cryo_fuse')
+
+if: true
+do: Use('cryo_pod_3')
+do: Choose('insert_fuse')
+do: Choose('climb_in_3_fixed')

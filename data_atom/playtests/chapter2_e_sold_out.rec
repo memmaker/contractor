@@ -1,0 +1,40 @@
+# Chapter 2 E (sold out): win Faust's trust, then sell his location on his own terminal. Wait at the taxi stand for the rotors.
+
+%rec: outcomes
+
+if: HasFlag('ebi_strike_landed') && HasFlag('Killed(logan_faust)') && HasFlag('faust_sold_out')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: Use('faust_terminal')
+do: Choose('report_faust')
+do: Choose('report_back')
+do: Choose('terminal_leave')
+
+# the strike team lands at the taxi stand and shoots whoever stands there: wait behind the house
+if: true
+do: GoTo('service_door')
+do: WaitHours(2)

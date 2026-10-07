@@ -29,6 +29,8 @@ func (g *GameState) PlayerStartDialogue(dialogueFile string, partner foundation.
 		talkedFlagName := fmt.Sprintf("TalkedTo(%s)", npcName)
 		g.gameFlags.Increment(talkedFlagName)
 		params["NPC"] = actor
+	} else if named, ok := partner.(interface{ GetInternalName() string }); ok {
+		npcName = named.GetInternalName()
 	} else {
 		npcName = partner.Name()
 	}
@@ -115,6 +117,13 @@ func (g *GameState) updateDialogueState(conversation *convo.Conversation, state 
 			state.Flow = convo.ConversationEndInstantlyWithChatter
 		}
 	}
+	if g.pendingEnding != "" { // EndGame('<id>') ran as a node effect
+		ending := g.pendingEnding
+		g.pendingEnding = ""
+		g.ui.CloseConversation()
+		g.endGame(ending)
+		return
+	}
 	var menuItems []foundation.MenuItem
 	switch state.Flow {
 	case convo.ConversationEndInstantlyWithChatter:
@@ -161,10 +170,6 @@ func (g *GameState) updateDialogueState(conversation *convo.Conversation, state 
 // ApplyNodeEffect handles the parameterless game effects of a dialogue node.
 // Returns true if the effect ends the conversation.
 func (g *GameState) ApplyNodeEffect(effect string, conversationPartner convo.ConversationPartner) (endsConversation bool) {
-	if effect == "EndDemo" {
-		g.endDemo()
-		return true
-	}
 	actor, isActor := conversationPartner.(*Actor)
 	if !isActor {
 		return false

@@ -29,6 +29,11 @@ start_text:
 + You want to leave this place and go to the stars.
 + Word on the street is that 1 million sat will get you there.
 + You need to find a way to get that kind of money.
+#
+end_cond: HasFlag('KnowsAbout(ticket_scam)')
+end_text: The ships leave without passengers. Nobody buys a way to the stars.
+end_id: scam
+end_xp: 0
 
 ### Starter Quest ###
 
@@ -98,3 +103,97 @@ end_xp: 0
 
 
 ### Side Quests ###
+### Chapter 1 ###
+
+id: find_mansion
+name: The Mansion
+xp: 300
+#
+start_cond: HasFlag('JobAccepted(mansion)') || HasFlag('LocationKnown(mansion)')
+start_text:
++ Somebody rich is hiding in a mansion outside the wall. Nobody knows where.
++ Somebody always knows: the gate watch logs what leaves, the taxi drivers drive it there,
++ and the caterers at Terra Vitae send their invoices.
+#
+prog_cond: HasFlag('LocationKnown(mansion)')
+prog_text: The mansion lies outside the wall. The taxi can take you there.
+#
+end_cond: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)')
+end_text: You found the mansion and the man hiding in it: Logan Faust.
+end_id: found
+
+
+### Chapter 2: the mansion ###
+
+id: recluse
+name: The Recluse
+xp: 500
+#
+start_cond: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)') || HasFlag('KnowsAbout(cryo_lab)') || HasFlag('faust_sold_out')
+start_text:
++ Logan Faust, the man E. wants silenced, lives above something he values more than his life.
++ Find out what it is before you decide what he is worth.
+#
+prog_cond: HasFlag('faust_sold_out')
+prog_text: You gave E. the address. 5000 sat, and a strike team on its way.
+#
+end_cond: HasFlag('Killed(logan_faust)')
+end_text: Logan Faust is dead. Whatever he was hiding is yours to find.
+end_id: faust_dead
+#
+end_cond: HasFlag('faust_sold_out')
+end_text: You sold Faust to E. for 5000 sat. EBI troopers are on their way to the mansion.
+end_id: sold_out
+#
+end_cond: HasFlag('faust_allied')
+end_text: Faust trusted you with the keycard to his cryo lab and the truth about the golden ticket.
+end_id: allied
+#
+end_cond: HasFlag('faust_extorted')
+end_text: Faust paid you 2000 sat and the keycard to make you go away. He told you about the lab anyway.
+end_id: extorted
+
+### Chapter 3: the cryo lab ###
+
+id: cryo
+name: The Long Sleep
+xp: 1000
+#
+start_cond: HasFlag('KnowsAbout(cryo_lab)')
+start_text:
++ Under Faust's mansion is a cryo lab with four pods. When the sky burns, the sleepers wake afterwards.
++ Get a pod that is empty and works. Or sell the place to the people who want it buried.
+#
+prog_cond: HasFlag('PodFree(1)') || HasFlag('PodFree(2)') || HasFlag('PodFixed(3)') || HasFlag('PodFree(4)') || HasFlag('Killed(logan_faust)')
+prog_text: A pod in the lab is free and working. Climb in when you are ready.
+#
+end_cond: HasFlag('Ending(cryo_sleep)')
+end_text:
++ The lid seals. ARK counts you down in a voice like a kind nurse.
++ Somewhere above, the pulse hits: every light in Edge Haven dies at once, and then the sky catches fire.
++ You don't see it. You are already cold.
++ One locker, one item, two hundred years. To be continued.
+end_id: cryo_sleep
+#
+end_cond: HasFlag('Ending(against_all_odds)')
+end_text:
++ The files hit every public terminal in the city before EBI cut the lines.
++ The troopers came down the cellar stairs in pairs. You made them pay for every step.
++ By morning your name is painted on the wall of the spaceport and the ships still leave without passengers.
++ You died famous. Nobody ever bought a way to the stars.
+end_id: against_all_odds
+#
+end_cond: HasFlag('Ending(sold_lab)')
+end_text:
++ 50000 sat. EBI poured the cellar full of concrete the same night, sleepers and all.
++ You were rich for a week. You bought the good whiskey and a view of the sky.
++ The pulse took the lights. The fire took the rest.
+end_id: sold_lab
+#
+end_cond: HasFlag('Ending(gave_up)')
+end_text:
++ You spent it on the roof. Good food, bad company, the whole skyline for an audience.
++ The night the ships lifted, the stars came down to meet them.
++ You watched the sky burn with a drink in your hand. It was, all things considered, a decent seat.
+end_id: gave_up
+end_xp: 0

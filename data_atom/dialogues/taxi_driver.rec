@@ -64,6 +64,16 @@ o_id: go_terra_vitae
 o_cond: !IsMap('hq_terra_vitae')
 o_goto: TerraVitae
 #
+o_text: Take me to the mansion outside the wall.
+o_id: go_mansion
+o_cond: HasFlag('LocationKnown(mansion)') && !IsMap('mansion')
+o_goto: Mansion
+#
+o_text: Ever drive anyone to a mansion outside the wall?
+o_id: ask_mansion
+o_cond: !HasFlag('LocationKnown(mansion)')
+o_goto: AskMansion
+#
 o_text: Nevermind.
 o_goto: Bye
 
@@ -105,4 +115,53 @@ name: TerraVitae
 npc: Terra Vitae. Fancy place, that.
 effect: TransitionWithDriver(NPC, 'hq_terra_vitae', 'taxi_stand')
 effect: AdvanceTimeByMinutes(20)
+effect: EndWithChatter
+
+name: AskMansion
+npc: (He eyes you in the mirror.) Maybe. Drove a whole catering crew out there last month.
++ Rich folks don't like their address getting around, you know.
+#
+o_text: Come on. I'm good for it, and so are you.
+o_id: mansion_persuade
+o_test: RollSkill('social', 'Easy')
+o_succ: MansionTold
+o_fail: MansionClamUp
+#
+o_text: Two hundred sat says you remember the way.
+o_id: mansion_pay
+o_cond: HasItem('gold', 200)
+o_goto: MansionPaid
+#
+o_text: Forget it.
+o_goto: DefaultIntroduction
+
+name: MansionPaid
+npc: (He pockets the money.) Memory's coming back already.
+effect: StackTransferTo(NPC, 'gold', 200)
+#
+o_text: So?
+o_goto: MansionTold
+
+name: MansionTold
+npc: South gate, then the old highway, half an hour out. Big place behind a wall of its own.
++ I can take you, if you're paying the fare.
+effect: SetFlag('LocationKnown(mansion)')
+#
+o_text: Take me there now.
+o_id: mansion_now
+o_goto: Mansion
+#
+o_text: Later.
+o_goto: DefaultIntroduction
+
+name: MansionClamUp
+npc: Nah. Some things you keep to yourself in this business. No offense.
+#
+o_text: None taken.
+o_goto: DefaultIntroduction
+
+name: Mansion
+npc: Out past the wall it is. Hold on.
+effect: TransitionWithDriver(NPC, 'mansion', 'taxi_stand')
+effect: AdvanceTimeByMinutes(30)
 effect: EndWithChatter

@@ -54,3 +54,7 @@ state_3_change: ClearFlag('exterior_airlock_closed') && SetFlag('interior_airloc
 state_3_rune: E
 Position: (42,14)
 
+
+Category: NamedLocation
+Identifier: south_gate
+Position: (42,3)

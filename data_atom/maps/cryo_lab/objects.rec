@@ -1,0 +1,86 @@
+%rec: default
+
+Category: Transition
+Description: stairs up to the mansion
+Location: lab_entrance
+TargetMap: mansion
+TargetLocation: cellar_stairs
+Position: (4,11)
+
+Category: ClosedDoor
+Description: a sliding door
+Position: (31,11)
+
+Category: NamedLocation
+Identifier: pod_room
+Position: (36,11)
+
+Category: Terminal
+Name: cryo_pod_1
+IconOverride: CryoPod
+Description: a cryo pod
+Dialogue: cryo_pod
+Position: (38,7)
+
+Category: NamedLocation
+Identifier: pod_1
+Position: (39,7)
+
+Category: Terminal
+Name: cryo_pod_2
+IconOverride: CryoPod
+Description: a cryo pod
+Dialogue: cryo_pod
+Position: (46,7)
+
+Category: NamedLocation
+Identifier: pod_2
+Position: (47,7)
+
+Category: Terminal
+Name: cryo_pod_3
+IconOverride: CryoPod
+Description: a cryo pod
+Dialogue: cryo_pod
+Position: (38,15)
+
+Category: NamedLocation
+Identifier: pod_3
+Position: (39,15)
+
+Category: Terminal
+Name: cryo_pod_4
+IconOverride: CryoPod
+Description: a cryo pod
+Dialogue: cryo_pod
+Position: (46,15)
+
+Category: NamedLocation
+Identifier: pod_4
+Position: (47,15)
+
+Category: Terminal
+Name: ark_terminal
+Description: the ARK console
+Dialogue: ark_terminal
+Position: (57,11)
+
+Category: NamedLocation
+Identifier: lab_console
+Position: (56,11)
+
+Category: LockedDoor
+Name: generator_door
+Description: the generator room door
+LockDifficulty: medium
+Position: (61,11)
+
+Category: NamedLocation
+Identifier: generator_room
+Position: (65,11)
+
+Category: UnknownContainer
+Name: spare_parts
+Description: a crate of spare parts
+item: cryo_fuse
+Position: (75,11)

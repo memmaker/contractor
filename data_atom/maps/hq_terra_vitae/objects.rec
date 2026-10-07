@@ -55,6 +55,7 @@ Identifier: taxi_driver
 Position: (18,4)
 
 Category: LockedDoor
+Name: tv_lobby_door
 AudioCue: wood_door
 Description: a door
 LockFlag: doc_offices

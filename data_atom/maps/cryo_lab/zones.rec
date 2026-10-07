@@ -1,0 +1,9 @@
+%rec: default
+
+name: pod_room
+IsIndoor: true
+lighting: (0.6, 0.8, 1.0)
+
+name: generator_room
+IsIndoor: true
+lighting: (1.0, 0.8, 0.6)

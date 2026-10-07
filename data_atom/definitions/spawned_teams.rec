@@ -5,3 +5,8 @@ leader: ebi_security_officer
 member: ebi_security_guard
 member: ebi_security_guard
 member: ebi_security_guard
+
+name: ebi_strike
+leader: ebi_trooper
+member: ebi_trooper
+member: ebi_trooper

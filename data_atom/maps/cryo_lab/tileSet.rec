@@ -1,0 +1,26 @@
+%rec: default
+
+Name: wall
+Char: █
+Foreground: light_gray_5
+Background: dark_gray_5
+IsWalkable: false
+IsTransparent: false
+Flags: 0
+
+Name: interior floor
+Char: ░
+Foreground: dark_gray_4
+Background: dark_gray_5
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: stairs up
+Char: <
+Foreground: light_gray_7
+Background: dark_gray_5
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+

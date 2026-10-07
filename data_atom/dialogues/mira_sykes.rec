@@ -1,0 +1,128 @@
+# Mira Sykes, Faust's bodyguard (faction faust, carries mansion_key and faust_safe_key).
+# She turns hostile on her own when she sees Faust attacked (crime system); here she only warns.
+
+%rec: OpeningBranch
+
+cond: HasFlag('Killed(logan_faust)')
+goto: FaustDead
+
+cond: HasFlag('faust_allied')
+goto: Allied
+
+cond: HasFlag('faust_extorted')
+goto: Extorted
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (Her hand never leaves the holster.)
++ That's close enough. What do you want with Mr. Faust?
+#
+o_text: Just to talk. Nobody has to get hurt.
+o_id: just_talk
+o_goto: JustTalk
+#
+o_text: What's a bodyguard doing in a dead man's house?
+o_id: dead_man
+o_goto: Warning
+#
+o_text: Step aside, or you go down first.
+o_id: intimidate_mira
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: BacksDown
+o_fail: Fight
+#
+o_text: Nothing. Leaving.
+o_id: mira_leave
+o_goto: End
+#
+o_text: <Attack>
+o_id: attack_mira
+o_goto: Fight
+
+name: JustTalk
+npc: Then talk fast and keep your hands where I can see them.
++ He's in the study. I'll be right behind you.
+#
+o_text: Fair enough.
+o_id: fair_enough
+o_goto: End
+
+name: Warning
+npc: He isn't dead. Not while I'm standing.
++ E. already sent two of your kind. They're in the compost behind the greenhouse.
++ Whatever they're paying you, it won't cover the burial.
+#
+o_text: Noted.
+o_id: warning_noted
+o_goto: Default
+
+name: BacksDown
+npc: (Her jaw works.) I'm paid to die for him, not to die stupid.
++ Study. End of the hall. If he screams, I come in shooting.
+effect: SetFlag('mira_backed_down')
+#
+o_text: Wise.
+o_id: mira_wise
+o_goto: End
+
+name: Allied
+npc: He trusts you. I don't. But he's the one paying me.
+#
+o_text: How long have you been with him?
+o_id: how_long
+o_goto: HowLong
+#
+o_text: Nothing.
+o_id: allied_leave
+o_goto: End
+
+name: HowLong
+npc: Since the board meeting he walked out of. Six years.
++ He pays on time and he never once asked me to hurt anyone. Rare, in this town.
+#
+o_text: Rare indeed.
+o_id: rare_indeed
+o_goto: End
+
+name: Extorted
+npc: You robbed a frightened old man. Enjoy it.
++ Next time you come through that door I shoot first.
+#
+o_text: Noted.
+o_id: extorted_leave
+o_goto: End
+#
+o_text: <Attack>
+o_id: attack_mira_extorted
+o_goto: Fight
+
+name: FaustDead
+npc: (Her eyes are red. The gun is steady.)
++ You did this. Or you let it happen. Same thing.
+#
+o_text: I'm sorry.
+o_id: sorry
+o_goto: Sorry
+#
+o_text: <Attack>
+o_id: attack_mira_grieving
+o_goto: Fight
+
+name: Sorry
+npc: Sorry doesn't warm a corpse. Get out.
+#
+o_text: (Leave.)
+o_id: sorry_leave
+o_goto: End
+
+name: Fight
+npc: Wrong move.
+effect: StartCombat
+
+name: End
+npc: (She watches you all the way to the door.)
+effect: EndConversation

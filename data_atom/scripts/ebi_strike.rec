@@ -1,0 +1,21 @@
+# Faust was sold out (or his files went public): one game hour later an EBI strike team lands at the
+# mansion taxi stand and hunts Faust. Once he is dead they turn on whoever is still around.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('ebi_strike_landed') && HasFlag('Killed(logan_faust)')
+do: ProvokeFaction('ebi')
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('ebi_strike_called')
+
+if: IsHoursAfter('ebi_strike_called', 1)
+do: SpawnTeamHunting('ebi_strike', 'mansion', 'taxi_stand', 'logan_faust')
+do: SetFlag('ebi_strike_landed')
+do: Hilite('>>> Rotors over the mansion grounds <<<')

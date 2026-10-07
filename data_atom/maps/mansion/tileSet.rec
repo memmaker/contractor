@@ -1,0 +1,90 @@
+%rec: default
+
+Name: road
+Char:  
+Foreground: light_gray_4
+Background: dark_gray_7
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: sidewalk
+Char: ·
+Foreground: dark_gray_3
+Background: dark_gray_5
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: wasteland
+Char: ·
+Foreground: olive_5
+Background: olive_6
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: grass
+Char: "
+Foreground: green_5
+Background: green_7
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: garden wall
+Char: █
+Foreground: light_gray_5
+Background: dark_gray_5
+IsWalkable: false
+IsTransparent: false
+Flags: 0
+
+Name: gravel path
+Char: ·
+Foreground: light_gray_5
+Background: green_7
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: tree
+Char: ♣
+Foreground: green_3
+Background: green_7
+IsWalkable: false
+IsTransparent: false
+Flags: 0
+
+Name: wall
+Char: █
+Foreground: light_gray_5
+Background: dark_gray_5
+IsWalkable: false
+IsTransparent: false
+Flags: 0
+
+Name: interior floor
+Char: ░
+Foreground: dark_gray_4
+Background: dark_gray_5
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: stairs down
+Char: >
+Foreground: light_gray_7
+Background: dark_gray_5
+IsWalkable: true
+IsTransparent: true
+Flags: 0
+
+Name: a taxi
+Char: ⌂
+Foreground: dark_gray_7
+Background: yellow_3
+IsWalkable: false
+IsTransparent: false
+Flags: 0
+
