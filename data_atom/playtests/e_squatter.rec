@@ -1,0 +1,34 @@
+# Living world E2: kill Jacob, wait two days at home, come back: a squatter in his rooms, his thugs gone wild.
+
+%rec: outcomes
+
+if: HasFlag('e_squatter_moved_in') && HasFlag('e_east_thugs_wild') && HasFlag('TalkedTo(squatter_lenny)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: Kill('jacob_thorne')
+
+if: true
+do: GoTo('street_to_south')
+do: WaitHours(48)
+
+if: HasFlag('e_squatter_moved_in')
+do: GoTo('street_to_east')
+
+if: true
+do: Talk('squatter_lenny')
+do: Choose('lenny_thugs')
+do: Choose('lenny_leave')

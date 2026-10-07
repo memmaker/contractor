@@ -1,0 +1,21 @@
+# Living world E3 (dark): kill the beggar. A day later a mourner sits at a candle shrine on his spot.
+
+%rec: outcomes
+
+if: HasFlag('e_beggar_shrine')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 150)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+do: GoTo('street_to_east')
+
+if: true
+do: Kill('beggar')
+
+if: HasFlag('Killed(beggar)')
+do: GoTo('street_to_south')
+do: WaitHours(26)

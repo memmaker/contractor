@@ -1,0 +1,65 @@
+# BAT lobby desk. Flags read: badge_returned (Landry vouched), bat_badge item.
+%rec: OpeningBranch
+
+cond: HasFlag('badge_returned')
+goto: Vouched
+
+cond: HasItem('bat_badge')
+goto: Badge
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Welcome to Bushido-ArmaTech. The lobby is for badge holders. How did you get through the door?
+#
+o_text: It was open.
+o_id: recep_open
+o_goto: Open
+#
+o_text: I'm here for Tanaka. Or Miller.
+o_id: recep_board
+o_goto: Board
+#
+o_text: Leaving.
+o_id: recep_leave
+o_goto: End
+
+name: Open
+npc: (She makes a note.) Maintenance will hear about it. Mind the cameras.
+#
+o_text: (Back)
+o_id: open_back
+o_goto: Default
+
+name: Board
+npc: Mr. Tanaka's office is upstairs right, Ms. Miller's is the lab downstairs right. Neither takes walk-ins. Both will talk to you anyway; they like an audience.
+#
+o_text: (Back)
+o_id: board_back
+o_goto: Default
+
+name: Badge
+npc: (Her eyes go to the badge, then to your face.) That is Chief Landry's badge. He is taller.
++ I am not paid enough to stop you. Go on through.
+#
+o_text: Thanks.
+o_id: recep_badge_leave
+o_goto: End
+
+name: Vouched
+npc: Chief Landry called ahead. You are on the list, which is a short list. Welcome to Bushido-ArmaTech.
+#
+o_text: Where do I find the board?
+o_id: recep_vouched_board
+o_goto: Board
+#
+o_text: Thanks.
+o_id: recep_vouched_leave
+o_goto: End
+
+name: End
+npc: Have a strong day.
+effect: EndConversation

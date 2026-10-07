@@ -1,0 +1,39 @@
+# Lost Badge (avoider): find the BAT lobby locked, buy the badge off the tout for 200 and return it. Landry's word opens the door (R8).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(lost_badge, returned)') && !HasItem('bat_badge') && IsOnMap('hq_bat') && HasFlag('TalkedTo(bat_receptionist)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+# turned away at the BAT lobby door
+if: true
+do: GoTo('street_to_bat')
+do: GoTo('bat_street')
+do: GoTo('street_to_corporate')
+
+# 150 sat is not 200: the dumpster behind the billboard
+if: true
+do: Use('corp_dumpster')
+do: Take('gold')
+do: Talk('tout_benny')
+do: Choose('benny_buy_badge')
+do: Choose('benny_sold_done')
+
+if: true
+do: Talk('chief_landry')
+do: Choose('landry_return')
+do: Choose('landry_done')
+
+if: true
+do: GoTo('street_to_bat')
+do: GoTo('bat_lobby')
+do: Talk('bat_receptionist')
+do: Choose('recep_vouched_leave')

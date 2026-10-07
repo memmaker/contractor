@@ -1,5 +1,8 @@
 %rec: OpeningBranch
 
+cond: HasFlag('beggar_informant')
+goto: Informant
+
 cond: HasFlag('beggar_helped')
 goto: Thankful
 
@@ -13,21 +16,60 @@ name: Begging
 npc: (A hunched man in a soaked blanket rattles a cup with a few coins in it.)
 + Spare some sat, choomba? Anything helps.
 #
-o_text: Here, take 5 sat.
-o_cond: HasItem('gold', 5)
-o_goto: GiveSmall
+o_text: Here, take 10 sat.
+o_id: give_1
+o_cond: HasItem('gold', 10) && !HasFlag('beggar_gift_1')
+o_goto: Gift1
 #
 o_text: Here, take 50 sat. Get yourself something warm.
+o_id: give_big
 o_cond: HasItem('gold', 50)
 o_goto: GiveBig
 #
 o_text: Sorry, not today.
 o_goto: Goodbye
 
-name: GiveSmall
+name: Thankful
+npc: Hey, it's you again. Still alive out here, thanks to you.
+#
+o_text: Here, another 10.
+o_id: give_2
+o_cond: HasItem('gold', 10) && HasFlag('beggar_gift_1') && !HasFlag('beggar_gift_2')
+o_goto: Gift2
+#
+o_text: Here, a third 10. Don't spend it all at once.
+o_id: give_3
+o_cond: HasItem('gold', 10) && HasFlag('beggar_gift_2') && !HasFlag('beggar_gift_3')
+o_goto: Gift3
+#
+o_text: Here, take 10 sat.
+o_id: give_1_late
+o_cond: HasItem('gold', 10) && !HasFlag('beggar_gift_1')
+o_goto: Gift1
+#
+o_text: Take care.
+o_goto: Goodbye
+
+name: Gift1
 npc: (He nods and pockets the coins.) Thanks. You're alright.
-effect: StackTransferTo(NPC, 'gold', 5)
+effect: StackTransferTo(NPC, 'gold', 10)
+effect: SetFlag('beggar_gift_1')
 effect: SetFlag('beggar_helped')
+effect: EndConversation
+
+name: Gift2
+npc: Twice now. (He squints at you.) Most people don't look at me once.
+effect: StackTransferTo(NPC, 'gold', 10)
+effect: SetFlag('beggar_gift_2')
+effect: EndConversation
+
+name: Gift3
+npc: (He closes his hand around the coins and leans in.)
++ Three times. Fine. I sit here all day and nobody sees me, which means I see everything.
++ You ever need to know something about this town, ask. On the house.
+effect: StackTransferTo(NPC, 'gold', 10)
+effect: SetFlag('beggar_gift_3')
+effect: SetFlag('beggar_informant')
 effect: EndConversation
 
 name: GiveBig
@@ -37,11 +79,44 @@ effect: StackTransferTo(NPC, 'gold', 50)
 effect: SetFlag('beggar_helped')
 effect: EndConversation
 
-name: Thankful
-npc: Hey, it's you again. Still alive out here, thanks to you.
+name: Informant
+npc: (He does not rattle the cup for you anymore.) Ears open, choomba. What do you need?
 #
-o_text: Take care.
+o_text: A mansion outside the wall. Rich man hiding in it. Where?
+o_id: rumour_mansion
+o_cond: !HasFlag('LocationKnown(mansion)')
+o_goto: RumourMansion
+#
+o_text: Anybody lost a duck?
+o_id: rumour_duck
+o_goto: RumourDuck
+#
+o_text: Who is Richard Shaw?
+o_id: rumour_shaw
+o_goto: RumourShaw
+#
+o_text: Nothing today. Stay warm.
+o_id: informant_leave
 o_goto: Goodbye
+
+name: RumourMansion
+npc: The catering vans. Terra Vitae's people load them at the west rim every month and the taxi takes them
++ through the south gate, out the old highway, half an hour. Big place with its own wall. Faust, the driver called him.
+effect: SetFlag('LocationKnown(mansion)')
+#
+effect: ReturnToPreviousNode
+
+name: RumourDuck
+npc: Anna Whitaker's synth duck. Southside. Waddled into the storm drain by the hospital, the rats have it now.
++ Big Bob would pay for the parts. Anna would pay to get it back. Your call what kind of person you are.
+#
+effect: ReturnToPreviousNode
+
+name: RumourShaw
+npc: Collector in the commerce zone. Buys anything the cleansing left behind: tags, papers, teeth.
++ Pays well, asks nothing. Which tells you plenty.
+#
+effect: ReturnToPreviousNode
 
 name: Goodbye
 npc: (He goes back to rattling his cup.)

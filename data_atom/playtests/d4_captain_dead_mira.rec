@@ -1,0 +1,45 @@
+# D4 (fighter): the gate captain is dead and Mira has heard. Own it, and she steps aside on an easy roll.
+
+%rec: outcomes
+
+if: HasFlag('Killed(gate_captain)') && HasFlag('mira_respects') && HasFlag('mira_backed_down')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+
+if: true
+do: PickUp('gate_log')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_mansion')
+
+if: true
+do: ForceChecks('success')
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: Talk('mira_sykes')
+do: Choose('captain_yes')
+do: Choose('captain_yes_ok')
+do: Choose('intimidate_mira_respected')
+do: Choose('mira_wise')

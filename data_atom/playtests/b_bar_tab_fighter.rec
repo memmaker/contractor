@@ -1,0 +1,32 @@
+# Bar Tab (fighter): take the job, shoot Dec Vega in the Bastards' hall, loot his last 400 and hand them over. The bartender pays, and remembers.
+
+%rec: outcomes
+
+if: HasFlag('Killed(dec_vega)') && HasFlag('QuestCompleted(bar_tab, paid)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('bartender')
+do: Choose('ask_job')
+do: Choose('accept_tab')
+
+if: true
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: Kill('dec_vega')
+do: PickUp('vega_wallet')
+
+if: true
+do: Talk('bartender')
+do: Choose('pay_wallet_dead')
+do: Choose('paid_wallet_bye')

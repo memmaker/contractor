@@ -1,0 +1,79 @@
+%rec: OpeningBranch
+
+cond: IsActorInCombatWithPlayer(NPC)
+goto: Combat
+
+cond: HasFlag('lenny_met')
+goto: Again
+
+cond: true
+goto: Intro
+
+%rec: Nodes
+%type: npc multiline
+
+name: Combat
+npc: Take it! Take all of it, it was never mine!
+effect: EndConversation
+
+name: Intro
+npc: (A thin man in three coats looks up from a pile of Jacob Thorne's shirts.)
++ Place was empty. Door was open. That makes it mine, way I see it.
++ You want something, or you want to buy something? He left a lot behind.
+effect: SetFlag('lenny_met')
+#
+o_text: Show me what Jacob left.
+o_id: lenny_trade
+o_effect: StartTrading
+o_goto: Again
+#
+o_text: This was Jacob's place. Get out.
+o_id: lenny_evict
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: Evicted
+o_fail: StaysPut
+#
+o_text: What happened to his boys?
+o_id: lenny_thugs
+o_goto: Thugs
+#
+o_text: Keep it. Nobody else wants it.
+o_id: lenny_leave
+o_goto: Bye
+
+name: Again
+npc: Back for more of the dead man's stuff?
+#
+o_text: Let's see it.
+o_id: lenny_trade_again
+o_effect: StartTrading
+o_goto: Again
+#
+o_text: What happened to his boys?
+o_id: lenny_thugs_again
+o_goto: Thugs
+#
+o_text: Later.
+o_goto: Bye
+
+name: Thugs
+npc: Still out there. Nobody pays them now, so they help themselves to whoever walks past.
++ I keep the door shut and the lights off. You should keep your head down.
+#
+effect: ReturnToPreviousNode
+
+name: Evicted
+npc: (He is already stuffing shirts into a bag.) Alright, alright. Keep the furniture.
+effect: SetFlag('lenny_evicted')
+effect: RemoveActor('squatter_lenny')
+effect: EndConversation
+
+name: StaysPut
+npc: Jacob's dead, choomba. Dead men don't need rooms and you don't look like his heir.
+#
+o_text: Fine.
+o_goto: Bye
+
+name: Bye
+npc: (He goes back to sorting a dead man's shirts.)
+effect: EndConversation

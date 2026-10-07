@@ -1,0 +1,58 @@
+# Shift Change (manipulator, grey): sell Okafor to the EBI security officer at headquarters for 400.
+# R6: a day later the shift has an EBI-appointed foreman and nobody says Okafor's name.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(shift_change, sold_out)') && HasFlag('b_foreman_replaced')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('ask_job')
+do: Choose('accept_shift')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: GoTo('street_to_ebi')
+
+if: true
+do: Talk('ebi_security_officer')
+do: Choose('sell_foreman')
+do: Choose('sellout_bye')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: GoTo('street_to_commerce')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: WaitHours(25)
+do: Talk('foreman_ebi_loyal')
+do: Choose('ask_okafor')
+do: Choose('okafor_bye')

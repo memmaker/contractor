@@ -1,0 +1,47 @@
+# Shift Change (avoider): wait for the small hours, sneak up to the tarp behind the thugs and pick the padlock. Nobody dies, nobody pays.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(shift_change, returned)') && !HasFlag('Killed(gun_thug_leader)') && !HasFlag('b_pallet_bought')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('ask_job')
+do: Choose('accept_shift')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: WaitUntil('02:00')
+do: SetSkill('Mechanics', 200)
+do: SetSkill('Stealth', 200)
+do: Sneak()
+do: Use('stolen_pallet')
+do: Take('medical_supplies')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('give_supplies')
+do: Choose('returned_bye')

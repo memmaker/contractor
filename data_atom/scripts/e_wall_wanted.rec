@@ -1,0 +1,38 @@
+# The gate captain is dead: for two days the wall guards attack the player on sight, then it blows over.
+# ProvokeFaction only reaches the current map, so each entry to the wall re-provokes.
+# ponytail: frames are strictly ordered, so this covers four entries in two days; make it a loop if that is ever too few.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('wall_wanted') && IsDaysAfter('gate_captain_killed', 2)
+do: ClearFlag('wall_wanted')
+do: SetFlag('wall_wanted_over')
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('Killed(gate_captain)')
+do: SaveTimeNow('gate_captain_killed')
+do: SetFlag('wall_wanted')
+
+if: IsMap('zone_wall_south')
+do: ProvokeFaction('wall_guard')
+do: Hilite('>>> The gate watch remembers your face <<<')
+
+if: !IsMap('zone_wall_south')
+
+if: IsMap('zone_wall_south')
+do: ProvokeFaction('wall_guard')
+
+if: !IsMap('zone_wall_south')
+
+if: IsMap('zone_wall_south')
+do: ProvokeFaction('wall_guard')
+
+if: !IsMap('zone_wall_south')
+
+if: IsMap('zone_wall_south')
+do: ProvokeFaction('wall_guard')

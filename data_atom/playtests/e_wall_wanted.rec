@@ -1,0 +1,26 @@
+# Living world E5: kill the gate captain; the wall wants you for two days, then it blows over.
+
+%rec: outcomes
+
+if: HasFlag('wall_wanted_over')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+
+if: HasFlag('wall_wanted')
+do: GoTo('street_to_south')
+do: WaitHours(50)

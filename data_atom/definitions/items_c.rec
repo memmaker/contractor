@@ -1,0 +1,26 @@
+%rec: Misc
+%key: Name
+
+# PACKAGE C items
+
+Name: bat_badge
+Description: BAT access badge
+Category: Keys
+LockFlag: bat_badge
+Long_Description: A Bushido-ArmaTech staff badge. Photo: C. Landry, Security. The lobby reader will not know the difference.
+Weight: 1
+Cost: 1
+
+Name: lottery_slip
+Description: Golden Ticket lottery slip
+Category: Notes
+Text_File: c_lottery_slip
+Weight: 1
+Cost: 1
+
+Name: marla_watch
+Description: a dead man's wristwatch
+Category: Other
+Long_Description: A steel wristwatch, the strap worn through. Engraved on the back: D.R. - come home.
+Weight: 1
+Cost: 80

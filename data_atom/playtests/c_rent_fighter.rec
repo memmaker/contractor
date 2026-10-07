@@ -1,0 +1,28 @@
+# Rent (fighter): hear Marla out, then lean on Rook until the rent can wait.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rent, waived)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: GoTo('marla_flat')
+
+if: true
+do: ForceChecks('success')
+do: Talk('kid_tobias')
+do: Choose('tobias_leave')
+do: Talk('widow_marla')
+do: Choose('marla_how_much')
+do: Choose('howmuch_back')
+do: Choose('marla_leave')
+
+if: true
+do: Talk('pawn_rook')
+do: Choose('rook_intimidate')
+do: Choose('rook_waived_done')

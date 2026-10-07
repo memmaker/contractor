@@ -1,0 +1,31 @@
+# Anna's synth duck, lost in the sewers (A1). Talking to it puts it in your pack and takes the actor off the map.
+
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (The duck tilts its head. A servo whirs. It is standing in something you would rather not name.)
++ Quack.
+#
+o_text: Come on. Anna's waiting.
+o_id: duck_come
+o_goto: Taken
+#
+o_text: Stay here, bird.
+o_id: duck_leave
+o_goto: Left
+
+name: Taken
+npc: (It lets you pick it up. It weighs more than it should.)
+effect: PlayerAddItem('synth_duck_item')
+effect: SetFlag('duck_taken')
+effect: RemoveActor('synth_duck')
+effect: EndConversation
+
+name: Left
+npc: Quack.
+effect: EndConversation

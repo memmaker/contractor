@@ -50,6 +50,7 @@ Name: faust_safe
 Description: wall safe
 lockdifficulty: hard
 lockflag: faust_safe_key
+flag_removal_of: cryo_keycard
 item: cryo_keycard
 item: gold(2000)
 Position: (60,6)

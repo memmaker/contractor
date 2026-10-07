@@ -1,0 +1,37 @@
+# Spaceport cargo terminal. Prints the flight manifest: proof that the ships leave without passengers.
+
+%rec: OpeningBranch
+
+cond: true
+goto: Root
+
+%rec: Nodes
+
+name: Root
+npc: ** EDGE HAVEN SPACEPORT - CARGO TERMINAL **
++ > Departures logged: 60. Passengers logged: 0.
+#
+o_text: Print the flight manifest.
+o_id: print_manifest
+o_cond: !HasFlag('b_manifest_taken')
+o_goto: Printed
+#
+o_text: Leave.
+o_id: manifest_leave
+o_goto: End
+
+name: Printed
+npc: > Printing... done.
++ > Berths fitted, all hulls: 0.
+effect: PlayerAddItem('spaceport_manifest')
+effect: SetFlag('b_manifest_taken')
+effect: SetFlag('KnowsAbout(golden_ticket)')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+#
+o_text: Leave.
+o_id: printed_leave
+o_goto: End
+
+name: End
+npc: > Session closed.
+effect: EndConversation

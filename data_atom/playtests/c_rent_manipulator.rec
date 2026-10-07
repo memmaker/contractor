@@ -1,0 +1,25 @@
+# Rent (manipulator): talk Marla into selling her husband's watch to Rook. The rent is paid; the watch goes in the window.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rent, watch_sold)') && HasFlag('rook_has_watch')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: GoTo('marla_flat')
+
+if: true
+do: ForceChecks('success')
+do: Talk('widow_marla')
+do: Choose('marla_watch')
+do: Choose('marla_watch_done')
+
+if: true
+do: Talk('pawn_rook')
+do: Choose('rook_watch')
+do: Choose('rook_leave')

@@ -17,6 +17,34 @@ t: No clothes, no ride.
 
 s: being_around_player
 #
+c: HasFlag('Killed(logan_faust)')
+#
+t: Drove a catering crew out to that mansion once. Nobody's ordering catering anymore, I hear.
+t: You went past the wall and came back alone. I don't ask. I just notice.
+
+s: being_around_player
+#
+c: HasFlag('ebi_strike_landed') && !HasFlag('Killed(logan_faust)')
+#
+t: EBI's been asking every driver about fares past the south gate. Out there it's double rate now, no offense.
+t: Rotors over the old highway all night. I'm not driving out there for less than double.
+
+s: being_around_player
+#
+c: HasFlag('Killed(gate_captain)')
+#
+t: South gate lost its captain. The watch is checking every cab twice now.
+t: Heard the gate captain got shot. Heard it was somebody with your walk.
+
+s: being_around_player
+#
+c: HasFlag('Killed(jacob_thorne)')
+#
+t: Used to drive Jacob Thorne home drunk twice a week. Fare's gone now.
+t: East side's gotten rough since Thorne died. His boys don't get paid, so they take.
+
+s: being_around_player
+#
 t: So, you are new in town?
 t: I've been driving for a while now.
 t: I've seen a lot of things.

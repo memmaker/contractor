@@ -1,0 +1,33 @@
+%rec: Misc
+%key: Name
+
+Name: medical_supplies
+Description: a crate of EBI medical supplies
+Long_Description: Sealed EBI crate: lidocaine, clotting foam, antibiotics. Stencilled "Industrial District / Shift 2".
+Category: Other
+Weight: 8
+Cost: 300
+
+Name: pallet_key
+Description: a padlock key
+Long_Description: A cheap padlock key on a strip of red tape.
+Category: Keys
+LockFlag: pallet_key
+Weight: 1
+Cost: 1
+
+Name: spaceport_manifest
+Description: a spaceport flight manifest
+Long_Description: A printout from the spaceport cargo terminal. Every departure of the last year, line by line.
+Category: Notes
+Text_File: b_spaceport_manifest
+PickupFlag: KnowsAbout(ticket_scam)
+Weight: 1
+Cost: 1
+
+Name: vega_wallet
+Description: Dec Vega's wallet
+Long_Description: A fat wallet with a thin man's name in it. Four hundred sat in small notes: his last.
+Category: Other
+Weight: 1
+Cost: 400

@@ -12,6 +12,9 @@ goto: Allied
 cond: HasFlag('faust_extorted')
 goto: Extorted
 
+cond: HasFlag('Killed(gate_captain)') && !HasFlag('mira_captain_asked')
+goto: CaptainDead
+
 cond: true
 goto: Default
 
@@ -31,9 +34,22 @@ o_goto: Warning
 #
 o_text: Step aside, or you go down first.
 o_id: intimidate_mira
+o_cond: !HasFlag('mira_respects')
 o_test: RollSkill('intimidate', 'Hard')
 o_succ: BacksDown
 o_fail: Fight
+#
+o_text: Step aside. You know what I did at the wall.
+o_id: intimidate_mira_respected
+o_cond: HasFlag('mira_respects')
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: BacksDown
+o_fail: Fight
+#
+o_text: Faust wants your word on me. What would it cost?
+o_id: ask_favour
+o_cond: HasFlag('faust_persuade_failed') && !HasFlag('mira_favour')
+o_goto: Favour
 #
 o_text: Nothing. Leaving.
 o_id: mira_leave
@@ -67,6 +83,44 @@ effect: SetFlag('mira_backed_down')
 #
 o_text: Wise.
 o_id: mira_wise
+o_goto: End
+
+name: CaptainDead
+npc: (She looks you over longer than usual.)
++ The wall lost a captain today. Your work?
+#
+o_text: Yes.
+o_id: captain_yes
+o_goto: CaptainYes
+#
+o_text: No.
+o_id: captain_no
+o_goto: CaptainNo
+
+name: CaptainYes
+npc: He had forty men and a wall. You had neither. (A short nod.) I'll be polite, then.
+effect: SetFlag('mira_captain_asked')
+effect: SetFlag('mira_respects')
+#
+o_text: Wise.
+o_id: captain_yes_ok
+o_goto: Default
+
+name: CaptainNo
+npc: Then somebody out there is worse than you. Good to know.
+effect: SetFlag('mira_captain_asked')
+#
+o_text: (Nod.)
+o_id: captain_no_ok
+o_goto: Default
+
+name: Favour
+npc: The gate boys skim the delivery money. Fifty a week, and they think I can't count.
++ Make it stop without a body on the drive and I'll tell him you're worth the air you breathe.
+effect: SetFlag('mira_favour_asked')
+#
+o_text: Consider it done.
+o_id: favour_accept
 o_goto: End
 
 name: Allied

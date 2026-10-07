@@ -1,0 +1,68 @@
+# Package A actors: spawned by scripts (SpawnActor) or placed on the southern wall.
+%rec: Actor
+
+Name: wall_guard
+Description: a wall guard
+Long_Description: Gate watch. He stands among the dead at the southern wall and makes sure they stay the way EBI left them.
+Icon: g
+Foreground: light_gray_2
+faction: wall_guard
+aggressive: false
+Age: 30
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+MeleeDamage: 2
+CarryWeight: 150
+Sequence: 8
+HealingRate: 1
+CriticalChance: 3
+Strength: 6
+Perception: 6
+Endurance: 5
+Cool: 5
+Intelligence: 4
+Agility: 5
+SkillBonusRangedCombat: 25
+SkillBonusMeleeCombat: 20
+equipment: eb8_service_pistol
+equipment: 9mm(24)
+equipment: gold(15)
+
+Name: gate_captain_2
+Description: the new gate captain
+Long_Description: The replacement. Younger, meaner, and he knows what happened to the last one.
+Icon: G
+Foreground: light_gray_2
+Dialogue: gate_captain
+faction: wall_guard
+aggressive: false
+Age: 35
+BodyType: 0
+XP: 100
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 55
+ActionPoints: 7
+MeleeDamage: 3
+CarryWeight: 175
+Sequence: 10
+HealingRate: 1
+CriticalChance: 5
+Strength: 7
+Perception: 6
+Endurance: 6
+Cool: 7
+Intelligence: 5
+Agility: 6
+SkillBonusRangedCombat: 45
+SkillBonusMeleeCombat: 35
+equipment: eb8_service_pistol
+equipment: 9mm(48)
+equipment: key('south_gate_locked', 'the gate key')
+equipment: gold(50)

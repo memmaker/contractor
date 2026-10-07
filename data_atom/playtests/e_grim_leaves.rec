@@ -1,0 +1,18 @@
+# Living world E6: take the keys from Grim. Three days later he is gone and a note lies on your desk.
+
+%rec: outcomes
+
+if: HasFlag('e_grim_left') && HasItem('grims_note')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: WaitHours(74)
+
+if: HasFlag('e_grim_left')
+do: Use('home_desk')
+do: Take('grims_note')

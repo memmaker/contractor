@@ -1,0 +1,62 @@
+# Leader of the gun thugs outside the Cognetic Bastards' hall. Holds the key to the stolen EBI pallet.
+
+%rec: OpeningBranch
+
+cond: HasFlag('b_pallet_bought')
+goto: Sold
+
+cond: HasFlag('b_shift_accepted')
+goto: Pallet
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He doesn't move his hand from his gun.) Keep walking.
+#
+o_text: Walking.
+o_id: default_bye
+o_goto: End
+
+name: Pallet
+npc: The EBI crate? Yeah, that's ours now. Okafor send you? Tell him the price of forgetting is three hundred.
+#
+o_text: Three hundred. Give me the key.
+o_id: buy_pallet
+o_cond: HasItem('gold', 300)
+o_goto: Bought
+#
+o_text: Nothing personal.
+o_id: kill_leader
+o_goto: Kill
+#
+o_text: I'll think about it.
+o_id: pallet_bye
+o_goto: End
+
+name: Bought
+npc: (He tosses you a key on a strip of red tape.) Padlock's on the crate behind us. Pleasure doing business with Eschaton.
+effect: StackTransferTo(NPC, 'gold', 300)
+effect: StackTransferFrom(NPC, 'pallet_key')
+effect: SetFlag('b_pallet_bought')
+#
+o_text: Pleasure.
+o_id: bought_bye
+o_goto: End
+
+name: Sold
+npc: Crate's yours. Don't come back for a refund.
+#
+o_text: (Leave.)
+o_id: sold_bye
+o_goto: End
+
+name: Kill
+npc: (He grins.) Finally.
+effect: StartCombat
+
+name: End
+npc: (He spits.)
+effect: EndConversation

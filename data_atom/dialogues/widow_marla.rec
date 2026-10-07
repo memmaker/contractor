@@ -1,0 +1,76 @@
+# Widow in the west. Her husband died at the wall. Flags: rent_paid, rent_waived, rent_watch_sold
+%rec: OpeningBranch
+
+cond: HasFlag('rent_paid') || HasFlag('rent_waived') || HasFlag('rent_watch_sold') || HasFlag('Killed(pawn_rook)')
+goto: Settled
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (She does not get up.) If Rook sent you, tell him tomorrow. He knows what tomorrow means.
++ Dario stood on the wall for them eleven years. One bad night and I owe a pawnbroker my own door.
+#
+o_text: How much?
+o_id: marla_how_much
+o_goto: HowMuch
+#
+o_text: Here. A hundred and fifty. Don't thank me.
+o_id: marla_pay
+o_cond: HasItem('gold', 150)
+o_goto: Paid
+#
+o_text: The watch on the table. Rook would pay the rent for it twice.
+o_id: marla_watch
+o_test: RollSkill('social', 'Easy')
+o_succ: WatchSold
+o_fail: WatchRefused
+#
+o_text: I'll talk to Rook.
+o_id: marla_leave
+o_goto: End
+
+name: HowMuch
+npc: A hundred and fifty by tomorrow. Or the flat, which he says is worth more empty.
+#
+o_text: (Back)
+o_id: howmuch_back
+o_goto: Default
+
+name: Paid
+npc: (She counts it, then stops counting.) I will not thank you, then. But I will remember.
+effect: StackTransferTo(NPC, 'gold', 150)
+effect: SetFlag('rent_paid')
+#
+o_text: Pay him today.
+o_id: marla_paid_done
+o_goto: End
+
+name: WatchSold
+npc: (A long silence. She takes it off the table.) He never wore it to the wall. Said he would not need to know the time there.
++ Tell Rook he gets it tonight. Tell him not to put it in the window.
+effect: SetFlag('rent_watch_sold')
+#
+o_text: He will put it in the window.
+o_id: marla_watch_done
+o_goto: End
+
+name: WatchRefused
+npc: Get out.
+#
+o_text: (Leave.)
+o_id: marla_watch_refused_leave
+o_goto: End
+
+name: Settled
+npc: The rent is settled. The flat is still mine, and the chair is still empty.
+#
+o_text: Take care, Marla.
+o_id: marla_settled_leave
+o_goto: End
+
+name: End
+npc: (She turns back to the photo.)
+effect: EndConversation

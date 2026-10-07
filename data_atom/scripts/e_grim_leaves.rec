@@ -1,0 +1,20 @@
+# Grim hands over the keys and, three days later, leaves town. A note waits on the desk in the apartment.
+
+%rec: definitions
+
+%rec: outcomes
+
+if: HasFlag('Killed(grim_beard)')
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('grimKeysGiven')
+do: SaveTimeNow('grim_keys_given')
+
+if: IsDaysAfter('grim_keys_given', 3)
+do: RemoveActor('grim_beard')
+do: ContainerAddItem(ContainerWithName('home_desk'), 'grims_note')
+do: SetFlag('e_grim_left')
+do: Hilite('>>> Grim did not come back last night <<<')

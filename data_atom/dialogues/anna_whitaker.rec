@@ -1,6 +1,21 @@
+# Anna Whitaker, fashionista. Package A1 "The Duck": JobAccepted(duck), duck_returned, told_anna_duck_dead, anna_angry.
+
 %rec: OpeningBranch
 
-# Flag: solved_bobs_problems
+cond: HasFlag('anna_angry')
+goto: Angry
+
+cond: HasFlag('duck_returned')
+goto: Thankful
+
+cond: HasFlag('told_anna_duck_dead')
+goto: Grieving
+
+cond: HasItem('synth_duck_item')
+goto: HasDuck
+
+cond: HasFlag('JobAccepted(duck)')
+goto: Waiting
 
 cond: true
 goto: DefaultIntroduction
@@ -16,8 +31,120 @@ npc: Hello, I'm Anna Whitaker. I'm a fashion expert here to help you out.
 + What can I do for you today?
 #
 o_text: I'm looking for some new clothes.
+o_id: trade
 o_effect: StartTrading
 o_goto: DefaultIntroduction
 #
+o_text: You keep looking at the door.
+o_id: ask_duck
+o_goto: DuckJob
+#
 o_text: Nothing, I'm good.
-o_effect: Exit
+o_id: bye
+o_goto: Exit
+
+name: DuckJob
+npc: My duck. Synthetic, white, answers to Coco. It walked out two days ago and Bob says it went down the manhole behind his store.
++ Into the sewers. With the rats. I can't go down there. 100 sat if you bring it back to me.
+#
+o_text: I'll find your duck.
+o_id: accept_duck
+o_goto: AcceptDuck
+#
+o_text: It's a toy. Buy a new one.
+o_id: decline_duck
+o_goto: DefaultIntroduction
+
+name: AcceptDuck
+npc: Thank you. Really. The manhole is behind Bob's, east side of the street.
+effect: SetFlag('JobAccepted(duck)')
+#
+o_text: I'll be back.
+o_id: accept_bye
+o_goto: Exit
+
+name: Waiting
+npc: Any sign of Coco?
+#
+o_text: Still looking.
+o_id: still_looking
+o_goto: Exit
+#
+o_text: It's dead. The rats got it before I did.
+o_id: duck_dead
+o_test: RollSkill('social', 'Easy')
+o_succ: BelievesDead
+o_fail: DoesNotBelieve
+#
+o_text: Show me your clothes while I'm here.
+o_id: trade_waiting
+o_effect: StartTrading
+o_goto: Waiting
+
+name: HasDuck
+npc: Coco! Oh, look at you. Give her here.
+#
+o_text: Here. One duck, slightly muddy.
+o_id: give_duck
+o_goto: ReturnDuck
+#
+o_text: Not yet. Business first.
+o_id: keep_duck
+o_goto: Exit
+#
+o_text: It's dead. The rats got it before I did.
+o_id: duck_dead_lie
+o_test: RollSkill('social', 'Easy')
+o_succ: BelievesDead
+o_fail: DoesNotBelieve
+
+name: ReturnDuck
+npc: (She wipes the servos with a silk scarf that costs more than the duck.) Thank you. Here, as promised.
+effect: StackTransferTo(NPC, 'synth_duck_item')
+effect: PlayerAddGold(100)
+effect: SetFlag('duck_returned')
+#
+o_text: Take care of her.
+o_id: duck_thanks
+o_goto: Exit
+
+name: BelievesDead
+npc: (She sits down behind the counter and does not say anything for a while.)
++ The rats. Of course. Thank you for looking. Go, please.
+effect: SetFlag('told_anna_duck_dead')
+effect: EndConversation
+
+name: DoesNotBelieve
+npc: The rats. (She looks at your hands, then at your face.) Bob has a new servo pack on his shelf since this morning.
++ Get out of my shop. Don't come back.
+effect: SetFlag('anna_angry')
+effect: EndConversation
+
+name: Thankful
+npc: Coco's keeper! She's upstairs, out of trouble. What can I do for you?
+#
+o_text: Show me what you have.
+o_id: trade_thanks
+o_effect: StartTrading
+o_goto: Thankful
+#
+o_text: Just passing.
+o_id: bye_thanks
+o_goto: Exit
+
+name: Grieving
+npc: (She is dressed in black. The window display is empty.)
++ I'm not really open. Take what you need.
+#
+o_text: Show me what you have.
+o_id: trade_grief
+o_effect: StartTrading
+o_goto: Grieving
+#
+o_text: I'm sorry.
+o_id: sorry
+o_goto: Exit
+
+name: Angry
+npc: I said get out.
+effect: EndConversation

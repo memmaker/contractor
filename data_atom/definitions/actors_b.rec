@@ -1,0 +1,32 @@
+%rec: Actor
+%key: Name
+
+Name: foreman_ebi_loyal
+Description: Foreman (EBI appointed)
+Long_Description: The new shift foreman. His badge is newer than his boots. He counts everything twice.
+Dialogue: foreman_okafor
+Icon: F
+Foreground: green_1
+Faction: ebi
+Age: 40
+BodyType: 0
+XP: 85
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 40
+ActionPoints: 7
+MeleeDamage: 1
+CarryWeight: 150
+Sequence: 10
+HealingRate: 1
+CriticalChance: 4
+Strength: 6
+Perception: 6
+Endurance: 6
+Cool: 6
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: ebi_guard_uniform

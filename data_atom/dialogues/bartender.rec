@@ -1,0 +1,169 @@
+# La Boom's bartender. Client of "Bar Tab": Dec Vega owes him 400 sat.
+# Flags: b_bar_tab_accepted, bar_tab(paid|instalments|written_off), b_bar_tab_lie_failed. Reacts to Killed(dec_vega).
+
+%rec: OpeningBranch
+
+cond: HasFlag('Killed(dec_vega)') && !HasFlag('bar_tab(paid)')
+goto: VegaDead
+
+cond: HasFlag('bar_tab(paid)') || HasFlag('bar_tab(instalments)') || HasFlag('bar_tab(written_off)')
+goto: Done
+
+cond: HasFlag('b_bar_tab_accepted')
+goto: Return
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He polishes a glass that is already clean.) What'll it be?
+#
+o_text: Show me the drinks.
+o_id: drinks
+o_effect: StartTrading
+o_goto: Default
+#
+o_text: You look like a man with a problem.
+o_id: ask_job
+o_goto: Job
+#
+o_text: Nothing.
+o_id: bye
+o_goto: End
+
+name: Job
+npc: Dec Vega. Drinks here every night, pays never. Four hundred sat on the slate.
++ He sits with the Cognetic Bastards across the street. Bring me my four hundred and 150 of it is yours.
+#
+o_text: Done.
+o_id: accept_tab
+o_goto: Accepted
+#
+o_text: Not my kind of work.
+o_id: decline_tab
+o_goto: End
+
+name: Return
+npc: Dec's four hundred. You have it?
+#
+o_text: Here. Four hundred.
+o_id: pay_tab
+o_cond: HasItem('gold', 400)
+o_goto: Paid
+#
+o_text: Dec's wallet. Four hundred, count it.
+o_id: pay_wallet
+o_cond: HasItem('vega_wallet')
+o_goto: PaidWallet
+#
+o_text: He'll pay in instalments. Fifty a week. He means it.
+o_id: instalments
+o_cond: HasFlag('b_vega_instalments')
+o_goto: Instalments
+#
+o_text: Dec is broke. Flat. You'll never see that money; write it off.
+o_id: write_off
+o_cond: HasFlag('b_vega_sided') && !HasFlag('b_bar_tab_lie_failed')
+o_test: RollSkill('social', 'Hard')
+o_succ: WrittenOff
+o_fail: LieFailed
+#
+o_text: Show me the drinks.
+o_id: drinks_return
+o_effect: StartTrading
+o_goto: Return
+#
+o_text: Working on it.
+o_id: working
+o_goto: End
+
+name: Paid
+npc: (He counts it twice.) Huh. Didn't think he had it in him. Or you in you.
++ Hundred and fifty, as agreed. First drink's on the house.
+effect: StackTransferTo(NPC, 'gold', 400)
+effect: PlayerAddGold(150)
+effect: SetFlag('bar_tab(paid)')
+#
+o_text: Pleasure.
+o_id: paid_bye
+o_goto: End
+
+name: PaidWallet
+npc: (He knows the wallet. He counts it anyway.) Four hundred. Hundred and fifty of it is yours, as agreed.
++ Don't come to my bar with his wallet again.
+effect: StackTransferTo(NPC, 'vega_wallet')
+effect: PlayerAddGold(150)
+effect: SetFlag('bar_tab(paid)')
+#
+o_text: Pleasure.
+o_id: paid_wallet_bye
+o_goto: End
+
+name: Instalments
+npc: Instalments. (A long breath.) Fine. Fifty a week, and the first week he misses I send someone less polite than you.
++ Half your fee. The other half when he's paid up, which will be never.
+effect: PlayerAddGold(75)
+effect: SetFlag('bar_tab(instalments)')
+#
+o_text: Fair enough.
+o_id: instalments_bye
+o_goto: End
+
+name: WrittenOff
+npc: (He looks at you for a long moment, then wipes the slate.) Broke. Of course he is. The whole street is.
++ Written off. Don't expect a fee for bringing me nothing.
+effect: SetFlag('bar_tab(written_off)')
+#
+o_text: Didn't.
+o_id: written_off_bye
+o_goto: End
+
+name: LieFailed
+npc: Broke? He bought a round for the Bastards last Tuesday. Don't carry his water in my bar.
++ Four hundred. Or nothing for you either.
+effect: SetFlag('b_bar_tab_lie_failed')
+#
+o_text: Fine.
+o_id: lie_failed_bye
+o_goto: End
+
+name: VegaDead
+npc: (He doesn't look up.) Dec's dead. Heard it from three people before noon.
++ Four hundred sat. That's what he was worth to somebody.
+#
+o_text: His wallet. Four hundred, count it.
+o_id: pay_wallet_dead
+o_cond: HasItem('vega_wallet') && HasFlag('b_bar_tab_accepted')
+o_goto: PaidWallet
+#
+o_text: Show me the drinks.
+o_id: drinks_dead
+o_effect: StartTrading
+o_goto: VegaDead
+#
+o_text: (Leave.)
+o_id: dead_bye
+o_goto: End
+
+name: Done
+npc: Back again. The slate's clean, the glasses aren't.
+#
+o_text: Show me the drinks.
+o_id: drinks_done
+o_effect: StartTrading
+o_goto: Done
+#
+o_text: Later.
+o_id: done_bye
+o_goto: End
+
+name: Accepted
+npc: Four hundred. Not three-ninety.
+effect: SetFlag('b_bar_tab_accepted')
+effect: EndConversation
+
+name: End
+npc: (He goes back to his glass.)
+effect: EndConversation

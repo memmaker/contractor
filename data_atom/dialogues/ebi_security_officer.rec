@@ -1,0 +1,45 @@
+# EBI security officer at headquarters. Buys the foreman's secret ("Shift Change" outcome sold_out; R6 replaces the foreman).
+
+%rec: OpeningBranch
+
+cond: HasFlag('shift_change(sold_out)')
+goto: Paid
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: State your business, citizen.
+#
+o_text: Foreman Okafor, industrial district. He's covering up a theft from your medical inventory.
+o_id: sell_foreman
+o_cond: HasFlag('b_shift_accepted') && !HasFlag('shift_change(returned)')
+o_goto: SellOut
+#
+o_text: None.
+o_id: default_bye
+o_goto: End
+
+name: SellOut
+npc: (He writes without looking down.) Okafor. Shift two. Noted.
++ Eschaton rewards cooperation. Four hundred. The matter is now internal.
+effect: PlayerAddGold(400)
+effect: SetFlag('shift_change(sold_out)')
+effect: RunScript('b_foreman_replaced')
+#
+o_text: Internal. Sure.
+o_id: sellout_bye
+o_goto: End
+
+name: Paid
+npc: Your cooperation is on file, citizen. Move along.
+#
+o_text: (Leave.)
+o_id: paid_bye
+o_goto: End
+
+name: End
+npc: (He looks through you.)
+effect: EndConversation

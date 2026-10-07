@@ -1,0 +1,19 @@
+# Rent (avoider): pay Marla's 150 out of your own pocket.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rent, paid)') && !HasItem('gold', 150)
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: GoTo('marla_flat')
+
+if: true
+do: Talk('widow_marla')
+do: Choose('marla_pay')
+do: Choose('marla_paid_done')

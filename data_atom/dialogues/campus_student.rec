@@ -1,0 +1,40 @@
+# Shared by the EBI students on campus_ebi.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (Barely looks up.) You're not faculty. Lost?
+#
+o_text: What do they teach here?
+o_id: student_teach
+o_goto: Teach
+#
+o_text: The woman at the gate. What's her story?
+o_id: student_ines
+o_goto: Ines
+#
+o_text: Never mind.
+o_id: student_leave
+o_goto: End
+
+name: Teach
+npc: Genomics, population health, "resource ethics". Second year you stop asking what the wall is for.
+#
+o_text: (Back)
+o_id: teach_back
+o_goto: Default
+
+name: Ines
+npc: Ines. Dropped out last term after her brother. Security has been told not to touch her. That order will not last.
+#
+o_text: (Back)
+o_id: ines_back
+o_goto: Default
+
+name: End
+npc: Sure.
+effect: EndConversation

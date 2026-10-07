@@ -130,6 +130,7 @@ Icon: b
 Foreground: light_gray_2
 Description: a beggar
 Dialogue: beggar
+Chatter: beggar_chatter
 LongDescription: 
 Age: 60
 BodyType: 0

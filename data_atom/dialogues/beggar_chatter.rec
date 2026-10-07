@@ -1,0 +1,25 @@
+s: being_around_player
+#
+c: HasFlag('beggar_informant')
+#
+t: Ears open, choomba.
+t: Saw two EBI suits at the taxi stand this morning. Thought you'd want to know.
+t: Nobody sees the man with the cup. That's the trick.
+
+s: being_around_player
+#
+c: HasFlag('beggar_helped')
+#
+t: Still alive, thanks to you.
+t: Cold night coming.
+
+s: being_around_player
+#
+t: Spare some sat?
+t: Anything helps, choomba.
+t: (He rattles his cup.)
+
+s: being_damaged
+#
+t: I've got nothing! Nothing!
+t: Please...

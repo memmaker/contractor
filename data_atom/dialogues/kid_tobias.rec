@@ -1,0 +1,28 @@
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: You a wall guard? You look like a wall guard. Marla's man was one. He's dead.
+#
+o_text: Who told you that?
+o_id: tobias_who
+o_goto: Who
+#
+o_text: Go home, kid.
+o_id: tobias_leave
+o_goto: End
+
+name: Who
+npc: Everybody. Also Rook, who says it like it's money.
+#
+o_text: (Back)
+o_id: who_back
+o_goto: Default
+
+name: End
+npc: (He whacks the wall with his stick.)
+effect: EndConversation

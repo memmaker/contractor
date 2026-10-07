@@ -1,0 +1,95 @@
+# Richard Shaw, collector of the paperwork of the end of the world. Client of "Dead Freight".
+# Flags: b_freight_accepted, dead_freight(public), b_manifest_public (starts R5: Solara leaves).
+
+%rec: OpeningBranch
+
+cond: HasFlag('dead_freight(public)') || HasFlag('dead_freight(buried)')
+goto: Done
+
+cond: HasFlag('b_freight_accepted')
+goto: Return
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (A neat man surrounded by folders.) Richard Shaw. I collect records. Receipts, logs, manifests. The things that outlive us.
+#
+o_text: Looking for anything in particular?
+o_id: ask_job
+o_goto: Job
+#
+o_text: Not interested in paper.
+o_id: default_bye
+o_goto: End
+
+name: Job
+npc: The spaceport cargo terminal keeps the flight manifests. Every departure, every ton, every passenger.
++ Two sentry bots guard it; the port console in the arrivals hall runs them. Bring me a printout. Five hundred sat.
+#
+o_text: Why that one?
+o_id: why_manifest
+o_goto: Why
+#
+o_text: Five hundred. Done.
+o_id: accept_freight
+o_goto: Accepted
+#
+o_text: Find someone else.
+o_id: decline_freight
+o_goto: End
+
+name: Why
+npc: Because a thousand people in this city paid a million sat each for a berth, and I would like to see one. On paper.
+#
+o_text: Five hundred. Done.
+o_id: accept_freight_why
+o_goto: Accepted
+#
+o_text: Find someone else.
+o_id: decline_freight_why
+o_goto: End
+
+name: Return
+npc: The manifest?
+#
+o_text: Here. Cargo only. Zero berths, all hulls.
+o_id: give_manifest
+o_cond: HasItem('spaceport_manifest')
+o_goto: Delivered
+#
+o_text: Still working on it.
+o_id: return_bye
+o_goto: End
+
+name: Delivered
+npc: (He reads it twice, then feeds it into a copier that was already warm.) Zero. I knew. Knowing is nothing; this is proof.
++ By tonight every public terminal has it. Five hundred, and my thanks.
+effect: StackTransferTo(NPC, 'spaceport_manifest')
+effect: PlayerAddGold(500)
+effect: SetFlag('dead_freight(public)')
+effect: SetFlag('b_manifest_public')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+effect: RunScript('b_solara_leaves')
+#
+o_text: Solara Carter won't thank you.
+o_id: delivered_bye
+o_goto: End
+
+name: Done
+npc: Paper remembers what people won't. Good day.
+#
+o_text: Good day.
+o_id: done_bye
+o_goto: End
+
+name: Accepted
+npc: Cargo terminal, east room. Mind the sentries.
+effect: SetFlag('b_freight_accepted')
+effect: EndConversation
+
+name: End
+npc: (He returns to his folders.)
+effect: EndConversation

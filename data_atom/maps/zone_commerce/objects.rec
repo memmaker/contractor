@@ -92,3 +92,22 @@ TargetMap: zone_corporate
 TargetLocation: street_to_commerce
 Position: (3,0)
 
+# Package B
+Category: NamedLocation
+Identifier: solara_stall
+Position: (73,5)
+
+Category: UnknownContainer
+Name: vega_stash
+Description: a lockbox under the back table
+lockdifficulty: medium
+item: gold(400)
+Position: (59,18)
+
+Category: UnknownContainer
+Name: stolen_pallet
+Description: a pallet of EBI crates under a tarp
+lockflag: pallet_key
+lockdifficulty: medium
+item: medical_supplies
+Position: (46,8)

@@ -1,0 +1,66 @@
+# D2 (grey): sell Faust on his own terminal, then warn him. He and Mira go below; the strike team finds the house empty and hunts you.
+
+%rec: outcomes
+
+if: HasFlag('faust_warned') && HasFlag('ebi_strike_landed') && !HasFlag('Killed(logan_faust)') && HasFlag('QuestCompleted(recluse, warned)') && IsOnMap('cryo_lab') && GetFlag('TalkedTo(logan_faust)') >= 3 && GetFlag('Killed(ebi_trooper)') >= 1
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: Use('faust_terminal')
+do: Choose('report_faust')
+do: Choose('report_back')
+do: Choose('terminal_leave')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('warn_faust')
+do: Choose('warn_go')
+
+# wait behind the house for the rotors, then get below before the troopers cross the grounds: they follow you down
+if: true
+do: GoTo('service_door')
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: SetStat('Strength', 10)
+do: WaitMinutes(61)
+
+if: true
+do: GoTo('cellar_stairs')
+
+if: true
+do: GoTo('pod_room')
+
+# Faust and Mira are below, alive. Mira shoots whoever comes down the stairs after you.
+if: true
+do: Talk('logan_faust')
+do: Choose('warned_leave')
+
+if: true
+do: WaitHours(1)

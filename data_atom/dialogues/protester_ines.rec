@@ -1,0 +1,82 @@
+# Lone protester at the EBI campus gate. Flags: ines_paid, ines_moved, ines_warned, ines_refused
+%rec: OpeningBranch
+
+cond: IsMap('hq_bat')
+goto: AtBat
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (Hoarse.) Four hundred bodies at the south wall. EBI calls it cleansing. I call it by name, every morning, until they stop me.
+#
+o_text: Voss wants you gone. Take 300 and go home.
+o_id: ines_pay
+o_cond: HasItem('gold', 300)
+o_goto: Paid
+#
+o_text: You're shouting at the wrong gate. BAT sold the guns. EBI only signed.
+o_id: ines_move
+o_test: RollSkill('social', 'Hard')
+o_succ: Moved
+o_fail: MoveRefused
+#
+o_text: Voss is sending someone. Be gone by tonight.
+o_id: ines_warn
+o_goto: Warned
+#
+o_text: Say their names, then.
+o_id: ines_leave
+o_goto: End
+
+name: Paid
+npc: (She looks at the money a long time.) Three hundred. That is what a name is worth to him.
++ Fine. I have a mother who eats. Tell Voss he bought a day.
+effect: StackTransferTo(NPC, 'gold', 300)
+effect: SetFlag('ines_paid')
+effect: RunScriptLeave(NPC)
+#
+o_text: One day is all he asked for.
+o_id: ines_paid_done
+o_goto: End
+
+name: Moved
+npc: Bushido-ArmaTech. (She rolls the banner.) They have a gate too. See you there.
+effect: SetFlag('ines_moved')
+effect: SpawnActor('protester_ines', 'hq_bat', 'bat_gate')
+effect: RunScriptLeave(NPC)
+#
+o_text: Give them hell.
+o_id: ines_moved_done
+o_goto: End
+
+name: MoveRefused
+npc: Nice try. The paperwork says Eschaton. I stand where the paperwork is.
+effect: SetFlag('ines_refused')
+#
+o_text: Suit yourself.
+o_id: ines_refused_leave
+o_goto: End
+
+name: Warned
+npc: (Her voice drops to normal.) Someone like you? Thanks. I will take the banner with me.
+effect: SetFlag('ines_warned')
+effect: RunScriptLeave(NPC)
+#
+o_text: Don't come back for a while.
+o_id: ines_warned_done
+o_goto: End
+
+name: AtBat
+npc: (Hoarser than before, in front of the BAT lobby.) Peace through strength, they say. Four hundred bodies say otherwise.
+effect: SetFlag('ines_bat_seen')
+#
+o_text: Still at it.
+o_id: ines_bat_leave
+o_goto: End
+
+name: End
+npc: (She lifts the banner again.)
+effect: EndConversation

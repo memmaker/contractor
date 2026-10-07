@@ -129,10 +129,16 @@ id: recluse
 name: The Recluse
 xp: 500
 #
-start_cond: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)') || HasFlag('KnowsAbout(cryo_lab)') || HasFlag('faust_sold_out')
+start_cond: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)') || HasFlag('KnowsAbout(cryo_lab)') || HasFlag('faust_sold_out') || HasFlag('safe_cracked')
 start_text:
 + Logan Faust, the man E. wants silenced, lives above something he values more than his life.
 + Find out what it is before you decide what he is worth.
+#
+prog_cond: HasFlag('faust_persuade_failed')
+prog_text: Faust wants proof you are not E.'s: the south gate's EBI log, or Mira's word.
+#
+prog_cond: HasFlag('household_alert')
+prog_text: Mira found the safe open. Faust's people shoot on sight now.
 #
 prog_cond: HasFlag('faust_sold_out')
 prog_text: You gave E. the address. 5000 sat, and a strike team on its way.
@@ -140,6 +146,10 @@ prog_text: You gave E. the address. 5000 sat, and a strike team on its way.
 end_cond: HasFlag('Killed(logan_faust)')
 end_text: Logan Faust is dead. Whatever he was hiding is yours to find.
 end_id: faust_dead
+#
+end_cond: HasFlag('faust_warned')
+end_text: You sold Faust to E., then ran back and sent him below before the rotors came. The 5000 sat is still yours. E. will not forget.
+end_id: warned
 #
 end_cond: HasFlag('faust_sold_out')
 end_text: You sold Faust to E. for 5000 sat. EBI troopers are on their way to the mansion.
@@ -167,6 +177,13 @@ start_text:
 prog_cond: HasFlag('PodFree(1)') || HasFlag('PodFree(2)') || HasFlag('PodFixed(3)') || HasFlag('PodFree(4)') || HasFlag('Killed(logan_faust)')
 prog_text: A pod in the lab is free and working. Climb in when you are ready.
 #
+end_cond: HasFlag('Ending(cryo_sleep)') && HasFlag('sleeper_moved')
+end_text:
++ The lid seals. Two pods down, Henrik Vale sleeps on in the berth you fixed for him; he will never know he moved.
++ Somewhere above, the pulse hits: every light in Edge Haven dies at once, and then the sky catches fire.
++ Nobody died for your cold. Two hundred years. To be continued.
+end_id: cryo_sleep_clean
+#
 end_cond: HasFlag('Ending(cryo_sleep)')
 end_text:
 + The lid seals. ARK counts you down in a voice like a kind nurse.
@@ -178,6 +195,7 @@ end_id: cryo_sleep
 end_cond: HasFlag('Ending(against_all_odds)')
 end_text:
 + The files hit every public terminal in the city before EBI cut the lines.
++ The broadcast drew the grid down; behind you the pods thawed, and Vale and Marrow died without waking.
 + The troopers came down the cellar stairs in pairs. You made them pay for every step.
 + By morning your name is painted on the wall of the spaceport and the ships still leave without passengers.
 + You died famous. Nobody ever bought a way to the stars.

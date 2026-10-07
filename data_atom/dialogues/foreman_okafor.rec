@@ -1,0 +1,99 @@
+# Foreman Okafor, EBI warehouse shift in the industrial district. Client of "Shift Change".
+# The same file serves his EBI-appointed replacement (foreman_ebi_loyal) once b_foreman_replaced is set.
+
+%rec: OpeningBranch
+
+cond: HasFlag('b_foreman_replaced')
+goto: Loyal
+
+cond: HasFlag('shift_change(returned)') || HasFlag('shift_change(sold_out)')
+goto: Done
+
+cond: HasFlag('b_shift_accepted')
+goto: Return
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He looks past you at the guards, then back.) You're not EBI. Good. Keep your voice down.
+#
+o_text: You look like a man with a problem.
+o_id: ask_job
+o_goto: Job
+#
+o_text: Just passing.
+o_id: default_bye
+o_goto: End
+
+name: Job
+npc: A pallet of medical supplies walked off my dock last week. Gun thugs, commerce district, the ones outside the Bastards' hall.
++ EBI counts the inventory on Monday. If the count is short, I'm the one who's short. Bring it back and nobody up there hears a word.
++ Three hundred and fifty. Quiet money.
+#
+o_text: Quiet money. Done.
+o_id: accept_shift
+o_goto: Accepted
+#
+o_text: Not my problem.
+o_id: decline_shift
+o_goto: End
+
+name: Return
+npc: (Quietly.) Well?
+#
+o_text: Here. Sealed, like it left.
+o_id: give_supplies
+o_cond: HasItem('medical_supplies')
+o_goto: Returned
+#
+o_text: Working on it.
+o_id: return_bye
+o_goto: End
+
+name: Returned
+npc: (He checks the seal, then breathes out.) Monday's count is right. You were never here.
++ Three fifty. Thank you.
+effect: StackTransferTo(NPC, 'medical_supplies')
+effect: PlayerAddGold(350)
+effect: SetFlag('shift_change(returned)')
+#
+o_text: Never was.
+o_id: returned_bye
+o_goto: End
+
+name: Done
+npc: (A nod. Nothing more, with the guards this close.)
+#
+o_text: (Leave.)
+o_id: done_bye
+o_goto: End
+
+name: Loyal
+npc: Shift two is under new management. Inventory is correct to the unit. Move along, citizen.
+#
+o_text: What happened to Okafor?
+o_id: ask_okafor
+o_goto: Okafor
+#
+o_text: Moving.
+o_id: loyal_bye
+o_goto: End
+
+name: Okafor
+npc: Reassigned. (He does not say where.) Eschaton thanks you for your cooperation.
+#
+o_text: (Leave.)
+o_id: okafor_bye
+o_goto: End
+
+name: Accepted
+npc: (He goes back to his clipboard a little too quickly.)
+effect: SetFlag('b_shift_accepted')
+effect: EndConversation
+
+name: End
+npc: (He turns back to his clipboard.)
+effect: EndConversation

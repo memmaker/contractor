@@ -1,0 +1,38 @@
+# D5 (grey): ask ARK what the broadcast costs, then do it anyway. The sleepers thaw; you die famous.
+
+%rec: outcomes
+
+if: GameOver() && HasFlag('Ending(against_all_odds)') && HasFlag('Killed(sleeper_1)') && HasFlag('Killed(sleeper_2)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: GoTo('cellar_stairs')
+
+if: true
+do: Use('ark_terminal')
+do: Choose('broadcast_cost')
+do: Choose('broadcast_cost_back')
+do: Choose('broadcast_files')

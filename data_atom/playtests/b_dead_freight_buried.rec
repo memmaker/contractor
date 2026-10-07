@@ -1,0 +1,56 @@
+# Dead Freight (grey): get the manifest the quiet way, then sell it to Solara Carter for 800. She shreds it; the tickets keep selling.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(dead_freight, buried)') && !HasFlag('dead_freight(public)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('ask_job')
+do: Choose('accept_freight')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_spaceport')
+
+if: true
+do: SetSkill('Technology', 200)
+do: Use('spaceport_gate')
+do: Use('spaceport_console')
+do: Choose('hack_console')
+do: Choose('hacked_leave')
+
+if: true
+do: Use('manifest_terminal')
+do: Choose('print_manifest')
+do: Choose('printed_leave')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('solara_carter')
+do: Choose('hi_solara')
+do: Choose('sell_manifest')
+do: Choose('bury_manifest')
+do: Choose('buried_bye')

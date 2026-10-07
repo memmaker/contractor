@@ -1,0 +1,78 @@
+# BAT security chief who lost his badge. Flags: landry_asked, badge_returned. Clears door flag bat_badge (hq_bat lobby).
+%rec: OpeningBranch
+
+cond: HasFlag('badge_returned')
+goto: Returned
+
+cond: HasItem('bat_badge')
+goto: HaveBadge
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He pats his jacket pocket for the third time.)
++ You see a badge? BAT, my photo, security clearance. Lost it somewhere on this street an hour ago.
+effect: SetFlag('landry_asked')
+#
+o_text: What is it worth to you?
+o_id: landry_worth
+o_goto: Worth
+#
+o_text: Anyone bump into you?
+o_id: landry_who
+o_goto: Who
+#
+o_text: Haven't seen it.
+o_id: landry_leave
+o_goto: End
+
+name: Worth
+npc: A hundred sat and a friend in BAT security. Those are rarer than the money.
+#
+o_text: (Back)
+o_id: worth_back
+o_goto: Default
+
+name: Who
+npc: A tout. Lottery slips, big smile, hands everywhere. Benny, they call him. He is still on the corner, laughing.
+#
+o_text: (Back)
+o_id: who_back
+o_goto: Default
+
+name: HaveBadge
+npc: That is my badge. Hand it over and we are square.
+#
+o_text: Here. Found it on a tout.
+o_id: landry_return
+o_goto: Return
+#
+o_text: Not yet.
+o_id: landry_keep
+o_goto: End
+
+name: Return
+npc: (He clips it on like a man putting his name back.)
++ Hundred sat, as said. And the lobby door at BAT opens for you now. Tell the desk Landry sent you.
+effect: StackTransferTo(NPC, 'bat_badge')
+effect: PlayerAddGold(100)
+effect: SetFlag('badge_returned')
+effect: ClearFlag('bat_badge')
+#
+o_text: I'll remember.
+o_id: landry_done
+o_goto: End
+
+name: Returned
+npc: My badge is on my chest and my debt is paid. You still get through the lobby.
+#
+o_text: Good.
+o_id: landry_returned_leave
+o_goto: End
+
+name: End
+npc: (He goes back to watching the street.)
+effect: EndConversation

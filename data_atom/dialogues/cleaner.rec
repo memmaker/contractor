@@ -1,7 +1,20 @@
+# The cleaner (zone_residential_west). Package A3 "Rats": JobAccepted(rats), rats_paid, cleaner_went_down.
+# Proof the sewers are clear: the sewer rats each carry a rat_tail; fewer than 5 living tails means 6+ are dead.
+# (Killed(rat) is not a counter in the engine; see the package report.)
+
 %rec: OpeningBranch
 
 cond: HasFlag('cleaner_called') && !HasFlag('clinic_cleaned')
 goto: Working
+
+cond: HasFlag('rats_paid')
+goto: Paid
+
+cond: HasFlag('JobAccepted(rats)') && (HasFlag('sewer_rats_poisoned') || ItemCountFactionInventorySinglePrefix('rat_tail', 'zone_residential_south_underground', 'rats') <= 4)
+goto: Proof
+
+cond: HasFlag('JobAccepted(rats)')
+goto: Waiting
 
 cond: true
 goto: Idle
@@ -12,9 +25,86 @@ goto: Idle
 name: Idle
 npc: (A tired man in stained coveralls sits on his bed, phone in hand.)
 + Blood, puke, worse. You make a mess, somebody calls me. Always somebody calls me.
+#
+o_text: Somebody called you about the sewer rats.
+o_id: ask_rats
+o_goto: RatJob
+#
+o_text: Carry on.
+o_id: bye
+o_goto: Bye
+
+name: RatJob
+npc: Southside sewers. Ten rats, big as dogs, and the district pays me to clear them. I'm not going down there.
++ You do it, the 150 is yours. Shoot them, poison them, I don't care. Bob sells poison. The rats feed off the trash heap down there.
+#
+o_text: Deal. Keep the money warm.
+o_id: accept_rats
+o_goto: AcceptRats
+#
+o_text: It's your job. Go down and do it.
+o_id: do_your_job
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: GoesDown
+o_fail: Refuses
+#
+o_text: Not my problem.
+o_id: decline_rats
+o_goto: Bye
+
+name: AcceptRats
+npc: Manhole behind Bob's store. Mind the mines, the Doc's people put them down there.
+effect: SetFlag('JobAccepted(rats)')
+#
+o_text: Right.
+o_id: accept_bye
+o_goto: Bye
+
+name: GoesDown
+npc: (He looks at you for a long moment, then at his mop.) Fine. Fine. I'll go.
+effect: SetFlag('cleaner_went_down')
+effect: RunScript('a_cleaner_dies')
+#
+o_text: Good man.
+o_id: go_bye
+o_goto: Bye
+
+name: Refuses
+npc: No. I'd rather be poor than eaten. Get out of my room.
 effect: EndConversation
+
+name: Waiting
+npc: Are they dead yet?
+#
+o_text: Working on it.
+o_id: working_on_it
+o_goto: Bye
+
+name: Proof
+npc: You smell like the sewer. That's a good sign.
+#
+o_text: The sewer's quiet. Pay up.
+o_id: rats_done
+o_goto: Paid
+#
+o_text: Later.
+o_id: proof_later
+o_goto: Bye
+
+name: Paid
+npc: (He counts it out slowly, like it hurts.) 150. Nobody has to know I never went down.
+effect: PlayerAddGold(150)
+effect: SetFlag('rats_paid')
+#
+o_text: Nobody will.
+o_id: paid_bye
+o_goto: Bye
 
 name: Working
 npc: (He doesn't look up from the floor.)
 + The new doc wants this place spotless before he sees patients. Mind your feet.
+effect: EndConversation
+
+name: Bye
+npc: Yeah.
 effect: EndConversation

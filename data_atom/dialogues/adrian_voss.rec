@@ -22,6 +22,16 @@ o_text: Is there anything else I can do for you?
 o_cond: HasFlag('job_ebi1_completed')
 o_goto: LookingForJob2
 #
+o_text: I hear your campus has a visitor.
+o_id: silence_ask
+o_cond: !HasFlag('silence_accepted') && !HasFlag('job_ebi1_completed')
+o_goto: SilenceOffer
+#
+o_text: The campus is quiet.
+o_id: silence_report
+o_cond: HasFlag('silence_accepted') && !HasFlag('silence_paid') && (HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('Killed(protester_ines)'))
+o_goto: SilencePaid
+#
 o_text: I have to go.
 o_goto: Goodbye
 
@@ -59,3 +69,37 @@ effect: PlayerAddGold(UserFunc('PAMPHLETS_DISTRIBUTED') * 10)
 effect: SetFlag('job_ebi1_completed')
 
 name: LookingForJob2
+npc: There is, as it happens.
+#
+o_text: Go on.
+o_id: silence_go_on
+o_goto: SilenceOffer
+
+name: SilenceOffer
+npc: A woman stands at our campus gate with a banner. The press has started to notice.
++ I want the campus quiet. 500 sat when it is. How is your business.
+#
+o_text: Consider it quiet.
+o_id: silence_accept
+o_goto: SilenceAccepted
+#
+o_text: Not my kind of work.
+o_id: silence_decline
+o_goto: DefaultIntroduction
+
+name: SilenceAccepted
+npc: Good. I do not want to hear how.
+effect: SetFlag('silence_accepted')
+#
+o_text: You won't.
+o_id: silence_accepted_done
+o_goto: Goodbye
+
+name: SilencePaid
+npc: (He checks a feed on his tablet, then nods once.) So it is. Five hundred.
+effect: PlayerAddGold(500)
+effect: SetFlag('silence_paid')
+#
+o_text: Pleasure.
+o_id: silence_paid_done
+o_goto: Goodbye

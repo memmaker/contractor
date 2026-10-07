@@ -94,9 +94,9 @@ Description: CHANGEME
 item: meld
 Position: (26,14)
 
-Category: LockedDoor
-Description: a door
-LockFlag: CHANGEME
+Category: ClosedDoor
+Name: spaceport_gate
+Description: the arrivals hall door
 Position: (2,7)
 
 Category: LockedDoor
@@ -217,3 +217,15 @@ Description: CHANGEME
 item: meld
 Position: (5,15)
 
+# Package B: the cargo terminal in the east room, the port console in the arrivals hall
+Category: Terminal
+Name: manifest_terminal
+Description: the cargo terminal
+Dialogue: manifest_terminal
+Position: (77,13)
+
+Category: Terminal
+Name: spaceport_console
+Description: the port operations console
+Dialogue: spaceport_console
+Position: (40,3)

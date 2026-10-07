@@ -1,0 +1,54 @@
+# Haruki Tanaka, CEO of Bushido-ArmaTech. Two topics about Logan Faust (former board).
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He does not ask how you got in.) Bushido-ArmaTech. Peace through strength. You have the look of someone who buys the second part.
+#
+o_text: Logan Faust sat on your board.
+o_id: haruki_faust
+o_goto: Faust
+#
+o_text: Why did Faust leave?
+o_id: haruki_faust_left
+o_goto: FaustLeft
+#
+o_text: Looking for work.
+o_id: haruki_work
+o_goto: Work
+#
+o_text: Just looking.
+o_id: haruki_leave
+o_goto: End
+
+name: Faust
+npc: Sat. Past tense, and the nameplate came off the lobby wall the same week. He was my father's man, not mine.
++ Brilliant with numbers. Weak stomach.
+#
+o_text: (Back)
+o_id: faust_back
+o_goto: Default
+
+name: FaustLeft
+npc: He read a partner's proposal he was not meant to read and resigned the same night. Eschaton calls it a cleansing; Logan called it murder, in the minutes.
++ If you find him, tell him the board voted without him. It always did.
+effect: SetFlag('KnowsAbout(golden_ticket)')
+#
+o_text: (Back)
+o_id: faustleft_back
+o_goto: Default
+
+name: Work
+npc: Miller handles hiring. I handle who she is allowed to hire.
+#
+o_text: (Back)
+o_id: work_back
+o_goto: Default
+
+name: End
+npc: Strength, then.
+effect: EndConversation

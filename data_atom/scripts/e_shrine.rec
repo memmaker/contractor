@@ -1,0 +1,16 @@
+# The beggar was killed: a day later somebody lights candles at his spot and sits with them.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('Killed(beggar)')
+do: SaveTimeNow('beggar_died')
+
+if: IsDaysAfter('beggar_died', 1)
+do: SpawnActor('mourner', 'zone_residential_east', 'beggar_spot')
+do: SetFlag('e_beggar_shrine')

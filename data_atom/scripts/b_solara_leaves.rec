@@ -1,0 +1,19 @@
+# R5: the manifest is public (Shaw). The day after, Solara Carter is gone from the eastern rim and a gun thug squats her stall.
+# Fires the first time the player is in the commerce district a day later.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('b_manifest_public_at')
+
+if: IsDaysAfter('b_manifest_public_at', 1) && IsMap('zone_commerce')
+do: RemoveActor('solara_carter')
+do: SpawnActor('gun_thug', 'zone_commerce', 'solara_stall')
+do: SetFlag('b_solara_left')
+do: Hilite('>>> The stall of Solara Carter is shuttered. Somebody else is leaning on it <<<')

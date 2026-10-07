@@ -9,7 +9,177 @@ name: DefaultIntroduction
 npc: ** Public Information Interface **
 + > Welcome
 effect: None
+#
+o_text: > Dome Newswire
+o_id: news
+o_goto: News
+#
+o_text: > Log off
+o_id: leave
+o_goto: End
 
+# One headline per world event. The list is empty on a quiet day.
+name: News
+npc: ** Dome Newswire **
++ > Select an item.
+#
+o_text: EASTSIDE MAN FOUND DEAD
+o_id: news_jacob
+o_cond: HasFlag('Killed(jacob_thorne)')
+o_goto: NewsJacob
+#
+o_text: SQUATTERS CLAIM EASTSIDE PROPERTY
+o_id: news_squatter
+o_cond: HasFlag('e_squatter_moved_in')
+o_goto: NewsSquatter
+#
+o_text: RIPPERDOC SLAIN AT HOSPITAL CLINIC
+o_id: news_harker
+o_cond: HasFlag('Killed(daniel_harker)')
+o_goto: NewsHarker
+#
+o_text: CLINIC REOPENS UNDER NEW MANAGEMENT
+o_id: news_clinic
+o_cond: HasFlag('clinic_reopened')
+o_goto: NewsClinic
+#
+o_text: GATE CAPTAIN KILLED AT SOUTH WALL
+o_id: news_captain
+o_cond: HasFlag('Killed(gate_captain)')
+o_goto: NewsCaptain
+#
+o_text: EBI OPERATION OUTSIDE THE WALL
+o_id: news_ebi
+o_cond: HasFlag('faust_sold_out') || HasFlag('ebi_strike_landed')
+o_goto: NewsEbi
+#
+o_text: RECLUSE DEAD IN HIS MANSION
+o_id: news_faust
+o_cond: HasFlag('Killed(logan_faust)')
+o_goto: NewsFaust
+#
+o_text: SPACEPORT MANIFEST LEAK
+o_id: news_manifest
+o_cond: HasFlag('b_manifest_public')
+o_goto: NewsManifest
+#
+o_text: VETERAN CONTRACTOR DEAD
+o_id: news_grim
+o_cond: HasFlag('Killed(grim_beard)')
+o_goto: NewsGrim
+#
+o_text: CANDLES FOR AN EASTSIDE BEGGAR
+o_id: news_beggar
+o_cond: HasFlag('e_beggar_shrine')
+o_goto: NewsBeggar
+#
+o_text: QUIET DAY IN THE DOME
+o_id: news_quiet
+o_cond: !HasFlag('Killed(jacob_thorne)') && !HasFlag('e_squatter_moved_in') && !HasFlag('Killed(daniel_harker)') && !HasFlag('clinic_reopened') && !HasFlag('Killed(gate_captain)') && !HasFlag('faust_sold_out') && !HasFlag('ebi_strike_landed') && !HasFlag('Killed(logan_faust)') && !HasFlag('b_manifest_public') && !HasFlag('Killed(grim_beard)') && !HasFlag('e_beggar_shrine')
+o_goto: NewsQuiet
+#
+o_text: > Back
+o_id: news_back
+o_goto: DefaultIntroduction
+
+name: NewsJacob
+npc: ** Dome Newswire **
++ > EASTSIDE MAN FOUND DEAD
++ > Jacob Thorne, a lender known to the district, was found shot in his apartment. The watch is not looking.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsSquatter
+npc: ** Dome Newswire **
++ > SQUATTERS CLAIM EASTSIDE PROPERTY
++ > The late Jacob Thorne's rooms have a new tenant. His former muscle roams the street unpaid and unfriendly.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsHarker
+npc: ** Dome Newswire **
++ > RIPPERDOC SLAIN AT HOSPITAL CLINIC
++ > Dr. Daniel Harker died behind his own counter. Patients are asked to bring their own bandages.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsClinic
+npc: ** Dome Newswire **
++ > CLINIC REOPENS UNDER NEW MANAGEMENT
++ > The southside clinic is treating patients again. The new doctor declined to give a name.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsCaptain
+npc: ** Dome Newswire **
++ > GATE CAPTAIN KILLED AT SOUTH WALL
++ > The gate watch has lost its captain and its temper. Travellers are advised to avoid the south airlock.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsEbi
+npc: ** Dome Newswire **
++ > EBI OPERATION OUTSIDE THE WALL
++ > Eschaton Biotech confirms a 'sanitation action' at a private estate past the south gate. No further comment.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsFaust
+npc: ** Dome Newswire **
++ > RECLUSE DEAD IN HIS MANSION
++ > Logan Faust, once of the Bushido-ArmaTech board, is dead at his estate outside the wall. BAT stock unchanged.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsManifest
+npc: ** Dome Newswire **
++ > SPACEPORT MANIFEST LEAK
++ > A leaked flight manifest lists cargo and crew for the last three launches. No passengers. The ticket office is closed today.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsGrim
+npc: ** Dome Newswire **
++ > VETERAN CONTRACTOR DEAD
++ > A grey-bearded fixer known to half the southside was found dead. His bar stool at La Boom stays empty.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsBeggar
+npc: ** Dome Newswire **
++ > CANDLES FOR AN EASTSIDE BEGGAR
++ > Someone killed the man with the cup by the eastside taxi stand. Someone else lit candles. Nobody gave a name.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
+
+name: NewsQuiet
+npc: ** Dome Newswire **
++ > QUIET DAY IN THE DOME
++ > Nothing to report. Air quality: acceptable. Golden ticket sales: brisk.
+effect: SetFlag('e_news_read')
+#
+o_text: > Back
+o_goto: News
 
 name: End
 npc: ** Public Information Interface **

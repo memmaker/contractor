@@ -44,6 +44,11 @@ o_goto: AreaKnowledge
 o_text: What did you say we were doing last night?
 o_goto: LastNight
 #
+o_text: You've been quiet since you gave me the keys. Planning something?
+o_id: ask_leaving
+o_cond: HasFlag('grimKeysGiven')
+o_goto: Leaving_Hint
+#
 o_text: Never mind.
 o_id: bye
 o_goto: Goodbye
@@ -64,6 +69,16 @@ effect: EndConversation
 name: Goodbye
 npc: Good luck out there.
 effect: EndConversation
+
+name: Leaving_Hint
+npc: (He turns his glass.) A man who retires and keeps his old bar stool isn't retired. He's waiting.
++ I'm done waiting. Don't come looking. You'll hear from me when it matters.
+#
+o_text: Suit yourself, old man.
+o_goto: Goodbye
+#
+o_text: I wanted to ask something else.
+o_goto: SmallTalk
 
 ### Starter Mission BEGIN ###
 

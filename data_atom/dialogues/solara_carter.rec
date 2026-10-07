@@ -24,6 +24,7 @@ npc: Twenty-two hundred, Solara Carter.
 + Extended Simple Mail Transfer Service Ready.
 #
 o_text: Hi, Solara. Nice to meet you.
+o_id: hi_solara
 o_goto: HiSolara
 #
 o_text: Uhm, what? Are you a computer?
@@ -73,6 +74,15 @@ o_goto: ThoughtsOnBAT
 #
 o_text: What can you tell me about Flesh & Bone?
 o_goto: FleshAndBone
+#
+o_text: I hear you sell tickets. The golden kind.
+o_id: ask_ticket
+o_goto: Ticket
+#
+o_text: I have the spaceport manifest. Zero berths, every hull.
+o_id: sell_manifest
+o_cond: HasItem('spaceport_manifest') && !HasFlag('dead_freight(public)')
+o_goto: BuyManifest
 
 
 name: Bye
@@ -143,3 +153,36 @@ npc: Purity of the flesh. (She taps the interface port behind her ear.)
 + If you have chrome in you, don't go east after dark.
 #
 effect: ReturnToPreviousNode
+
+## Package B: ticket seller and buyer of the manifest (Dead Freight, outcome 'buried')
+
+name: Ticket
+npc: I handle the bookings for the eastern rim, yes. One million sat, one berth, one way. Up.
++ (She pats the terminal.) Payment clears, your name goes on the list. The list is long.
+effect: SetFlag('KnowsAbout(golden_ticket)')
+#
+effect: ReturnToPreviousNode
+
+name: BuyManifest
+npc: (She reads it without touching it.) Where did you... no. Don't tell me.
++ Listen. If this gets out, a thousand people learn they are going to die here instead of somewhere else. Same death, less hope.
++ Eight hundred sat and it never existed. Shaw gives you five, I checked.
+#
+o_text: Eight hundred. It never existed.
+o_id: bury_manifest
+o_goto: Buried
+#
+o_text: Keep your money.
+o_id: refuse_bury
+o_goto: HiSolara
+
+name: Buried
+npc: (The printout goes into the shredder in one motion.) Transaction complete. Exit code zero.
++ Go on believing whatever you believed before you walked in.
+effect: StackTransferTo(NPC, 'spaceport_manifest')
+effect: PlayerAddGold(800)
+effect: SetFlag('dead_freight(buried)')
+#
+o_text: Sure.
+o_id: buried_bye
+o_goto: Bye

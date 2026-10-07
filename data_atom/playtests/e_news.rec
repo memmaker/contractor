@@ -1,0 +1,27 @@
+# Living world E1: kill Jacob, then read about it on the eastside public terminal.
+
+%rec: outcomes
+
+if: HasFlag('e_news_read') && HasFlag('Killed(jacob_thorne)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: Kill('jacob_thorne')
+
+if: true
+do: Use('public_terminal')
+do: Choose('news')
+do: Choose('news_jacob')

@@ -1,0 +1,9 @@
+%rec: Misc
+%key: Name
+
+Description: a note from Grim
+Name: grims_note
+Category: Notes
+Text_File: e_grims_note
+Weight: 1
+Cost: 1

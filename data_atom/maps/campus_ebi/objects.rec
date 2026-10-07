@@ -7,3 +7,42 @@ TargetMap: hq_ebi
 TargetLocation: campus_gate
 Position: (0,14)
 
+
+# PACKAGE C
+Category: NamedLocation
+Identifier: campus_gate_out
+Position: (5,14)
+
+Category: NamedLocation
+Identifier: campus_lawn
+Position: (30,20)
+
+Category: Readable
+Name: protest_banner
+Description: a hand-painted banner
+Text: THE WALL IS FULL OF YOUR PATIENTS.
++ EBI CALLS IT CLEANSING. SAY THEIR NAMES.
+Position: (7,13)
+
+Category: Readable
+Name: campus_plaque
+Description: a bronze plaque
+Text: ESCHATON BIOTECH INTERNATIONAL - CAMPUS.
++ Building a cleaner tomorrow.
+Position: (20,20)
+
+Category: UnknownContainer
+Name: campus_bin
+Description: a recycling bin
+item: junk(3)
+item: water_ration(2)
+Position: (9,18)
+
+Category: UnknownContainer
+Name: campus_locker
+Description: a student locker
+lockdifficulty: easy
+item: gold(100)
+item: ebi_pamphlet_1(3)
+item: skillbook_technology
+Position: (40,21)

@@ -1,0 +1,54 @@
+# Dead Freight (manipulator): hack the port console in the arrivals hall (technology Hard), the sentries power down, print the manifest for Shaw.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(dead_freight, public)') && HasFlag('b_bots_down') && !HasFlag('Killed(manifest_bot_1)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('ask_job')
+do: Choose('accept_freight')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_spaceport')
+
+if: true
+do: SetSkill('Technology', 200)
+do: Use('spaceport_gate')
+do: Use('spaceport_console')
+do: Choose('hack_console')
+do: Choose('hacked_leave')
+
+if: true
+do: Use('manifest_terminal')
+do: Choose('print_manifest')
+do: Choose('printed_leave')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('give_manifest')
+do: Choose('delivered_bye')

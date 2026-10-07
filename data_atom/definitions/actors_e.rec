@@ -1,0 +1,83 @@
+%rec: Actor
+%key: Name
+
+Name: squatter_lenny
+Description: Lenny
+Long_Description: A thin man in three coats, surrounded by what used to be Jacob Thorne's furniture.
+Icon: L
+Foreground: light_gray_2
+Dialogue: squatter_lenny
+Age: 40
+BodyType: 0
+XP: 20
+HitPoints: 25
+ActionPoints: 6
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 6
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 4
+Selling: street_wear(60)
+Selling: 10mm_jhp(24)
+Selling: binge
+Selling: mechanical_lockpick
+equipment: gold(150)
+
+Name: gun_thug_wild
+Description: Gun Thug
+Long_Description: One of Jacob's boys. Nobody pays him now, so he takes.
+Icon: G
+Foreground: red_5
+Faction: jacob
+aggressive: true
+Age: 25
+BodyType: 0
+XP: 85
+HitPoints: 50
+ActionPoints: 7
+ArmorClass: 13
+MeleeDamage: 1
+CarryWeight: 175
+Sequence: 12
+HealingRate: 1
+CriticalChance: 6
+Strength: 6
+Perception: 6
+Endurance: 5
+Cool: 3
+Intelligence: 4
+Agility: 5
+Luck: 6
+equipment: 10mm_pistol
+equipment: 10mm_jhp
+
+Name: mourner
+Description: a mourner
+Long_Description: A woman sits by a ring of stub candles where the beggar used to rattle his cup. She does not look up.
+Icon: m
+Foreground: light_gray_2
+Chatter: mourner_chatter
+Age: 50
+BodyType: 0
+XP: 10
+HitPoints: 15
+ActionPoints: 5
+MeleeDamage: 1
+CarryWeight: 50
+Sequence: 3
+HealingRate: 1
+CriticalChance: 1
+Strength: 3
+Perception: 4
+Endurance: 3
+Cool: 4
+Intelligence: 4
+Agility: 3
+Luck: 2

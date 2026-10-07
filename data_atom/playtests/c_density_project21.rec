@@ -1,0 +1,29 @@
+# Density check: the three people hiding in Project 21's server room can be reached and talked to.
+
+%rec: outcomes
+
+if: HasFlag('TalkedTo(courier_milo)') && HasFlag('TalkedTo(tech_dasha)') && HasFlag('TalkedTo(sysop_vee)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: GoTo('stairs_to_project_21')
+
+if: true
+do: Talk('courier_milo')
+do: Choose('milo_parcel')
+do: Choose('parcel_back')
+do: Choose('milo_leave')
+do: Talk('tech_dasha')
+do: Choose('dasha_unofficial')
+do: Choose('unofficial_back')
+do: Choose('dasha_leave')
+do: GoTo('server_hideout')
+do: Talk('sysop_vee')
+do: Choose('vee_p21')
+do: Choose('p21_back')
+do: Choose('vee_leave')

@@ -1,0 +1,49 @@
+# D1 (manipulator): the persuasion fails. Faust names his price: Mira's word. Lean on the skimming gate guards for her, then come back.
+
+%rec: outcomes
+
+if: HasFlag('faust_allied') && HasFlag('mira_favour') && HasItem('cryo_keycard') && HasFlag('QuestCompleted(recluse, allied)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+# the pitch falls flat
+if: true
+do: ForceChecks('fail')
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_condition')
+do: Choose('condition_ok')
+
+if: true
+do: ForceChecks('success')
+do: Talk('mira_sykes')
+do: Choose('ask_favour')
+do: Choose('favour_accept')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('confront_skim')
+do: Choose('skim_done')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('mira_vouches')
+do: Choose('mira_now_talk')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
