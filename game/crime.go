@@ -143,3 +143,19 @@ func (g *GameState) makeObservingAlliesReactToMajorCrime(affected *Actor, source
 		}
 	}
 }
+
+// gunshotHeard makes every idle actor of another faction within earshot walk over to look.
+// ponytail: flat radius through walls, no suppressors; add a weapon loudness field when one exists.
+const gunshotRadius = 25
+
+func (g *GameState) gunshotHeard(shooter *Actor) {
+	for _, actor := range g.currentMap().Actors() {
+		if actor == shooter || actor == g.Player || !actor.IsAlive() || actor.IsSleeping() || !actor.IsIdle() ||
+			actor.Faction == shooter.Faction || actor.HasFlag(foundation.FlagAnimal) || actor.HasFlag(foundation.FlagZombie) {
+			continue
+		}
+		if geometry.DistanceChebyshev(actor.Position(), shooter.Position()) <= gunshotRadius {
+			actor.FSM.SendEvent(NewSuspiciousActivityEvent(g.currentMapName, shooter.Position()))
+		}
+	}
+}

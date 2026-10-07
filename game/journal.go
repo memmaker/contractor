@@ -76,8 +76,6 @@ func (q *Quest) getProgress() *JournalEntry {
 
 func (q *Quest) HasNewState() (newState bool, setFlagName string) {
 	switch q.CurrentState {
-	case QuestCompleted:
-		return false, ""
 	case QuestUnknown:
 		startIndex := firstValidEntry(q.Starters)
 		if startIndex != -1 {
@@ -93,7 +91,7 @@ func (q *Quest) HasNewState() (newState bool, setFlagName string) {
 			return true, fmt.Sprintf("QuestInProgress(%s)", q.Identifier)
 		}
 		fallthrough
-	case QuestInProgress:
+	case QuestInProgress, QuestCompleted: // a completed quest keeps reacting: a better matching outcome replaces the old one
 		endIndex := firstValidEntry(q.Outcomes)
 		if endIndex != -1 && q.Outcome != q.Outcomes[endIndex].Identifier {
 			q.Outcome = q.Outcomes[endIndex].Identifier
@@ -303,10 +301,11 @@ func (j *Journal) Update() []Reward {
 	for context, _ := range j.quests {
 		// update our active items
 		for _, quest := range j.quests[context] {
+			wasCompleted := quest.CurrentState == QuestCompleted
 			hasNewState, flagToIncrement := quest.HasNewState()
 			if hasNewState {
 				sawChanges = true
-				if quest.CurrentState == QuestCompleted {
+				if quest.CurrentState == QuestCompleted && !wasCompleted {
 					rewards = append(rewards, Reward{XP: quest.OutcomeXP(), Text: quest.DisplayName})
 					j.incrementFlag(fmt.Sprintf("QuestCompleted(%s)", quest.Identifier))
 				}

@@ -23,6 +23,7 @@ const (
 	Saturday
 
 	Everyday
+	EveryHour // time holds minutes only; expanded to 24 Everyday slots on load
 )
 
 func (d DayOfWeek) DayBefore() DayOfWeek {
@@ -50,6 +51,8 @@ func WeekdayFromString(s string) DayOfWeek {
 		return Sunday
 	case "every_day":
 		return Everyday
+	case "every_hour":
+		return EveryHour
 	}
 	return Monday
 }
@@ -152,6 +155,15 @@ func NewScheduleFromFile(filename string, getTime func() time.Time) *Schedule {
 
 	for _, slot := range slots {
 		newSlot := NewTimeSlotFromRecord(slot)
+		if newSlot.Day == EveryHour {
+			for hour := 0; hour < 24; hour++ {
+				hourly := newSlot
+				hourly.Day = Everyday
+				hourly.Time = time.Date(0, 1, 1, hour, newSlot.Time.Minute(), 0, 0, time.UTC)
+				schedule.Slots[Everyday] = append(schedule.Slots[Everyday], hourly)
+			}
+			continue
+		}
 		schedule.Slots[newSlot.Day] = append(schedule.Slots[newSlot.Day], newSlot)
 	}
 

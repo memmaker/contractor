@@ -2,7 +2,7 @@
 
 %rec: outcomes
 
-if: HasFlag('ebi_strike_landed') && HasFlag('Killed(logan_faust)') && HasFlag('faust_sold_out')
+if: HasFlag('ebi_strike_landed') && HasFlag('Killed(logan_faust)') && HasFlag('QuestCompleted(recluse, sold_out)') && HasFlag('QuestCompleted(recluse, faust_dead)')
 
 %rec: frames
 

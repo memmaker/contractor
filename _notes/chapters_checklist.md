@@ -37,3 +37,11 @@
 - [x] walkthrough.html extended with chapters 1-3
 - [x] relevant tests + new playtests pass headless and one visual
 - [x] commit, push, web deploy
+
+## Follow-up (2026-10-07)
+
+- [x] Gunfire is heard: idle actors of other factions within 25 tiles investigate the shooter (`gunshotHeard`, through walls, no suppressors)
+- [x] Investigating actors without a path calm down instead of standing in Investigate forever
+- [x] Completed quests keep reacting: a better matching outcome replaces the old one, XP paid once (`recluse` allied → sold_out → faust_dead)
+- [x] `every_hour` schedule day; Mira Sykes patrols hall, study, kitchen, gate
+- [x] Playtests: chapter2_a rewritten for the converging household, chapter2_e asserts `QuestCompleted(recluse, sold_out)`, fighter_c_kill_jacob fixed (was dying deterministically)

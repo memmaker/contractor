@@ -377,6 +377,7 @@ func (g *GameState) actorRangedAttack(attacker *Actor, weaponItem *Weapon, attac
 
 	// Bookkeeping
 	bulletsSpent, weapon := g.removeBulletsFromWeapon(weaponItem, attackMode)
+	g.gunshotHeard(attacker)
 
 	// Generate the attack animation based on the weapon and damage type
 	attackAnimations, isProjectileAnimation := g.getWeaponAttackAnim(attacker, defender.Position(), weaponItem, attackMode, bulletsSpent.GetStackSize())
@@ -436,6 +437,7 @@ func (g *GameState) actorRangedAttackLocation(attacker *Actor, weaponItem *Weapo
 	}
 
 	bulletsSpent, weapon := g.removeBulletsFromWeapon(weaponItem, attackMode)
+	g.gunshotHeard(attacker)
 
 	onAttackAnims, isProjectileAnimation := g.getWeaponAttackAnim(attacker, targetPos, weaponItem, attackMode, bulletsSpent.GetStackSize())
 
