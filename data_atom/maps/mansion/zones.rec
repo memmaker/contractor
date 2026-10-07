@@ -1,0 +1,5 @@
+%rec: default
+
+name: mansion_house
+IsIndoor: true
+lighting: (1.0, 1.0, 1.0)

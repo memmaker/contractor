@@ -49,6 +49,11 @@ o_text: The Terra Vitae headquarters.
 o_cond: !IsMap('hq_terra_vitae')
 o_goto: TerraVitae
 #
+o_text: The mansion outside the wall.
+o_id: go_mansion
+o_cond: HasFlag('LocationKnown(mansion)') && !IsMap('mansion')
+o_goto: Mansion
+#
 o_text: Leave
 o_goto: Bye
 
@@ -84,4 +89,10 @@ name: TerraVitae
 npc: (You drive up to the Terra Vitae headquarters.)
 effect: Transition('hq_terra_vitae', 'taxi_stand')
 effect: AdvanceTimeByMinutes(20)
+effect: EndWithChatter
+
+name: Mansion
+npc: (You drive out through the southern gate to the mansion.)
+effect: Transition('mansion', 'taxi_stand')
+effect: AdvanceTimeByMinutes(30)
 effect: EndWithChatter

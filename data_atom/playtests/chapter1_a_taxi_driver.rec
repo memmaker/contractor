@@ -1,0 +1,14 @@
+# Chapter 1 A (diplomat): the taxi driver drove the caterers out to the mansion. Talk him into the address, then ride there.
+
+%rec: outcomes
+
+if: IsOnMap('mansion')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')

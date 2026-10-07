@@ -214,3 +214,40 @@ Cost: 10
 Category: Food
 Chance_to_break_on_throw: 60
 
+
+Name: mansion_key
+Description: Faust mansion key
+Category: Keys
+LockFlag: mansion_key
+Weight: 1
+Cost: 1
+
+Name: faust_safe_key
+Description: Faust's safe key
+Category: Keys
+LockFlag: faust_safe_key
+Weight: 1
+Cost: 1
+
+Name: cryo_keycard
+Description: cryo lab keycard
+Category: Keys
+LockFlag: cryo_keycard
+Long_Description: A white keycard with a snowflake logo and no company name.
+Weight: 1
+Cost: 1
+
+Name: cryo_fuse
+Description: cryo pod fuse
+Category: Other
+Long_Description: A heavy industrial fuse. The label reads "CP-3 POWER".
+Weight: 2
+Cost: 400
+
+Name: gate_log
+Description: south gate outbound log
+Category: Notes
+Text_File: gate_log
+PickupFlag: LocationKnown(mansion)
+Weight: 1
+Cost: 1

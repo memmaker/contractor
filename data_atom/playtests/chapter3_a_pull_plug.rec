@@ -1,0 +1,42 @@
+# Chapter 3 A (fighter): Faust's keycard opens the cellar. Pull the plug on the chairman in pod 1 and take his place.
+
+%rec: outcomes
+
+if: GameOver() && HasFlag('Ending(cryo_sleep)') && HasFlag('Killed(sleeper_1)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: GoTo('cellar_stairs')
+
+if: true
+do: GoTo('pod_1')
+do: Use('cryo_pod_1')
+do: Choose('pull_plug_1')
+do: Choose('step_back_1')
+
+if: true
+do: Use('cryo_pod_1')
+do: Choose('climb_in_1')

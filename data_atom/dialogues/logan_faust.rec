@@ -1,0 +1,233 @@
+# Logan Faust, ex Bushido-ArmaTech board, hiding above his private cryo lab.
+# Flags: faust_allied (persuade), faust_extorted (intimidate), KnowsAbout(cryo_lab|golden_ticket|ticket_scam), PodFree(4).
+
+%rec: OpeningBranch
+
+cond: HasFlag('faust_allied')
+goto: AlliedReturn
+
+cond: HasFlag('faust_extorted')
+goto: ExtortedReturn
+
+cond: HasFlag('Killed(mansion_guard)') || HasFlag('Killed(mira_sykes)')
+goto: GuardsDead
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He doesn't get up from the desk.)
++ I know why you are here. Sit, or shoot. Either way you have questions first. Everyone does.
+#
+o_text: Why does E. want you dead?
+o_id: why_ebi
+o_goto: Backstory
+#
+o_text: I'm not here to kill you.
+o_id: not_here_to_kill
+o_goto: NotKill
+#
+o_text: Your life has a price. Pay it.
+o_id: extort_direct
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: ExtortSuccess
+o_fail: ExtortFail
+#
+o_text: Nothing personal.
+o_id: kill_faust
+o_goto: KillFaust
+#
+o_text: I'll think about it.
+o_id: faust_leave
+o_goto: End
+
+name: GuardsDead
+npc: (He stands behind the desk, hands raised, very still.)
++ You killed them. Of course you did. E. does not hire poets.
++ Ask what you came to ask. I would rather you knew before you decide.
+#
+o_text: Why does E. want you dead?
+o_id: why_ebi_guards_dead
+o_goto: Backstory
+#
+o_text: I'm not here to kill you.
+o_id: not_here_to_kill_guards_dead
+o_goto: NotKill
+#
+o_text: Your life has a price. Pay it.
+o_id: extort_guards_dead
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: ExtortSuccess
+o_fail: ExtortFail
+#
+o_text: Nothing personal.
+o_id: kill_faust_guards_dead
+o_goto: KillFaust
+
+name: Backstory
+npc: Because I read the plan. Eschaton calls it the cleansing: one pulse to kill every chip on the planet,
++ then their holy friends finish the job with warheads. The board applauded. I resigned the same night.
++ And the golden ticket, the million sat for a berth to the stars? There are no berths.
++ The ships lift with cargo and crew. Nobody is buying a way out. They are buying silence.
+effect: SetFlag('KnowsAbout(golden_ticket)')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+effect: ReturnToPreviousNode
+
+name: NotKill
+npc: Then what? E. pays in sat. What do I pay in?
+#
+o_text: A way out. For both of us. You have one, or you wouldn't still be here.
+o_id: persuade_faust
+o_test: RollSkill('social', 'Hard')
+o_succ: AlliedSuccess
+o_fail: PersuadeFail
+#
+o_text: Everything you own, for starters.
+o_id: extort_faust
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: ExtortSuccess
+o_fail: ExtortFail
+#
+o_text: Forget it.
+o_id: forget_it
+o_goto: Default
+
+name: PersuadeFail
+npc: A way out. (A dry laugh.) The last man who said that to me sits on the EBI board.
++ Get out of my study.
+#
+o_text: Then I'll take it from you.
+o_id: extort_after_fail
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: ExtortSuccess
+o_fail: ExtortFail
+#
+o_text: Nothing personal.
+o_id: kill_after_fail
+o_goto: KillFaust
+#
+o_text: Your loss.
+o_id: leave_after_fail
+o_goto: End
+
+name: ExtortFail
+npc: No. (He straightens for the first time.) Shoot me, then, and explain to E. why the cellar is still locked.
+#
+o_text: Fine. Let's talk instead.
+o_id: talk_instead
+o_goto: NotKill
+#
+o_text: Nothing personal.
+o_id: kill_after_extort_fail
+o_goto: KillFaust
+#
+o_text: I'll be back.
+o_id: leave_after_extort_fail
+o_goto: End
+
+name: AlliedSuccess
+npc: (He studies you for a long moment, then slides a card across the desk.)
++ Under this house is a cryo lab. Four pods, an AI called ARK, power for two hundred years.
++ When the sky burns, the people in those pods wake up afterwards. Nobody else does.
++ The card opens the cellar behind the kitchen. Don't make me regret this.
+effect: PlayerAddItem('cryo_keycard')
+effect: SetFlag('faust_allied')
+effect: SetFlag('KnowsAbout(cryo_lab)')
+effect: SetFlag('KnowsAbout(golden_ticket)')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+#
+o_text: Which pod is mine?
+o_id: ask_pod
+o_goto: PodOffer
+#
+o_text: Why trust me?
+o_id: why_trust
+o_goto: WhyTrust
+#
+o_text: I'll see myself out.
+o_id: allied_leave
+o_goto: End
+
+name: PodOffer
+npc: Four. It was mine. I have had my years; most of them were bad.
++ One and two hold old colleagues who deserve it less than you. Three is dead; EBI saw to that.
+effect: SetFlag('PodFree(4)')
+#
+o_text: I won't forget this.
+o_id: pod_thanks
+o_goto: End
+
+name: WhyTrust
+npc: I don't. But you came in with a question instead of a gun, and I am tired of guns.
+#
+o_text: Fair.
+o_id: trust_fair
+o_goto: AlliedSuccessOptions
+
+name: AlliedSuccessOptions
+npc: Anything else?
+#
+o_text: Which pod is mine?
+o_id: ask_pod_again
+o_cond: !HasFlag('PodFree(4)')
+o_goto: PodOffer
+#
+o_text: No.
+o_id: allied_done
+o_goto: End
+
+name: ExtortSuccess
+npc: (His hands shake as he empties the drawer.)
++ Two thousand. And the card for the cellar door. There is a cryo lab under the house; ARK runs it.
++ Take it. Take all of it. Just go.
+effect: PlayerAddGold(2000)
+effect: PlayerAddItem('cryo_keycard')
+effect: SetFlag('faust_extorted')
+effect: SetFlag('KnowsAbout(cryo_lab)')
+effect: SetFlag('KnowsAbout(golden_ticket)')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+#
+o_text: Pleasure doing business.
+o_id: extort_done
+o_goto: End
+#
+o_text: Now the rest of it. Why does E. want you dead?
+o_id: extort_backstory
+o_goto: Backstory
+
+name: AlliedReturn
+npc: Still alive, I see. Both of us.
+#
+o_text: Which pod is mine?
+o_id: ask_pod_return
+o_cond: !HasFlag('PodFree(4)')
+o_goto: PodOffer
+#
+o_text: Tell me about E. again.
+o_id: why_ebi_return
+o_goto: Backstory
+#
+o_text: Just checking in.
+o_id: allied_return_leave
+o_goto: End
+
+name: ExtortedReturn
+npc: You have what you wanted. Leave me.
+#
+o_text: Nothing personal.
+o_id: kill_faust_return
+o_goto: KillFaust
+#
+o_text: (Leave.)
+o_id: extorted_return_leave
+o_goto: End
+
+name: KillFaust
+npc: (He closes his eyes.) It never is.
+effect: StartCombat
+
+name: End
+npc: (He turns back to the window.)
+effect: EndConversation

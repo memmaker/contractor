@@ -1,0 +1,22 @@
+# Chapter 1 C (thief): the caterers at Terra Vitae invoiced the mansion. Take the taxi there, pocket the invoice, ride on.
+
+%rec: outcomes
+
+if: IsOnMap('mansion')
+
+%rec: frames
+
+# thief build: maxed Technology brings the lobby keypad down to two of the five starting e-picks
+if: true
+do: SetSkill('Technology', 200)
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+# the lobby door has a keypad: burn e-picks on it, the invoice lies on a desk in the side office
+if: true
+do: Use('tv_lobby_door')
+do: PickUp('note')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_mansion')

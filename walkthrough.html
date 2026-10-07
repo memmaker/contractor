@@ -42,7 +42,7 @@
     <li>Accept: you deposit <b>250 sat</b> in the dead drop and keep the rest. Six game hours later the drop holds your reward (3× binge) and the quest completes.</li>
     <li>Ask Grim <q>About that job for Jacob. How should I play it?</q> for a hint at all three approaches (muscle, mouth, fingers).</li>
     <li>Ask Grim or Harker about Jacob to learn where he lives: <b>eastern residential district</b>, by taxi.</li>
-    <li>When the quest is done, the home terminal shows <q>(New job offer) A mansion outside the wall.</q> Taking it ends the demo with your outcome on screen.</li>
+    <li>When the quest is done, the home terminal shows <q>(New job offer) A mansion outside the wall.</q> Taking it starts Chapter 1 (tab "Chapters 1-3").</li>
   </ol>
   <p class="warn">Not taking the job for 48 game hours counts as declining: Quinn Rix goes after Harker and the quest ends with 0 XP.</p>
 </div>
@@ -52,6 +52,7 @@
   <button role="tab" data-tab="talk">2 · Diplomat</button>
   <button role="tab" data-tab="sneak">3 · Thief</button>
   <button role="tab" data-tab="endings">Endings</button>
+  <button role="tab" data-tab="chapters">Chapters 1-3</button>
 </nav>
 
 <section id="fight">
@@ -153,6 +154,46 @@
     <li>Big Bob melee when out of rockets; buying a single bullet</li>
     <li>Quinn attacking Harker after the 48h timeout</li>
   </ul>
+</section>
+<section id="chapters" hidden>
+  <h2>Chapters 1-3: the mansion and the long sleep</h2>
+  <p class="dim">Logan Faust, ex Bushido-ArmaTech board, read EBI's "cleansing" plan and vanished into a mansion outside the wall with a private cryo lab underneath. The job to find him is signed "E.". The 1-million-sat ticket to the stars is a lie: the ships leave with cargo.</p>
+
+  <h3>Chapter 1 · Find the mansion (The Mansion, 300 XP)</h3>
+  <ol class="steps">
+    <li><b>Diplomat:</b> taxi driver <q>Ever drive anyone to a mansion outside the wall?</q> → social Easy, or pay 200 sat. He drove the caterers out there.</li>
+    <li><b>Fighter:</b> the gate captain in the yard before the south wall gate: <q>Trucks have been going out this gate at night. Where to?</q> Intimidate Hard, or kill him and loot his <b>gate log</b>.</li>
+    <li><b>Thief:</b> Terra Vitae HQ, keypad door (0451 or hack it with e-picks), the <b>invoice</b> on the side office table.</li>
+    <li>Taxi: <q>The mansion outside the wall.</q> (30 minutes).</li>
+  </ol>
+
+  <h3>Chapter 2 · The recluse (The Recluse, 500 XP)</h3>
+  <ol class="steps">
+    <li><b>Gate:</b> two guards. Claim to be the caterer or courier (social Easy), claim EBI (intimidate Hard), or <q>Wrong answer.</q> for a fight. A cleared gate unlocks the front door.</li>
+    <li><b>Thief:</b> the service door at the back (easy lock). Faust's wall safe in the study (hard lock): <b>cryo keycard</b> + 2000 sat. Hack Faust's terminal (technology Hard): opens the cellar door and reveals the lab; failure raises the alarm.</li>
+    <li><b>Diplomat:</b> Faust knows why you are here. <q>I'm not here to kill you.</q> → persuade (social Hard): you are allies, he hands you the keycard, tells you about the lab and the ticket scam, and offers his own pod.</li>
+    <li><b>Extort:</b> intimidate Easy: 2000 sat and the keycard, and he hates you.</li>
+    <li><b>Fighter:</b> kill the guards and Mira Sykes, his bodyguard, who carries the house key and the safe key. Kill Faust: his pod is nobody's now.</li>
+    <li><b>Sell him out:</b> Faust's terminal or the home terminal: <q>Report Faust's location to E.</q> 5000 sat. One hour later three EBI troopers land at the taxi stand and hunt Faust, then you.</li>
+  </ol>
+
+  <h3>Chapter 3 · The cryo lab (The Long Sleep, 1000 XP)</h3>
+  <ol class="steps">
+    <li>Cellar door (keycard or pick), stairs down. Four pods: 1 and 2 hold sleepers (Henrik Vale, Dr. Ilse Marrow), 3 is empty but EBI pulled its fuse, 4 is Faust's.</li>
+    <li><b>Fighter:</b> <q>Pull the plug</q> on a sleeper. Faust's people will not forgive it.</li>
+    <li><b>Tech:</b> the generator room (medium lock) has a spare <b>cryo fuse</b> for pod 3. Or ask ARK, the lab AI, to reroute power (technology Hard).</li>
+    <li><b>Diplomat:</b> allied with Faust: pod 4 is yours. Or talk ARK into waking sleeper 1 early (social Hard).</li>
+    <li><q>Climb in.</q> One locker, one item. To be continued.</li>
+  </ol>
+
+  <h3>Game endings</h3>
+  <table>
+    <tr><th>Ending</th><th>How</th></tr>
+    <tr><td>cryo_sleep</td><td>Climb into a working, free pod</td></tr>
+    <tr><td>against_all_odds</td><td>ARK: broadcast Faust's files to the city. EBI storms the lab.</td></tr>
+    <tr><td>sold_lab</td><td>Sell the lab to E. for 50000 sat. Rich for a week.</td></tr>
+    <tr><td>gave_up</td><td>Home terminal: retire, spend it while it lasts</td></tr>
+  </table>
 </section>
 </main>
 <script>

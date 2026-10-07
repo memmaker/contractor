@@ -13,6 +13,7 @@ type Terminal struct {
 	isPlayer          func(*Actor) bool
 	startDialogue     func()
 	DeclareAsTerminal bool
+	DialogueFile      string // defaults to the internal name
 }
 
 func (g *GameState) NewTerminal(rec recfile.Record, resolver func(objType string) textiles.TextIcon) *Terminal {
@@ -23,9 +24,12 @@ func (g *GameState) NewTerminal(rec recfile.Record, resolver func(objType string
 	for _, field := range rec {
 		switch strings.ToLower(field.Name) {
 		case "name":
-			fallthrough
-		case "dialogue":
 			terminal.InternalName = field.Value
+		case "dialogue":
+			terminal.DialogueFile = field.Value
+			if terminal.InternalName == "" {
+				terminal.InternalName = field.Value
+			}
 		case "iconoverride":
 			terminal.CustomIcon = terminal.iconForObject(field.Value)
 			terminal.UseCustomIcon = true
@@ -42,6 +46,9 @@ func (g *GameState) NewTerminal(rec recfile.Record, resolver func(objType string
 			terminal.DeclareAsTerminal = recfile.StrBool(field.Value)
 		}
 	}
+	if terminal.DialogueFile == "" {
+		terminal.DialogueFile = terminal.InternalName
+	}
 	terminal.InitWithGameState(g)
 	return terminal
 }
@@ -55,7 +62,7 @@ func (t *Terminal) AppendContextActions(actions []foundation.MenuItem, g *GameSt
 }
 func (t *Terminal) InitWithGameState(g *GameState) {
 	t.isPlayer = func(actor *Actor) bool { return actor == g.Player }
-	t.startDialogue = func() { g.PlayerStartDialogue(t.InternalName, t) }
+	t.startDialogue = func() { g.PlayerStartDialogue(t.DialogueFile, t) }
 }
 
 func (t *Terminal) OnBump(actor *Actor) {
@@ -68,7 +75,8 @@ func (t *Terminal) ToRecord() recfile.Record {
 	return recfile.Record{
 		{Name: "category", Value: t.Category.String()},
 		{Name: "description", Value: t.DisplayName},
-		{Name: "dialogue", Value: t.InternalName},
+		{Name: "name", Value: t.InternalName},
+		{Name: "dialogue", Value: t.DialogueFile},
 		{Name: "position", Value: t.RawPosition.Encode()},
 		{Name: "icon", Value: string(t.CustomIcon.Char)},
 		{Name: "fg", Value: recfile.RGBStr(t.CustomIcon.Fg)},

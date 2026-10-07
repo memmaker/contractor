@@ -23,6 +23,22 @@ o_id: chapter1_offer
 o_cond: HasFlag('QuestCompleted(starter)')
 o_goto: chapter1_offer
 #
+# Chapter 2/3: dealing with E.
+o_text: Report Faust's location to E.
+o_id: report_faust
+o_cond: HasFlag('TalkedTo(logan_faust)') && !HasFlag('faust_sold_out') && !HasFlag('Killed(logan_faust)')
+o_goto: report_faust
+#
+o_text: Sell the cryo lab to E.
+o_id: sell_lab
+o_cond: HasFlag('KnowsAbout(cryo_lab)') && !HasFlag('faust_sold_out')
+o_goto: sell_lab
+#
+o_text: Retire. Spend it while it lasts.
+o_id: retire
+o_cond: HasFlag('KnowsAbout(ticket_scam)')
+o_goto: retire
+#
 # Dead Man's Switch
 o_text: (IMPORTANT) Last message from Grim
 o_cond: HasFlag('Killed(grim_beard)')
@@ -130,7 +146,7 @@ npc: ** Contractor Client Interface **
 + > Nobody knows where. Find it.
 + > Payment: more sat than you have ever seen.
 #
-o_text: Take the job. (Ends the demo)
+o_text: Take the job.
 o_id: chapter1_accept
 o_goto: chapter1_accept
 #
@@ -140,4 +156,30 @@ o_goto: DefaultIntroduction
 name: chapter1_accept
 npc: ** Contractor Client Interface **
 + > Job accepted. Good luck, contractor.
-effect: EndDemo
+effect: SetFlag('JobAccepted(mansion)')
+effect: EndConversation
+
+### Chapter 2/3: dealing with E. ###
+
+name: report_faust
+npc: ** Contractor Client Interface **
++ > Location received. Payment transferred: 5000 sat.
++ > A team is on its way. Stay out of theirs.
+effect: SetFlag('faust_sold_out')
+effect: PlayerAddGold(5000)
+effect: RunScript('ebi_strike')
+#
+o_text: Leave.
+o_goto: End
+
+name: sell_lab
+npc: ** Contractor Client Interface **
++ > The lab is ours now. 50000 sat, as agreed.
++ > Pleasure doing business, contractor.
+effect: PlayerAddGold(50000)
+effect: EndGame('sold_lab')
+
+name: retire
+npc: ** Contractor Client Interface **
++ > Account closed.
+effect: EndGame('gave_up')

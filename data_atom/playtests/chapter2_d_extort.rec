@@ -1,0 +1,27 @@
+# Chapter 2 D (fighter/diplomat): walk in as the caterer and put a price on Faust's life. He pays.
+
+%rec: outcomes
+
+if: HasFlag('faust_extorted') && HasItem('cryo_keycard') && HasFlag('QuestCompleted(recluse, extorted)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('extort_direct')
+do: Choose('extort_done')

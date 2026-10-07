@@ -1,0 +1,115 @@
+# Mansion gate guard (x3, faction faust). Talk your way in, bluff as EBI, or start the fight.
+# ClearFlag('mansion_key') unlocks the front door: LockedDoors listen to their LockFlag.
+
+%rec: OpeningBranch
+
+cond: HasFlag('mansion_gate_open') || HasFlag('TalkedTo(logan_faust)')
+goto: Cleared
+
+cond: true
+goto: Gate
+
+%rec: Nodes
+
+name: Gate
+npc: (He steps into the drive, rifle slung low.)
++ Private property. State your business.
+#
+o_text: Catering. The Faust household ordered for tonight.
+o_id: claim_caterer
+o_test: RollSkill('social', 'Easy')
+o_succ: LetIn
+o_fail: Suspicious
+#
+o_text: Courier. Package for Mr. Faust, signature required.
+o_id: claim_courier
+o_test: RollSkill('social', 'Easy')
+o_succ: LetIn
+o_fail: Suspicious
+#
+o_text: EBI. Step aside, or this whole place is cordoned off by morning.
+o_id: claim_ebi
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: EbiBluff
+o_fail: EbiFail
+#
+o_text: Just looking.
+o_id: just_looking
+o_goto: End
+#
+o_text: Wrong answer.
+o_id: wrong_answer
+o_goto: Fight
+
+name: LetIn
+npc: (He thumbs his radio.) Delivery coming up. Open the front.
++ Straight through the hall, kitchen's at the back. Don't wander.
+effect: SetFlag('mansion_gate_open')
+effect: ClearFlag('mansion_key')
+#
+o_text: Appreciated.
+o_id: gate_thanks
+o_goto: End
+
+name: Suspicious
+npc: Nobody told me about a delivery. Who booked it?
+#
+o_text: Ask the house. Mira Sykes signed for it.
+o_id: ask_mira
+o_test: RollSkill('social', 'Hard')
+o_succ: LetIn
+o_fail: Refused
+#
+o_text: Must be the wrong address. I'll go.
+o_id: gate_leave
+o_goto: End
+#
+o_text: Wrong answer.
+o_id: wrong_answer_suspicious
+o_goto: Fight
+
+name: Refused
+npc: Sykes doesn't sign for anything. Turn around and walk, slowly.
+#
+o_text: Fine.
+o_id: refused_leave
+o_goto: End
+#
+o_text: Wrong answer.
+o_id: wrong_answer_refused
+o_goto: Fight
+
+name: EbiBluff
+npc: (He goes a shade paler.) Nobody said anything about... go on in. I never saw you.
+effect: SetFlag('mansion_gate_open')
+effect: ClearFlag('mansion_key')
+#
+o_text: Smart.
+o_id: ebi_smart
+o_goto: End
+
+name: EbiFail
+npc: EBI doesn't send one guy in a dirty coat. Walk away while you can.
+#
+o_text: Your funeral.
+o_id: ebi_fail_leave
+o_goto: End
+#
+o_text: Wrong answer.
+o_id: wrong_answer_ebi
+o_goto: Fight
+
+name: Fight
+npc: Wrong address, choomba.
+effect: StartCombat
+
+name: Cleared
+npc: Go on through. They know you're here.
+#
+o_text: Thanks.
+o_id: cleared_thanks
+o_goto: End
+
+name: End
+npc: (He turns back to the empty road.)
+effect: EndConversation

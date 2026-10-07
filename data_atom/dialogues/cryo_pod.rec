@@ -1,0 +1,172 @@
+# One dialogue for cryo_pod_1..4: NPC_NAME is the terminal's Name. Safe pod = free and not broken.
+# Pods 1,2: free after PodFree(N). Pod 3: always free, broken until PodFixed(3). Pod 4: PodFree(4) or Killed(logan_faust).
+
+%rec: OpeningBranch
+
+cond: NPC_NAME == 'cryo_pod_1' && !HasFlag('PodFree(1)')
+goto: Pod1Occupied
+
+cond: NPC_NAME == 'cryo_pod_1'
+goto: Pod1Free
+
+cond: NPC_NAME == 'cryo_pod_2' && !HasFlag('PodFree(2)')
+goto: Pod2Occupied
+
+cond: NPC_NAME == 'cryo_pod_2'
+goto: Pod2Free
+
+cond: NPC_NAME == 'cryo_pod_3' && !HasFlag('PodFixed(3)')
+goto: Pod3Broken
+
+cond: NPC_NAME == 'cryo_pod_3'
+goto: Pod3Free
+
+cond: HasFlag('PodFree(4)') || HasFlag('Killed(logan_faust)')
+goto: Pod4Free
+
+cond: true
+goto: Pod4Reserved
+
+%rec: Nodes
+
+name: Pod1Occupied
+npc: POD 1. Occupant: Henrik Vale, Chairman, Bushido-ArmaTech. Vitals nominal.
++ Frost on the glass; under it a face older than the file photo.
+#
+o_text: Pull the plug.
+o_id: pull_plug_1
+o_goto: Killed1
+#
+o_text: Leave him.
+o_id: leave_pod_1
+o_goto: End
+
+name: Killed1
+npc: The hum stops. The frost goes grey, then wet. Vitals: none.
++ POD 1: vacant.
+effect: SetFlag('Killed(sleeper_1)')
+effect: SetFlag('PodFree(1)')
+effect: ProvokeFaction('faust')
+#
+o_text: (Step back.)
+o_id: step_back_1
+o_goto: End
+
+name: Pod1Free
+npc: POD 1: vacant. Systems nominal.
+#
+o_text: Climb in.
+o_id: climb_in_1
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_1
+o_goto: End
+
+name: Pod2Occupied
+npc: POD 2. Occupant: Dr. Ilse Marrow, BAT Research. Vitals nominal.
++ Her hands are folded like she expected applause when she woke.
+#
+o_text: Pull the plug.
+o_id: pull_plug_2
+o_goto: Killed2
+#
+o_text: Leave her.
+o_id: leave_pod_2
+o_goto: End
+
+name: Killed2
+npc: The hum stops. The frost goes grey, then wet. Vitals: none.
++ POD 2: vacant.
+effect: SetFlag('Killed(sleeper_2)')
+effect: SetFlag('PodFree(2)')
+effect: ProvokeFaction('faust')
+#
+o_text: (Step back.)
+o_id: step_back_2
+o_goto: End
+
+name: Pod2Free
+npc: POD 2: vacant. Systems nominal.
+#
+o_text: Climb in.
+o_id: climb_in_2
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_2
+o_goto: End
+
+name: Pod3Broken
+npc: POD 3: FAULT. Primary fuse missing. The lid is up and nothing hums.
+#
+o_text: Insert the fuse.
+o_id: insert_fuse
+o_cond: HasItem('cryo_fuse')
+o_goto: Fixed3
+#
+o_text: Climb in anyway.
+o_id: climb_broken_3
+o_goto: Refuses
+#
+o_text: Leave it.
+o_id: leave_pod_3
+o_goto: End
+
+name: Fixed3
+npc: The fuse seats with a click. Lights, then the hum. POD 3: nominal.
+effect: RemoveItem('cryo_fuse')
+effect: SetFlag('PodFixed(3)')
+#
+o_text: Climb in.
+o_id: climb_in_3_fixed
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_3_fixed
+o_goto: End
+
+name: Refuses
+npc: The lid won't seal. No cold comes. You would wake as thawed meat, or never.
++ The pod refuses to start.
+#
+o_text: (Climb out.)
+o_id: climb_out_3
+o_goto: End
+
+name: Pod3Free
+npc: POD 3: vacant. Systems nominal.
+#
+o_text: Climb in.
+o_id: climb_in_3
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_3
+o_goto: End
+
+name: Pod4Reserved
+npc: POD 4: reserved. L. FAUST. Access denied.
+#
+o_text: Leave it.
+o_id: leave_pod_4
+o_goto: End
+
+name: Pod4Free
+npc: POD 4: vacant. Reservation released. Systems nominal.
+#
+o_text: Climb in.
+o_id: climb_in_4
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_4
+o_goto: End
+
+name: ClimbIn
+npc: The lid seals. The cold comes in through the feet first.
+effect: EndGame('cryo_sleep')
+
+name: End
+npc: The panel dims.
+effect: EndConversation

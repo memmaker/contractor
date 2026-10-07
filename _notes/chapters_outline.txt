@@ -1,0 +1,97 @@
+Chapters 1-3: from "find the mansion" to the end of the game
+=============================================================
+Design pillars (README): every chapter works for fighter, avoider (thief) and
+manipulator (diplomat); grey choices; the world reacts; no fail state but death;
+several endings. Identifiers below are binding for maps, dialogues, scripts, tests.
+
+Backstory: Logan Faust sat on the Bushido-ArmaTech board until he read EBI's
+"cleansing" plan (global EMP + nukes by their religious partners, see story_beats).
+He bought into a private cryo lab under his mansion outside the wall and
+vanished. EBI wants him silenced; the job reaches the player via Jacob/the terminal,
+signed only "E.". The "golden ticket" (1 million sat to the stars) is a lie:
+the ships leave with cargo, not passengers. Cryo sleep is the only way out.
+
+CHAPTER 1 - Town: find the mansion            journal id: find_mansion, xp 300
+---------------------------------------------------------------------------
+start_cond: HasFlag('JobAccepted(mansion)') || HasFlag('LocationKnown(mansion)')
+Three ways to learn the location (flag LocationKnown(mansion)):
+  thief:    steal the invoice at hq_terra_vitae (exists, PickupFlag).
+  diplomat: taxi driver (dialogue taxi_driver): social Easy, or pay 200 sat. He drives
+            the catering out there.
+  fighter:  gate guard at zone_wall_south: intimidate Hard, or kill him and loot his
+            gate log (Notes item, PickupFlag LocationKnown(mansion)).
+Home terminal: node chapter1_accept sets JobAccepted(mansion) instead of EndDemo.
+Taxi (taxi.rec): option "The mansion outside the wall", o_cond HasFlag('LocationKnown(mansion)'),
+  Transition('mansion', 'taxi_stand'), 30 minutes.
+end_cond: IsMap-independent: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)') -> end_id found
+
+CHAPTER 2 - Mansion: learn about the cryo lab  journal id: recluse, xp 500
+---------------------------------------------------------------------------
+Map `mansion` (80x23, outdoor grounds, house in the middle, cellar stairs in the kitchen).
+Named locations: taxi_stand, mansion_gate, mansion_hall, faust_study, mansion_kitchen,
+  service_door (outside the back door), cellar_stairs.
+Objects: LockedDoor `mansion_front_door` (LockFlag mansion_key, LockDifficulty hard),
+  LockedDoor `mansion_service_door` (LockDifficulty easy), Terminal `faust_terminal`
+  (Dialogue faust_terminal) in the study, UnknownContainer `faust_safe` (lockdifficulty hard,
+  lockflag faust_safe_key, item cryo_keycard, item gold(2000)) in the study,
+  LockedDoor `cellar_door` (LockFlag cryo_keycard) before the cellar stairs,
+  Transition `cellar_stairs` -> map cryo_lab, location lab_entrance.
+Actors (faction faust, not hostile until provoked): logan_faust (dialogue logan_faust),
+  mira_sykes bodyguard (dialogue mira_sykes, carries mansion_key and faust_safe_key),
+  mansion_guard x3 at the gate and the hall.
+Approaches:
+  fighter:  kill the guards, take Mira's keys, Faust begs -> kill him (Killed(logan_faust))
+            or spare him for his keycard (recluse(faust_extorted), he hands cryo_keycard).
+  thief:    service door (easy lock) or sneak past the gate, pick the safe, hack
+            faust_terminal (RollSkill('technology','Hard')) to open cellar_door
+            (SetFlag('cellar_door_unlocked')) and read the lab files.
+  diplomat: at the gate claim to be the caterer/courier (social Easy) or EBI (intimidate Hard);
+            talk to Faust: he knows why you are here. Options:
+              - "I'm not here to kill you" + persuade (social Hard) -> recluse(allied):
+                he gives cryo_keycard, tells about the lab and the ticket scam.
+              - sell him out: faust_terminal / home terminal "Report Faust's location" ->
+                recluse(sold_out), PlayerAddGold(5000), script ebi_strike starts.
+              - extort: intimidate Easy -> recluse(faust_extorted), gold(2000) + cryo_keycard.
+Faust reveals: SetFlag('KnowsAbout(cryo_lab)'), SetFlag('KnowsAbout(golden_ticket)'),
+  SetFlag('KnowsAbout(ticket_scam)'). faust_terminal reveals the same when hacked.
+Endings (first match): faust_dead (Killed), sold_out, allied, extorted.
+Reactivity: recluse(sold_out) -> script ebi_strike: one game hour later 3 ebi_trooper
+  (faction ebi, hostile) spawn at mansion taxi_stand and hunt Faust and then the player; if
+  Faust dies by them: Killed(logan_faust). Mira becomes hostile if Faust is attacked.
+to_the_stars: end_cond HasFlag('KnowsAbout(ticket_scam)'), end_id scam, xp 0,
+  text "The ships leave without passengers. Nobody buys a way to the stars."
+
+CHAPTER 3 - Cryo Lab: obtain a safe cryo pod   journal id: cryo, xp 1000
+---------------------------------------------------------------------------
+Map `cryo_lab` (80x23 indoor). Named locations: lab_entrance, pod_room, lab_console,
+  generator_room, pod_1..pod_4 (next to each pod).
+Objects: Terminal `ark_terminal` (Dialogue ark_terminal, the lab AI "ARK"),
+  Terminals cryo_pod_1..cryo_pod_4 (Dialogue cryo_pod, Name cryo_pod_N; the dialogue reads
+  the pod number from NPC_NAME), LockedDoor `generator_door` (LockDifficulty medium),
+  UnknownContainer `spare_parts` in generator_room with item cryo_fuse.
+Pod state (flags): pods 1 and 2 hold sleepers (BAT board members), pod 3 is empty but
+  sabotaged (EBI pulled its fuse), pod 4 is Faust's and works.
+A pod is "safe" for the player when PodFree(N) && !PodBroken(N):
+  fighter:  "Pull the plug" on pod 1 or 2 kills the sleeper (Killed(sleeper_N), PodFree(N),
+            ProvokeFaction faust if Faust lives and is in the lab).
+  thief/tech: insert cryo_fuse into pod 3 (HasItem('cryo_fuse'), ClearFlag PodBroken(3))
+            or ark_terminal RollSkill('technology','Hard') reroutes power: ClearFlag PodBroken(3).
+  diplomat: recluse(allied) -> Faust offers pod 4 ("I have had my years"), PodFree(4);
+            or persuade ARK (social Hard) to wake sleeper 1 early: he walks out, PodFree(1).
+  Killed(logan_faust) -> PodFree(4) (nobody left to claim it).
+Endings (EndGame('<id>') dialogue effect sets Ending(<id>) and shows the game over screen
+  with the journal outcome text of quest `cryo`):
+  cryo_sleep:       "Climb in" on a safe pod. Epilogue: EMP, fire in the sky, you sleep.
+                    One locker, one item. To be continued.
+  against_all_odds: ark_terminal "Broadcast Faust's files to the city" (needs recluse(allied)
+                    or hacked terminal: KnowsAbout(cryo_lab)) -> EBI troopers storm the lab,
+                    the player dies famous. Script ebi_strike runs at once; ending fires when
+                    the player dies with Ending flag set, or via the option directly.
+  sold_lab:         home terminal / faust_terminal "Sell the lab to E." after
+                    KnowsAbout(cryo_lab): PlayerAddGold(50000), EBI seals the lab.
+                    Epilogue: rich for a week.
+  gave_up:          home terminal "Retire. Spend it while it lasts." after KnowsAbout(ticket_scam).
+                    Epilogue: you watch the sky burn from your roof.
+Reactivity: EBI troopers in the lab after ebi_strike; sleepers' pods show their names;
+  the ARK comments on who you killed.
+Unprotected fail states: dying only.

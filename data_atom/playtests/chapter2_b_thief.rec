@@ -1,0 +1,37 @@
+# Chapter 2 B (thief): in through the service door, crack the safe for the keycard, hack Faust's terminal for the lab files.
+
+%rec: outcomes
+
+if: HasItem('cryo_keycard') && HasFlag('faust_terminal_hacked') && HasFlag('KnowsAbout(cryo_lab)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+# thief build: the service door is an easy lock, the safe a hard one, the terminal a hard hack
+if: true
+do: SetSkill('Mechanics', 200)
+do: SetSkill('Technology', 200)
+do: SetSkill('Stealth', 200)
+do: Use('mansion_service_door')
+
+# Faust sits in his study: crack the safe under his nose only while sneaking
+if: true
+do: Sneak()
+do: GoTo('faust_study')
+
+if: true
+do: Use('faust_safe')
+do: Take('cryo_keycard')
+
+if: true
+do: Use('faust_terminal')
+do: Choose('hack_terminal')
+do: Choose('hacked_back')
+do: Choose('terminal_leave')
+

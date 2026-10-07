@@ -1,0 +1,105 @@
+# Faust's private terminal in the study. Hacking it opens the cellar door and reveals the lab;
+# the uplink also lets you sell Faust (ebi_strike) or the lab itself (ending sold_lab).
+# ClearFlag('cryo_keycard') unlocks cellar_door: LockedDoors listen to their LockFlag.
+
+%rec: OpeningBranch
+
+cond: true
+goto: Root
+
+%rec: Nodes
+
+name: Root
+npc: ** FAUST PRIVATE NODE **
++ > Credentials required.
++ > Uplink: E. (encrypted)
+#
+o_text: Hack it.
+o_id: hack_terminal
+o_cond: !HasFlag('faust_terminal_hacked')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Alarm
+#
+o_text: Browse the files.
+o_id: browse_files
+o_cond: HasFlag('faust_terminal_hacked')
+o_goto: Files
+#
+o_text: Report Faust's location to E.
+o_id: report_faust
+o_cond: !HasFlag('faust_sold_out') && !HasFlag('Killed(logan_faust)')
+o_goto: ReportFaust
+#
+o_text: Sell the lab to E.
+o_id: sell_lab
+o_cond: HasFlag('KnowsAbout(cryo_lab)')
+o_goto: SellLab
+#
+o_text: Leave.
+o_id: terminal_leave
+o_goto: End
+
+name: Hacked
+npc: > ACCESS GRANTED.
++ > cellar_door: UNLOCKED
++ > /ark/pods: 4 units. 1: H. Vale. 2: I. Marrow. 3: FAULT (fuse). 4: L. Faust (reserved).
++ > /board/cleansing.pdf: EMP strike, then warheads. Survivors: none planned.
++ > /spaceport/manifest: cargo only. No passenger berths were ever built.
+effect: SetFlag('faust_terminal_hacked')
+effect: SetFlag('cellar_door_unlocked')
+effect: ClearFlag('cryo_keycard')
+effect: SetFlag('KnowsAbout(cryo_lab)')
+effect: SetFlag('KnowsAbout(golden_ticket)')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+#
+o_text: Back.
+o_id: hacked_back
+o_goto: Root
+
+name: Files
+npc: > /ark/pods: 4 units. 1: H. Vale. 2: I. Marrow. 3: FAULT (fuse). 4: L. Faust (reserved).
++ > /board/cleansing.pdf: EMP strike, then warheads. Survivors: none planned.
++ > /spaceport/manifest: cargo only. No passenger berths were ever built.
+#
+o_text: Back.
+o_id: files_back
+o_goto: Root
+
+name: Alarm
+npc: > ACCESS DENIED.
++ > Intrusion logged. Household security notified.
+effect: ProvokeFaction('faust')
+#
+o_text: Try again.
+o_id: hack_again
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Alarm
+#
+o_text: Leave.
+o_id: alarm_leave
+o_goto: End
+
+name: ReportFaust
+npc: > Message sent.
++ > 5000 sat transferred.
++ > "Stay out of the way. E."
+effect: SetFlag('faust_sold_out')
+effect: PlayerAddGold(5000)
+effect: RunScript('ebi_strike')
+#
+o_text: Back.
+o_id: report_back
+o_goto: Root
+
+name: SellLab
+npc: > Coordinates and access codes sent.
++ > 50000 sat transferred.
++ > "The site will be sealed within the hour. Do not return. E."
+effect: PlayerAddGold(50000)
+effect: EndGame('sold_lab')
+
+name: End
+npc: > Session closed.
+effect: EndConversation

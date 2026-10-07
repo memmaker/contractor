@@ -384,3 +384,38 @@ Description: female corpse
 HitPoints: 12
 Position: (41,19)
 
+
+Name: gate_captain
+Icon: G
+Foreground: light_gray_2
+Description: the gate captain
+LongDescription: A broad man in a worn gate-watch coat. He keeps the outbound log and the only key to the south airlock.
+Dialogue: gate_captain
+faction: wall_guard
+aggressive: false
+Age: 45
+BodyType: 0
+XP: 85
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 40
+ActionPoints: 6
+MeleeDamage: 2
+CarryWeight: 175
+Sequence: 10
+HealingRate: 1
+CriticalChance: 4
+Strength: 6
+Perception: 6
+Endurance: 6
+Cool: 6
+Intelligence: 4
+Agility: 5
+SkillBonusRangedCombat: 30
+SkillBonusMeleeCombat: 30
+equipment: eb8_service_pistol
+equipment: 9mm(36)
+equipment: gate_log
+equipment: gold(60)
+Position: (44,6)

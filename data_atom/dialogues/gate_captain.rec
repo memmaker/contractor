@@ -1,0 +1,71 @@
+# Gate captain of the southern wall. Fighter route into chapter 1:
+# intimidate him (Hard) for the mansion's whereabouts, or kill him and loot his gate log.
+
+%rec: OpeningBranch
+
+cond: IsActorInCombatWithPlayer(NPC)
+goto: PlayerCombatBranch
+
+cond: HasFlag('LocationKnown(mansion)')
+goto: AlreadyTold
+
+cond: true
+goto: DefaultIntroduction
+
+%rec: Nodes
+
+name: PlayerCombatBranch
+npc: You picked the wrong gate, contractor.
+effect: EndConversation
+
+name: AlreadyTold
+npc: You know the way. Don't make me regret it.
+effect: EndConversation
+
+name: DefaultIntroduction
+npc: Gate's closed to foot traffic. State your business or move along.
+#
+o_text: Trucks have been going out this gate at night. Where to?
+o_id: ask_trucks
+o_goto: AskTrucks
+#
+o_text: Nothing. Just looking.
+o_id: leave
+o_goto: Bye
+
+name: AskTrucks
+npc: (He doesn't blink.) Outbound traffic is logged, not discussed.
+#
+o_text: Then I'll take it off your corpse. Your call.
+o_id: intimidate
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: IntimidateSuccess
+o_fail: IntimidateFail
+#
+o_text: Fair enough.
+o_goto: Bye
+
+name: IntimidateSuccess
+npc: (He glances at the empty yard, then lowers his voice.)
++ Private residence. Old highway, half an hour south. Caterers, security, the lot.
++ You got that from nobody. Now get off my gate.
+effect: SetFlag('LocationKnown(mansion)')
+effect: EndConversation
+
+name: IntimidateFail
+npc: (He rests a hand on his holster.) Try me. Go on.
+#
+o_text: <Fight>
+o_id: fight
+o_goto: Fight
+#
+o_text: Another time.
+o_goto: Bye
+
+name: Fight
+npc: Thought so.
+effect: StartCombat
+
+name: Bye
+npc: Move along.
+effect: EndConversation

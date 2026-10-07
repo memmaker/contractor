@@ -1,0 +1,6 @@
+%rec: default
+
+Name: Cryo Lab
+MusicFile: 
+IsOutdoor: false
+IndoorAmbientLight: (0.6, 0.8, 1.0)

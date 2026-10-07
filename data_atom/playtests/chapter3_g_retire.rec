@@ -1,0 +1,42 @@
+# Chapter 3 G (gave up): the ticket is a scam and you know it. Ride home, close the account, spend it.
+
+%rec: outcomes
+
+if: GameOver() && HasFlag('Ending(gave_up)')
+
+%rec: frames
+
+# the apartment is locked: take the keys from Grim before leaving town
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Use('home_terminal')
+do: Choose('retire')

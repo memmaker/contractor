@@ -247,6 +247,9 @@ func (g *GameState) openInventoryOf(actor *Actor) {
 			itemStack := itemUI
 
 			stackTransfer(inventory, g.Player.GetInventory(), itemStack, amount)
+			if itemStack.GetPickupFlag() != "" { // looting a corpse counts as picking it up
+				g.gameFlags.Increment(itemStack.GetPickupFlag())
+			}
 
 			g.ui.PlayCue("world/pickup")
 		}

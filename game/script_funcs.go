@@ -3,6 +3,7 @@ package game
 import (
 	"contractor/d100"
 	"contractor/foundation"
+	"fmt"
 	"github.com/Knetic/govaluate"
 	"github.com/memmaker/go/geometry"
 	"strconv"
@@ -691,6 +692,33 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 					actor.FSM.SendEvent(NewProvokedEvent(g.Player))
 				}
 			}
+			return nil, nil
+		},
+		// EndGame('cryo_sleep'): sets Ending(<id>) and shows the game over screen once the node's effects ran.
+		"EndGame": func(args ...interface{}) (interface{}, error) {
+			id := args[0].(string)
+			g.gameFlags.SetFlag(fmt.Sprintf("Ending(%s)", id))
+			g.pendingEnding = id
+			return nil, nil
+		},
+		// SpawnTeamHunting('ebi_strike', 'mansion', 'taxi_stand', 'logan_faust'): the team appears at the location,
+		// its leader hunts the named actor on that map (the player if he is dead or gone), the members follow.
+		"SpawnTeamHunting": func(args ...interface{}) (interface{}, error) {
+			teamName, mapName, locName, victimName := args[0].(string), args[1].(string), args[2].(string), args[3].(string)
+			targetMap := g.ensureMapIsLoaded(mapName)
+			leader, _ := g.SpawnTeam(teamName, MapPosition{MapName: mapName, LocationName: locName, Position: targetMap.GetNamedLocation(locName)})
+			if leader == nil {
+				g.msg(foundation.HiLite("SpawnTeamHunting: no team %s", teamName))
+				return nil, nil
+			}
+			for _, actor := range targetMap.Actors() {
+				if actor.GetInternalName() == victimName && actor.IsAlive() {
+					g.Scripts.Run(g.NewScriptKill(leader, actor))
+					return nil, nil
+				}
+			}
+			leader.GetFlags().Set(foundation.FlagRelentless)
+			leader.FSM.SetState(StateHunt, ActorEvent{Event: EventProvoked, Actor: g.Player})
 			return nil, nil
 		},
 		"PlayerAddGold": func(args ...interface{}) (interface{}, error) {

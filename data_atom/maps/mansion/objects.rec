@@ -1,0 +1,89 @@
+%rec: default
+
+Category: NamedLocation
+Identifier: taxi_stand
+Position: (4,18)
+
+Category: NamedLocation
+Identifier: taxi_driver
+Position: (4,20)
+
+Category: Terminal
+Name: Taxi
+IconOverride: Taxi
+Description: a taxi
+Dialogue: taxi
+Tags: No_Sound
+Position: (3,20)
+
+Category: NamedLocation
+Identifier: mansion_gate
+Position: (9,11)
+
+Category: LockedDoor
+Name: mansion_front_door
+Description: the front door
+LockFlag: mansion_key
+LockDifficulty: hard
+Position: (30,11)
+
+Category: NamedLocation
+Identifier: mansion_hall
+Position: (38,11)
+
+Category: ClosedDoor
+Description: a door
+Position: (46,8)
+
+Category: NamedLocation
+Identifier: faust_study
+Position: (54,8)
+
+Category: Terminal
+Name: faust_terminal
+Description: Faust's terminal
+Dialogue: faust_terminal
+Position: (48,6)
+
+Category: UnknownContainer
+Name: faust_safe
+Description: wall safe
+lockdifficulty: hard
+lockflag: faust_safe_key
+item: cryo_keycard
+item: gold(2000)
+Position: (60,6)
+
+Category: ClosedDoor
+Description: a door
+Position: (46,14)
+
+Category: NamedLocation
+Identifier: mansion_kitchen
+Position: (52,14)
+
+Category: LockedDoor
+Name: mansion_service_door
+Description: the service door
+LockDifficulty: easy
+Position: (52,17)
+
+Category: NamedLocation
+Identifier: service_door
+Position: (52,18)
+
+# the engine opens a LockedDoor with the key item whose LockFlag matches, or by lockpicking.
+# nothing links a game flag to a door: SetFlag('cellar_door_unlocked') needs engine support before it can open this.
+Category: LockedDoor
+Name: cellar_door
+Description: the cellar door
+LockFlag: cryo_keycard
+LockDifficulty: hard
+Position: (58,14)
+
+Category: Transition
+Description: stairs down to the cellar
+Location: cellar_stairs
+TargetMap: cryo_lab
+TargetLocation: lab_entrance
+Position: (60,14)

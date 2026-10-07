@@ -1,0 +1,23 @@
+%rec: default
+
+Category: lockpicks
+Name: mechanical_lockpick
+Description: M-Pick
+Cost: 120
+LongDescription: One-time use mechanical lockpicks. Blunt Ware is not responsible for any injuries sustained while using this product.
+Position: (50,13)
+
+Category: lockpicks
+Name: mechanical_lockpick
+Description: M-Pick
+Cost: 120
+LongDescription: One-time use mechanical lockpicks. Blunt Ware is not responsible for any injuries sustained while using this product.
+Position: (50,15)
+
+Category: lockpicks
+Name: mechanical_lockpick
+Description: M-Pick
+Cost: 120
+LongDescription: One-time use mechanical lockpicks. Blunt Ware is not responsible for any injuries sustained while using this product.
+Position: (55,13)
+

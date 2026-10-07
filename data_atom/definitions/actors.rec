@@ -847,3 +847,36 @@ DRRadiation: 12
 DRPoison: 30
 SourceFile: 00000159.pro
 
+
+Name: ebi_trooper
+Description: EBI Trooper
+Long_Description: An EBI strike trooper in black armor. No badge, no warning, no non-lethal option.
+Icon: E
+Foreground: red_5
+Age: 28
+BodyType: 0
+XP: 120
+KillType: 0
+DamageType: 0
+Faction: ebi
+aggressive: true
+HitPoints: 60
+ActionPoints: 8
+MeleeDamage: 2
+CarryWeight: 200
+Sequence: 14
+HealingRate: 1
+CriticalChance: 6
+Strength: 7
+Perception: 7
+Endurance: 7
+Cool: 7
+Intelligence: 4
+Agility: 7
+SkillBonusRangedCombat: 55
+SkillBonusMeleeCombat: 40
+DRNormal: 30
+equipment: eb8_service_pistol
+equipment: 9mm(48)
+equipment: ebi_guard_uniform
+equipment: mansion_key

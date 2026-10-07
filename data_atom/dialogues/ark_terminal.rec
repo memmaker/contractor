@@ -1,0 +1,116 @@
+# ARK, the lab AI. Pod state: PodFree(1|2) once a sleeper is gone, PodFixed(3) once pod 3 works again,
+# pod 4 is free with PodFree(4) or Killed(logan_faust). Pod 3 is always free but broken until fixed.
+
+%rec: OpeningBranch
+
+cond: true
+goto: Status
+
+%rec: Nodes
+
+name: Status
+npc: ARK online. Visitor unregistered.
++ Pods 1 and 2: occupied. Pod 3: fault. Pod 4: reserved, L. Faust.
++ Query?
+#
+o_text: Why is pod 3 dark?
+o_id: pod3_fault
+o_cond: !HasFlag('PodFixed(3)')
+o_goto: Pod3Fault
+#
+o_text: Who sleeps in pods 1 and 2?
+o_id: who_sleeps
+o_goto: Sleepers
+#
+o_text: Pod 1 is empty now.
+o_id: ark_killed
+o_cond: HasFlag('Killed(sleeper_1)') || HasFlag('Killed(sleeper_2)')
+o_goto: ArkKilled
+#
+o_text: Broadcast Faust's files to the city.
+o_id: broadcast_files
+o_cond: HasFlag('KnowsAbout(cryo_lab)')
+o_goto: Broadcast
+#
+o_text: Disconnect.
+o_id: ark_leave
+o_goto: End
+
+name: Pod3Fault
+npc: Primary fuse removed by hand, four days ago, by a visitor with EBI credentials.
++ A spare is stored in the generator room. Alternatively, power can be rerouted from the pod 4 heater.
+#
+o_text: Reroute power from pod 4.
+o_id: reroute_power
+o_test: RollSkill('technology', 'Hard')
+o_succ: RerouteOK
+o_fail: RerouteFail
+#
+o_text: Back.
+o_id: pod3_back
+o_goto: Status
+
+name: RerouteOK
+npc: Reroute accepted. Pod 3 nominal. Pod 4 heater at sixty percent; L. Faust will wake cold.
+effect: SetFlag('PodFixed(3)')
+#
+o_text: Back.
+o_id: reroute_back
+o_goto: Status
+
+name: RerouteFail
+npc: Reroute rejected: voltage mismatch. ARK recommends the fuse.
+#
+o_text: Back.
+o_id: reroute_fail_back
+o_goto: Status
+
+name: Sleepers
+npc: Pod 1: Henrik Vale, Chairman, Bushido-ArmaTech. Pod 2: Dr. Ilse Marrow, BAT Research.
++ Both signed the cleansing. Both paid for the privilege of outliving it.
+#
+o_text: Wake Vale. He has had his turn.
+o_id: wake_sleeper
+o_cond: !HasFlag('PodFree(1)')
+o_test: RollSkill('social', 'Hard')
+o_succ: WakeOK
+o_fail: WakeFail
+#
+o_text: Back.
+o_id: sleepers_back
+o_goto: Status
+
+name: WakeOK
+npc: ...Argument accepted. Revival sequence, pod 1.
++ (The lid hisses open. An old man climbs out, blinks at you, and walks for the stairs without a word.)
++ Pod 1: vacant.
+effect: SetFlag('PodFree(1)')
+#
+o_text: Back.
+o_id: wake_back
+o_goto: Status
+
+name: WakeFail
+npc: Request denied. Revival requires occupant consent or a medical emergency.
+#
+o_text: Back.
+o_id: wake_fail_back
+o_goto: Status
+
+name: ArkKilled
+npc: Occupant terminated by manual override. ARK has logged your face.
++ ARK has no one left to send it to.
+#
+o_text: Back.
+o_id: ark_killed_back
+o_goto: Status
+
+name: Broadcast
+npc: Transmitting /board/cleansing.pdf, /spaceport/manifest and this location to every public terminal in Edge Haven.
++ Estimated EBI response: minutes.
+effect: RunScript('ebi_strike')
+effect: EndGame('against_all_odds')
+
+name: End
+npc: ARK standing by.
+effect: EndConversation

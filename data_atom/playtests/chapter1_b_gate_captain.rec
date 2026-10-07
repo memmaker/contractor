@@ -1,0 +1,32 @@
+# Chapter 1 B (fighter): the gate captain logs what leaves the south gate. Lean on him; if he does not fold, kill him and read the log.
+
+%rec: outcomes
+
+if: IsOnMap('mansion')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+
+if: !HasFlag('LocationKnown(mansion)')
+do: PickUp('gate_log')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_mansion')
