@@ -98,7 +98,7 @@ func (g *GameState) actorKilled(causeOfDeath SourcedDamage, victim *Actor) {
 	}
 
 	killedFlag := fmt.Sprintf("Killed(%s)", victim.GetInternalName())
-	g.gameFlags.SetFlag(killedFlag)
+	g.gameFlags.Increment(killedFlag) // a counter: GetFlag('Killed(rat)') >= 6
 
 	if causeOfDeath.IsActor() && causeOfDeath.Attacker == g.Player {
 		killedByPlayerFlag := fmt.Sprintf("KilledByPlayer(%s)", victim.GetInternalName())

@@ -1,0 +1,33 @@
+# The Duck (avoider): sneak past the rats in the dark, carry Coco home. Nothing dies.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(the_duck, returned)') && !HasFlag('Killed(rat)')
+
+%rec: frames
+
+if: true
+do: Talk('anna_whitaker')
+do: Choose('ask_duck')
+do: Choose('accept_duck')
+do: Choose('accept_bye')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: GoTo('man_hole_east')
+
+if: true
+do: Sneak()
+do: GoTo('duck_pond')
+
+if: true
+do: Talk('synth_duck')
+do: Choose('duck_come')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Talk('anna_whitaker')
+do: Choose('give_duck')
+do: Choose('duck_thanks')

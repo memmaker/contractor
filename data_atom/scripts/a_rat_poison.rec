@@ -1,0 +1,19 @@
+# A3 Rats: poison in the sewer trash heap. Two hours later every rat in the sewers is dead.
+
+%rec: definitions
+
+var: TRASH
+set: ContainerWithName('sewer_trash')
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: IsItemInContainer(TRASH, 'rat_poison')
+do: SaveTimeNow('a_poison_laid')
+
+if: IsHoursAfter('a_poison_laid', 2)
+do: ActorsDie('rat')
+do: SetFlag('sewer_rats_poisoned')

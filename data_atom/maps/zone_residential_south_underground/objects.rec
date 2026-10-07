@@ -152,3 +152,18 @@ Name: cellar_toolbox
 Description: a dusty toolbox
 item: key('hospital_cell_door', "Cell door key")
 Position: (20,5)
+
+Category: UnknownContainer
+Name: sewer_trash
+Description: a reeking trash heap
+item: junk(4)
+item: rat_tail
+Position: (62,20)
+
+Category: NamedLocation
+Identifier: duck_pond
+Position: (77,13)
+
+Category: NamedLocation
+Identifier: west_tunnel
+Position: (10,9)

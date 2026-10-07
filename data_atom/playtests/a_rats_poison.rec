@@ -1,0 +1,49 @@
+# Rats (avoider): buy rat poison from Big Bob, sneak down, drop it in the trash heap, wait two hours. Collect 150.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rats, paid)') && HasFlag('sewer_rats_poisoned') && !HasFlag('KilledByPlayer(rat)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('cleaner')
+do: Choose('ask_rats')
+do: Choose('accept_rats')
+do: Choose('accept_bye')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('big_bob')
+do: Choose('show_wares')
+do: Buy('rat_poison')
+do: Choose('bye')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: GoTo('man_hole_east')
+
+if: true
+do: Sneak()
+do: Use('sewer_trash')
+do: Put('rat_poison', 1)
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: WaitHours(3)
+
+if: HasFlag('sewer_rats_poisoned')
+do: GoTo('street_to_west')
+
+if: true
+do: Talk('cleaner')
+do: Choose('rats_done')
+do: Choose('paid_bye')

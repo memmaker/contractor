@@ -1,0 +1,52 @@
+# Rats (fighter): take the cleaner's job, shoot five rats in the west tunnels (the east is mined), collect 150.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rats, paid)') && GetFlag('Killed(rat)') >= 5
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('cleaner')
+do: Choose('ask_rats')
+do: Choose('accept_rats')
+do: Choose('accept_bye')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Give('10mm_smg(100)')
+do: Give('10mm_jhp(96)')
+do: Equip('10mm_smg')
+do: FireMode('Single')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: SetStat('Perception', 10)
+do: GoTo('man_hole_east')
+
+if: true
+do: GoTo('west_tunnel')
+
+if: true
+do: Kill('rat')
+do: Kill('rat')
+do: Kill('rat')
+do: Kill('rat')
+do: Kill('rat')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Unequip('10mm_smg')
+do: GoTo('street_to_west')
+
+if: true
+do: Talk('cleaner')
+do: Choose('rats_done')
+do: Choose('paid_bye')

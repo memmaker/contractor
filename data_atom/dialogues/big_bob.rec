@@ -24,6 +24,11 @@ o_id: show_wares
 o_effect: StartTrading
 o_goto: BasicSupply
 #
+o_text: (Show him the synth duck.) Anna's. What's it worth to you in parts?
+o_id: sell_duck_bob
+o_cond: HasItem('synth_duck_item')
+o_goto: SellDuck
+#
 o_text: I'll need exactly 1 round of ammo.
 o_cond: !HasFlag('took_single_round')
 o_goto: BuySingleRound
@@ -136,6 +141,11 @@ o_id: show_wares
 o_effect: StartTrading
 o_goto: DefaultIntroduction
 #
+o_text: (Show him the synth duck.) Anna's. What's it worth to you in parts?
+o_id: sell_duck_bob
+o_cond: HasItem('synth_duck_item')
+o_goto: SellDuck
+#
 o_text: What's the neighborhood like?
 o_goto: TellMeAboutNeighborhood
 #
@@ -149,3 +159,22 @@ npc: Quiet, mostly. People here keep their heads down and their doors locked.
 + Other than that, the worst you'll meet around here is me, before my first coffee.
 #
 effect: ReturnToPreviousNode
+
+name: SellDuck
+npc: (He turns it over and pops a panel with his thumbnail.) Military-grade servos in a toy. Three hundred.
++ Anna pays you what, a hundred and a smile? I'll have it in a drone by Friday. What she doesn't know won't quack.
+#
+o_text: Sold.
+o_id: duck_sold
+o_goto: DuckSold
+#
+o_text: Never mind.
+o_id: duck_keep
+o_goto: Exit
+
+name: DuckSold
+npc: (He drops it in a crate under the counter. It says "quack" once, muffled.)
+effect: StackTransferTo(NPC, 'synth_duck_item')
+effect: PlayerAddGold(300)
+effect: SetFlag('duck_sold_to_bob')
+effect: EndConversation

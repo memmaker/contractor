@@ -103,6 +103,7 @@ Selling: 10mm_jhp(240)
 Selling: 10mm_smg(70)
 Selling: red_green_glasses
 Selling: dynamite
+Selling: rat_poison(2)
 Selling: 10mm_ap(48)
 Equipment: rugged_trenchcoat(80)
 Equipment: explosive_rocket(5)
@@ -260,42 +261,6 @@ equipment: binge
 equipment: worn_jacket
 equipment: gold(132)
 Position: (57,20)
-
-Name: synth_duck
-Icon: D
-Foreground: light_gray_2
-Description: a synthetic duck
-Flags: Is_Animal
-size_modifier: -2
-Chatter: duck_chatter
-LongDescription: 
-Age: 25
-BodyType: 1
-XP: 25
-KillType: 17
-DamageType: 0
-TeamNum: 1
-HitPoints: 6
-ActionPoints: 3
-ArmorClass: 4
-MeleeDamage: 2
-CarryWeight: 50
-Sequence: 9
-HealingRate: 1
-CriticalChance: 1
-Strength: 1
-Perception: 2
-Endurance: 1
-Cool: 1
-Intelligence: 1
-Agility: 4
-Luck: 1
-SkillBonusMeleeCombat: 0
-DREMP: 500
-DRRadiation: 2
-DRPoison: 5
-SourceFile: 00000382.pro
-Position: (59,16)
 
 Name: daniel_harker
 Icon: H

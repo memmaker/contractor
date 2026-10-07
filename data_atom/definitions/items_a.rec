@@ -28,3 +28,10 @@ Description: a rat's tail
 Category: Other
 Weight: 1
 Cost: 1
+
+Name: cleaners_badge
+Description: a sanitation badge
+Long_Description: DISTRICT SANITATION, WEST. The clip is bent and there are teeth marks in the plastic.
+Category: Other
+Weight: 1
+Cost: 5

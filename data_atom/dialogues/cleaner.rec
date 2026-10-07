@@ -1,6 +1,5 @@
 # The cleaner (zone_residential_west). Package A3 "Rats": JobAccepted(rats), rats_paid, cleaner_went_down.
-# Proof the sewers are clear: the sewer rats each carry a rat_tail; fewer than 5 living tails means 6+ are dead.
-# (Killed(rat) is not a counter in the engine; see the package report.)
+# Proof the sewers are clear: five dead rats (Killed is a counter) or the poison did its work.
 
 %rec: OpeningBranch
 
@@ -8,9 +7,9 @@ cond: HasFlag('cleaner_called') && !HasFlag('clinic_cleaned')
 goto: Working
 
 cond: HasFlag('rats_paid')
-goto: Paid
+goto: PaidDone
 
-cond: HasFlag('JobAccepted(rats)') && (HasFlag('sewer_rats_poisoned') || ItemCountFactionInventorySinglePrefix('rat_tail', 'zone_residential_south_underground', 'rats') <= 4)
+cond: HasFlag('JobAccepted(rats)') && (HasFlag('sewer_rats_poisoned') || GetFlag('Killed(rat)') >= 5)
 goto: Proof
 
 cond: HasFlag('JobAccepted(rats)')
@@ -35,8 +34,8 @@ o_id: bye
 o_goto: Bye
 
 name: RatJob
-npc: Southside sewers. Ten rats, big as dogs, and the district pays me to clear them. I'm not going down there.
-+ You do it, the 150 is yours. Shoot them, poison them, I don't care. Bob sells poison. The rats feed off the trash heap down there.
+npc: Southside sewers. Eight rats, big as dogs, and the district pays me to clear them. I'm not going down there.
++ Kill five and the rest will move on. You do it, the 150 is yours. Shoot them, poison them, I don't care. Bob sells poison. The rats feed off the trash heap down there.
 #
 o_text: Deal. Keep the money warm.
 o_id: accept_rats
@@ -99,6 +98,10 @@ effect: SetFlag('rats_paid')
 o_text: Nobody will.
 o_id: paid_bye
 o_goto: Bye
+
+name: PaidDone
+npc: (He nods at you like you share a secret. You do.)
+effect: EndConversation
 
 name: Working
 npc: (He doesn't look up from the floor.)

@@ -5,3 +5,4 @@ MusicFile: 13carvrn
 IsOutdoor: false
 IndoorAmbientLight: (0.3, 0.3, 0.3)
 RunScript: drakes_escape
+RunScript: a_rat_poison

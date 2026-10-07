@@ -382,3 +382,39 @@ DRPoison: 5
 SourceFile: 00000011.pro
 Position: (78,8)
 
+Name: synth_duck
+Icon: D
+Foreground: light_gray_2
+Description: a synthetic duck
+size_modifier: -2
+Chatter: duck_chatter
+LongDescription: A synthetic duck, white, mud on the servos. A collar tag reads COCO.
+Age: 25
+BodyType: 1
+XP: 25
+KillType: 17
+DamageType: 0
+TeamNum: 1
+HitPoints: 6
+ActionPoints: 3
+ArmorClass: 4
+MeleeDamage: 2
+CarryWeight: 50
+Sequence: 9
+HealingRate: 1
+CriticalChance: 1
+Strength: 1
+Perception: 2
+Endurance: 1
+Cool: 1
+Intelligence: 1
+Agility: 4
+Luck: 1
+SkillBonusMeleeCombat: 0
+DREMP: 500
+DRRadiation: 2
+DRPoison: 5
+SourceFile: 00000382.pro
+Dialogue: synth_duck
+Position: (77,12)
+
