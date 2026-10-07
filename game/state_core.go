@@ -128,8 +128,12 @@ func NewGameState(config *foundation.Configuration) *GameState {
 func loadItemTemplates(dataRootDir string) map[string]recfile.Record {
 	itemTemplates := make(map[string]recfile.Record)
 	parts := []string{"weapons", "ammo", "armor", "food", "consumables", "miscItems"}
+	var files []string
 	for _, part := range parts {
-		itemTemplateFile := filepath.Join(dataRootDir, "definitions", part+".rec")
+		files = append(files, filepath.Join(dataRootDir, "definitions", part+".rec"))
+	}
+	extra, _ := filepath.Glob(filepath.Join(dataRootDir, "definitions", "items_*.rec")) // one file per content package
+	for _, itemTemplateFile := range append(files, extra...) {
 		records, _ := recfile.ReadAndClose(fxtools.MustOpen(itemTemplateFile))
 		for _, record := range records {
 			itemTemplates[record.FindValueForKeyIgnoreCase("name")] = record
@@ -140,9 +144,12 @@ func loadItemTemplates(dataRootDir string) map[string]recfile.Record {
 
 func loadActorTemplates(dataRootDir string) map[string]recfile.Record {
 	actorTemplates := make(map[string]recfile.Record)
-	records, _ := recfile.ReadAndClose(fxtools.MustOpen(filepath.Join(dataRootDir, "definitions", "actors.rec")))
-	for _, record := range records {
-		actorTemplates[record.FindValueForKeyIgnoreCase("name")] = record
+	files, _ := filepath.Glob(filepath.Join(dataRootDir, "definitions", "actors*.rec")) // actors.rec plus one file per content package
+	for _, file := range files {
+		records, _ := recfile.ReadAndClose(fxtools.MustOpen(file))
+		for _, record := range records {
+			actorTemplates[record.FindValueForKeyIgnoreCase("name")] = record
+		}
 	}
 	return actorTemplates
 }
@@ -581,6 +588,11 @@ func (g *GameState) init() {
 	g.gameFlags = fxtools.NewStringFlags()
 
 	g.journal = NewJournal(fxtools.MustOpen(filepath.Join(g.config.DataRootDir, "definitions", "journal.rec")), g.GetScriptFuncs())
+	extraJournals, _ := filepath.Glob(filepath.Join(g.config.DataRootDir, "definitions", "journal_*.rec")) // one file per content package
+	for _, file := range extraJournals {
+		records, _ := recfile.ReadAndClose(fxtools.MustOpen(file))
+		g.journal.AddEntriesFromSource("default", records, g.GetScriptFuncs())
+	}
 	g.hookupJournalAndFlags()
 
 	g.Scripts = NewScriptRunner()

@@ -721,6 +721,31 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			leader.FSM.SetState(StateHunt, ActorEvent{Event: EventProvoked, Actor: g.Player})
 			return nil, nil
 		},
+		// SpawnActor('def_name', 'map', 'location'): a new actor from the definitions appears at a named location.
+		"SpawnActor": func(args ...interface{}) (interface{}, error) {
+			defName, mapName, locName := args[0].(string), args[1].(string), args[2].(string)
+			targetMap := g.ensureMapIsLoaded(mapName)
+			actor := g.NewActorFromName(defName, mapName)
+			if actor == nil {
+				g.msg(foundation.HiLite("SpawnActor: no actor %s", defName))
+				return nil, nil
+			}
+			targetMap.AddActorWithDisplacement(actor, targetMap.GetNamedLocation(locName))
+			return nil, nil
+		},
+		// RemoveActor('internal_name'): the actor leaves the world, from whatever loaded map they are on.
+		"RemoveActor": func(args ...interface{}) (interface{}, error) {
+			name := args[0].(string)
+			for _, m := range g.activeMaps {
+				for _, actor := range m.Actors() {
+					if actor.GetInternalName() == name && actor != g.Player {
+						m.RemoveActor(actor)
+						return nil, nil
+					}
+				}
+			}
+			return nil, nil
+		},
 		"PlayerAddGold": func(args ...interface{}) (interface{}, error) {
 			goldAmount := int(args[0].(float64))
 			g.Player.GetInventory().AddItem(g.NewGold(goldAmount))
