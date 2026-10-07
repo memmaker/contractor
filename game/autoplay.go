@@ -791,6 +791,11 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 				return true
 			})
 		},
+		// Give('10mm_smg'), Give('brainz(3)'): character setup, like SetSkill; skips the shopping trip.
+		"Give": func(args ...interface{}) (interface{}, error) {
+			g.Player.GetInventory().AddItem(g.NewItemFromString(str(args, 0)))
+			return true, nil
+		},
 		// SetStat('Perception', 7): character setup, like picking a build.
 		"SetStat": func(args ...interface{}) (interface{}, error) {
 			g.Player.GetCharSheet().SetStat(d100.StatFromString(str(args, 0)), int(num(args, 1)))

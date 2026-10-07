@@ -40,6 +40,8 @@ Position: (3,1)
 Category: UnknownContainer
 Name: sysop_crate
 Description: a supply crate
+item: bowel_disruptor
+item: micro_fusion_cell(30)
 item: water_ration(4)
 item: gold(60)
 item: binge

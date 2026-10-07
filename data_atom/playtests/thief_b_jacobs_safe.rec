@@ -2,13 +2,14 @@
 
 %rec: outcomes
 
-if: HasFlag('QuestCompleted(starter, paid_with_clients_money)') && GameOver()
+if: HasFlag('QuestCompleted(starter, paid_with_clients_money)') && HasFlag('JobAccepted(mansion)')
 
 %rec: frames
 
 # thief build: 5 lockpicks must beat the lock
 
 if: true
+do: Give('mechanical_lockpick(2)')
 do: SetSkill('Mechanics', 110)
 
 if: true

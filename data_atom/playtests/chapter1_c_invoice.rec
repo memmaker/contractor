@@ -8,6 +8,7 @@ if: IsOnMap('mansion')
 
 # thief build: maxed Technology brings the lobby keypad down to two of the five starting e-picks
 if: true
+do: Give('electronic_lockpick(5)')
 do: SetSkill('Technology', 200)
 do: Talk('taxi_driver')
 do: Choose('go_terra_vitae')

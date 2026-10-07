@@ -21,6 +21,7 @@ if: true
 do: Unequip('10mm_smg')
 do: Unequip('bowel_disruptor')
 do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
 do: GoTo('street_to_industry')
 
 if: true
@@ -33,12 +34,14 @@ do: Sneak()
 do: Use('manifest_terminal')
 do: Choose('print_manifest')
 do: Choose('printed_leave')
+do: Sneak()
 
 # EBI guards in the industrial district shoot open carry on sight: holster everything first
 if: true
 do: Unequip('10mm_smg')
 do: Unequip('bowel_disruptor')
 do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
 do: GoTo('street_to_industry')
 
 if: true

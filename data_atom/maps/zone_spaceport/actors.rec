@@ -4,7 +4,7 @@ Name: manifest_bot_1
 Icon: S
 Foreground: light_gray_2
 Description: Dock Sentry Bot
-LongDescription: An old dock sentry, armour pitted and plating thin. It still points its gun at anything that moves near the cargo terminal.
+LongDescription: An old dock sentry, armour pitted and plating thin, one optic cracked blind. It still points its gun at anything it notices near the cargo terminal. Anything that keeps low and quiet, it mostly does not.
 aggressive: true
 faction: spaceport
 LongDescription: 
@@ -23,7 +23,7 @@ Sequence: 16
 HealingRate: 2
 CriticalChance: 5
 Strength: 9
-Perception: 8
+Perception: 2
 Endurance: 8
 Cool: 1
 Intelligence: 5
@@ -53,7 +53,7 @@ Name: manifest_bot_2
 Icon: S
 Foreground: light_gray_2
 Description: Dock Sentry Bot
-LongDescription: An old dock sentry, armour pitted and plating thin. It still points its gun at anything that moves near the cargo terminal.
+LongDescription: An old dock sentry, armour pitted and plating thin, one optic cracked blind. It still points its gun at anything it notices near the cargo terminal. Anything that keeps low and quiet, it mostly does not.
 aggressive: true
 faction: spaceport
 LongDescription: 
@@ -72,7 +72,7 @@ Sequence: 16
 HealingRate: 2
 CriticalChance: 5
 Strength: 9
-Perception: 8
+Perception: 2
 Endurance: 8
 Cool: 1
 Intelligence: 5
