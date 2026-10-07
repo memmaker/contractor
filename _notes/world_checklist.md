@@ -5,9 +5,9 @@
 - [x] SpawnActor / RemoveActor script functions
 
 ## Package A: side contracts south
-- [ ] A1 The Duck (3 routes + playtests)
+- [x] A1 The Duck (3 routes + playtests)
 - [ ] A2 Tags (3 routes + playtests)
-- [ ] A3 Rats (3 routes + playtests)
+- [x] A3 Rats (3 routes + playtests)
 - [ ] R1 Anna grieves/thanks, R2 Terra Vitae warms/cools, R3 cleaner dies -> west decays, R4 new gate captain + toll
 
 ## Package B: side contracts commerce & spaceport

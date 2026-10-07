@@ -381,12 +381,24 @@ func (a *Autoplay) walkStep(target geometry.Point, adjacent bool) (arrived bool)
 		zone := m.FirstZoneAt(p)
 		return guarded(zone) && zone != m.FirstZoneAt(pos) && !(deliberate && zone == m.FirstZoneAt(target))
 	}
-	path := m.GetAStarPath(pos, target, func(p geometry.Point) bool {
-		_, corpse := m.TryGetDownedActorAt(p) // stepping on a corpse opens its loot and would eat a pending answer
-		obj, hasObj := m.TryGetObjectAt(p)    // bumping a bed or terminal on the way opens its menu, doors are fine
-		furniture := hasObj && !(obj.GetCategory() >= foundation.ObjectLockedDoor && obj.GetCategory() <= foundation.ObjectBrokenDoor)
-		return p == target || (!m.IsTransitionAt(p) && !corpse && !furniture && !trespass(p) && m.IsWalkableFor(p, g.Player)) // the target may be an occupied or caged tile
-	})
+	mined := func(p geometry.Point) bool { // a visible proximity mine next to the path goes off as we pass
+		return len(m.NeighborsAll(p, func(q geometry.Point) bool {
+			mine, isObj := m.TryGetObjectAt(q)
+			return isObj && !mine.IsHidden() && mine.IsProximityTriggered()
+		})) > 0
+	}
+	walkable := func(avoidMines bool) func(p geometry.Point) bool {
+		return func(p geometry.Point) bool {
+			_, corpse := m.TryGetDownedActorAt(p) // stepping on a corpse opens its loot and would eat a pending answer
+			obj, hasObj := m.TryGetObjectAt(p)    // bumping a bed or terminal on the way opens its menu, doors are fine
+			furniture := hasObj && !(obj.GetCategory() >= foundation.ObjectLockedDoor && obj.GetCategory() <= foundation.ObjectBrokenDoor)
+			return p == target || (!m.IsTransitionAt(p) && !corpse && !furniture && !(avoidMines && mined(p)) && !trespass(p) && m.IsWalkableFor(p, g.Player)) // the target may be an occupied or caged tile
+		}
+	}
+	path := m.GetAStarPath(pos, target, walkable(true))
+	if len(path) == 0 { // no way around the mines: a player would risk it
+		path = m.GetAStarPath(pos, target, walkable(false))
+	}
 	if len(path) == 0 && adjacent { // unreachable (caged, in water): get as close as the map allows
 		reach := m.GetDijkstraMapWithActorsNotBlocking(g.Player, 400)
 		// a spot with a line of sight beats any closer spot behind a wall (talking across a counter)
@@ -410,12 +422,19 @@ func (a *Autoplay) walkStep(target geometry.Point, adjacent bool) (arrived bool)
 		if closest == pos {
 			return true
 		}
-		path = m.GetAStarPath(pos, closest, func(p geometry.Point) bool { return !m.IsTransitionAt(p) && m.IsWalkableFor(p, g.Player) })
+		path = m.GetAStarPath(pos, closest, func(p geometry.Point) bool { return !m.IsTransitionAt(p) && !mined(p) && m.IsWalkableFor(p, g.Player) })
 	}
 	// ponytail: replans every step, cache the path if long walks get slow
 	for _, n := range m.NeighborsAll(pos, func(p geometry.Point) bool {
-		return m.IsActorAt(p) && m.ActorAt(p).IsAlive() && (m.ActorAt(p).IsHostileTowards(g.Player) || m.ActorAt(p).Aggressive)
+		return m.IsActorAt(p) && m.ActorAt(p).IsAlive() && (m.ActorAt(p).IsHostileTowards(g.Player) || (m.ActorAt(p).Aggressive && !g.Player.IsSneaky())) // sneaking past an unaware brute is the point
 	}) {
+		if actor := m.ActorAt(n); !actor.IsHostileTowards(g.Player) { // bumping an unaware brute opens its menu: attack it on purpose
+			rest := a.intents
+			a.intents = nil
+			a.verbs()["Kill"](actor.GetInternalName())
+			a.intents = append(a.intents, rest...)
+			return false
+		}
 		a.bump(n) // a hostile next to us gets attacked first, like a player would
 		return false
 	}

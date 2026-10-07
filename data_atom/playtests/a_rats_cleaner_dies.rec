@@ -1,0 +1,22 @@
+# Rats (manipulator): tell the cleaner to do his own job. He goes down, and two days later the rats come up into the west (R3).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(rats, cleaner_dead)') && HasFlag('west_decayed')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('cleaner')
+do: Choose('ask_rats')
+do: Choose('do_your_job')
+do: Choose('go_bye')
+
+if: true
+do: WaitHours(30)
+do: WaitHours(30)

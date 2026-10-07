@@ -1,0 +1,38 @@
+# The Duck (manipulator): find Coco, sell her to Big Bob for parts, tell Anna the rats got her.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(the_duck, sold_and_lied)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: SetSkill('Stealth', 200)
+do: Talk('anna_whitaker')
+do: Choose('ask_duck')
+do: Choose('accept_duck')
+do: Choose('accept_bye')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Sneak()
+do: GoTo('duck_pond')
+
+if: true
+do: Talk('synth_duck')
+do: Choose('duck_come')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Talk('big_bob')
+do: Choose('sell_duck_bob')
+do: Choose('duck_sold')
+
+if: true
+do: Talk('anna_whitaker')
+do: Choose('duck_dead')

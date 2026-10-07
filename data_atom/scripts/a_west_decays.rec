@@ -1,0 +1,18 @@
+# R3: no cleaner, no cleaning. Two days after his death the rats come up into the west.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('cleaner_dead') || HasFlag('Killed(cleaner)')
+do: SaveTimeNow('a_cleaner_gone_at')
+
+if: IsDaysAfter('a_cleaner_gone_at', 2)
+do: SpawnActor('rat', 'zone_residential_west', 'at_the_street')
+do: SpawnActor('rat', 'zone_residential_west', 'at_the_street')
+do: SpawnActor('rat', 'zone_residential_west', 'cleaner_room')
+do: SetFlag('west_decayed')

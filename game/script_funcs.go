@@ -520,6 +520,21 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			g.ui.AddAnimations(OneAnimation(g.damageActor(damage, actor)))
 			return nil, nil
 		},
+		// ActorsDie('rat'): every living actor with that internal name dies, on every loaded map (poison, gas).
+		"ActorsDie": func(args ...interface{}) (interface{}, error) {
+			name := args[0].(string)
+			var doomed []*Actor
+			g.IterateAllActors(func(mapName string, actor *Actor) bool {
+				if actor.GetInternalName() == name && actor.IsAlive() {
+					doomed = append(doomed, actor)
+				}
+				return true
+			})
+			for _, actor := range doomed {
+				g.damageActor(SourcedDamage{NameOfThing: "poison", Attacker: actor, DamageType: DamageTypeNormal, DamageAmount: actor.GetHitPoints() + actor.GetHitPointsMax(), BodyPart: d100.Body}, actor)
+			}
+			return nil, nil
+		},
 		"PlayerAddCyberware": func(args ...interface{}) (interface{}, error) {
 			cyberwareName := args[0].(string)
 			g.playerAddCyberware(NewCyberWareFromString(cyberwareName))

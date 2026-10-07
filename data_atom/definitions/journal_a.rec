@@ -78,11 +78,11 @@ end_cond: HasFlag('rats_paid')
 end_text: The sewers are quiet. The cleaner paid 150 and kept his job without ever going down.
 end_id: paid
 #
-end_cond: HasFlag('cleaner_dead')
-end_text: You told the cleaner to do his own job. He did. The rats ate him, and the west has nobody to clean up after it now.
-end_id: cleaner_dead
-#
-end_cond: HasFlag('Killed(cleaner)')
+end_cond: HasFlag('KilledByPlayer(cleaner)')
 end_text: The cleaner is dead. The west gets dirtier from here.
 end_id: cleaner_killed
 end_xp: 0
+#
+end_cond: HasFlag('cleaner_dead')
+end_text: You told the cleaner to do his own job. He did. The rats ate him, and the west has nobody to clean up after it now.
+end_id: cleaner_dead

@@ -1,6 +1,7 @@
 %rec: default
 
 Name: gun_thug
+faction: gun_thugs
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug
@@ -42,6 +43,7 @@ SourceFile: 00000036.pro
 Position: (44,8)
 
 Name: gun_thug
+faction: gun_thugs
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug
@@ -125,6 +127,7 @@ equipment: binge(6)
 Position: (66,16)
 
 Name: gun_thug_leader
+faction: gun_thugs
 Dialogue: gun_thug_leader
 Icon: G
 Foreground: light_gray_2
@@ -210,6 +213,7 @@ SourceFile: 00000036.pro
 Position: (73,5)
 
 Name: gun_thug
+faction: gun_thugs
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug
@@ -251,6 +255,7 @@ SourceFile: 00000036.pro
 Position: (57,16)
 
 Name: dec_vega
+faction: dec
 Dialogue: dec_vega
 Icon: D
 Foreground: light_gray_2
@@ -294,6 +299,7 @@ equipment: vega_wallet
 Position: (36,4)
 
 Name: gun_thug
+faction: gun_thugs
 Icon: G
 Foreground: light_gray_2
 Description: Gun Thug

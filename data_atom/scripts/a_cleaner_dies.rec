@@ -1,0 +1,19 @@
+# A3 Rats: the cleaner was talked into doing his own job. He goes down and does not come back.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('a_cleaner_went_down')
+do: AddChatter(ActorWithName('cleaner'), '(He takes his mop and a flashlight and does not look back.)')
+
+if: IsHoursAfter('a_cleaner_went_down', 1)
+do: RemoveActor('cleaner')
+do: LoadMap('zone_residential_south_underground')
+do: ContainerAddItem(ContainerWithName('sewer_trash'), 'cleaners_badge')
+do: SetFlag('cleaner_dead')

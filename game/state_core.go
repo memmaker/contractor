@@ -1274,6 +1274,9 @@ func (g *GameState) isDetectedByObserver(actor *Actor, observer *Actor) bool {
 
 	sneakSkill := actor.GetCharSheet().GetSkill(d100.SkillForSneak)
 	perception := observer.GetCharSheet().GetStat(d100.Perception) * 10
+	if sneakSkill > 100 { // a d100 roll caps at 100: skill beyond that counts as advantage
+		forcedDelta += sneakSkill - 100
+	}
 
 	sneakSkill, perception = advantageForOne(sneakSkill, perception, forcedDelta)
 
