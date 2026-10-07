@@ -1,0 +1,28 @@
+# D3: the thief has a cost. An hour after the keycard leaves the safe, Mira finds it open and the household
+# is on alert: the next time Mira or a guard has you in sight, Faust's people open fire. Not if Faust is allied.
+# Autostarts from mansion/meta.rec.
+
+%rec: definitions
+
+var: MIRA
+set: ActorWithName('mira_sykes')
+
+var: GUARD
+set: ActorWithName('mansion_guard')
+
+%rec: outcomes
+
+if: HasFlag('faust_allied') && !HasFlag('household_alert')
+
+%rec: frames
+
+if: HasFlag('ContainerRemoved(faust_safe, cryo_keycard)')
+do: SetFlag('safe_cracked')
+do: SaveTimeNow('safe_cracked')
+
+if: IsHoursAfter('safe_cracked', 1)
+do: SetFlag('household_alert')
+do: Hilite('>>> From the study, Mira: the safe is open. Nobody leaves the grounds! <<<')
+
+if: IsActorInShootingRange(MIRA, ActorWithName('player')) || IsActorInShootingRange(GUARD, ActorWithName('player'))
+do: ProvokeFaction('faust')

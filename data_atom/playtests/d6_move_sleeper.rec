@@ -1,0 +1,54 @@
+# D6 (tech): fix pod 3 with the spare fuse, have ARK move the chairman into it, and take pod 1 with nobody dead.
+
+%rec: outcomes
+
+if: GameOver() && HasFlag('Ending(cryo_sleep)') && HasFlag('PodFree(1)') && !HasFlag('Killed(sleeper_1)') && HasFlag('QuestCompleted(cryo, cryo_sleep_clean)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
+
+if: true
+do: SetSkill('Mechanics', 200)
+do: GoTo('cellar_stairs')
+
+if: true
+do: Use('generator_door')
+do: Use('spare_parts')
+do: Take('cryo_fuse')
+
+if: true
+do: Use('cryo_pod_3')
+do: Choose('insert_fuse')
+do: Choose('not_yet_3_fixed')
+
+if: true
+do: Use('ark_terminal')
+do: Choose('who_sleeps')
+do: Choose('move_sleeper')
+do: Choose('move_back')
+do: Choose('ark_leave')
+
+if: true
+do: Use('cryo_pod_1')
+do: Choose('climb_in_1')

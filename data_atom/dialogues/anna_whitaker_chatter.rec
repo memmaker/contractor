@@ -1,5 +1,27 @@
 s: being_around_player
 #
+c: HasFlag('anna_angry')
+#
+t: Liar.
+t: Coco trusted people. Look where it got her.
+
+s: being_around_player
+#
+c: HasFlag('told_anna_duck_dead')
+#
+t: She liked the window. The light.
+t: I should have locked the door.
+t: Rats. Of all things, rats.
+
+s: being_around_player
+#
+c: HasFlag('duck_returned')
+#
+t: Coco says quack. That means thank you.
+t: My hero. Mud and all.
+
+s: being_around_player
+#
 c: HasWeaponEquippedWithName('flamer')
 #
 t: Not the clothes!

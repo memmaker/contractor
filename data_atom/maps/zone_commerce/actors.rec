@@ -83,6 +83,8 @@ SourceFile: 00000036.pro
 Position: (33,14)
 
 Name: bartender
+Dialogue: bartender
+Chatter: bartender_chatter
 Icon: B
 Foreground: light_gray_2
 Description: Bartender
@@ -115,12 +117,14 @@ DREMP: 500
 DRRadiation: 8
 DRPoison: 20
 SourceFile: 00000150.pro
+equipment: binge(6)
 Position: (66,16)
 
-Name: gun_thug
+Name: gun_thug_leader
+Dialogue: gun_thug_leader
 Icon: G
 Foreground: light_gray_2
-Description: Gun Thug
+Description: Gun Thug Leader
 LongDescription: 
 Age: 25
 BodyType: 0
@@ -156,6 +160,7 @@ DRExplosive: 20
 DRRadiation: 10
 DRPoison: 25
 SourceFile: 00000036.pro
+equipment: pallet_key
 Position: (40,8)
 
 Name: solara_carter
@@ -242,6 +247,7 @@ SourceFile: 00000036.pro
 Position: (57,16)
 
 Name: dec_vega
+Dialogue: dec_vega
 Icon: D
 Foreground: light_gray_2
 Description: Dec Vega
@@ -280,6 +286,7 @@ DRExplosive: 20
 DRRadiation: 10
 DRPoison: 25
 SourceFile: 00000036.pro
+equipment: vega_wallet
 Position: (36,4)
 
 Name: gun_thug
@@ -324,6 +331,7 @@ SourceFile: 00000036.pro
 Position: (57,14)
 
 Name: richard_shaw
+Dialogue: richard_shaw
 Icon: R
 Foreground: light_gray_2
 Description: Richard Shaw

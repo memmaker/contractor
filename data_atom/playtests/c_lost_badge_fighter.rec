@@ -1,0 +1,44 @@
+# Lost Badge (fighter): shoot the tout, take the badge off him, keep it and let yourself into BAT. Landry keeps looking.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(lost_badge, kept)') && HasItem('bat_badge') && IsOnMap('hq_bat') && HasFlag('TalkedTo(haruki_tanaka)') && HasFlag('TalkedTo(jana_miller)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 150)
+do: Kill('tout_benny')
+do: PickUp('bat_badge')
+
+if: true
+do: GoTo('street_to_bat')
+
+# the badge is the key to the lobby door
+if: true
+do: Use('bat_lobby_door')
+do: GoTo('bat_lobby')
+do: Talk('bat_receptionist')
+do: Choose('recep_badge_leave')
+
+if: true
+do: Talk('haruki_tanaka')
+do: Choose('haruki_faust')
+do: Choose('faust_back')
+do: Choose('haruki_faust_left')
+do: Choose('faustleft_back')
+do: Choose('haruki_leave')
+
+if: true
+do: Talk('jana_miller')
+do: Choose('jana_faust')
+do: Choose('faust_back')
+do: Choose('jana_leave')

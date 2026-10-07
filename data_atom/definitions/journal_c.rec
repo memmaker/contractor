@@ -1,0 +1,83 @@
+%rec: journalEntry
+%key: id
+
+### PACKAGE C: side contracts for the empty maps ###
+
+id: lost_badge
+name: Lost Badge
+xp: 150
+#
+start_cond: HasFlag('TalkedTo(chief_landry)') || HasItem('bat_badge')
+start_text:
++ Chief Landry of BAT security lost his access badge in the corporate district.
++ A ticket tout named Benny was the last man close enough to his pocket.
+#
+prog_cond: HasItem('bat_badge')
+prog_text: You have Landry's badge. Return it, or let it open the BAT lobby for you.
+#
+end_cond: HasFlag('badge_returned')
+end_text: Landry has his badge back. He owes you: the BAT lobby door opens for you.
+end_id: returned
+#
+end_cond: HasFlag('Killed(chief_landry)')
+end_text: Landry is dead. Nobody will ask for the badge again.
+end_id: landry_dead
+#
+end_cond: HasFlag('TalkedTo(bat_receptionist)') && HasItem('bat_badge')
+end_text: You walked into Bushido-ArmaTech on Landry's badge. He is still looking for it.
+end_id: kept
+
+id: silence
+name: Silence
+xp: 200
+#
+start_cond: HasFlag('silence_accepted')
+start_text:
++ Adrian Voss wants the protester on the EBI campus gone. 500 sat when the campus is quiet.
++ He did not say how.
+#
+start_cond: HasFlag('TalkedTo(protester_ines)')
+start_text: Ines protests the cleansing at the EBI campus gate, alone. EBI will not tolerate her for long.
+#
+prog_cond: HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('Killed(protester_ines)')
+prog_text: The campus is quiet. Voss pays on report.
+#
+end_cond: HasFlag('ines_warned')
+end_text: You warned Ines. She left before anyone could make her. Voss never learned who tipped her off, and never paid.
+end_id: warned
+#
+end_cond: HasFlag('silence_paid') && HasFlag('ines_paid')
+end_text: Ines took 300 sat and went home. Voss paid 500 for a quiet campus. Everybody got something; nobody got what they wanted.
+end_id: paid_off
+#
+end_cond: HasFlag('silence_paid') && HasFlag('ines_moved')
+end_text: Ines protests at the BAT gate now. Voss paid 500 for a problem that is now Bushido-ArmaTech's.
+end_id: moved
+#
+end_cond: HasFlag('Killed(protester_ines)')
+end_text: Ines is dead. The campus is quiet. The banner stayed up for a while.
+end_id: killed
+
+id: rent
+name: Rent
+xp: 100
+#
+start_cond: HasFlag('TalkedTo(widow_marla)')
+start_text:
++ Marla's husband died at the wall. Rook the pawnbroker wants 150 sat by tomorrow or he takes her flat.
+#
+end_cond: HasFlag('rent_paid')
+end_text: You paid Marla's rent. Rook counted it twice.
+end_id: paid
+#
+end_cond: HasFlag('rent_waived')
+end_text: Rook decided Marla's rent can wait. He did not decide it alone.
+end_id: waived
+#
+end_cond: HasFlag('rent_watch_sold')
+end_text: Marla sold her husband's watch to Rook. The rent is paid; the watch is in his window.
+end_id: watch_sold
+#
+end_cond: HasFlag('Killed(pawn_rook)')
+end_text: Rook is dead. Nobody collects the rent in the west now.
+end_id: rook_dead

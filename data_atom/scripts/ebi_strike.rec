@@ -8,12 +8,19 @@
 if: HasFlag('ebi_strike_landed') && HasFlag('Killed(logan_faust)')
 do: ProvokeFaction('ebi')
 
+# Faust was warned and is below: the team finds the house empty and hunts whoever sold him instead
+if: HasFlag('ebi_strike_called') && IsHoursAfter('ebi_strike_called', 1) && HasFlag('faust_warned')
+do: SpawnTeamHunting('ebi_strike', 'mansion', 'taxi_stand', 'player')
+do: SetFlag('ebi_strike_landed')
+do: Hilite('>>> Rotors over the mansion grounds. The house is empty; the troopers turn to the only trail left: yours <<<')
+
 %rec: cancel
 
 %rec: frames
 
 if: true
 do: SaveTimeNow('ebi_strike_called')
+do: SetFlag('ebi_strike_called')
 
 if: IsHoursAfter('ebi_strike_called', 1)
 do: SpawnTeamHunting('ebi_strike', 'mansion', 'taxi_stand', 'logan_faust')

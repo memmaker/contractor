@@ -1,0 +1,12 @@
+EDGE HAVEN SPACEPORT - DEPARTURE MANIFEST (cargo terminal copy)
+
+Flight EH-0412   payload: 48 t ore concentrate          passengers: 0   berths fitted: 0
+Flight EH-0413   payload: 12 t sealed EBI containers    passengers: 0   berths fitted: 0
+Flight EH-0414   payload: 51 t ore concentrate          passengers: 0   berths fitted: 0
+Flight EH-0415   payload: 9 t BAT components            passengers: 0   berths fitted: 0
+Flight EH-0416   payload: 50 t ore concentrate          passengers: 0   berths fitted: 0
+...
+Flight EH-0471   payload: 47 t ore concentrate          passengers: 0   berths fitted: 0
+
+Ticketed passengers booked this period: 1,204.
+Passenger berths installed, all hulls: 0.

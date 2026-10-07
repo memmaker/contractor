@@ -1,0 +1,28 @@
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Parcel for "V., Server Room". Nobody signs. Nobody admits there is a V. I have been down here two hours.
+#
+o_text: What's in it?
+o_id: milo_parcel
+o_goto: Parcel
+#
+o_text: Good luck.
+o_id: milo_leave
+o_goto: End
+
+name: Parcel
+npc: Heavy, hums a little, label says "CP-3 POWER" crossed out and "SPARE" written over it. I don't ask.
+#
+o_text: (Back)
+o_id: parcel_back
+o_goto: Default
+
+name: End
+npc: (He checks the parcel address again.)
+effect: EndConversation

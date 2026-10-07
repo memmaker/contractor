@@ -106,8 +106,30 @@ effect: StartCombat
 name: Cleared
 npc: Go on through. They know you're here.
 #
+o_text: Sykes can count. The skimming stops today, or I stop it.
+o_id: confront_skim
+o_cond: HasFlag('mira_favour_asked') && !HasFlag('mira_favour')
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: SkimStops
+o_fail: SkimDenied
+#
 o_text: Thanks.
 o_id: cleared_thanks
+o_goto: End
+
+name: SkimStops
+npc: (He looks at his boots.) It was Danny's idea. It's over. Tell her it's over.
+effect: SetFlag('mira_favour')
+#
+o_text: She'll hear it from me.
+o_id: skim_done
+o_goto: End
+
+name: SkimDenied
+npc: Don't know what you're talking about. Move along.
+#
+o_text: We'll see.
+o_id: skim_denied_leave
 o_goto: End
 
 name: End

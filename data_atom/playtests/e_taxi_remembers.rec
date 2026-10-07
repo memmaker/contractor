@@ -1,0 +1,32 @@
+# Living world E4: kill the gate captain, then hang around the taxi driver; his chatter now remembers the wall.
+# Chatter is random and not asserted; the run proves the conditional chatter file loads and the driver still drives.
+
+%rec: outcomes
+
+if: HasFlag('Killed(gate_captain)') && IsOnMap('zone_residential_east')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+do: GoTo('street_to_south')
+
+if: true
+do: Approach('taxi_driver')
+do: WaitTurns(200)
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')

@@ -1,0 +1,10 @@
+s: being_around_player
+#
+t: (She lights another candle and says nothing.)
+t: He had a name, you know. Nobody asked.
+t: Forty years on this corner. One bullet.
+t: (She does not look up.)
+
+s: being_damaged
+#
+t: (She does not scream.)

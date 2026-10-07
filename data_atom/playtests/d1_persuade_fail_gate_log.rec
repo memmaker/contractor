@@ -1,0 +1,52 @@
+# D1 (fighter/manipulator): take the gate log off the dead captain, fail the pitch at Faust's desk, then hand him the log as proof you are not E.'s.
+
+%rec: outcomes
+
+if: HasFlag('faust_allied') && !HasItem('gate_log') && HasItem('cryo_keycard') && HasFlag('QuestCompleted(recluse, allied)')
+
+%rec: frames
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+
+if: true
+do: PickUp('gate_log')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_mansion')
+
+if: true
+do: ForceChecks('success')
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: ForceChecks('fail')
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('persuade_faust')
+do: Choose('ask_condition')
+do: Choose('show_log')
+do: Choose('log_now_talk')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')

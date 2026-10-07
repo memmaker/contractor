@@ -78,3 +78,18 @@ Position: (51,13)
 Category: NamedLocation
 Identifier: jacobs_doorstep_east
 Position: (52,13)
+
+Category: Terminal
+Name: public_terminal
+Description: a public terminal
+Dialogue: public_terminal
+Tags: No_Sound
+Position: (7,19)
+
+Category: NamedLocation
+Identifier: beggar_spot
+Position: (8,21)
+
+Category: NamedLocation
+Identifier: east_thug_corner
+Position: (62,16)

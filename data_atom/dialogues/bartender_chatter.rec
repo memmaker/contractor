@@ -1,0 +1,24 @@
+s: being_around_player
+#
+c: HasFlag('Killed(dec_vega)')
+#
+t: Dec sat right there. Every night.
+t: Drinks went up fifty. Funeral costs.
+t: Four hundred sat. A man's life, four hundred sat.
+
+s: being_around_player
+#
+c: !HasFlag('Killed(dec_vega)')
+#
+t: Pay as you go. House rule.
+t: Dec, your slate's not getting shorter.
+t: Last call is when I say it is.
+
+s: being_damaged
+#
+t: Not the glasses!
+t: You're barred!
+
+s: way_to_kill
+#
+t: Barred. Permanently.

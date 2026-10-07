@@ -1,0 +1,149 @@
+# Dec Vega, drinks on credit at La Boom, owes the bartender 400 sat. He is broke: he put everything into a ticket to the stars.
+# Flags: b_vega_instalments (persuade), b_vega_sided (he asks you to lie for him), bar_tab(written_off) -> he pays 100.
+
+%rec: OpeningBranch
+
+cond: HasFlag('bar_tab(written_off)') && !HasFlag('b_vega_tip_given')
+goto: WrittenOff
+
+cond: HasFlag('b_vega_instalments') || HasFlag('b_vega_sided') || HasFlag('b_vega_tip_given')
+goto: Return
+
+cond: HasFlag('b_bar_tab_accepted')
+goto: Collector
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (A thin man with an expensive jacket and cheap shoes.) You're new. Buy you a drink? Across the street, on my slate.
+#
+o_text: No thanks.
+o_id: default_bye
+o_goto: End
+
+name: Collector
+npc: (He sees your face and knows.) The bartender sent you. Four hundred. I know, I know.
+#
+o_text: Pay up. Now.
+o_id: intimidate_vega
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: IntimidateSuccess
+o_fail: IntimidateFail
+#
+o_text: Pay it off in pieces. Fifty a week. He'll take it if I say so.
+o_id: persuade_vega
+o_test: RollSkill('social', 'Easy')
+o_succ: Instalments
+o_fail: PersuadeFail
+#
+o_text: Why don't you just pay him?
+o_id: why_broke
+o_goto: Broke
+#
+o_text: Nothing personal.
+o_id: kill_vega
+o_goto: Kill
+
+name: IntimidateSuccess
+npc: (He empties his jacket onto the table. Four hundred, in small notes.) That's all of it. That's everything.
++ Tell him I said thanks for the drinks.
+effect: StackTransferFrom(NPC, 'vega_wallet')
+#
+o_text: Pleasure.
+o_id: intimidate_bye
+o_goto: End
+
+name: IntimidateFail
+npc: You and whose crew? The Bastards are right behind me. Sit down or walk.
+#
+o_text: Then let's talk instalments.
+o_id: fail_to_persuade
+o_test: RollSkill('social', 'Easy')
+o_succ: Instalments
+o_fail: PersuadeFail
+#
+o_text: Nothing personal.
+o_id: kill_after_fail
+o_goto: Kill
+#
+o_text: Walking.
+o_id: intimidate_fail_bye
+o_goto: End
+
+name: Instalments
+npc: Fifty a week. (He does the sum on his fingers and gives up.) Yeah. Yeah, I can do fifty. Tell him.
+effect: SetFlag('b_vega_instalments')
+#
+o_text: I'll tell him.
+o_id: instalments_bye
+o_goto: End
+
+name: PersuadeFail
+npc: Fifty a week is still fifty I don't have. Go away.
+#
+o_text: Why don't you have it?
+o_id: why_broke_after_fail
+o_goto: Broke
+#
+o_text: Nothing personal.
+o_id: kill_after_persuade_fail
+o_goto: Kill
+#
+o_text: Fine.
+o_id: persuade_fail_bye
+o_goto: End
+
+name: Broke
+npc: Because I bought a ticket. The golden one. A million sat, everything I had and a lot I didn't.
++ So I'm broke, and I drink on credit, and in six weeks I'm on a ship and none of it matters.
++ Tell him I'm broke. Make him believe it. I'll give you a hundred for it. Last hundred I have.
+effect: SetFlag('KnowsAbout(golden_ticket)')
+#
+o_text: I'll tell him you're broke.
+o_id: side_with_vega
+o_goto: Sided
+#
+o_text: A million sat and you're buying drinks on credit. Pay up.
+o_id: broke_intimidate
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: IntimidateSuccess
+o_fail: IntimidateFail
+#
+o_text: I'll think about it.
+o_id: broke_bye
+o_goto: End
+
+name: WrittenOff
+npc: He wiped it? (He laughs, too loud.) Here. A hundred. And something better than money.
++ My cousin loads those ships. There are no seats. No beds, no air for anyone but the crew. Cargo goes up, nothing comes down.
++ I knew it when I bought the ticket. I just wanted to believe for a while.
+effect: StackTransferFrom(NPC, 'gold', 100)
+effect: SetFlag('b_vega_tip_given')
+effect: SetFlag('KnowsAbout(ticket_scam)')
+#
+o_text: Then why keep drinking here?
+o_id: written_off_bye
+o_goto: End
+
+name: Return
+npc: Still here. Still broke. Drink?
+#
+o_text: No.
+o_id: return_bye
+o_goto: End
+
+name: Kill
+npc: (He knocks his glass over reaching for a knife.)
+effect: StartCombat
+
+name: Sided
+npc: (He finishes the drink he cannot pay for.) Make him believe it.
+effect: SetFlag('b_vega_sided')
+effect: EndConversation
+
+name: End
+npc: (He turns back to his empty glass.)
+effect: EndConversation

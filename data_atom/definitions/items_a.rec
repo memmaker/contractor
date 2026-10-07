@@ -1,0 +1,30 @@
+# Package A items: side contracts south.
+%rec: Misc
+
+Name: synth_duck_item
+Description: Anna's synth duck
+Long_Description: A synthetic duck, mud on the servos. It blinks at you and says nothing.
+Category: Other
+Weight: 3
+Cost: 300
+
+Name: burton_dog_tag
+Description: a dog tag
+Long_Description: BURTON, L. Terra Vitae commune. The chain is still around a dead man's neck when you take it.
+Category: Other
+Weight: 1
+Cost: 400
+PickupFlag: took_dog_tag
+
+Name: rat_poison
+Description: rat poison
+Long_Description: A tin of grey pellets. Big Bob swears by it. The rats will not.
+Category: Other
+Weight: 1
+Cost: 40
+
+Name: rat_tail
+Description: a rat's tail
+Category: Other
+Weight: 1
+Cost: 1

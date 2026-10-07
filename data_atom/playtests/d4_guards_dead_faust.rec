@@ -1,0 +1,40 @@
+# D4 (fighter): come through Faust's people. He does not haggle any more: the extortion needs no roll.
+
+%rec: outcomes
+
+if: HasFlag('Killed(mansion_guard)') && HasFlag('faust_extorted') && HasItem('cryo_keycard') && HasFlag('QuestCompleted(recluse, extorted)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Use('dead_drop')
+do: Take('10mm_jhp')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: SetStat('Strength', 10)
+do: Kill('mansion_guard')
+do: Kill('mansion_guard')
+
+if: true
+do: PickUp('10mm_jhp')
+do: PickUp('mansion_key')
+do: Kill('mansion_guard')
+
+# every check fails from here: Faust pays anyway
+if: true
+do: ForceChecks('fail')
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('extort_guards_dead')
+do: Choose('extort_done')

@@ -1,0 +1,42 @@
+# Sysadmin hiding in Project 21's server room.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (From between the racks.) Don't power-cycle anything. Don't touch the terminal. Don't tell them I'm here.
+#
+o_text: What is Project 21?
+o_id: vee_p21
+o_goto: P21
+#
+o_text: Why are you hiding?
+o_id: vee_hiding
+o_goto: Hiding
+#
+o_text: Your secret.
+o_id: vee_leave
+o_goto: End
+
+name: P21
+npc: The "Home Companion" is the brochure. The racks train a model on the cleansing footage from the south wall.
++ Who was tagged, who was passed over, and why. It is learning to pick. Nobody will say for what.
+#
+o_text: (Back)
+o_id: p21_back
+o_goto: Default
+
+name: Hiding
+npc: I asked what the tags were for. My badge died the same afternoon. Down here I am the only one who knows which fuse is which.
++ That is a kind of tenure.
+#
+o_text: (Back)
+o_id: hiding_back
+o_goto: Default
+
+name: End
+npc: (She pulls the sleeping bag back over the cables.)
+effect: EndConversation

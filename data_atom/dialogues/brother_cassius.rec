@@ -1,0 +1,43 @@
+# Street preacher in the corporate district. Terra Vitae hint. Flags: cassius_blessed
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He does not stop preaching, he only turns to face you.)
++ They call it cleansing. I call it what it is: the wall is a graveyard with a gate in it.
+#
+o_text: Who are "they"?
+o_id: cassius_who
+o_goto: Who
+#
+o_text: Where do you people meet?
+o_id: cassius_where
+o_goto: Where
+#
+o_text: Keep preaching.
+o_id: cassius_leave
+o_goto: End
+
+name: Who
+npc: Eschaton. White coats, green badges. They decide who is clean enough for tomorrow.
++ The corpses at the south wall are their paperwork.
+#
+o_text: (Back)
+o_id: who_back
+o_goto: Default
+
+name: Where
+npc: Terra Vitae. West side, up the stairs. Father Olaf pours; Nova speaks. Bring nothing, they feed you anyway.
+effect: SetFlag('KnowsAboutTerraVitae')
+#
+o_text: (Back)
+o_id: where_back
+o_goto: Default
+
+name: End
+npc: Walk in the light, or at least out of the traffic.
+effect: EndConversation

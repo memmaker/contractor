@@ -1,0 +1,49 @@
+# Shift Change (fighter): take Okafor's job, shoot the thug leader outside the Bastards' hall, take his key, open the pallet, bring the crate back.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(shift_change, returned)') && HasFlag('Killed(gun_thug_leader)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('ask_job')
+do: Choose('accept_shift')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: Kill('gun_thug_leader')
+do: PickUp('pallet_key')
+do: Use('stolen_pallet')
+do: Take('medical_supplies')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('give_supplies')
+do: Choose('returned_bye')

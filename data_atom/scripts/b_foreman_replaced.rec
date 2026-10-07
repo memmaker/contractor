@@ -1,0 +1,19 @@
+# R6: Okafor was sold to EBI. The next day he is gone and an EBI-appointed foreman runs the shift.
+# Fires the first time the player is in the industrial district a day later.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('b_foreman_sold_at')
+
+if: IsDaysAfter('b_foreman_sold_at', 1) && IsMap('zone_industry')
+do: RemoveActor('foreman_okafor')
+do: SpawnActor('foreman_ebi_loyal', 'zone_industry', 'foreman_office')
+do: SetFlag('b_foreman_replaced')
+do: Hilite('>>> A new foreman checks the inventory. Nobody says the name of the old one <<<')

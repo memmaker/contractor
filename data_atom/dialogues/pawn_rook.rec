@@ -1,0 +1,59 @@
+# West side pawnbroker, buys relics, collects Marla's rent. Flags: rent_waived, rent_paid, rent_watch_sold
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Pawn and loan. Relics from the wall, dog tags, watches: I pay fair and I ask nothing.
++ Buying?
+#
+o_text: Show me what you have.
+o_id: rook_trade
+o_effect: StartTrading
+o_goto: Default
+#
+o_text: Marla's rent. It waits.
+o_id: rook_intimidate
+o_cond: !HasFlag('rent_paid') && !HasFlag('rent_waived') && !HasFlag('rent_watch_sold')
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: Waived
+o_fail: NotWaived
+#
+o_text: Marla is paying. Her husband's watch.
+o_id: rook_watch
+o_cond: HasFlag('rent_watch_sold')
+o_goto: Watch
+#
+o_text: Nothing today.
+o_id: rook_leave
+o_goto: End
+
+name: Waived
+npc: (He puts both hands flat on the counter.) The widow's rent can wait. A month. Two. I was going to say so anyway.
+effect: SetFlag('rent_waived')
+#
+o_text: I know you were.
+o_id: rook_waived_done
+o_goto: End
+
+name: NotWaived
+npc: Rent is rent. You want to pay it, pay it. You want to threaten me, there is a baton under this counter.
+#
+o_text: Noted.
+o_id: rook_not_waived_leave
+o_goto: End
+
+name: Watch
+npc: Good steel. Window piece. (He is already clearing a spot.)
+effect: SetFlag('rook_has_watch')
+#
+o_text: (Back)
+o_id: watch_back
+o_goto: Default
+
+name: End
+npc: Door's where you left it.
+effect: EndConversation

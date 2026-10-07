@@ -3,11 +3,20 @@
 
 %rec: OpeningBranch
 
+cond: HasFlag('faust_warned')
+goto: Warned
+
+cond: HasFlag('faust_sold_out') && !HasFlag('ebi_strike_landed')
+goto: SoldOut
+
 cond: HasFlag('faust_allied')
 goto: AlliedReturn
 
 cond: HasFlag('faust_extorted')
 goto: ExtortedReturn
+
+cond: HasFlag('faust_persuade_failed')
+goto: PersuadeFailedReturn
 
 cond: HasFlag('Killed(mansion_guard)') || HasFlag('Killed(mira_sykes)')
 goto: GuardsDead
@@ -45,7 +54,7 @@ o_goto: End
 
 name: GuardsDead
 npc: (He stands behind the desk, hands raised, very still.)
-+ You killed them. Of course you did. E. does not hire poets.
++ You came through my people. Of course you did. E. does not hire poets.
 + Ask what you came to ask. I would rather you knew before you decide.
 #
 o_text: Why does E. want you dead?
@@ -58,9 +67,7 @@ o_goto: NotKill
 #
 o_text: Your life has a price. Pay it.
 o_id: extort_guards_dead
-o_test: RollSkill('intimidate', 'Easy')
-o_succ: ExtortSuccess
-o_fail: ExtortFail
+o_goto: ExtortSuccess
 #
 o_text: Nothing personal.
 o_id: kill_faust_guards_dead
@@ -97,6 +104,17 @@ o_goto: Default
 name: PersuadeFail
 npc: A way out. (A dry laugh.) The last man who said that to me sits on the EBI board.
 + Get out of my study.
+effect: SetFlag('faust_persuade_failed')
+#
+o_text: What would it take?
+o_id: ask_condition
+o_cond: !HasFlag('Killed(mansion_guard)')
+o_goto: Condition
+#
+o_text: Name your price, then.
+o_id: ask_condition_guards_dead
+o_cond: HasFlag('Killed(mansion_guard)')
+o_goto: NoCondition
 #
 o_text: Then I'll take it from you.
 o_id: extort_after_fail
@@ -110,6 +128,112 @@ o_goto: KillFaust
 #
 o_text: Your loss.
 o_id: leave_after_fail
+o_goto: End
+
+name: Condition
+npc: Proof you are not E.'s. The south gate logs what leaves the city: bring me EBI's copy and I know who sent you.
++ Or make Mira vouch for you. She has never vouched for anyone.
+#
+o_text: I have the log.
+o_id: show_log
+o_cond: HasItem('gate_log')
+o_goto: LogAccepted
+#
+o_text: Understood.
+o_id: condition_ok
+o_goto: End
+
+name: NoCondition
+npc: Nothing you have. My people are cooling in the drive. Take, or shoot, or leave.
+#
+o_text: Then I'll take it from you.
+o_id: extort_no_condition
+o_goto: ExtortSuccess
+#
+o_text: Your loss.
+o_id: leave_no_condition
+o_goto: End
+
+name: PersuadeFailedReturn
+npc: You again. The gate log, or Mira's word. Otherwise we have nothing to discuss.
+#
+o_text: I have the log.
+o_id: show_log_return
+o_cond: HasItem('gate_log') && !HasFlag('Killed(mansion_guard)')
+o_goto: LogAccepted
+#
+o_text: Ask Mira. The gate guards stopped skimming her budget today.
+o_id: mira_vouches
+o_cond: HasFlag('mira_favour') && !HasFlag('Killed(mansion_guard)')
+o_goto: MiraVouches
+#
+o_text: Then I'll take it from you.
+o_id: extort_return_fail
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: ExtortSuccess
+o_fail: ExtortFail
+#
+o_text: Nothing personal.
+o_id: kill_return_fail
+o_goto: KillFaust
+#
+o_text: Not yet.
+o_id: leave_return_fail
+o_goto: End
+
+name: LogAccepted
+npc: (He reads it twice.) No EBI plate on any of this. You came the hard way, then.
++ All right.
+effect: RemoveItem('gate_log')
+#
+o_text: Now talk.
+o_id: log_now_talk
+o_goto: AlliedSuccess
+
+name: MiraVouches
+npc: (He glances at the door; Mira nods once.) Six years, and she never did that. All right.
+#
+o_text: Now talk.
+o_id: mira_now_talk
+o_goto: AlliedSuccess
+
+name: SoldOut
+npc: (He reads your face before you speak.) Something has changed. Say it.
+#
+o_text: E. knows where you are. A team is an hour out. Take Mira and go below.
+o_id: warn_faust
+o_goto: Warn
+#
+o_text: Nothing. Just checking in.
+o_id: sold_out_leave
+o_goto: End
+
+name: Warn
+npc: (He is already on his feet.) You sold me and then you came back. I won't ask which one you meant.
++ Mira! The cellar. Leave the door; our friend may need it.
+effect: SetFlag('faust_warned')
+effect: ClearFlag('cryo_keycard')
+effect: MoveTo(NPC, 'cryo_lab', 'pod_room')
+effect: MoveTo(ActorWithName('mira_sykes'), 'cryo_lab', 'pod_room')
+#
+o_text: Go.
+o_id: warn_go
+o_goto: End
+
+name: Warned
+npc: We are below. If they come down the stairs, they came for you, not me.
+#
+o_text: Which pod is mine?
+o_id: ask_pod_warned
+o_cond: HasFlag('faust_allied') && !HasFlag('PodFree(4)')
+o_goto: PodOffer
+#
+o_text: Tell me about E. again.
+o_id: why_ebi_warned
+o_goto: Backstory
+#
+o_text: I'll watch the stairs.
+o_id: warned_leave
 o_goto: End
 
 name: ExtortFail

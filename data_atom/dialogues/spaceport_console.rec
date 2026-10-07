@@ -1,0 +1,50 @@
+# Port console in the arrivals hall. A hard hack powers the two sentry bots at the cargo terminal down (script b_bots_down).
+
+%rec: OpeningBranch
+
+cond: true
+goto: Root
+
+%rec: Nodes
+
+name: Root
+npc: ** PORT OPERATIONS **
++ > Sentry units: 2 online.
+#
+o_text: Hack it. Power the sentries down.
+o_id: hack_console
+o_cond: !HasFlag('b_bots_down')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Denied
+#
+o_text: Leave.
+o_id: console_leave
+o_goto: End
+
+name: Hacked
+npc: > ACCESS GRANTED.
++ > Sentry units: 2 standby. Wake on schedule: never.
+effect: SetFlag('b_bots_down')
+effect: RunScript('b_bots_down')
+#
+o_text: Leave.
+o_id: hacked_leave
+o_goto: End
+
+name: Denied
+npc: > ACCESS DENIED.
+#
+o_text: Try again.
+o_id: hack_again
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Denied
+#
+o_text: Leave.
+o_id: denied_leave
+o_goto: End
+
+name: End
+npc: > Session closed.
+effect: EndConversation

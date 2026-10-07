@@ -18,3 +18,37 @@ Color: (1.0, 1.0, 0.7)
 Max_Intensity: 3.0
 Position: (41,9)
 
+
+# PACKAGE C
+Category: NamedLocation
+Identifier: server_hideout
+Position: (70,10)
+
+Category: Readable
+Name: sysop_whiteboard
+Description: a whiteboard
+TextFile: c_sysop_log
+Position: (76,9)
+
+Category: Readable
+Name: rack_label
+Description: a rack label
+Text: RACKS 01-04: PROJECT 21 INFERENCE. DO NOT POWER CYCLE.
++ Training set: WALL/SOUTH, days 1-40. Property of EBI.
+Position: (3,1)
+
+Category: UnknownContainer
+Name: sysop_crate
+Description: a supply crate
+item: water_ration(4)
+item: gold(60)
+item: binge
+Position: (73,11)
+
+Category: UnknownContainer
+Name: server_toolbox
+Description: a toolbox
+lockdifficulty: easy
+item: electronic_lockpick(2)
+item: robot_repair_parts
+Position: (3,18)

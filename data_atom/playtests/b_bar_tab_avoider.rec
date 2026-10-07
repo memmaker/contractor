@@ -1,0 +1,28 @@
+# Bar Tab (avoider): Dec's lockbox is under the back table of La Boom. Pick it, hand the bartender his own customer's money.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(bar_tab, paid)') && !HasFlag('Killed(dec_vega)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('bartender')
+do: Choose('ask_job')
+do: Choose('accept_tab')
+
+if: true
+do: SetSkill('Mechanics', 200)
+do: Sneak()
+do: Use('vega_stash')
+do: Take('gold')
+
+if: true
+do: Talk('bartender')
+do: Choose('pay_tab')
+do: Choose('paid_bye')

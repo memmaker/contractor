@@ -1,0 +1,70 @@
+# Ticket tout. Sells fake lottery slips (100 sat). Carries chief_landry's bat_badge. Flags: benny_badge_gone
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Golden Ticket lottery! One slip, one draw, one berth to the stars. Hundred sat. You look lucky.
+#
+o_text: One slip.
+o_id: benny_buy_slip
+o_cond: HasItem('gold', 100)
+o_goto: BuySlip
+#
+o_text: Landry's badge. Hand it over before he does it himself.
+o_id: benny_persuade
+o_cond: !HasFlag('benny_badge_gone')
+o_test: RollSkill('social', 'Easy')
+o_succ: BadgeGiven
+o_fail: BadgeRefused
+#
+o_text: Two hundred for the badge in your pocket.
+o_id: benny_buy_badge
+o_cond: !HasFlag('benny_badge_gone') && HasItem('gold', 200)
+o_goto: BadgeSold
+#
+o_text: Not today.
+o_id: benny_leave
+o_goto: End
+
+name: BuySlip
+npc: Draw date to be announced. Keep it dry. (He is already looking past you for the next one.)
+effect: StackTransferTo(NPC, 'gold', 100)
+effect: StackTransferFrom(NPC, 'lottery_slip')
+#
+o_text: Thanks.
+o_id: benny_slip_done
+o_goto: Default
+
+name: BadgeGiven
+npc: (The smile stays, the hand moves.) Found it on the ground. Honest. Tell him that.
+effect: StackTransferFrom(NPC, 'bat_badge')
+effect: SetFlag('benny_badge_gone')
+#
+o_text: Sure you did.
+o_id: benny_badge_done
+o_goto: End
+
+name: BadgeSold
+npc: Two hundred, and we never had this conversation.
+effect: StackTransferTo(NPC, 'gold', 200)
+effect: StackTransferFrom(NPC, 'bat_badge')
+effect: SetFlag('benny_badge_gone')
+#
+o_text: What conversation.
+o_id: benny_sold_done
+o_goto: End
+
+name: BadgeRefused
+npc: Badge? I sell slips. Try the lost and found, friend.
+#
+o_text: We'll see.
+o_id: benny_refused_leave
+o_goto: End
+
+name: End
+npc: Lottery! Lottery here!
+effect: EndConversation

@@ -1,17 +1,20 @@
 %rec: default
 
-Name: sentry_bot_mark_ii
+Name: manifest_bot_1
 Icon: S
 Foreground: light_gray_2
-Description: Sentry Bot Mark II
+Description: Dock Sentry Bot
+LongDescription: An old dock sentry, armour pitted and plating thin. It still points its gun at anything that moves near the cargo terminal.
+aggressive: true
+faction: spaceport
 LongDescription: 
 Age: 25
 BodyType: 2
-XP: 600
+XP: 200
 KillType: 10
 DamageType: 0
 TeamNum: 1
-HitPoints: 120
+HitPoints: 60
 ActionPoints: 9
 ArmorClass: 34
 MeleeDamage: 4
@@ -28,13 +31,13 @@ Agility: 9
 Luck: 5
 SkillBonusMeleeCombat: 39
 SkillBonusMeleeCombat: 49
-DTNormal: 13
+DTNormal: 2
 DTLaser: 19
 DTFire: 14
 DTPlasma: 13
 DTElectrical: 13
 DTExplosive: 20
-DRNormal: 50
+DRNormal: 20
 DRLaser: 90
 DRFire: 70
 DRPlasma: 50
@@ -44,20 +47,23 @@ DRExplosive: 60
 DRRadiation: 16
 DRPoison: 40
 SourceFile: 00000078.pro
-Position: (35,17)
+Position: (71,12)
 
-Name: sentry_bot_mark_ii
+Name: manifest_bot_2
 Icon: S
 Foreground: light_gray_2
-Description: Sentry Bot Mark II
+Description: Dock Sentry Bot
+LongDescription: An old dock sentry, armour pitted and plating thin. It still points its gun at anything that moves near the cargo terminal.
+aggressive: true
+faction: spaceport
 LongDescription: 
 Age: 25
 BodyType: 2
-XP: 600
+XP: 200
 KillType: 10
 DamageType: 0
 TeamNum: 1
-HitPoints: 120
+HitPoints: 60
 ActionPoints: 9
 ArmorClass: 34
 MeleeDamage: 4
@@ -74,13 +80,13 @@ Agility: 9
 Luck: 5
 SkillBonusMeleeCombat: 39
 SkillBonusMeleeCombat: 49
-DTNormal: 13
+DTNormal: 2
 DTLaser: 19
 DTFire: 14
 DTPlasma: 13
 DTElectrical: 13
 DTExplosive: 20
-DRNormal: 50
+DRNormal: 20
 DRLaser: 90
 DRFire: 70
 DRPlasma: 50
@@ -90,5 +96,5 @@ DRExplosive: 60
 DRRadiation: 16
 DRPoison: 40
 SourceFile: 00000078.pro
-Position: (70,17)
+Position: (71,15)
 

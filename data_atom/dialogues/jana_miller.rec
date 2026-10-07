@@ -11,7 +11,17 @@ npc: Welcome to the Bushido ArmaTech headquarters. How can I help you?
 o_text: I'm looking for a job.
 o_goto: LookingForJob
 #
+o_text: You built things for Logan Faust once.
+o_id: jana_faust
+o_goto: Faust
+#
+o_text: Faust's cryo lab. Your design?
+o_id: jana_faust_lab
+o_cond: HasFlag('KnowsAbout(cryo_lab)')
+o_goto: FaustLab
+#
 o_text: Nothing, thanks.
+o_id: jana_leave
 o_goto: End
 
 name: LookingForJob
@@ -38,6 +48,22 @@ npc: Weapons, mostly. I'm not cleared to say more than that.
 + The pay is good. The turnover is better.
 #
 effect: ReturnToPreviousNode
+
+name: Faust
+npc: I built things for the board. Faust was the one who read the specs before he signed them. Annoying, in a board member.
++ He walked out over Eschaton's partnership and took his signature with him. The specs stayed.
+#
+o_text: (Back)
+o_id: faust_back
+o_goto: DefaultIntroduction
+
+name: FaustLab
+npc: (A flicker.) Four pods, a buried generator, an AI he insisted on naming himself. I drew it; he paid; the board never saw the invoice.
++ Pod three uses a fuse we stopped making. If it blows, it stays blown.
+#
+o_text: (Back)
+o_id: faustlab_back
+o_goto: DefaultIntroduction
 
 name: End
 npc: Have a pleasant day.

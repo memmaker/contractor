@@ -1,0 +1,40 @@
+# Silence (fighter): take Voss's contract, shoot the protester at the campus gate, collect 500.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(silence, killed)') && HasFlag('silence_paid')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: GoTo('street_to_ebi')
+
+if: true
+do: Talk('adrian_voss')
+do: Choose('silence_ask')
+do: Choose('silence_accept')
+do: Choose('silence_accepted_done')
+
+if: true
+do: GoTo('campus_gate')
+
+if: true
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 150)
+do: Kill('protester_ines')
+
+if: true
+do: GoTo('hq_gate')
+
+if: true
+do: Talk('adrian_voss')
+do: Choose('silence_report')
+do: Choose('silence_paid_done')
+

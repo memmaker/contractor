@@ -36,6 +36,7 @@ equipment: ebi_guard_uniform
 Position: (45,20)
 
 Name: ebi_security_officer
+Dialogue: ebi_security_officer
 Icon: E
 Foreground: green_1
 Description: EBI Security Officer

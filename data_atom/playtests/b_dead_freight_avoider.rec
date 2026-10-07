@@ -1,0 +1,50 @@
+# Dead Freight (avoider): sneak past the two dock sentries to the cargo terminal, print the manifest, sell it to Shaw.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(dead_freight, public)') && !HasFlag('Killed(manifest_bot_1)') && !HasFlag('Killed(manifest_bot_2)') && !HasFlag('b_bots_down')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('ask_job')
+do: Choose('accept_freight')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_spaceport')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: Use('spaceport_gate')
+do: Sneak()
+do: Use('manifest_terminal')
+do: Choose('print_manifest')
+do: Choose('printed_leave')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('give_manifest')
+do: Choose('delivered_bye')

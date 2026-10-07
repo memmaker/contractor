@@ -1,0 +1,35 @@
+%rec: Actor
+%key: Name
+
+Name: protester_ines
+faction: protester
+Description: Ines
+LongDescription: A young woman with a hand-painted banner and a voice gone hoarse. She has been here since dawn.
+Dialogue: protester_ines
+Chatter: c_ines_chatter
+Icon: I
+Foreground: light_gray_2
+Age: 30
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 25
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+SkillBonusSocial: 40
+Position: (0,0)

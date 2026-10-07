@@ -1,0 +1,27 @@
+# Bar Tab (manipulator): talk Dec into instalments, the bartender grudgingly agrees and pays half.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(bar_tab, instalments)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('bartender')
+do: Choose('ask_job')
+do: Choose('accept_tab')
+
+if: true
+do: Talk('dec_vega')
+do: Choose('persuade_vega')
+do: Choose('instalments_bye')
+
+if: true
+do: Talk('bartender')
+do: Choose('instalments')
+do: Choose('instalments_bye')

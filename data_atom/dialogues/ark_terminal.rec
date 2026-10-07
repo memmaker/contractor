@@ -27,6 +27,11 @@ o_id: ark_killed
 o_cond: HasFlag('Killed(sleeper_1)') || HasFlag('Killed(sleeper_2)')
 o_goto: ArkKilled
 #
+o_text: What would a city-wide broadcast cost?
+o_id: broadcast_cost
+o_cond: HasFlag('KnowsAbout(cryo_lab)')
+o_goto: BroadcastCost
+#
 o_text: Broadcast Faust's files to the city.
 o_id: broadcast_files
 o_cond: HasFlag('KnowsAbout(cryo_lab)')
@@ -76,6 +81,13 @@ o_test: RollSkill('social', 'Hard')
 o_succ: WakeOK
 o_fail: WakeFail
 #
+o_text: Move Vale to pod 3. He sleeps on, I take pod 1.
+o_id: move_sleeper
+o_cond: !HasFlag('PodFree(1)') && HasFlag('PodFixed(3)')
+o_test: RollSkill('technology', 'Hard')
+o_succ: MoveOK
+o_fail: MoveFail
+#
 o_text: Back.
 o_id: sleepers_back
 o_goto: Status
@@ -88,6 +100,33 @@ effect: SetFlag('PodFree(1)')
 #
 o_text: Back.
 o_id: wake_back
+o_goto: Status
+
+name: MoveOK
+npc: Transfer protocol accepted. Pod 1 lid open; cradle to pod 3; recool in ninety seconds.
++ (The old man never wakes. Frost closes over him again two pods down.)
++ Pod 1: vacant. Pod 3: occupied, H. Vale.
+effect: SetFlag('PodFree(1)')
+effect: SetFlag('PodOccupied(3)')
+effect: SetFlag('sleeper_moved')
+#
+o_text: Back.
+o_id: move_back
+o_goto: Status
+
+name: MoveFail
+npc: Transfer aborted at cradle lock. ARK will not retry with a living occupant on the rails.
+#
+o_text: Back.
+o_id: move_fail_back
+o_goto: Status
+
+name: BroadcastCost
+npc: Full-power transmission draws the grid below pod threshold for the duration.
++ Every occupied pod loses cold. The occupants do not survive the thaw.
+#
+o_text: Back.
+o_id: broadcast_cost_back
 o_goto: Status
 
 name: WakeFail
@@ -107,7 +146,10 @@ o_goto: Status
 
 name: Broadcast
 npc: Transmitting /board/cleansing.pdf, /spaceport/manifest and this location to every public terminal in Edge Haven.
++ Grid below pod threshold. The hum behind you stops, pod by pod.
 + Estimated EBI response: minutes.
+effect: SetFlag('Killed(sleeper_1)')
+effect: SetFlag('Killed(sleeper_2)')
 effect: RunScript('ebi_strike')
 effect: EndGame('against_all_odds')
 

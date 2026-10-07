@@ -1,0 +1,31 @@
+# Bar Tab (manipulator, grey): side with broke Dec, lie to the bartender (social Hard), collect Dec's last 100 and the truth about the ships.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(bar_tab, written_off)') && HasFlag('b_vega_tip_given') && HasFlag('KnowsAbout(ticket_scam)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('bartender')
+do: Choose('ask_job')
+do: Choose('accept_tab')
+
+if: true
+do: Talk('dec_vega')
+do: Choose('why_broke')
+do: Choose('side_with_vega')
+
+if: true
+do: Talk('bartender')
+do: Choose('write_off')
+do: Choose('written_off_bye')
+
+if: true
+do: Talk('dec_vega')
+do: Choose('written_off_bye')

@@ -66,6 +66,8 @@ Name: bat_receptionist
 Icon: R
 Foreground: light_gray_2
 Description: BAT Receptionist
+Dialogue: bat_receptionist
+Chatter: c_receptionist_chatter
 LongDescription: 
 Age: 25
 BodyType: 0

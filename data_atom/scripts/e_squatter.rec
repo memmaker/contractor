@@ -1,0 +1,21 @@
+# Jacob is dead: two days later a squatter moves into his rooms and his thugs, unpaid, go wild.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('Killed(jacob_thorne)')
+do: SaveTimeNow('jacob_died')
+
+if: IsDaysAfter('jacob_died', 2)
+do: SpawnActor('squatter_lenny', 'zone_residential_east', 'jacobs_home')
+do: RemoveActor('gun_thug')
+do: RemoveActor('gun_thug')
+do: SpawnActor('gun_thug_wild', 'zone_residential_east', 'east_thug_corner')
+do: SpawnActor('gun_thug_wild', 'zone_residential_east', 'east_thug_corner')
+do: SetFlag('e_squatter_moved_in')
+do: SetFlag('e_east_thugs_wild')

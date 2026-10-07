@@ -4,3 +4,4 @@ Name: Faust Mansion
 MusicFile: 
 IsOutdoor: true
 IndoorAmbientLight: (0.2, 0.2, 0.2)
+RunScript: d_mansion_watch

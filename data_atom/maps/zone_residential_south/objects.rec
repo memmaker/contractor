@@ -292,3 +292,8 @@ Category: ClosedDoor
 Description: a door
 Position: (58,7)
 
+
+Category: UnknownContainer
+Name: home_desk
+Description: your desk
+Position: (50,7)

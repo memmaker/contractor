@@ -1,0 +1,30 @@
+%rec: journalEntry
+%key: id
+
+id: e_eastside
+name: Eastside, after Jacob
+xp: 50
+#
+start_cond: HasFlag('e_squatter_moved_in')
+start_text:
++ Jacob Thorne's rooms have a new tenant, and his thugs have nobody left to pay them.
++ The east side is not what it was.
+#
+end_cond: HasFlag('TalkedTo(squatter_lenny)')
+end_text: Lenny sells what was left of Jacob's life out of Jacob's own living room.
+end_id: met_lenny
+#
+end_cond: HasFlag('Killed(squatter_lenny)')
+end_text: The squatter is dead. The rooms stand empty again.
+end_id: lenny_dead
+
+id: e_grim_gone
+name: An empty bar stool
+xp: 50
+#
+start_cond: HasFlag('e_grim_left')
+start_text: Grim did not come back. He left something on your desk.
+#
+end_cond: HasItem('grims_note')
+end_text: Grim left town for good. The apartment, the dead drop and the attitude are yours now.
+end_id: note_read

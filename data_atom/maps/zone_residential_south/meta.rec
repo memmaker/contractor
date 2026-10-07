@@ -7,3 +7,7 @@ IndoorAmbientLight: (0.2, 0.2, 0.2)
 RunScript: tutorial
 RunScript: clinic_takeover
 RunScript: job_offer_timeout
+RunScript: e_squatter
+RunScript: e_shrine
+RunScript: e_wall_wanted
+RunScript: e_grim_leaves

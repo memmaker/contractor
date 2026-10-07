@@ -21,3 +21,7 @@ TargetMap: zone_spaceport
 TargetLocation: street_to_industry
 Position: (79,7)
 
+# Package B
+Category: NamedLocation
+Identifier: foreman_office
+Position: (55,15)

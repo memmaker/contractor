@@ -1,0 +1,28 @@
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Cable ties. Four hundred of them. If you are looking for Vee, I have not seen her, officially.
+#
+o_text: Unofficially?
+o_id: dasha_unofficial
+o_goto: Unofficial
+#
+o_text: Carry on.
+o_id: dasha_leave
+o_goto: End
+
+name: Unofficial
+npc: East end, behind the hot racks. Bring water. She trusts water.
+#
+o_text: (Back)
+o_id: unofficial_back
+o_goto: Default
+
+name: End
+npc: (Zip. Zip.)
+effect: EndConversation

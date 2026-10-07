@@ -21,3 +21,38 @@ TargetMap: hq_bat
 TargetLocation: street_to_corporate
 Position: (0,8)
 
+
+# PACKAGE C
+Category: NamedLocation
+Identifier: corp_street
+Position: (45,18)
+
+Category: Readable
+Name: corp_billboard
+Description: a billboard
+Text: GOLDEN TICKET. 1,000,000 SAT. THE STARS ARE WAITING.
++ Draw dates announced by the Spaceport Authority. Slips sold on the street are not ours.
+Position: (20,18)
+
+Category: Readable
+Name: corp_notice
+Description: a corporate notice
+Text: BUSHIDO-ARMATECH PROPERTY BEGINS HERE.
++ Badge holders only beyond the lobby. Loitering is logged.
+Position: (62,18)
+
+Category: UnknownContainer
+Name: corp_dumpster
+Description: a dumpster
+item: gold(120)
+item: junk(2)
+item: water_ration
+Position: (8,19)
+
+Category: UnknownContainer
+Name: corp_lockbox
+Description: a courier lockbox
+lockdifficulty: easy
+item: gold(250)
+item: electronic_lockpick
+Position: (72,19)

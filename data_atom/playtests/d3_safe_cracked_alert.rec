@@ -1,0 +1,39 @@
+# D3 (thief): crack the safe, slip out, and wait. An hour later Mira finds it open and the household shoots on sight.
+
+%rec: outcomes
+
+if: HasFlag('safe_cracked') && HasFlag('household_alert') && HasFlag('Killed(mansion_guard)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: SetSkill('Mechanics', 200)
+do: SetSkill('Stealth', 200)
+do: Use('mansion_service_door')
+
+if: true
+do: Sneak()
+do: GoTo('faust_study')
+
+if: true
+do: Use('faust_safe')
+do: Take('cryo_keycard')
+
+# out the back and wait for the alarm with a gun ready
+if: true
+do: GoTo('service_door')
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
+do: SetStat('Endurance', 10)
+do: WaitHours(2)
+
+if: HasFlag('household_alert')
+do: Kill('mansion_guard')

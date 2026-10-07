@@ -517,3 +517,41 @@ Position: (11,3)
 Category: NamedLocation
 Identifier: cleaner_room
 Position: (13,19)
+
+# PACKAGE C
+Category: NamedLocation
+Identifier: rook_shop
+Position: (52,17)
+
+Category: NamedLocation
+Identifier: marla_flat
+Position: (62,16)
+
+Category: Readable
+Name: rook_notice
+Description: a notice nailed to the wall
+Text: RENT DUE THE 1ST. NO EXCEPTIONS. NO STORIES.
++ Pawn & Loan in the back. - R.
+Position: (49,13)
+
+Category: Readable
+Name: wall_memorial
+Description: chalk names on the wall
+Text: Names in chalk, rained half away. Burton. Reyes. Okoro. A dozen more.
++ Below them, newer: FOR THE ONES THE WALL TOOK.
+Position: (20,12)
+
+Category: UnknownContainer
+Name: rook_counter
+Description: Rook's counter drawer
+lockdifficulty: medium
+item: gold(300)
+item: electronic_lockpick(2)
+Position: (58,15)
+
+Category: UnknownContainer
+Name: marla_dresser
+Description: a dresser
+item: gold(20)
+item: terra_vitae_pamphlet
+Position: (68,15)

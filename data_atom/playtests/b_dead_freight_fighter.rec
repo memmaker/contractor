@@ -1,0 +1,61 @@
+# Dead Freight (fighter): Shaw wants the manifest. Walk to the spaceport, scrap both dock sentries, print it, bring it back.
+# R5: a day after the manifest goes public Solara Carter has left the rim and a thug squats her stall.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(dead_freight, public)') && HasFlag('Killed(manifest_bot_1)') && HasFlag('Killed(manifest_bot_2)') && HasFlag('b_solara_left')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('ask_job')
+do: Choose('accept_freight')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_spaceport')
+
+if: true
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 200)
+do: SetStat('Endurance', 10)
+do: SetStat('Strength', 10)
+do: Use('spaceport_gate')
+do: Kill('manifest_bot_1')
+do: Kill('manifest_bot_2')
+
+if: true
+do: Use('manifest_terminal')
+do: Choose('print_manifest')
+do: Choose('printed_leave')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: GoTo('street_to_industry')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('give_manifest')
+do: Choose('delivered_bye')
+
+if: true
+do: WaitHours(25)

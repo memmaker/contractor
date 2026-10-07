@@ -1,0 +1,20 @@
+# The port console was hacked: both sentry bots at the cargo terminal go to standby.
+
+%rec: definitions
+
+var: BOT_1
+set: ActorWithName('manifest_bot_1')
+
+var: BOT_2
+set: ActorWithName('manifest_bot_2')
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: ActorSleep(BOT_1)
+do: ActorSleep(BOT_2)
+do: Hilite('>>> Somewhere below, two heavy machines power down <<<')

@@ -48,11 +48,50 @@ Category: ClosedDoor
 Description: a door
 Position: (59,6)
 
-Category: ClosedDoor
-Description: a door
+# PACKAGE C: the lobby door reads badges. ClearFlag('bat_badge') (Landry) or the badge item opens it.
+Category: LockedDoor
+Name: bat_lobby_door
+Description: the lobby door
+LockFlag: bat_badge
+LockDifficulty: medium
 Position: (35,10)
 
 Category: ClosedDoor
 Description: a door
 Position: (33,15)
 
+
+# PACKAGE C
+Category: NamedLocation
+Identifier: bat_street
+Position: (40,10)
+
+Category: NamedLocation
+Identifier: bat_lobby
+Position: (30,10)
+
+Category: NamedLocation
+Identifier: bat_gate
+Position: (76,11)
+
+Category: Readable
+Name: bat_plaque
+Description: a brass plaque
+Text: BUSHIDO-ARMATECH. PEACE THROUGH STRENGTH.
++ Board: H. Tanaka, CEO. J. Miller, CTO. One nameplate has been unscrewed.
+Position: (28,8)
+
+Category: Readable
+Name: meld_poster
+Description: a MELD poster
+Text: MELD. BECOME MORE.
++ Ask your BAT representative about financing. Side effects are a feature.
+Position: (40,3)
+
+Category: UnknownContainer
+Name: bat_supply_locker
+Description: a supply locker
+lockdifficulty: medium
+item: 9mm(24)
+item: gold(200)
+Position: (70,3)

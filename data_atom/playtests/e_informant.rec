@@ -1,0 +1,27 @@
+# Living world E3: give the eastside beggar 10 sat three times; he becomes an informant and gives up the mansion.
+
+%rec: outcomes
+
+if: HasFlag('beggar_informant') && HasFlag('LocationKnown(mansion)')
+
+%rec: frames
+
+if: true
+do: GoTo('street_to_east')
+
+if: true
+do: Talk('beggar')
+do: Choose('give_1')
+
+if: true
+do: Talk('beggar')
+do: Choose('give_2')
+
+if: true
+do: Talk('beggar')
+do: Choose('give_3')
+
+if: true
+do: Talk('beggar')
+do: Choose('rumour_mansion')
+do: Choose('informant_leave')

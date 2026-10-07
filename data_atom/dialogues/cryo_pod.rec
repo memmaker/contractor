@@ -18,6 +18,9 @@ goto: Pod2Free
 cond: NPC_NAME == 'cryo_pod_3' && !HasFlag('PodFixed(3)')
 goto: Pod3Broken
 
+cond: NPC_NAME == 'cryo_pod_3' && HasFlag('PodOccupied(3)')
+goto: Pod3Occupied
+
 cond: NPC_NAME == 'cryo_pod_3'
 goto: Pod3Free
 
@@ -132,6 +135,29 @@ npc: The lid won't seal. No cold comes. You would wake as thawed meat, or never.
 #
 o_text: (Climb out.)
 o_id: climb_out_3
+o_goto: End
+
+name: Pod3Occupied
+npc: POD 3. Occupant: Henrik Vale, Chairman, Bushido-ArmaTech. Vitals nominal.
++ He never knew he moved.
+#
+o_text: Pull the plug.
+o_id: pull_plug_3
+o_goto: Killed3
+#
+o_text: Leave him.
+o_id: leave_pod_3_occupied
+o_goto: End
+
+name: Killed3
+npc: The hum stops. The frost goes grey, then wet. Vitals: none.
++ POD 3: vacant.
+effect: SetFlag('Killed(sleeper_1)')
+effect: ClearFlag('PodOccupied(3)')
+effect: ProvokeFaction('faust')
+#
+o_text: (Step back.)
+o_id: step_back_3
 o_goto: End
 
 name: Pod3Free

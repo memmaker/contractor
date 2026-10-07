@@ -1,0 +1,76 @@
+%rec: journalEntry
+%key: id
+
+### Package B: commerce & spaceport side contracts ###
+
+id: bar_tab
+name: Bar Tab
+xp: 150
+#
+start_cond: HasFlag('b_bar_tab_accepted')
+start_text:
++ The bartender of La Boom wants Dec Vega's 400 sat. Dec drinks at the Cognetic Bastards' hall across the street.
++ Beat it out of him, take it from his stash in the back of the bar, or talk one of them round.
+#
+prog_cond: HasFlag('b_vega_instalments')
+prog_text: Dec agreed to pay in instalments. Tell the bartender.
+#
+prog_cond: HasFlag('b_vega_sided')
+prog_text: Dec is broke; he spent it on a ticket to the stars. He wants you to tell the bartender the debt is dead.
+#
+end_cond: HasFlag('bar_tab(paid)')
+end_text: You brought the bartender his 400 sat and he paid you 150 for the trouble.
+end_id: paid
+#
+end_cond: HasFlag('bar_tab(instalments)')
+end_text: Dec pays in instalments. The bartender gave you half your fee and a free drink.
+end_id: instalments
+#
+end_cond: HasFlag('bar_tab(written_off)')
+end_text: You told the bartender Dec is broke and he wrote the debt off. Dec paid you 100 and a secret: the ships leave empty.
+end_id: written_off
+#
+end_cond: HasFlag('Killed(dec_vega)')
+end_text: Dec Vega is dead over 400 sat he never had. The bartender will not forget who did it.
+end_id: vega_dead
+end_xp: 50
+
+id: dead_freight
+name: Dead Freight
+xp: 300
+#
+start_cond: HasFlag('b_freight_accepted')
+start_text:
++ Richard Shaw collects the paperwork of the end of the world. He wants the flight manifest from the spaceport terminal.
++ Two sentry bots watch the terminal. The port console in the arrivals hall runs them.
+#
+prog_cond: HasItem('spaceport_manifest')
+prog_text: You have the manifest. Cargo only, no berths. Shaw pays 500. Solara Carter sells the tickets.
+#
+end_cond: HasFlag('dead_freight(public)')
+end_text: Shaw has the manifest and it is already copied to half the city. The ticket scam is public.
+end_id: public
+#
+end_cond: HasFlag('dead_freight(buried)')
+end_text: Solara paid 800 and burned the manifest. The ships keep leaving empty and the tickets keep selling.
+end_id: buried
+
+id: shift_change
+name: Shift Change
+xp: 200
+#
+start_cond: HasFlag('b_shift_accepted')
+start_text:
++ Foreman Okafor lost a pallet of medical supplies to the gun thugs in the commerce district.
++ He wants it back before EBI counts the inventory. Quietly.
+#
+prog_cond: HasItem('medical_supplies')
+prog_text: You have the pallet's contents. Okafor is in the warehouse office in the industrial district.
+#
+end_cond: HasFlag('shift_change(returned)')
+end_text: Okafor got his pallet back and EBI never knew. He paid 350.
+end_id: returned
+#
+end_cond: HasFlag('shift_change(sold_out)')
+end_text: You sold Okafor to the EBI security officer for 400. By tomorrow the shift has a new foreman.
+end_id: sold_out
