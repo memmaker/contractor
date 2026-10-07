@@ -36,4 +36,4 @@
 ## Wrap-up
 - [x] walkthrough.html extended with chapters 1-3
 - [x] relevant tests + new playtests pass headless and one visual
-- [ ] commit, push, web deploy
+- [x] commit, push, web deploy
