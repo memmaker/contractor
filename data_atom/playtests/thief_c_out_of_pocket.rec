@@ -8,6 +8,8 @@ if: HasFlag('QuestCompleted(starter, reward_received)')
 
 # thief build: tagged Mechanics on an agile, sturdy starter
 if: true
+do: Give('mechanical_lockpick(2)')
+do: Give('electronic_lockpick(5)')
 do: SetSkill('Mechanics', 46)
 
 if: true

@@ -16,6 +16,7 @@ if: true
 do: Unequip('10mm_smg')
 do: Unequip('bowel_disruptor')
 do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
 do: GoTo('street_to_industry')
 
 if: true
@@ -39,6 +40,7 @@ if: true
 do: Unequip('10mm_smg')
 do: Unequip('bowel_disruptor')
 do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
 do: GoTo('street_to_industry')
 
 if: true

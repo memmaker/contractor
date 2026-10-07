@@ -85,6 +85,10 @@ Position: (33,14)
 Name: bartender
 Dialogue: bartender
 Chatter: bartender_chatter
+Selling: binge(4)
+Selling: brainz(3)
+Selling: buff(3)
+Selling: boost(3)
 Icon: B
 Foreground: light_gray_2
 Description: Bartender

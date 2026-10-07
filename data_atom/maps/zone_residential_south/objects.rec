@@ -86,6 +86,7 @@ Name: hospital_filing_cabinet
 Description: filing cabinet
 item: brainz
 item: meld
+item: one_time_tranquilizer_pistol
 item: key('doc_stash_key', "Doc's stash key")
 Position: (33,2)
 
@@ -296,4 +297,6 @@ Position: (58,7)
 Category: UnknownContainer
 Name: home_desk
 Description: your desk
+item: aviator_sunglasses
+item: mechanical_lockpick(2)
 Position: (50,7)

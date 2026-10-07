@@ -16,11 +16,13 @@ do: Choose('job_offer')
 do: Choose('accept_job')
 do: Choose('accepted_leave')
 
-# fighter build: Perception 8 + tagged Ranged Combat = 46%, the pistol by the bed, the clip from the dead drop
+# fighter build: SMG from Big Bob, burst fire
 if: true
-do: PickUp('10mm_pistol')
-do: Equip('10mm_pistol')
-do: SetSkill('RangedCombat', 46)
+do: Give('10mm_smg(100)')
+do: Give('10mm_jhp(48)')
+do: Equip('10mm_smg')
+do: FireMode('Burst')
+do: SetSkill('RangedCombat', 150)
 do: Use('dead_drop')
 do: Take('10mm_jhp')
 

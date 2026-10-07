@@ -2,35 +2,8 @@
 
 mapName: zone_residential_south
 mapLocation: spawn
-#item: combat_knife
 item: rugged_trenchcoat
 item: gold(150)
-item: 10mm_jhp
-item: 10mm_ap
-#item: food_ration
-item: 10mm_smg
-item: mechanical_lockpick(5)
-item: micro_fusion_cell(60)
-item: electronic_lockpick(5)
-item: aviator_sunglasses
-item: bowel_disruptor
+item: mechanical_lockpick(3)
 item: watch
-item: one_time_tranquilizer_pistol
-#
 item: binge
-item: binge
-item: binge
-item: binge
-#
-item: brainz
-item: brainz
-item: brainz
-#
-item: buff
-item: buff
-item: buff
-#
-item: boost
-item: boost
-item: boost
-#item: note('doctors_referral', 'referral to Dr. Winters')
