@@ -11,7 +11,7 @@ from content import GUN, Pack, Trip
 p = Pack('f', 'Package F: ten more contracts')
 
 # ===== F1 The Slow Boat: investigation, then an ambush; three buyers =====
-p.actor('zone_commerce', 'fixer_kade', 'Kade', 'A fixer in a silk shirt two sizes too clean for this street. He checks the door every time it opens.', 'K', near=(30,12), equipment=['gold(450)'])
+p.actor('zone_commerce', 'fixer_kade', 'Kade', 'A fixer in a silk shirt two sizes too clean for this street. He checks the door every time it opens.', 'K', near=(30,12), equipment=['gold(450)', "key('luggage_7', 'locker code #7')"])
 p.corpse('zone_residential_east', 'courier_hiro', 'a dead courier in a Chiba freight jacket', near=(30,18), equipment=["key('luggage_7', 'claim ticket #7')"])
 p.object('zone_commerce', '''Category: UnknownContainer
 Name: left_luggage
@@ -58,6 +58,27 @@ effect: EndConversation
 
 name: Waiting
 npc: Hiro, east side. Don't come back empty-handed.
+#
+o_text: Give me your terminal. The freighter's manifest says where Hiro left his luggage.
+o_id: slow_boat_hack
+o_cond: !HasItem('luggage_7') && !HasFlag('slow_boat_hack_failed')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: HackFailed
+#
+o_text: Going.
+o_id: slow_boat_going
+o_goto: Bye
+
+name: Hacked
+npc: (The manifest scrolls. Courier H., consignment to left luggage #7. Kade's terminal prints the code on a slip.) Hiro didn't come because Hiro is dead. Get it before whoever killed him does.
+effect: StackTransferFrom(NPC, 'luggage_7')
+effect: SetFlag('slow_boat_hacked')
+effect: EndConversation
+
+name: HackFailed
+npc: (The port system locks you out and logs the attempt.) Brilliant. Now go find Hiro the slow way.
+effect: SetFlag('slow_boat_hack_failed')
 effect: EndConversation
 
 name: HasChip
@@ -148,6 +169,8 @@ t=Trip().go('zone_commerce').do("Talk('fixer_kade')","Choose('slow_boat_accept')
 p.playtest('f_slow_boat_shaw', 'The Slow Boat (fast): sell the chip to Shaw before the gunmen arrive.', "HasFlag('QuestCompleted(slow_boat, shaw)') && !HasFlag('slow_boat_ambush')", t)
 t=Trip().go('zone_commerce').do("Talk('fixer_kade')","Choose('slow_boat_accept')").go('zone_residential_east').do("PickUp('luggage_7')").go('zone_commerce').do("Use('left_luggage')","Take('chiba_chip')").go('hq_terra_vitae').do("Talk('town_father_olaf')","Choose('olaf_take_chip')")
 p.playtest('f_slow_boat_olaf', 'The Slow Boat (grey): give the berth lists to Terra Vitae.', "HasFlag('QuestCompleted(slow_boat, olaf)')", t)
+t=Trip().go('zone_commerce').do("ForceChecks('success')","Talk('fixer_kade')","Choose('slow_boat_accept')").do("Talk('fixer_kade')","Choose('slow_boat_hack')").do("Use('left_luggage')","Take('chiba_chip')").do("Talk('richard_shaw')","Choose('shaw_buy_chip')")
+p.playtest('f_slow_boat_hacked', 'The Slow Boat (technology): pull the locker code from the freighter manifest, skip the dead courier, sell to Shaw.', "HasFlag('QuestCompleted(slow_boat, shaw)') && HasFlag('slow_boat_hacked')", t)
 
 # ===== F2 Sweet Revenge: the star hires you; the exec offers to buy her location =====
 p.actor('hq_terra_vitae', 'star_shani', 'Shani Kell', 'A woman with a famous face under a cheap hood. She flinches whenever a camera drone passes over the commune.', 's', near=(20,12), equipment=['gold(350)'])
