@@ -2,7 +2,9 @@ package ui_console
 
 import (
 	"contractor/foundation"
+	"fmt"
 	"github.com/gdamore/tcell/v2"
+	"github.com/memmaker/go/cview"
 )
 
 // Ammo is a second inventory: lists show either items or ammo, never both, so each page
@@ -19,11 +21,14 @@ func onPage(items []foundation.Item, ammo bool) []foundation.Item {
 	return page
 }
 
+// pageTitle draws a tab strip into the list's top border: the active tab inverted, the other dimmed.
 func pageTitle(title string, ammo bool) string {
+	on, off := "[::r] %s [::-]", "[::d] %s [::-]"
+	items, ammoTab := on, off
 	if ammo {
-		return title + " - Ammo (Tab: Items)"
+		items, ammoTab = off, on
 	}
-	return title + " - Items (Tab: Ammo)"
+	return cview.Escape(title) + " " + fmt.Sprintf(items, "Items") + fmt.Sprintf(ammoTab, "Ammo") + "[::d] Tab[::-]"
 }
 
 func isPageToggle(event *tcell.EventKey) bool {
