@@ -156,9 +156,12 @@ func loadActorTemplates(dataRootDir string) map[string]recfile.Record {
 
 func loadSpawnedTeamsTemplates(dataRootDir string) map[string]recfile.Record {
 	actorTemplates := make(map[string]recfile.Record)
-	records, _ := recfile.ReadAndClose(fxtools.MustOpen(filepath.Join(dataRootDir, "definitions", "spawned_teams.rec")))
-	for _, record := range records {
-		actorTemplates[record.FindValueForKeyIgnoreCase("name")] = record
+	files, _ := filepath.Glob(filepath.Join(dataRootDir, "definitions", "spawned_teams*.rec")) // spawned_teams.rec plus one file per content package
+	for _, file := range files {
+		records, _ := recfile.ReadAndClose(fxtools.MustOpen(file))
+		for _, record := range records {
+			actorTemplates[record.FindValueForKeyIgnoreCase("name")] = record
+		}
 	}
 	return actorTemplates
 }

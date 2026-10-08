@@ -555,11 +555,3 @@ Description: a dresser
 item: gold(20)
 item: terra_vitae_pamphlet
 Position: (68,15)
-
-Category: UnknownContainer
-Name: burned_car
-Description: a burned-out car
-lockdifficulty: easy
-item: harley_fuel_cell
-item: junk
-Position: (36,13)

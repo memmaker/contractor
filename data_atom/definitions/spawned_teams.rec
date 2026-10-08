@@ -10,11 +10,3 @@ name: ebi_strike
 leader: ebi_trooper
 member: ebi_trooper
 member: ebi_trooper
-
-name: chiba_gunmen
-leader: chiba_gunman
-member: chiba_gunman
-
-name: nueman_cleaners
-leader: nueman_cleaner
-member: nueman_cleaner

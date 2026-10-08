@@ -14,11 +14,13 @@ goto: Default
 
 name: Default
 npc: Papers are an art. Art has a price. What do you need?
+# >>> pack f
 #
 o_text: Can you do a shareholder's signature? Hal, from the south.
 o_id: nils_proxy
 o_cond: HasFlag('JobAccepted(proxy)') && HasItem('gold', 200) && !HasFlag('proxy_done')
 o_goto: NilsProxy
+# <<< pack f
 #
 o_text: (Show him Amira's photo.) Papers for this woman.
 o_id: nils_order
@@ -99,8 +101,10 @@ name: Bye
 npc: Stay legal.
 effect: EndConversation
 
+# >>> pack f
 name: NilsProxy
 npc: Signatures are quick. Two hundred, and ten minutes. (He scribbles. It is better than Hal.)
 effect: StackTransferTo(NPC, 'gold', 200)
 effect: PlayerAddItem('forged_proxy')
 effect: EndConversation
+# <<< pack f

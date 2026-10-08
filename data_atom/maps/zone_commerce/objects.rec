@@ -111,33 +111,3 @@ lockflag: pallet_key
 lockdifficulty: medium
 item: medical_supplies
 Position: (46,8)
-
-Category: UnknownContainer
-Name: left_luggage
-Description: a left-luggage locker, #7
-lockdifficulty: hard
-lockflag: luggage_7
-item: chiba_chip
-Position: (26,20)
-
-Category: NamedLocation
-Identifier: ecto_floor
-Position: (54,10)
-
-Category: StateChanger
-Name: ecto_junction_box
-Description: a humming junction box
-state_0_label: a humming junction box
-state_0_change: ClearFlag('ecto_power_cut')
-state_0_rune: J
-state_1_label: a dead junction box
-state_1_change: SetFlag('ecto_power_cut') && RemoveActor('ecto_ghost')
-state_1_rune: j
-Position: (48,8)
-
-Category: UnknownContainer
-Name: carmen_trunk
-Description: a dressing-room trunk
-lockdifficulty: hard
-item: carmen_diary
-Position: (62,20)
