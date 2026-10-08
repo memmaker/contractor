@@ -81,6 +81,16 @@ Icon: ≡
 Foreground: neon_green_1
 Background: white
 
+Name: Readable
+Icon: ≡
+Foreground: white
+Background: dark_gray_5
+
+Name: CryoPod
+Icon: ⌂
+Foreground: light_blue
+Background: dark_gray_5
+
 Name: Trap
 Icon: ☼
 Foreground: yellow_2

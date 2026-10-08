@@ -101,7 +101,8 @@ Position: (2,7)
 
 Category: LockedDoor
 Description: a door
-LockFlag: CHANGEME
+LockFlag: spaceport_door_1
+lockdifficulty: medium
 Position: (54,16)
 
 Category: ExplodingPushBox
@@ -133,7 +134,8 @@ Position: (0,7)
 
 Category: LockedDoor
 Description: a door
-LockFlag: CHANGEME
+LockFlag: spaceport_door_2
+lockdifficulty: medium
 Position: (19,16)
 
 Category: ClosedDoor
@@ -146,7 +148,8 @@ Position: (19,11)
 
 Category: LockedDoor
 Description: a door
-LockFlag: CHANGEME
+LockFlag: spaceport_door_3
+lockdifficulty: medium
 Position: (18,16)
 
 Category: ExplodingPushBox
@@ -187,7 +190,8 @@ Position: (69,15)
 
 Category: LockedDoor
 Description: a door
-LockFlag: CHANGEME
+LockFlag: spaceport_door_4
+lockdifficulty: medium
 Position: (53,16)
 
 Category: ExplodingPushBox
@@ -204,7 +208,8 @@ Position: (28,14)
 
 Category: LockedDoor
 Description: a door
-LockFlag: CHANGEME
+LockFlag: spaceport_door_5
+lockdifficulty: medium
 Position: (74,16)
 
 Category: UnknownContainer

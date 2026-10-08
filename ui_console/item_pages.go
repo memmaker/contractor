@@ -21,14 +21,20 @@ func onPage(items []foundation.Item, ammo bool) []foundation.Item {
 	return page
 }
 
-// pageTitle draws a tab strip into the list's top border: the active tab inverted, the other dimmed.
-func pageTitle(title string, ammo bool) string {
+// withPageTabs draws an Items/Ammo tab strip on the row above the list's border: the active tab inverted, the other dimmed.
+func withPageTabs(list *cview.List, ammo bool) {
 	on, off := "[::r] %s [::-]", "[::d] %s [::-]"
 	items, ammoTab := on, off
 	if ammo {
 		items, ammoTab = off, on
 	}
-	return cview.Escape(title) + " " + fmt.Sprintf(items, "Items") + fmt.Sprintf(ammoTab, "Ammo") + "[::d] Tab[::-]"
+	tabs := []byte(fmt.Sprintf(items, "Items") + fmt.Sprintf(ammoTab, "Ammo"))
+	list.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
+		if y > 0 {
+			cview.Print(screen, tabs, x+1, y-1, width-2, cview.AlignLeft, tcell.ColorDefault)
+		}
+		return x + 1, y + 1, width - 2, height - 2 // the list's border, no padding
+	})
 }
 
 func isPageToggle(event *tcell.EventKey) bool {
