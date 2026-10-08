@@ -1,0 +1,23 @@
+# Take the keys, then tell Grim to go now: he walks out, and the note still lands on your desk.
+
+%rec: outcomes
+
+if: HasFlag('e_grim_left') && HasItem('grims_note')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Talk('grim_beard')
+do: Choose('ask_leaving')
+do: Choose('send_grim_off')
+
+if: true
+do: WaitHours(74)
+
+if: HasFlag('e_grim_left')
+do: Use('home_desk')
+do: Take('grims_note')
