@@ -350,8 +350,10 @@ def lint(only=None):
             if not re.search(r'(?mi)^(?:IsFlagControlled:\s*true|NumberLock:)', rec) and m.group(1) not in key_flags | script_opened:
                 err(rel, f'lock {m.group(1)!r} cannot be opened (no key, script or number code)')
     for rel, n in every(r'key\(' + q) | every(r'(?mi)^lockflag:\s*(\S+)', defs):
-        if n not in lock_flags and n != 'CHANGEME':
+        if n not in lock_flags and n != 'CHANGEME':  # CHANGEME: the bare 'key' template, never placed (checked below)
             err(rel, f'key {n!r} opens no lock')
+    for rel, _ in every(r"(?m)^(?:item|equipment):\s*key\s*$") | every(r"(?:PlayerAddItem|StackTransferFrom|GiveItem)\([^)]*['\"]key['\"]"):
+        err(rel, "bare 'key' template opens no lock: use key('flag', 'name')")
     for rel, n in every(r'RunScript\(' + q):
         if n not in scripts:
             err(rel, f'no script {n!r} (scripts/{n}.rec)')
