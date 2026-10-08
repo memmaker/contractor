@@ -26,6 +26,7 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 	hitpoints := -1
 	actionpoints := -1
 	speed := -1
+	awareness := -1
 
 	for _, field := range record {
 		lowerName := strings.ToLower(field.Name)
@@ -42,18 +43,6 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 			zapEffects = append(zapEffects, field.Value)
 		case "use_effect":
 			useEffects = append(useEffects, field.Value)
-		case "strength":
-			charSheet.SetStat(d100.Strength, field.AsInt())
-		case "perception":
-			charSheet.SetStat(d100.Perception, field.AsInt())
-		case "endurance":
-			charSheet.SetStat(d100.Endurance, field.AsInt())
-		case "cool":
-			charSheet.SetStat(d100.Cool, field.AsInt())
-		case "intelligence":
-			charSheet.SetStat(d100.Intelligence, field.AsInt())
-		case "agility":
-			charSheet.SetStat(d100.Agility, field.AsInt())
 		case "hitpoints":
 			hitpoints = field.AsInt()
 		case "dodge":
@@ -62,6 +51,8 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 			actionpoints = field.AsInt()
 		case "speed":
 			speed = field.AsInt()
+		case "awareness":
+			awareness = field.AsInt()
 		case "size_modifier":
 			actor.SetSizeModifier(field.AsInt())
 		case "equipment":
@@ -116,6 +107,9 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 	}
 	if dodge != -1 {
 		charSheet.SetDerivedStatAbsoluteValue(d100.Dodge, dodge)
+	}
+	if awareness != -1 {
+		charSheet.SetDerivedStatAbsoluteValue(d100.Awareness, awareness)
 	}
 
 	charSheet.HealAPAndHPCompletely()

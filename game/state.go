@@ -257,7 +257,7 @@ func (g *GameState) checkPlayerCanAct() {
 	}
 
 	if g.Player.HasFlag(foundation.FlagStun) {
-		result := g.Player.GetCharSheet().StatRoll(d100.Strength, 0)
+		result := g.Player.GetCharSheet().SkillRoll(d100.SkillForUnarmed, 30)
 
 		if result.Success {
 			g.msg(foundation.Msg("You shake off the stun"))
@@ -272,7 +272,7 @@ func (g *GameState) checkPlayerCanAct() {
 		g.endPlayerTurn(g.Player.TimeNeededForActions())
 	}
 	if g.Player.HasFlag(foundation.FlagHeld) {
-		result := g.Player.GetCharSheet().StatRoll(d100.Strength, 0)
+		result := g.Player.GetCharSheet().SkillRoll(d100.SkillForUnarmed, 30)
 
 		if result.Crit {
 			g.msg(foundation.Msg("You break free from the hold"))

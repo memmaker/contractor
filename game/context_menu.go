@@ -36,7 +36,7 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 	})
 
 	if g.Player.HasPerk(d100.PerkDisarm) && actor.GetInventory().HasWeaponEquipped() && distance == 1 {
-		chances := formatContestSkSk(g.Player, actor, d100.SkillForUnarmed, d100.SkillForUnarmed)
+		chances := formatContest(g.Player.unarmedChance(), actor.unarmedChance())
 		label := fmt.Sprintf("Disarm (%s)", chances)
 		buffer = append(buffer, foundation.MenuItem{
 			Name: label,
@@ -69,7 +69,7 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 			CloseMenus: true,
 		})
 		if g.Player.HasPerk(d100.PerkNonLethalTakeDown) {
-			nonLethalChanceString := formatContestStSt(g.Player, actor, d100.Strength, d100.Strength)
+			nonLethalChanceString := formatContest(g.Player.unarmedChance(), actor.unarmedChance())
 			buffer = append(buffer, foundation.MenuItem{
 				Name: fmt.Sprintf("Non-Lethal Takedown (%s)", nonLethalChanceString),
 				Action: g.animatedActionFromMenu(func() {
@@ -93,7 +93,7 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 	if g.currentMap().IsPositionNextToTileWithFlag(actor.Position(), gridmap.TileFlagWater) {
 		label := "Drown"
 		if !actor.IsSleeping() {
-			drownChanceString := formatContestStSt(g.Player, actor, d100.Strength, d100.Strength)
+			drownChanceString := formatContest(g.Player.unarmedChance(), actor.unarmedChance())
 			label = fmt.Sprintf("Drown (%s)", drownChanceString)
 		}
 
@@ -109,7 +109,7 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 	if g.Player.HasPerk(d100.PerkBackstab) && g.Player.GetInventory().HasMeleeWeaponEquipped() {
 		label := "Backstab"
 		if !actor.IsSleeping() {
-			stabChanceString := formatContestSkSt(g.Player, actor, d100.SkillForBackstabbing, d100.Perception)
+			stabChanceString := formatContest(d100.Percentage(g.Player.GetCharSheet().GetSkill(d100.SkillForBackstabbing)), actor.awarenessChance())
 			label = fmt.Sprintf("Backstab (%s)", stabChanceString)
 		}
 		buffer = append(buffer, foundation.MenuItem{
@@ -123,22 +123,8 @@ func (g *GameState) appendContextActionsForActor(buffer []foundation.MenuItem, a
 	return buffer
 }
 
-func formatContestStSt(one *Actor, two *Actor, statOne d100.Stat, statTwo d100.Stat) string {
-	percentOne := d100.Percentage(one.GetCharSheet().GetStat(statOne) * 10)
-	percentTwo := d100.Percentage(two.GetCharSheet().GetStat(statTwo) * 10)
-	return fmt.Sprintf("%d%% vs %d%%", int(percentOne), int(percentTwo))
-}
-
-func formatContestSkSt(one *Actor, two *Actor, skillOne d100.Skill, statTwo d100.Stat) string {
-	percentOne := d100.Percentage(two.GetCharSheet().GetSkill(skillOne))
-	percentTwo := d100.Percentage(one.GetCharSheet().GetStat(statTwo) * 10)
-	return fmt.Sprintf("%d%% vs %d%%", int(percentOne), int(percentTwo))
-}
-
-func formatContestSkSk(one *Actor, two *Actor, skillOne d100.Skill, skillTwo d100.Skill) string {
-	percentOne := d100.Percentage(two.GetCharSheet().GetSkill(skillOne))
-	percentTwo := d100.Percentage(one.GetCharSheet().GetSkill(skillTwo))
-	return fmt.Sprintf("%d%% vs %d%%", int(percentOne), int(percentTwo))
+func formatContest(one, two d100.Percentage) string {
+	return fmt.Sprintf("%d%% vs %d%%", int(one), int(two))
 }
 
 func (g *GameState) OpenContextMenuForItem(uiItem foundation.Item, done func()) {

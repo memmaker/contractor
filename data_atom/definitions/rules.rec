@@ -36,36 +36,36 @@ SuperHuman: 1
 Name: Melee Combat
 Short: Mle
 Combat: Melee
-BaseValue: (str + end) * 2
+BaseValue: 20
 
 Name: Ranged Combat
 Short: Rng
 Combat: Ranged
-BaseValue: (per + 5) * 2 * if(per > 3, 1, 0)
+BaseValue: 20
 
 Name: Social
 Short: Soc
-BaseValue: (coo + 5) * 2 * if(coo > 3, 1, 0)
+BaseValue: 20
 
 Name: Intimidate
 Short: Int
-BaseValue: (coo + str) * 2 * if(str > 3, 1, 0)
+BaseValue: 20
 
 Name: Stealth
 Short: Ste
-BaseValue: (agi + 5) * 2 * if(agi > 3, 1, 0)
+BaseValue: 20
 
 Name: Mechanics
 Short: Mec
-BaseValue: (agi + end) * 2 * if(agi > 3, 1, 0) * if(end > 3, 1, 0)
+BaseValue: 20
 
 Name: BioChemistry
 Short: Bio
-BaseValue: (int + per) * 2 * if(int > 3, 1, 0)
+BaseValue: 20
 
 Name: Technology
 Short: Tec
-BaseValue: (int + 5) * 2 * if(int > 3, 1, 0)
+BaseValue: 20
 
 %rec: SkillMap
 
@@ -84,17 +84,17 @@ smoothtalking: Social
 
 %rec: DerivedStats
 
-ActionPoints: 5 + (agi + (end / 2))
-Dodge: agi
-CarryWeight: 20 + (15 * str)
+ActionPoints: 12
+Awareness: 5
+Dodge: 5
+CarryWeight: 95
 CriticalChance: 5
 CriticalImpactModifier: 0
 DamageResistance: 0
-HealingRate: max(1, end / 3)
-HitPoints: 15 + (2 * end) + str
-MeleeDamageBonus: max(1, str - 5)
-PartyLimit: floor(coo / 2.0)
-Speed: 2 * agi
+HealingRate: 1
+HitPoints: 30
+MeleeDamageBonus: 1
+Speed: 10
 
 %rec: PerkRequirements
 
@@ -103,19 +103,15 @@ RequireSkill: Stealth(50)
 
 Perk: quickdraw
 RequireSkill: RangedCombat(30)
-RequireStat: Agility(6)
 
 Perk: one-liners
 RequireSkill: Intimidate(30)
-RequireStat: Cool(6)
 
 Perk: charge
 RequireSkill: MeleeCombat(30)
-RequireStat: Agility(6)
 
 Perk: disarm
 RequireSkill: MeleeCombat(50)
-RequireStat: Agility(6)
 
 Perk: takedown
 RequireSkill: MeleeCombat(30)

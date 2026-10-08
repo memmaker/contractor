@@ -104,7 +104,7 @@ armor_physical_threshold: 0
 armor_style: business
 weight: 1
 cost: 40
-skill_bonus: perception(1)
+skill_bonus: rangedcombat(5)
 LongDescription: A pair of finely crafted spectacles, ideal for reviewing critical documents or commanding a room with clarity.
 
 Name: tech_ops_jumpsuit

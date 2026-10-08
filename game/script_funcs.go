@@ -22,11 +22,6 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			skillValue := g.Player.GetCharSheet().GetSkill(d100.SkillFromString(skillName))
 			return (float64)(skillValue), nil
 		},
-		"Stat": func(args ...interface{}) (interface{}, error) {
-			statName := args[0].(string)
-			statValue := g.Player.GetCharSheet().GetStat(d100.StatFromString(statName))
-			return (float64)(statValue), nil
-		},
 		"RollSkill": func(args ...interface{}) (interface{}, error) {
 			skillName := args[0].(string)
 			diff := d100.Medium

@@ -8,7 +8,6 @@ import (
 	"github.com/Knetic/govaluate"
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/recfile"
-	"math"
 	"slices"
 	"strings"
 )
@@ -24,18 +23,7 @@ import (
 // 7. Party members
 
 func (cs *CharSheet) getSkillBase(skill Skill) int {
-	return skill.BaseValue(cs.getStatParameters())
-}
-
-func (cs *CharSheet) getStatParameters() map[string]interface{} {
-	return map[string]interface{}{
-		"str": cs.GetStat(Strength),
-		"per": cs.GetStat(Perception),
-		"end": cs.GetStat(Endurance),
-		"coo": cs.GetStat(Cool),
-		"int": cs.GetStat(Intelligence),
-		"agi": cs.GetStat(Agility),
-	}
+	return skill.BaseValue(nil)
 }
 
 // PrintReport: If the task at hand is simply not possible for someone without a certain level of skill
@@ -44,15 +32,6 @@ func (cs *CharSheet) getStatParameters() map[string]interface{} {
 // tagging gives 20% bonus to skill
 func NewCharSheet() *CharSheet {
 	c := &CharSheet{
-		stats: map[Stat]int{
-			Strength:     5,
-			Perception:   5,
-			Endurance:    5,
-			Cool:         5,
-			Intelligence: 5,
-			Agility:      5,
-		},
-		availableStatPoints:    0,
 		derivedStatAdjustments: make(map[DerivedStat]int),
 		skillAdjustments:       make(map[Skill]int),
 		taggedSkills:           make(map[Skill]bool),
@@ -66,11 +45,9 @@ type PerkLevel struct {
 	Level int
 }
 type CharSheet struct {
-	availableStatPoints  int
 	availableSkillPoints int
 	availablePerks       int
 
-	stats map[Stat]int
 	perks []PerkLevel
 
 	derivedStatAdjustments map[DerivedStat]int
@@ -82,11 +59,9 @@ type CharSheet struct {
 
 	actionPointsCurrent int
 
-	getStatMods        func(Stat) []Modifier
 	getDerivedStatMods func(DerivedStat) []Modifier
 	getSkillMods       func(Skill) []Modifier
 
-	onStatChangedHandler        func(Stat)
 	onDerivedStatChangedHandler func(DerivedStat)
 	onSkillChangedHandler       func(Skill)
 }
@@ -213,28 +188,9 @@ type Modifier interface {
 	ApplyForInterval(value fxtools.Interval) fxtools.Interval
 }
 
-func (cs *CharSheet) GetStat(stat Stat) int {
-	baseValue := cs.getStatBaseValue(stat)
-	statValue := cs.onRetrieveStatHook(stat, baseValue)
-	return statValue
-}
-
-func (cs *CharSheet) GetStatWithModInfo(stat Stat) (int, []Modifier) {
-	baseValue := cs.getStatBaseValue(stat)
-	return cs.getModifiedStatWithInfo(stat, baseValue)
-}
-
 func (cs *CharSheet) GetDerivedStatWithModInfo(ds DerivedStat) (int, []Modifier) {
 	baseValue := cs.getDerivedStatBaseValue(ds)
 	return cs.getModifiedDerivedStatWithInfo(ds, baseValue)
-}
-
-func (cs *CharSheet) getStatBaseValue(stat Stat) int {
-	return cs.stats[stat]
-}
-
-func (cs *CharSheet) SetStat(stat Stat, value int) {
-	cs.stats[stat] = value
 }
 
 func (cs *CharSheet) GetSkill(skill Skill) int {
@@ -287,32 +243,9 @@ func (cs *CharSheet) GetDerivedStat(ds DerivedStat) int {
 
 func (cs *CharSheet) getDerivedStatBaseValue(ds DerivedStat) int {
 	if expr, exists := derivedBaseValues[ds]; exists {
-		result, _ := expr.Evaluate(cs.getStatParameters())
+		result, _ := expr.Evaluate(nil)
 		return int(result.(float64))
 	}
-	switch ds {
-	case ActionPoints:
-		return 5 + cs.GetStat(Agility) + (cs.GetStat(Endurance) / 2)
-	case Dodge:
-		return cs.GetStat(Agility) // Needs to factor in armor..
-	case CarryWeight:
-		return 20 + 15*cs.GetStat(Strength)
-	case CriticalChance:
-		return 5
-	case DamageResistance:
-		return 0
-	case HealingRate:
-		return max(1, cs.GetStat(Endurance)/3)
-	case HitPoints:
-		return 15 + (2 * cs.GetStat(Endurance)) + cs.GetStat(Strength)
-	case MeleeDamageBonus:
-		return max(1, cs.GetStat(Strength)-5)
-	case PartyLimit:
-		return int(math.Floor(float64(cs.GetStat(Cool)) / 2.0))
-	case Speed:
-		return 2 * cs.GetStat(Agility)
-	}
-	panic("invalid derived stat")
 	return 0
 }
 
@@ -333,37 +266,6 @@ func (cs *CharSheet) IsAlive() bool {
 	return cs.hitPointsCurrent > 0
 }
 
-func (cs *CharSheet) onRetrieveStatHook(stat Stat, value int) int {
-	if cs.getStatMods != nil {
-		mods := cs.getStatMods(stat)
-
-		slices.SortStableFunc(mods, func(i, j Modifier) int {
-			return cmp.Compare(i.SortOrder(), j.SortOrder())
-		})
-
-		for _, mod := range mods {
-			value = mod.Apply(value)
-		}
-		return value
-	}
-	return value
-}
-
-func (cs *CharSheet) getModifiedStatWithInfo(stat Stat, value int) (int, []Modifier) {
-	if cs.getStatMods != nil {
-		mods := cs.getStatMods(stat)
-
-		slices.SortStableFunc(mods, func(i, j Modifier) int {
-			return cmp.Compare(i.SortOrder(), j.SortOrder())
-		})
-
-		for _, mod := range mods {
-			value = mod.Apply(value)
-		}
-		return value, mods
-	}
-	return value, nil
-}
 func (cs *CharSheet) getModifiedDerivedStatWithInfo(ds DerivedStat, value int) (int, []Modifier) {
 	if cs.getDerivedStatMods != nil {
 		mods := cs.getDerivedStatMods(ds)
@@ -456,15 +358,6 @@ func (cs *CharSheet) AddSkillPoints(amount int) {
 	cs.availableSkillPoints += amount
 }
 
-func (cs *CharSheet) SetOnStatChangeHandler(changed func(Stat)) {
-	cs.onStatChangedHandler = changed
-}
-
-func (cs *CharSheet) onStatChanged(stat Stat) {
-	if cs.onStatChangedHandler != nil {
-		cs.onStatChangedHandler(stat)
-	}
-}
 func (cs *CharSheet) SetOnDerivedStatChangeHandler(changed func(DerivedStat)) {
 	cs.onDerivedStatChangedHandler = changed
 }
@@ -523,30 +416,14 @@ func (cs *CharSheet) SkillRoll(skill Skill, modifiers int) CheckResult {
 	return SuccessRoll(Percentage(cappedSuccessChange), Percentage(critChance))
 }
 
-func (cs *CharSheet) StatRoll(stat Stat, modifiers int) CheckResult {
-	critChance := cs.GetDerivedStat(CriticalChance)
-	cappedSuccessChance := max(0, min(SuccessChanceCap, (cs.GetStat(stat)*10)+modifiers))
-	return SuccessRoll(Percentage(cappedSuccessChance), Percentage(critChance))
-}
-func (cs *CharSheet) IsStatHigherOrEqual(stat Stat, difficulty int) bool {
-	return cs.GetStat(stat) >= difficulty
-}
-
 func (cs *CharSheet) GetHitPointsString() string {
 	return fmt.Sprintf("%d/%d", cs.GetHitPoints(), cs.GetHitPointsMax())
 }
 
 func (cs *CharSheet) ToRecord() recfile.Record {
 	record := recfile.Record{
-		recfile.Field{Name: "AvailableStatPoints", Value: recfile.IntStr(cs.availableStatPoints)},
 		recfile.Field{Name: "AvailableSkillPoints", Value: recfile.IntStr(cs.availableSkillPoints)},
 		recfile.Field{Name: "AvailablePerks", Value: recfile.IntStr(cs.availablePerks)},
-		recfile.Field{Name: "Strength", Value: recfile.IntStr(cs.GetStat(Strength))},
-		recfile.Field{Name: "Perception", Value: recfile.IntStr(cs.GetStat(Perception))},
-		recfile.Field{Name: "Endurance", Value: recfile.IntStr(cs.GetStat(Endurance))},
-		recfile.Field{Name: "Cool", Value: recfile.IntStr(cs.GetStat(Cool))},
-		recfile.Field{Name: "Intelligence", Value: recfile.IntStr(cs.GetStat(Intelligence))},
-		recfile.Field{Name: "Agility", Value: recfile.IntStr(cs.GetStat(Agility))},
 		recfile.Field{Name: "HitPoints", Value: recfile.IntStr(cs.GetHitPoints())},
 		recfile.Field{Name: "ActionPoints", Value: recfile.IntStr(cs.GetActionPoints())},
 	}
@@ -557,14 +434,6 @@ func (cs *CharSheet) ToRecord() recfile.Record {
 	}
 
 	return record
-}
-
-func (cs *CharSheet) HasStatPointsToSpend() bool {
-	return cs.availableStatPoints > 0
-}
-
-func (cs *CharSheet) GetStatPointsToSpend() int {
-	return cs.availableStatPoints
 }
 
 func (cs *CharSheet) IsTagSkill(skill Skill) bool {
@@ -590,36 +459,8 @@ func (cs *CharSheet) GetTagSkillCount() int {
 	return len(cs.taggedSkills)
 }
 
-func (cs *CharSheet) SpendStatPoint(stat Stat) {
-	if cs.availableStatPoints <= 0 {
-		return
-	}
-	if cs.stats[stat] >= 10 {
-		return
-	}
-	cs.stats[stat]++
-	cs.availableStatPoints--
-	cs.onStatChanged(stat)
-}
-
-func (cs *CharSheet) RefundStatPoint(stat Stat) {
-	if cs.stats[stat] <= 1 {
-		return
-	}
-	cs.stats[stat]--
-	cs.availableStatPoints++
-	cs.onStatChanged(stat)
-}
-
 func (cs *CharSheet) GetSkillPointsToSpend() int {
 	return cs.availableSkillPoints
-}
-
-func (cs *CharSheet) ResetStatPoints() {
-	for stat := range cs.stats {
-		cs.stats[stat] = 5
-	}
-	cs.availableStatPoints = 5
 }
 
 func (cs *CharSheet) ResetTagSkills() {
@@ -644,10 +485,6 @@ func (cs *CharSheet) SpendSkillPoints(skill Skill, points int) {
 
 func (cs *CharSheet) SetSkillModifierHandler(handler func(skill Skill) []Modifier) {
 	cs.getSkillMods = handler
-}
-
-func (cs *CharSheet) SetStatModifierHandler(handler func(stat Stat) []Modifier) {
-	cs.getStatMods = handler
 }
 
 func (cs *CharSheet) SetDerivedStatModifierHandler(handler func(ds DerivedStat) []Modifier) {
@@ -707,11 +544,6 @@ func (cs *CharSheet) GetPerkLevel(perkID Perk) int {
 }
 
 func (cs *CharSheet) MeetsRequirements(requirements CharacterRequirement) bool {
-	for stat, neededValue := range requirements.Stats {
-		if cs.GetStat(stat) < neededValue {
-			return false
-		}
-	}
 	for skill, neededValue := range requirements.Skills {
 		if cs.GetSkill(skill) < neededValue {
 			return false
@@ -731,16 +563,12 @@ func (cs *CharSheet) MeetsRequirements(requirements CharacterRequirement) bool {
 }
 
 func (cs *CharSheet) SetGodLike() {
-	for stat := range cs.stats {
-		cs.stats[stat] = 10
-	}
 	for skill := 0; skill < SkillCount(); skill++ {
 		cs.skillAdjustments[Skill(skill)] = SkillCap
 	}
 	cs.derivedStatAdjustments[HitPoints] = 999
 	cs.derivedStatAdjustments[ActionPoints] = 20
 	cs.availableSkillPoints = 0
-	cs.availableStatPoints = 0
 }
 
 type Difficulty int
@@ -872,9 +700,6 @@ func (cs *CharSheet) GobEncode() ([]byte, error) {
 	buffer := &bytes.Buffer{}
 	gobber := gob.NewEncoder(buffer)
 
-	if err := gobber.Encode(cs.availableStatPoints); err != nil {
-		return nil, err
-	}
 	if err := gobber.Encode(cs.availableSkillPoints); err != nil {
 		return nil, err
 	}
@@ -882,9 +707,6 @@ func (cs *CharSheet) GobEncode() ([]byte, error) {
 		return nil, err
 	}
 
-	if err := gobber.Encode(cs.stats); err != nil {
-		return nil, err
-	}
 	if err := gobber.Encode(cs.perks); err != nil {
 		return nil, err
 	}
@@ -910,9 +732,6 @@ func (cs *CharSheet) GobDecode(data []byte) error {
 	buffer := bytes.NewBuffer(data)
 	gobber := gob.NewDecoder(buffer)
 
-	if err := gobber.Decode(&cs.availableStatPoints); err != nil {
-		return err
-	}
 	if err := gobber.Decode(&cs.availableSkillPoints); err != nil {
 		return err
 	}
@@ -920,9 +739,6 @@ func (cs *CharSheet) GobDecode(data []byte) error {
 		return err
 	}
 
-	if err := gobber.Decode(&cs.stats); err != nil {
-		return err
-	}
 	if err := gobber.Decode(&cs.perks); err != nil {
 		return err
 	}

@@ -108,12 +108,7 @@ CarryWeight: 115
 Sequence: 11
 HealingRate: 1
 CriticalChance: 6
-Strength: 4
-Perception: 7
-Endurance: 4
-Cool: 8
-Intelligence: 8
-Agility: 5
+Awareness: 7
 SkillBonusSocial: 70
 SkillBonusIntimidate: 80
 equipment: rugged_worker_attire

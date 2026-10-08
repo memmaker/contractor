@@ -350,8 +350,8 @@ func (g *GameState) PlayerQuip() {
 		}
 		observer.AddTemporaryStatChange(&TemporaryStatChange{
 			StatChange: StatChange{
-				StatChanges: map[d100.Stat]int{
-					d100.Perception: -2,
+				DerivedStatChanges: map[d100.DerivedStat]int{
+					d100.Awareness: -2,
 				},
 			},
 			Name:      "Distracted by Cool Quip",
@@ -711,9 +711,6 @@ func (g *GameState) playerAttachHooks() {
 				g.ui.SetSneakOverlay(nil)
 			}
 		}
-	})
-	g.Player.GetCharSheet().SetOnStatChangeHandler(func(stat d100.Stat) {
-		g.ui.UpdateStats()
 	})
 
 	g.Player.GetInventory().SetOnChangeHandler(g.ui.UpdateInventory)
@@ -1258,7 +1255,7 @@ func (g *GameState) isDetectedByObserver(actor *Actor, observer *Actor) bool {
 			return false
 		}
 		wakeMod := actor.GetCharSheet().GetSkill(d100.SkillForSneak)
-		chanceToWake := (observer.GetCharSheet().GetStat(d100.Perception) * 5) - wakeMod
+		chanceToWake := (observer.GetCharSheet().GetDerivedStat(d100.Awareness) * 5) - wakeMod
 		awakened := d100.SuccessRoll(d100.Percentage(chanceToWake), 0)
 		if awakened.Success {
 			observer.GetFlags().Unset(foundation.FlagSleep)
@@ -1277,7 +1274,7 @@ func (g *GameState) isDetectedByObserver(actor *Actor, observer *Actor) bool {
 	}
 
 	sneakSkill := actor.GetCharSheet().GetSkill(d100.SkillForSneak)
-	perception := observer.GetCharSheet().GetStat(d100.Perception) * 10
+	perception := int(observer.awarenessChance())
 	if sneakSkill > 100 { // a d100 roll caps at 100: skill beyond that counts as advantage
 		forcedDelta += sneakSkill - 100
 	}

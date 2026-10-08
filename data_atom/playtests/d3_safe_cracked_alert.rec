@@ -35,7 +35,7 @@ do: Give('10mm_ap(48)')
 do: Equip('10mm_smg')
 do: FireMode('Burst')
 do: SetSkill('RangedCombat', 150)
-do: SetStat('Endurance', 10)
+do: SetDerivedStat('HitPoints', 40)
 do: WaitHours(2)
 
 if: HasFlag('household_alert')

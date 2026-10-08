@@ -835,9 +835,10 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 			g.Player.GetInventory().AddItem(g.NewItemFromString(str(args, 0)))
 			return true, nil
 		},
-		// SetStat('Perception', 7): character setup, like picking a build.
-		"SetStat": func(args ...interface{}) (interface{}, error) {
-			g.Player.GetCharSheet().SetStat(d100.StatFromString(str(args, 0)), int(num(args, 1)))
+		// SetDerivedStat('HitPoints', 40): character setup for a tougher test character; heals fully.
+		"SetDerivedStat": func(args ...interface{}) (interface{}, error) {
+			g.Player.GetCharSheet().SetDerivedStatAbsoluteValue(d100.DerivedStatFromString(str(args, 0)), int(num(args, 1)))
+			g.Player.GetCharSheet().HealAPAndHPCompletely()
 			return true, nil
 		},
 		// SetSkill('Mechanics', 110): character setup, like picking a build.

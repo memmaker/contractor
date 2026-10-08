@@ -522,14 +522,7 @@ func (a *Actor) GetDetailInfo() string {
 	result = append(result, fmt.Sprintf("Name: %s", a.Name()))
 	result = a.appendStateInfo(result)
 	// melee attack
-	statRows := []fxtools.TableRow{
-		fxtools.TableRow{Columns: []string{"Str:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Strength))}},
-		fxtools.TableRow{Columns: []string{"Per:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Perception))}},
-		fxtools.TableRow{Columns: []string{"End:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Endurance))}},
-		fxtools.TableRow{Columns: []string{"Coo:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Cool))}},
-		fxtools.TableRow{Columns: []string{"Int:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Intelligence))}},
-		fxtools.TableRow{Columns: []string{"Agi:", fmt.Sprintf("%d", a.CharSheet.GetStat(d100.Agility))}},
-	}
+	statRows := []fxtools.TableRow{}
 
 	derivedStatRows := []fxtools.TableRow{
 		{Columns: []string{"HP:", fmt.Sprintf("%d/%d", a.GetHitPoints(), a.GetHitPointsMax())}},
@@ -1095,8 +1088,7 @@ func (a *Actor) SetFoVDirty() {
 	a.FoVOrigin = geometry.Point{-1, -1}
 }
 func (a *Actor) GetMaxThrowRange() int {
-	strength := a.GetCharSheet().GetStat(d100.Strength)
-	return strength * 2
+	return 10
 }
 
 func (a *Actor) TryEquipRangedWeaponFirst() {
@@ -1201,13 +1193,6 @@ func (a *Actor) attachHooks() {
 		return append(append(modsFromItems, modsFromEquipment...), modsFromActiveEffects...)
 	})
 
-	a.GetCharSheet().SetStatModifierHandler(func(stat d100.Stat) []d100.Modifier {
-		modsFromItems := a.GetInventory().GetStatModifiersFromItems(stat)
-		modsFromEquipment := equipment.GetStatModifiersFromEquippedItems(stat)
-		modsFromActiveEffects := a.GetTemporaryStatModifiers(stat)
-		return append(append(modsFromItems, modsFromEquipment...), modsFromActiveEffects...)
-	})
-
 	a.GetCharSheet().SetDerivedStatModifierHandler(func(stat d100.DerivedStat) []d100.Modifier {
 		modsFromItems := a.GetInventory().GetDerivedStatModifiersFromItems(stat)
 		modsFromEquipment := equipment.GetDerivedStatModifiersFromEquippedItems(stat)
@@ -1215,38 +1200,6 @@ func (a *Actor) attachHooks() {
 		return append(append(modsFromItems, modsFromEquipment...), modsFromActiveEffects...)
 	})
 }
-func (a *Actor) GetTemporaryStatModifiers(stat d100.Stat) []d100.Modifier {
-	var result []d100.Modifier
-	for _, statChange := range a.TemporaryStatChanges {
-		if value, exists := statChange.StatChanges[stat]; exists {
-			result = append(result, d100.DefaultModifier{
-				Source:   statChange.Name,
-				Modifier: value,
-				Order:    1,
-				Suffix:   fmt.Sprintf("(%d turns left)", statChange.TurnsLeft),
-			})
-		}
-	}
-
-	if stat == d100.Strength {
-		debuff := 0
-		if a.HasFlag(foundation.FlagHunger) {
-			debuff = -1
-		} else if a.HasFlag(foundation.FlagStarving) {
-			debuff = -2
-		}
-		if debuff != 0 {
-			result = append(result, d100.DefaultModifier{
-				Source:    "Hunger",
-				Modifier:  debuff,
-				Order:     1,
-				IsPercent: false,
-			})
-		}
-	}
-	return result
-}
-
 func (a *Actor) GetTemporaryDerivedStatModifiers(stat d100.DerivedStat) []d100.Modifier {
 	var result []d100.Modifier
 	for _, statChange := range a.TemporaryStatChanges {
@@ -1256,6 +1209,21 @@ func (a *Actor) GetTemporaryDerivedStatModifiers(stat d100.DerivedStat) []d100.M
 				Modifier: value,
 				Order:    1,
 				Suffix:   fmt.Sprintf("(%d turns left)", statChange.TurnsLeft),
+			})
+		}
+	}
+	if stat == d100.CarryWeight {
+		debuff := 0
+		if a.HasFlag(foundation.FlagHunger) {
+			debuff = -15
+		} else if a.HasFlag(foundation.FlagStarving) {
+			debuff = -30
+		}
+		if debuff != 0 {
+			result = append(result, d100.DefaultModifier{
+				Source:   "Hunger",
+				Modifier: debuff,
+				Order:    1,
 			})
 		}
 	}
@@ -1283,8 +1251,17 @@ func (a *Actor) GetMeleeSkillUsed() d100.Skill {
 	return d100.SkillForUnarmed
 }
 
+func (a *Actor) unarmedChance() d100.Percentage {
+	return d100.Percentage(a.GetCharSheet().GetSkill(d100.SkillForUnarmed))
+}
+
+// awarenessChance is how likely the actor notices someone sneaking up (Awareness 5 = 50%).
+func (a *Actor) awarenessChance() d100.Percentage {
+	return d100.Percentage(a.GetCharSheet().GetDerivedStat(d100.Awareness) * 10)
+}
+
 func (a *Actor) DetectionRange() int {
-	return a.GetCharSheet().GetStat(d100.Perception) + 2
+	return a.GetCharSheet().GetDerivedStat(d100.Awareness) + 2
 }
 
 func (a *Actor) CanSee(pos geometry.Point) bool {
@@ -1450,7 +1427,6 @@ func (a *Actor) IsSneaky() bool {
 }
 
 type StatChange struct {
-	StatChanges        map[d100.Stat]int
 	SkillChanges       map[d100.Skill]int
 	DerivedStatChanges map[d100.DerivedStat]int
 }

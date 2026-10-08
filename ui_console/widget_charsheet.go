@@ -42,7 +42,6 @@ type CharsheetViewer struct {
 	nameAgeSexBar      *cview.TextView
 	derivedStatsWindow *cview.TextView
 	descriptionWindow  *cview.TextView
-	statList           *cview.List
 	skillList          *cview.List
 	charPointsDisplay  *cview.TextView
 	perksList          *cview.List
@@ -95,7 +94,7 @@ func (c *CharsheetViewer) SetConfirmer(conf Confirmer) {
 
 func (c *CharsheetViewer) SetMode() {
 	c.mode = ModeView
-	if c.sheet.HasStatPointsToSpend() || c.sheet.GetTagSkillCount() < 3 {
+	if c.sheet.GetTagSkillCount() < 3 {
 		c.mode = ModeCreate
 	}
 	c.setupUI()
@@ -161,46 +160,6 @@ func (c *CharsheetViewer) setupUI() {
 	descriptionWindow.SetBorder(true)
 	descriptionWindow.SetWrap(true)
 	descriptionWindow.SetWordWrap(true)
-
-	statList := cview.NewList()
-	statList.SetBorder(true)
-	statList.ShowSecondaryText(false)
-	statList.SetScrollBarVisibility(cview.ScrollBarNever)
-	statList.SetHighlightDisabled(true)
-	statList.SetMouseCapture(func(action cview.MouseAction, event *tcell.EventMouse) (cview.MouseAction, *tcell.EventMouse) {
-		if action == cview.MouseLeftClick {
-			x, y := event.Position()
-			// to local coordinates
-			startX, startY, _, _ := statList.GetInnerRect()
-			x -= startX
-			y -= startY
-			// to list item index
-			i := y
-			isOnlyInfo := x < 6
-			isPlus := x > 10
-
-			if i < 0 || i >= int(d100.StatCount) {
-				return action, event
-			}
-
-			stat := (d100.Stat)(i)
-
-			_, mods := c.sheet.GetStatWithModInfo(stat)
-
-			c.descriptionWindow.SetText(stat.String() + "\n" + modifiersToString(mods))
-
-			if isOnlyInfo || c.mode == ModeView {
-				return action, event
-			}
-			if isPlus {
-				c.sheet.SpendStatPoint(stat)
-			} else {
-				c.sheet.RefundStatPoint(stat)
-			}
-			c.updateUIFromSheet()
-		}
-		return action, event
-	})
 
 	skillList := cview.NewList()
 	skillList.SetBorder(true)
@@ -337,9 +296,8 @@ func (c *CharsheetViewer) setupUI() {
 	c.Grid.SetColumns(18, 32, 30)
 
 	c.Grid.AddItem(nameAgeSexBar, 0, 0, 1, 2, 0, 0, false)
-	c.Grid.AddItem(statList, 1, 0, 1, 1, 0, 0, false)
-	c.Grid.AddItem(charPointsDisplay, 2, 0, 1, 1, 0, 0, false)
-	c.Grid.AddItem(traitsList, 3, 0, 2, 1, 0, 0, false)
+	c.Grid.AddItem(charPointsDisplay, 1, 0, 1, 1, 0, 0, false)
+	c.Grid.AddItem(traitsList, 2, 0, 3, 1, 0, 0, false)
 	c.Grid.AddItem(skillList, 1, 1, 2, 1, 0, 0, false)
 	c.Grid.AddItem(derivedStatsWindow, 1, 2, 3, 1, 0, 0, false)
 	c.Grid.AddItem(descriptionWindow, 3, 1, 2, 1, 0, 0, false)
@@ -348,7 +306,6 @@ func (c *CharsheetViewer) setupUI() {
 	c.nameAgeSexBar = nameAgeSexBar
 	c.derivedStatsWindow = derivedStatsWindow
 	c.descriptionWindow = descriptionWindow
-	c.statList = statList
 	c.skillList = skillList
 	c.charPointsDisplay = charPointsDisplay
 	c.perksList = traitsList
@@ -397,8 +354,8 @@ func (c *CharsheetViewer) Close() {
 	c.close()
 }
 func (c *CharsheetViewer) onDoneButtonClicked() {
-	if c.mode == ModeCreate && (!c.sheet.HasStatPointsToSpend() && c.sheet.GetTagSkillCount() == 3) {
-		c.tryAskForConfirmation("Are you sure you want to finish character creation?\nYou won't be able to change your character's stats or tag skills after this.", func(didConfirm bool) {
+	if c.mode == ModeCreate && c.sheet.GetTagSkillCount() == 3 {
+		c.tryAskForConfirmation("Are you sure you want to finish character creation?\nYou won't be able to change your tag skills after this.", func(didConfirm bool) {
 			if didConfirm {
 				c.Close()
 			}
@@ -426,7 +383,6 @@ func (c *CharsheetViewer) updateUIFromSheet() {
 	var infoLines []string
 	if c.mode == ModeCreate {
 		tableRowsForCreateInfo := []fxtools.TableRow{
-			{Columns: []string{"Stat Points:", strconv.Itoa(c.sheet.GetStatPointsToSpend())}},
 			{Columns: []string{"Tag Skills:", fmt.Sprintf("%d/3", c.sheet.GetTagSkillCount())}},
 		}
 		infoLines = fxtools.TableLayout(tableRowsForCreateInfo, []fxtools.TextAlignment{fxtools.AlignLeft, fxtools.AlignRight})
@@ -436,45 +392,6 @@ func (c *CharsheetViewer) updateUIFromSheet() {
 		}
 	}
 	c.charPointsDisplay.SetText(strings.Join(infoLines, "\n"))
-
-	c.statList.Clear()
-	for i := 0; i < int(d100.StatCount); i++ {
-		stat := (d100.Stat)(i)
-		statVal, mods := c.sheet.GetStatWithModInfo(stat)
-		statCC := "[-:-:-]"
-		if c.mode == ModeCreate {
-			if statVal <= 3 {
-				statCC = "[red:black:]"
-			} else if statVal > 5 {
-				statCC = "[green:black:]"
-			}
-		}
-
-		statName := stat.ToShortString()
-
-		statAdjust := " "
-		if len(mods) > 0 {
-			statAdjust = "*"
-		}
-
-		statLine := fmt.Sprintf("%s:%s%s%d[-:-:-]", statName, statAdjust, statCC, statVal)
-
-		if c.mode == ModeCreate {
-			plusButton := cview.Escape(fmt.Sprintf("[+]"))
-			minusButton := cview.Escape(fmt.Sprintf("[-]"))
-			minusCC := textiles.RGBAToColorCodes(color.RGBA{R: 255, G: 255, B: 255, A: 255}, color.RGBA{40, 0, 0, 255})
-			plusCC := textiles.RGBAToColorCodes(color.RGBA{R: 255, G: 255, B: 255, A: 255}, color.RGBA{0, 40, 0, 255})
-			adjustButtons := fmt.Sprintf(" %s%s[-:-:-] %s%s[-:-:-]", minusCC, minusButton, plusCC, plusButton)
-			if statVal < 10 {
-				statLine = fmt.Sprintf("%s %s", statLine, adjustButtons)
-			} else {
-				statLine = fmt.Sprintf("%s%s", statLine, adjustButtons)
-			}
-		}
-
-		listItem := cview.NewListItem(statLine)
-		c.statList.AddItem(listItem)
-	}
 
 	skillRows := make([]fxtools.TableRow, d100.SkillCount())
 	for i := 0; i < int(d100.SkillCount()); i++ {
@@ -625,23 +542,6 @@ func (c *CharsheetViewer) handleInput(event *tcell.EventKey) *tcell.EventKey {
 }
 
 func (c *CharsheetViewer) moveSelectionVertically(direction int) {
-	if c.mode == ModeCreate {
-		// stats & skills
-		if c.virtualFocus == 0 { // nothing selected
-			if direction > 0 {
-				c.focusStats(0)
-			} else {
-				c.focusStats(int(d100.StatCount) - 1)
-			}
-		} else if c.virtualFocus == 1 { // stats selected
-			newIndex := (c.statList.GetCurrentItemIndex() + direction) % int(d100.StatCount)
-			c.statList.SetCurrentItem(newIndex)
-		} else if c.virtualFocus == 2 { // skills selected
-			newIndex := (c.skillList.GetCurrentItemIndex() + direction) % int(d100.SkillCount())
-			c.skillList.SetCurrentItem(newIndex)
-		}
-		return
-	}
 	if c.virtualFocus == 0 {
 		if direction > 0 {
 			c.focusSkills(0)
@@ -656,40 +556,10 @@ func (c *CharsheetViewer) moveSelectionVertically(direction int) {
 }
 
 func (c *CharsheetViewer) moveSelectionHorizontally(direction int) {
-	if c.mode == ModeCreate {
-		if c.virtualFocus == 0 {
-			if direction > 0 {
-				// skills
-				c.focusSkills(0)
-			} else {
-				// stats
-				c.focusStats(0)
-			}
-		} else if c.virtualFocus == 1 {
-			// stats selected
-			if direction > 0 {
-				// skills
-				c.focusSkills(0)
-			} else {
-				index := c.statList.GetCurrentItemIndex()
-				selectedStat := d100.Stat(index)
-				c.sheet.RefundStatPoint(selectedStat)
-				c.updateUIFromSheet()
-				c.statList.SetCurrentItem(index)
-			}
-		} else if c.virtualFocus == 2 {
-			// skills selected
-			if direction <= 0 {
-				// stats
-				c.focusStats(0)
-			}
-		}
-
-		return
-	}
-
 	if c.virtualFocus == 0 {
 		c.focusSkills(0)
+	} else if c.mode == ModeCreate {
+		return
 	} else {
 		selectedSkill := d100.Skill(c.skillList.GetCurrentItemIndex())
 		if direction > 0 {
@@ -700,33 +570,16 @@ func (c *CharsheetViewer) moveSelectionHorizontally(direction int) {
 	}
 }
 
-func (c *CharsheetViewer) focusStats(selectedIndex int) {
-	c.virtualFocus = 1
-	c.statList.SetHighlightDisabled(false)
-	c.statList.SetCurrentItem(selectedIndex)
-
-	c.skillList.SetHighlightDisabled(true)
-}
 func (c *CharsheetViewer) focusSkills(index int) {
 	c.virtualFocus = 2
 	c.skillList.SetHighlightDisabled(false)
 	c.skillList.SetCurrentItem(index)
-
-	c.statList.SetHighlightDisabled(true)
 }
 
 func (c *CharsheetViewer) confirmSelection() {
-	if c.mode == ModeCreate {
-		if c.virtualFocus == 1 {
-			index := c.statList.GetCurrentItemIndex()
-			selectedStat := d100.Stat(index)
-			c.sheet.SpendStatPoint(selectedStat)
-			c.updateUIFromSheet()
-			c.statList.SetCurrentItem(index)
-		} else if c.virtualFocus == 2 {
-			index := c.skillList.GetCurrentItemIndex()
-			selectedSkill := d100.Skill(index)
-			c.toggleTagSkill(selectedSkill)
-		}
+	if c.mode == ModeCreate && c.virtualFocus == 2 {
+		index := c.skillList.GetCurrentItemIndex()
+		selectedSkill := d100.Skill(index)
+		c.toggleTagSkill(selectedSkill)
 	}
 }

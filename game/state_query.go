@@ -53,60 +53,23 @@ func (g *GameState) getIntimidateModifiers(actor *Actor, opponent *Actor, situat
 		}
 	}
 
-	pCool := actor.GetCharSheet().GetStat(d100.Cool)
-	pStr := actor.GetCharSheet().GetStat(d100.Strength)
 	pSpd := actor.GetBasicSpeed()
-
-	oCool := opponent.GetCharSheet().GetStat(d100.Cool)
-	oStr := opponent.GetCharSheet().GetStat(d100.Strength)
 	oSpd := opponent.GetBasicSpeed()
 
-	if pCool > oCool {
-		bonus := (pCool - oCool) * 2
+	if pSpd > oSpd {
+		bonus := (pSpd - oSpd) * 2
 		modifiers = append(modifiers, d100.DefaultModifier{
-			Source:    "Cooler",
+			Source:    "Faster",
 			Modifier:  +bonus,
 			IsPercent: true,
 		})
-	} else if pCool < oCool {
-		malus := (oCool - pCool) * 2
+	} else if pSpd < oSpd {
+		malus := (oSpd - pSpd) * 2
 		modifiers = append(modifiers, d100.DefaultModifier{
-			Source:    "Less cool",
+			Source:    "Slower",
 			Modifier:  -malus,
 			IsPercent: true,
 		})
-	} else {
-		if pStr > oStr {
-			bonus := (pStr - oStr) * 2
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:    "Stronger",
-				Modifier:  +bonus,
-				IsPercent: true,
-			})
-		} else if pStr < oStr {
-			malus := (oStr - pStr) * 2
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:    "Weaker",
-				Modifier:  -malus,
-				IsPercent: true,
-			})
-		}
-
-		if pSpd > oSpd {
-			bonus := (pSpd - oSpd) * 2
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:    "Faster",
-				Modifier:  +bonus,
-				IsPercent: true,
-			})
-		} else if pSpd < oSpd {
-			malus := (oSpd - pSpd) * 2
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:    "Slower",
-				Modifier:  -malus,
-				IsPercent: true,
-			})
-		}
 	}
 
 	return modifiers
@@ -144,15 +107,9 @@ func (g *GameState) getThrownChanceToHitForUI(target foundation.ActorForUI) foun
 	attacker := g.Player
 
 	distance := int(geometry.Distance(attacker.Position(), defender.Position()))
-	strength := attacker.GetCharSheet().GetStat(d100.Strength)
+	baseChance := attacker.GetCharSheet().GetSkill(d100.SkillForThrowing)
 
-	perception := attacker.GetCharSheet().GetStat(d100.Perception)
-
-	agility := attacker.GetCharSheet().GetStat(d100.Agility)
-
-	baseChance := min(perception, agility) * 10
-
-	maxDist := strength * 2
+	maxDist := attacker.GetMaxThrowRange()
 
 	var cthMods []d100.Modifier
 	cth := baseChance
