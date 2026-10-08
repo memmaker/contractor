@@ -108,6 +108,13 @@ o_id: insert_fuse
 o_cond: HasItem('cryo_fuse')
 o_goto: Fixed3
 #
+o_text: The coolant's still good. Bypass the fuse and dose the cryoprotectant by hand.
+o_id: prime_pod_3
+o_cond: !HasFlag('pod3_prime_failed')
+o_test: RollSkill('biochemistry', 'Hard')
+o_succ: Primed3
+o_fail: PrimeFailed3
+#
 o_text: Climb in anyway.
 o_id: climb_broken_3
 o_goto: Refuses
@@ -127,6 +134,26 @@ o_goto: ClimbIn
 #
 o_text: Not yet.
 o_id: not_yet_3_fixed
+o_goto: End
+
+name: Primed3
+npc: You mix the glycol by eye and feed it in drop by drop. The lid hisses shut on its own. POD 3: nominal.
+effect: SetFlag('PodFixed(3)')
+#
+o_text: Climb in.
+o_id: climb_in_3_primed
+o_goto: ClimbIn
+#
+o_text: Not yet.
+o_id: not_yet_3_primed
+o_goto: End
+
+name: PrimeFailed3
+npc: The mix clouds and crystallises in the line. The pod needs its fuse now.
+effect: SetFlag('pod3_prime_failed')
+#
+o_text: Leave it.
+o_id: prime_failed_leave
 o_goto: End
 
 name: Refuses
