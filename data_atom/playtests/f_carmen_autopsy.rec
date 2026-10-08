@@ -1,0 +1,25 @@
+# Carmen (BioChemistry): read the wounds for Rourke, add the ribbon, then the arrest.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(carmen, arrested)') && HasFlag('carmen_autopsy')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('detective_rourke')
+do: Choose('carmen_accept')
+
+if: true
+do: PickUp('velvet_ribbon')
+
+if: true
+do: ForceChecks('success')
+do: Talk('detective_rourke')
+do: Choose('carmen_autopsy')
+do: Choose('autopsy_back')
+do: Choose('carmen_accuse')
