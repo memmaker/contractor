@@ -98,3 +98,97 @@ DRPoison: 40
 SourceFile: 00000078.pro
 Position: (71,15)
 
+
+Name: dock_clerk_wen
+Description: Clerk Wen
+LongDescription: A Spaceport Authority clerk behind thick glass, stamping cargo forms faster than anyone could read them.
+Dialogue: dock_clerk_wen
+Icon: W
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+faction: spaceport
+Position: (10,13)
+
+Name: loader_tamsin
+Description: Tamsin
+LongDescription: A cargo loader in a scuffed exo-harness, sitting on a crate, eating out of a tin.
+Dialogue: loader_tamsin
+Icon: T
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: binge
+equipment: junk
+Position: (40,12)
+
+Name: pilgrim_maren
+Description: Maren
+LongDescription: A woman with a ticket slip pinned to her coat and a suitcase she never puts down. She has been waiting for the draw for nine days.
+Dialogue: pilgrim_maren
+Icon: m
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: lottery_slip
+Position: (14,10)

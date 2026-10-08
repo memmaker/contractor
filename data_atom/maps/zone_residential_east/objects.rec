@@ -93,3 +93,10 @@ Position: (8,21)
 Category: NamedLocation
 Identifier: east_thug_corner
 Position: (62,16)
+
+Category: UnknownContainer
+Name: east_mailbox
+Description: an overstuffed mailbox
+item: gold(35)
+item: ebi_pamphlet_1
+Position: (10,18)

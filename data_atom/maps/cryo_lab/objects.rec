@@ -84,3 +84,10 @@ Name: spare_parts
 Description: a crate of spare parts
 item: cryo_fuse
 Position: (75,11)
+
+Category: UnknownContainer
+Name: lab_supply_cabinet
+Description: a supply cabinet
+item: medical_supplies
+item: brainz
+Position: (10,10)

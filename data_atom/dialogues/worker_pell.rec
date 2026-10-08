@@ -1,0 +1,61 @@
+# Line worker. Shift life, foreman gossip (R6), the night trucks.
+%rec: OpeningBranch
+
+cond: HasFlag('b_foreman_replaced')
+goto: NewForeman
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Ten minutes of break and you want to talk. Fine. Make it count.
+#
+o_text: What do they make here?
+o_id: pell_make
+o_goto: Make
+#
+o_text: Trucks at night, through the south gate. Seen them?
+o_id: pell_trucks
+o_goto: Trucks
+#
+o_text: (Offer him a smoke break.) Take a few more minutes, I'll keep watch.
+o_id: pell_meld
+o_cond: !HasFlag('pell_gift')
+o_goto: Gift
+#
+o_text: Bye.
+o_id: pell_bye
+o_goto: Bye
+
+name: Make
+npc: Pod frames, filtration, cold units. Last month it was all cold units. Same kind they put in the ships. Nobody tells us what for, so we make jokes about it.
+#
+o_text: Back.
+o_id: pell_make_back
+o_goto: Default
+
+name: Trucks
+npc: Loaded cold units after shift. Caterers' vans followed them out once, I swear it. Ask the gate captain, he signs them through. Or don't, he's a bastard.
+#
+o_text: Back.
+o_id: pell_trucks_back
+o_goto: Default
+
+name: Gift
+npc: (He grins for the first time.) You're all right. Here, someone left this in the locker room. I don't use it.
+effect: StackTransferFrom(NPC, 'meld', 1)
+effect: SetFlag('pell_gift')
+#
+o_text: Thanks.
+o_id: pell_gift_back
+o_goto: Default
+
+name: NewForeman
+npc: Okafor's gone, the new one counts our breaks with a stopwatch. Whoever set that up, I hope they choke on it. (He looks at you a beat too long.)
+effect: EndConversation
+
+name: Bye
+npc: Back to the line.
+effect: EndConversation

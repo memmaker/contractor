@@ -418,3 +418,34 @@ SourceFile: 00000382.pro
 Dialogue: synth_duck
 Position: (77,12)
 
+
+Name: sewer_hermit_abe
+Description: Old Abe
+LongDescription: A hermit in a nest of cardboard by the dry channel. He feeds the rats by name and hates the cleaner.
+Dialogue: sewer_hermit_abe
+Icon: A
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: rat_tail
+Position: (77,17)

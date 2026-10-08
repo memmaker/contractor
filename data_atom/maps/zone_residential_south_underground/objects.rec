@@ -167,3 +167,17 @@ Position: (77,13)
 Category: NamedLocation
 Identifier: west_tunnel
 Position: (10,9)
+
+Category: Readable
+Name: sewer_graffiti
+Description: graffiti
+Text: THE DOME KEEPS US IN. THE WALL KEEPS THEM OUT. WHO KEEPS THE KEYS?
++ Below, smaller: E. does.
+Position: (76,6)
+
+Category: Readable
+Name: maintenance_log
+Description: a maintenance log
+Text: SEWER MAINT. SECTOR S-2. Rat count up 40%. Requested poison: denied.
++ Requested replacement for cleaner: denied. Note: if S-2 is left uncleaned, the west overflow backs up within two days.
+Position: (64,18)

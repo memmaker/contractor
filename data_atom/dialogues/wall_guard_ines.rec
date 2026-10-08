@@ -1,0 +1,73 @@
+# Wall guard. Reacts to the captain's death, the tags, the new captain.
+%rec: OpeningBranch
+
+cond: HasFlag('a_new_captain')
+goto: NewCaptain
+
+cond: HasFlag('Killed(gate_captain)')
+goto: CaptainDead
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Yard's closed. Talk to the captain if you want the airlock.
+#
+o_text: Who are the people out there?
+o_id: ines_bodies
+o_goto: Bodies
+#
+o_text: What's on the terminals?
+o_id: ines_terminals
+o_goto: Terminals
+#
+o_text: Never mind.
+o_id: ines_bye
+o_goto: Bye
+
+name: Bodies
+npc: The south gate four hundred. Terra Vitae people, mostly. They wanted in when the dome sealed. Orders came down. (She keeps her eyes on the field.) I was on the other gate that night. That is what I tell myself.
+#
+o_text: Somebody is looking for one of them. Burton.
+o_id: ines_burton
+o_cond: HasFlag('QuestAccepted(tags)') && !HasItem('burton_dog_tag')
+o_goto: Burton
+#
+o_text: Back.
+o_id: ines_bodies_back
+o_goto: Default
+
+name: Burton
+npc: Young one, by the east pylon, with a chain at his neck. Nobody took it. Nobody goes out there. (Quieter.) If you bring it back to his people, I didn't help.
+effect: SetFlag('ines_pointed_burton')
+#
+o_text: Thanks.
+o_id: ines_burton_back
+o_goto: Default
+
+name: Terminals
+npc: Gate log copies and the yard camera. The captain keeps the log on him, the terminals just echo it. Nobody reads them.
+#
+o_text: Back.
+o_id: ines_terminals_back
+o_goto: Default
+
+name: CaptainDead
+npc: (Her hand is on her pistol.) They found him in the yard. If it was you, walk away now and don't come back for a while.
+#
+o_text: I'm going.
+o_id: ines_dead_bye
+o_goto: Bye
+
+name: NewCaptain
+npc: New captain, new rules. Fifty a visit to the yard. He keeps it, of course.
+#
+o_text: Of course.
+o_id: ines_new_bye
+o_goto: Bye
+
+name: Bye
+npc: Move along.
+effect: EndConversation

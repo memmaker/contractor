@@ -155,3 +155,35 @@ Agility: 3
 Luck: 2
 equipment: gold(7)
 Position: (8,21)
+
+Name: noodle_vendor_suki
+Description: Suki
+LongDescription: A noodle vendor behind a steaming cart. She has heard everything twice and repeats it once.
+Dialogue: noodle_vendor_suki
+Icon: S
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 40
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 1
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 4
+Perception: 5
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: binge(3)
+equipment: gold(40)
+Position: (12,20)

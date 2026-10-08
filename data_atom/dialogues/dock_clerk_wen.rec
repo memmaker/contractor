@@ -1,0 +1,41 @@
+# Spaceport clerk. The golden ticket, cargo, the bots.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Arrivals and cargo only. Departures are by ticket.
+#
+o_text: How many passengers on the next ship?
+o_id: wen_passengers
+o_goto: Passengers
+#
+o_text: What are the bots on the dock for?
+o_id: wen_bots
+o_goto: Bots
+#
+o_text: Thanks.
+o_id: wen_bye
+o_goto: Bye
+
+name: Passengers
+npc: (A pause just a little too long.) The manifest says cargo. Cold units, medical, military. Passenger berths are... allocated at the draw. I just stamp the forms.
+effect: SetFlag('wen_slipped')
+#
+o_text: Back.
+o_id: wen_passengers_back
+o_goto: Default
+
+name: Bots
+npc: Dock sentries. Old models, one of them has a cracked optic. Don't tell anyone I said that, they'll budget for a new one and then I'll have nobody to blame.
+#
+o_text: Back.
+o_id: wen_bots_back
+o_goto: Default
+
+name: Bye
+npc: Next.
+effect: EndConversation

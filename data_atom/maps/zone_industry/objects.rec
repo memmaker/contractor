@@ -25,3 +25,32 @@ Position: (79,7)
 Category: NamedLocation
 Identifier: foreman_office
 Position: (55,15)
+
+Category: Readable
+Name: shift_board
+Description: a shift board
+Text: SHIFT ROSTER, LINE 3. Foreman: OKAFOR.
++ Priority this week: COLD UNITS (EXPORT). Overtime mandatory.
++ Breaks are ten minutes. Open carry on the floor is a firing offence. Literally.
+Position: (54,14)
+
+Category: Readable
+Name: safety_poster
+Description: a safety poster
+Text: A SAFE WORKER IS A QUIET WORKER.
++ Report talk of the cleansing to your foreman. EBI thanks you for your discretion.
+Position: (46,3)
+
+Category: UnknownContainer
+Name: tool_crate
+Description: a tool crate
+item: robot_repair_parts
+item: junk(2)
+Position: (56,17)
+
+Category: UnknownContainer
+Name: break_room_fridge
+Description: a break room fridge
+item: binge(2)
+item: water_ration
+Position: (50,15)
