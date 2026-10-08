@@ -1,0 +1,30 @@
+# Chapter 2 (BioChemistry): past the gate as the caterer, then fix the glycol mix in Faust's cryo notes. He allies, hands over the keycard and his pod.
+
+%rec: outcomes
+
+if: HasFlag('faust_allied') && HasFlag('PodFree(4)') && HasItem('cryo_keycard') && HasFlag('QuestCompleted(recluse, allied)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('ask_mansion')
+do: Choose('mansion_persuade')
+do: Choose('mansion_now')
+
+if: true
+do: Talk('mansion_guard')
+do: Choose('claim_caterer')
+do: Choose('gate_thanks')
+
+if: true
+do: GoTo('faust_study')
+
+if: true
+do: Talk('logan_faust')
+do: Choose('not_here_to_kill')
+do: Choose('fix_mix_faust')
+do: Choose('mix_now_talk')
+do: Choose('ask_pod')
+do: Choose('pod_thanks')
