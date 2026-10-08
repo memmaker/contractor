@@ -18,7 +18,6 @@ effect: EndConversation
 name: SearchTaxi
 npc: (Since the driver is dead, you proceed to search the taxi.)
 effect: SetFlag('searched_taxi')
-#effect: GiveItem('taxi_key')
 #
 o_text: Drive to a location.
 o_goto: UseTaxi

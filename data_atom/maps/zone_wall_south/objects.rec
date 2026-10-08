@@ -2,7 +2,7 @@
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: wall_terminal
 Position: (50,12)
 
 Category: LockedDoor
@@ -13,7 +13,7 @@ Position: (41,16)
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: wall_terminal
 Position: (29,12)
 
 Category: LockedDoor
@@ -30,7 +30,7 @@ IsFlagControlled: true
 Position: (41,14)
 
 Category: Transition
-Description: CHANGEME
+Description: the street back to the southern residential district
 Location: street_to_south
 TargetMap: zone_residential_south
 TargetLocation: street_to_wall

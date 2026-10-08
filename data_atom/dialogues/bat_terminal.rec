@@ -1,0 +1,43 @@
+# Bushido-ArmaTech lobby terminals. Brochure-ware with one crack in it.
+%rec: OpeningBranch
+
+cond: true
+goto: Welcome
+
+%rec: Nodes
+
+name: Welcome
+npc: BUSHIDO-ARMATECH // PEACE THROUGH STRENGTH
++ Visitor services. Please choose.
+#
+o_text: Products.
+o_id: bat_products
+o_goto: Products
+#
+o_text: Shipping schedule.
+o_id: bat_shipping
+o_goto: Shipping
+#
+o_text: (Log off.)
+o_id: bat_leave
+o_goto: End
+
+name: Products
+npc: Small arms, perimeter systems, crowd solutions. Government contracts only.
++ Ask our lobby staff about the Founders' Berth Programme.
+#
+o_text: Back.
+o_id: products_back
+o_goto: Welcome
+
+name: Shipping
+npc: Next launch: spaceport pad 2. Cargo manifest: 98% freight, 2% crew.
++ Passenger berths: 0.
+#
+o_text: Back.
+o_id: shipping_back
+o_goto: Welcome
+
+name: End
+npc: The logo spins back up.
+effect: EndConversation

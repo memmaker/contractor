@@ -102,7 +102,7 @@ Description: a door
 Position: (37,13)
 
 Category: Transition
-Description: CHANGEME
+Description: the road to the south wall
 Location: street_to_wall
 TargetMap: zone_wall_south
 TargetLocation: street_to_south

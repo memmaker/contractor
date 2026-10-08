@@ -1,0 +1,22 @@
+# Harker can't do major cyberware and refers you to Dr. Winters at Terra Vitae, who takes the referral.
+
+%rec: outcomes
+
+if: HasFlag('harker_referral_given') && !HasItem('doctors_referral')
+
+%rec: frames
+
+if: true
+do: Talk('daniel_harker')
+do: Choose('ask_cyberware')
+do: Choose('ask_referral')
+do: Choose('referral_thanks')
+do: Choose('bye')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('dr_winters')
+do: Choose('give_referral')

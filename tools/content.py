@@ -300,7 +300,7 @@ def _read_all(pattern_dir, suffix='.rec'):
 
 def lint(only=None):
     """Check names used in data_atom against what is defined. only: set of data_atom-relative paths to report on."""
-    files = dict(_read_all(DATA))
+    files = {rel: txt for rel, txt in _read_all(DATA) if rel != 'definitions/objectTemplates.rec'}  # editor templates, not content
     go = ''.join(open(os.path.join(ROOT, 'game', f)).read() for f in os.listdir(os.path.join(ROOT, 'game')) if f.endswith('.go') and not f.endswith('_test.go'))
     q = r"""['"]([^'"]+)['"]"""
     every = lambda rx, where=files: {(rel, m) for rel, txt in where.items() for m in re.findall(rx, txt)}
@@ -310,7 +310,7 @@ def lint(only=None):
     tests = {rel: txt for rel, txt in files.items() if rel.startswith('playtests/')}
     content = {rel: txt for rel, txt in files.items() if not rel.startswith('playtests/')}
 
-    items = names(r'(?m)^Name:\s*(\S+)', defs) | {'gold'} | names(r'key\(' + q)  # a key's item name is its lock flag
+    items = names(r'(?m)^Name:\s*(\S+)', defs) | {'gold'} | set(re.findall(r'InternalName:\s*"(\w+)"', go)) | names(r'key\(' + q)  # a key's item name is its lock flag
     actors = names(r'(?m)^Name:\s*(\S+)', maps) | names(r'(?m)^Name:\s*(\S+)', defs)
     spots = names(r'(?m)^(?:Identifier|Location):\s*(\S+)', maps)
     teams = names(r'(?m)^name:\s*(\S+)', {r: t for r, t in defs.items() if 'spawned_teams' in r})

@@ -23,6 +23,13 @@ Category: Other
 Weight: 1
 Cost: 40
 
+Name: doctors_referral
+Description: a referral to Dr. Winters
+Long_Description: Daniel Harker's scrawl on clinic paper: "Patient needs major work. Dr. Winters, Terra Vitae. -D.H."
+Category: Other
+Weight: 0
+Cost: 0
+
 Name: rat_repellent
 Description: a bucket of rat repellent
 Long_Description: Bleach, floor cleaner and something that used to be food. Rats hate it. So does your nose.

@@ -86,7 +86,7 @@ Max_Intensity: 2.0
 Position: (66,20)
 
 Category: Transition
-Description: CHANGEME
+Description: the street to the corporate district
 Location: street_to_corporate
 TargetMap: zone_corporate
 TargetLocation: street_to_commerce

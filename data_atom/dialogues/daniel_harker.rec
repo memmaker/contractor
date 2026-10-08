@@ -93,6 +93,7 @@ o_text: I need some medical supplies.
 o_goto: MedicalSupplies
 #
 o_text: I need some cyberware.
+o_id: ask_cyberware
 o_goto: Cyberware
 #
 o_text: Do you know a guy named 'Jacob'?
@@ -118,7 +119,22 @@ o_text: What do you have?
 o_effect: StartCyberware
 o_goto: DefaultIntroduction
 #
+o_text: Who does major work, then?
+o_id: ask_referral
+o_cond: !HasItem('doctors_referral') && !HasFlag('harker_referral_given')
+o_goto: Referral
+#
 o_text: I will come back later.
+o_goto: DefaultIntroduction
+
+name: Referral
+npc: Dr. Winters, at Terra Vitae. Good hands. Don't ask where the parts come from.
++ (He writes you a referral.)
+effect: PlayerAddItem('doctors_referral')
+effect: SetFlag('harker_referral_given')
+#
+o_text: Thanks.
+o_id: referral_thanks
 o_goto: DefaultIntroduction
 
 name: JacobQuestion

@@ -1,0 +1,15 @@
+# Big Bob's truck is stuck at the north checkpoint: forge a permit and the shelves fill up.
+
+%rec: outcomes
+
+if: HasFlag('solved_bobs_problems')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('big_bob')
+do: Choose('bob_problem')
+do: Choose('bob_help')
+do: Choose('bob_permit')
+do: Choose('bob_through_done')

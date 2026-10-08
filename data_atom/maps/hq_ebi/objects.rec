@@ -2,7 +2,7 @@
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: ebi_terminal
 Position: (13,10)
 
 Category: UnknownContainer
@@ -22,7 +22,7 @@ Identifier: pamphlet_retrieval
 Position: (60,16)
 
 Category: Transition
-Description: CHANGEME
+Description: the street to the corporate district
 Location: street_to_corporate
 TargetMap: zone_corporate
 TargetLocation: street_to_ebi
@@ -34,7 +34,7 @@ Position: (46,19)
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: ebi_terminal
 Position: (75,10)
 
 Category: Transition

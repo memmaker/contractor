@@ -317,7 +317,7 @@ Description: a door
 Position: (60,19)
 
 Category: Transition
-Description: CHANGEME
+Description: the street to the southern residential district
 Location: street_to_south
 TargetMap: zone_residential_south
 TargetLocation: street_to_west
@@ -386,7 +386,7 @@ Description: a door
 Position: (43,6)
 
 Category: Transition
-Description: CHANGEME
+Description: the stairs up to Terra Vitae
 Location: stairs_to_terra_vitae
 TargetMap: hq_terra_vitae
 TargetLocation: stairs_to_west
