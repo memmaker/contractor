@@ -35,6 +35,18 @@ o_test: RollSkill('intimidate', 'Hard')
 o_succ: Scared
 o_fail: Fight
 #
+o_text: Your books run on that cracked terminal. One keystroke and they're with the EBI tax office.
+o_id: fargo_hack
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Fight
+#
+o_text: (While he counts, slide the marker off the table.)
+o_id: fargo_lift
+o_test: RollSkill('stealth', 'Medium')
+o_succ: Lifted
+o_fail: Fight
+#
 o_text: No.
 o_id: fargo_no
 o_goto: Bye
@@ -47,6 +59,16 @@ effect: EndConversation
 
 name: Scared
 npc: (He weighs it. He tears the marker.) She was bad for business anyway.
+effect: SetFlag('holly_free')
+effect: EndConversation
+
+name: Hacked
+npc: (He looks at the terminal, then at you. He tears the marker.) Nobody touches the books. She's yours.
+effect: SetFlag('holly_free')
+effect: EndConversation
+
+name: Lifted
+npc: Four hundred, I said. (The marker is in your sleeve. Holly sees it and walks out behind you.)
 effect: SetFlag('holly_free')
 effect: EndConversation
 
