@@ -1,0 +1,60 @@
+# F4: the ghost. Trace the cable, or talk back through the projector to Pixel.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (A white face, mouth open, no sound. It flickers when you step closer.)
+#
+o_text: (Follow the flicker.) There's a cable behind it.
+o_id: ghost_trace
+o_goto: Traced
+#
+o_text: (Technology) Find the projector's mic and talk back through it.
+o_id: ghost_talk
+o_test: RollSkill('technology', 'Easy')
+o_succ: Pixel
+o_fail: Static
+#
+o_text: (Back away.)
+o_id: ghost_leave
+o_goto: Bye
+
+name: Traced
+npc: (The cable runs along the ceiling to a humming junction box by the back wall.)
+effect: SetFlag('ecto_traced')
+effect: EndConversation
+
+name: Static
+npc: (Static. The face screams louder, without a sound.)
+effect: EndConversation
+
+name: Pixel
+npc: (The face stops. A girl's voice, young and scared.) Who is this? ... Okay. Okay. I'm Pixel. Lou cheated my mom out of this club. The ghost is the only thing that ever scared him.
+#
+o_text: Stop now, before EBI traces you instead of me.
+o_id: ghost_pixel_stop
+o_goto: PixelStops
+#
+o_text: Keep haunting. I'll tell Lou it's fixed, and you pay me.
+o_id: ghost_pixel_deal
+o_goto: PixelDeal
+
+name: PixelStops
+npc: EBI? ... Fine. Fine! It's off. Tell him... no. Don't tell him anything. (The face fades out.)
+effect: SetFlag('ecto_pixel_stopped')
+effect: RemoveActor('ecto_ghost')
+effect: EndConversation
+
+name: PixelDeal
+npc: (A laugh.) Deal. Two hundred, dropped in your account. Boo.
+effect: PlayerAddGold(200)
+effect: SetFlag('ecto_haunt_kept')
+effect: EndConversation
+
+name: Bye
+npc: (It watches you go.)
+effect: EndConversation

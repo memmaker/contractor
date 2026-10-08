@@ -1,0 +1,34 @@
+# False Papers: carry the photo, pay, wait twelve hours, carry the card back.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(false_papers, delivered)') && HasItem('amira_ring')
+
+%rec: frames
+
+if: true
+do: Talk('refugee_amira')
+do: Choose('papers_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('forger_nils')
+do: Choose('nils_order')
+do: Choose('nils_pay')
+
+if: true
+do: WaitHours(12)
+
+if: true
+do: Talk('forger_nils')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('refugee_amira')
+do: Choose('papers_give')

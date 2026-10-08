@@ -1,8 +1,8 @@
-# Package F "A Holiday on Ice": Morrow has the key to the stash (holiday_on_ice_stash) that holds the pump specs.
+# F9: Morrow. Bluff him (technology Hard), learn about Nueman, or sell the specs back.
 %rec: OpeningBranch
 
-cond: HasFlag('holiday_on_ice_bribed')
-goto: Bribed
+cond: HasFlag('specs_returned')
+goto: Done
 
 cond: true
 goto: Default
@@ -10,54 +10,54 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: I have a meeting. Is this about the inspection?
+npc: Don't touch the case.
 #
-o_text: (Technology) I'm the inspection. Your pump design leaks heat at the third stage. Show me the specs.
-o_id: holiday_on_ice_talk
-o_cond: HasFlag('JobAccepted(holiday_on_ice)') && !HasItem('holiday_on_ice_stash_key')
+o_text: (Technology) Safety inspection. I need to verify the data on that chip.
+o_id: morrow_bluff
+o_cond: HasFlag('JobAccepted(holiday)') && !HasItem('orbital_specs')
 o_test: RollSkill('technology', 'Hard')
-o_succ: Yield
-o_fail: Refuse
+o_succ: Bluffed
+o_fail: Suspicious
 #
-o_text: Somebody's paying to steal your specs. I could warn you for a price.
-o_id: holiday_on_ice_bribe
-o_cond: HasFlag('JobAccepted(holiday_on_ice)') && !HasItem('pump_specs') && !HasFlag('holiday_on_ice_paid')
-o_goto: Bribe
+o_text: A man called Nueman wants your specs.
+o_id: morrow_nueman
+o_cond: HasFlag('JobAccepted(holiday)')
+o_goto: Warning
 #
-o_text: What do the pumps cool?
-o_id: holiday_on_ice_lore
-o_goto: Lore
+o_text: (Give the specs back.) These are yours.
+o_id: morrow_return
+o_cond: HasItem('orbital_specs')
+o_goto: Returned
 #
-o_text: Bye.
-o_id: holiday_on_ice_bye
+o_text: Never mind.
+o_id: morrow_bye
 o_goto: Bye
 
-name: Lore
-npc: Cold units. For the ships, they say. Thousands of them. Big enough for a person, if you ask me. Nobody asks me.
-#
-o_text: Back.
-o_id: holiday_on_ice_lore_back
-o_goto: Default
-
-name: Yield
-npc: (He goes red.) Third stage, yes. How did you... Here, the key, take the specs, review them. I need this signed off.
-effect: StackTransferFrom(NPC, 'holiday_on_ice_stash_key', 1)
+name: Bluffed
+npc: An inspector? Finally, someone official. (He hands you the chip.) Bring it right back.
+effect: StackTransferFrom(NPC, 'orbital_specs', 1)
 effect: EndConversation
 
-name: Refuse
-npc: You're not an inspector. Security!
+name: Suspicious
+npc: You're no inspector.
 effect: EndConversation
 
-name: Bribe
-npc: (He sweats.) Two-fifty. Don't tell security I was careless. Please.
-effect: StackTransferFrom(NPC, 'gold', 250)
-effect: SetFlag('holiday_on_ice_bribed')
+name: Warning
+npc: Nueman. (He grips the case.) He hired a team for Orbital Air last year. They got the data. Then they got shot. He doesn't leave people who know.
+effect: SetFlag('nueman_suspected')
 effect: EndConversation
 
-name: Bribed
-npc: I changed the lock. Thank you.
+name: Returned
+npc: (He holds it like a child.) Three hundred is all I have. Thank you.
+effect: StackTransferTo(NPC, 'orbital_specs', 1)
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('specs_returned')
+effect: EndConversation
+
+name: Done
+npc: I owe you.
 effect: EndConversation
 
 name: Bye
-npc: Excuse me.
+npc: Hm.
 effect: EndConversation

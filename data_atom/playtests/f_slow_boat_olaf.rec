@@ -1,0 +1,50 @@
+# The Slow Boat (grey): give the berth lists to Terra Vitae.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(slow_boat, olaf)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('fixer_kade')
+do: Choose('slow_boat_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: PickUp('luggage_7')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Use('left_luggage')
+do: Take('chiba_chip')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_father_olaf')
+do: Choose('olaf_take_chip')

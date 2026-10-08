@@ -16,6 +16,11 @@ goto: Default
 name: Default
 npc: (A tall man in a coat stitched from old flags.) Life finds a way, child. Even in here. Even after the cleansing.
 #
+o_text: (Give him the Chiba chip.) These are the names of who gets to leave.
+o_id: olaf_take_chip
+o_cond: HasItem('chiba_chip')
+o_goto: OlafChip
+#
 o_text: What cleansing?
 o_id: ask_cleansing
 o_goto: Cleansing
@@ -81,4 +86,11 @@ effect: EndConversation
 
 name: Exit
 npc: Life finds a way.
+effect: EndConversation
+
+name: OlafChip
+npc: (He reads for a long time.) None of ours. Not one. (He closes his eyes.) Then we stop waiting for the ships. Thank you. Terra Vitae will remember.
+effect: StackTransferTo(NPC, 'chiba_chip', 1)
+effect: SetFlag('slow_boat_olaf')
+effect: SetFlag('terra_vitae_friend')
 effect: EndConversation

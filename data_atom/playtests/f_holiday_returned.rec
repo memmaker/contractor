@@ -1,0 +1,39 @@
+# Holiday on Ice (avoider): crack the briefcase, then give it back to Morrow.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(holiday, returned)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: SetSkill('Mechanics', 200)
+do: Give('mechanical_lockpick(5)')
+do: Sneak()
+do: Use('morrow_briefcase')
+do: Take('orbital_specs')
+
+if: true
+do: Sneak()
+do: Talk('engineer_morrow')
+do: Choose('morrow_return')

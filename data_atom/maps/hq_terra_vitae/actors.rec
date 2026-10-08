@@ -222,7 +222,7 @@ Position: (48,17)
 
 Name: star_shani
 Description: Shani Kell
-LongDescription: A woman with a famous face under a cheap hood. She flinches every time a camera drone passes over the commune.
+LongDescription: A woman with a famous face under a cheap hood. She flinches whenever a camera drone passes over the commune.
 Dialogue: star_shani
 faction: star_shani
 Icon: s
@@ -249,6 +249,5 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(330)
-equipment: key('sweet_revenge_stash_key', "Shani's case key")
+equipment: gold(350)
 Position: (20,12)

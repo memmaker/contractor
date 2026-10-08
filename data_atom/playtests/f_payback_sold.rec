@@ -1,0 +1,26 @@
+# Payback: ask around, sell the location, never meet Pinky. He is dead by morning.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(payback, sold)') && HasFlag('pinky_dead') && !HasFlag('TalkedTo(informant_pinky)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_accept')
+
+if: true
+do: Talk('noodle_vendor_suki')
+do: Choose('suki_pinky')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_tell')
+
+if: true
+do: WaitHours(13)

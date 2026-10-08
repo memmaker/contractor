@@ -1,0 +1,23 @@
+# False Papers (grey): sell her face to EBI.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(false_papers, sold)') && HasFlag('amira_taken')
+
+%rec: frames
+
+if: true
+do: Talk('refugee_amira')
+do: Choose('papers_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('forger_nils')
+do: Choose('nils_order')
+do: Choose('nils_sell_photo')
+
+if: true
+do: WaitHours(9)

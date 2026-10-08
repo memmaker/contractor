@@ -1,0 +1,28 @@
+# Ecto (grey): take Pixel's money, lie to Lou.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(ecto, haunted)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_accept')
+
+if: true
+do: WaitUntil('23:00')
+
+if: true
+do: ForceChecks('success')
+do: Talk('ecto_ghost')
+do: Choose('ghost_talk')
+do: Choose('ghost_pixel_deal')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_report_lie')

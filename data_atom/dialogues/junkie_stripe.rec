@@ -1,14 +1,8 @@
-# Package F "Payback": Stripe hires you. Flags: JobAccepted(payback), payback_paid, payback_bribed.
+# F6 Payback. Stripe pays for knowledge: where is Pinky? What happens next happens off-screen (script f_pinky_dies).
 %rec: OpeningBranch
 
-cond: HasFlag('payback_paid')
+cond: HasFlag('pinky_sold') || HasFlag('pinky_killed_paid') || HasFlag('stripe_lied') || HasFlag('stripe_doubts')
 goto: Done
-
-cond: HasFlag('payback_bribed')
-goto: Bribed
-
-cond: HasFlag('JobAccepted(payback)') && HasItem('stripe_ledger')
-goto: Return
 
 cond: HasFlag('JobAccepted(payback)')
 goto: Waiting
@@ -19,51 +13,73 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: Pink hair. Shift tacts. Calls himself Pinky. He sold my stash list to EBI and they cleaned out every dealer I knew. I want my ledger back. He kept it.
+npc: A thousand for knowledge, that's what I'd pay if I had it. I've got three hundred. Pink hair, shift tacts, calls himself Pinky. Sold me out to EBI. I want to know where he sleeps.
 #
-o_text: Where is he?
+o_text: I'll find him.
 o_id: payback_accept
 o_goto: Accepted
 #
-o_text: Not my kind of job.
+o_text: Find him yourself.
 o_id: payback_decline
 o_goto: Bye
 
 name: Accepted
-npc: South district, hiding near the clinic. He's got a strongbox. Bring me the ledger. Three hundred. What happens to him is your business.
+npc: Just find him. Tell me where. You don't have to do anything else. (He smiles. It's horrible.)
 effect: SetFlag('JobAccepted(payback)')
 effect: EndConversation
 
 name: Waiting
-npc: Pinky. South. The ledger. You know the rest.
-effect: EndConversation
-
-name: Return
-npc: (He flips through the ledger, lips moving.) Every name. Every name he sold.
+npc: Well? Where?
 #
-o_text: (Hand it over.) 300 sat, as agreed.
-o_id: payback_give
-o_goto: Paid
+o_text: He hides with the scavengers at the south wall.
+o_id: payback_tell
+o_cond: HasFlag('pinky_found') && !HasFlag('Killed(informant_pinky)') && !HasFlag('pinky_warned')
+o_goto: Told
 #
-o_text: Not yet.
-o_id: payback_keep
+o_text: He's dead. I did it.
+o_id: payback_dead
+o_cond: HasFlag('Killed(informant_pinky)')
+o_goto: DeadPaid
+#
+o_text: He went over the wall. He's gone.
+o_id: payback_lie
+o_cond: HasFlag('pinky_warned')
+o_test: RollSkill('social', 'Easy')
+o_succ: Believed
+o_fail: Doubts
+#
+o_text: Still looking.
+o_id: payback_looking
 o_goto: Bye
 
-name: Paid
-npc: Three hundred. (He's already somewhere else in his head.) Now I know who to visit.
-effect: StackTransferTo(NPC, 'stripe_ledger', 1)
+name: Told
+npc: The wall. (He's already standing.) Three hundred. Go home, contractor.
 effect: StackTransferFrom(NPC, 'gold', 300)
-effect: SetFlag('payback_paid')
+effect: SetFlag('pinky_sold')
+effect: RunScript('f_pinky_dies')
 effect: EndConversation
 
-name: Bribed
-npc: Pinky's still walking around. I can smell him on you.
+name: DeadPaid
+npc: (He laughs and cries at once.) You did it for me? Four hundred. Everything.
+effect: StackTransferFrom(NPC, 'gold', 400)
+effect: SetFlag('pinky_killed_paid')
+effect: EndConversation
+
+name: Believed
+npc: Over the wall. (He sags.) Then the dead have him. Good. Take a hundred for your trouble.
+effect: StackTransferFrom(NPC, 'gold', 100)
+effect: SetFlag('stripe_lied')
+effect: EndConversation
+
+name: Doubts
+npc: Over the wall. Sure. (He looks at you for a long time.) Get out.
+effect: SetFlag('stripe_doubts')
 effect: EndConversation
 
 name: Done
-npc: We're done. Don't look at me like that.
+npc: Yeah, yeah. We're done.
 effect: EndConversation
 
 name: Bye
-npc: Yeah, yeah.
+npc: Pink hair. Don't forget.
 effect: EndConversation

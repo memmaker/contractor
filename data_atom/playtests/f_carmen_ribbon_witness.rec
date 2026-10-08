@@ -1,0 +1,43 @@
+# Carmen: the ribbon off the victim and Tito's word, then the arrest.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(carmen, arrested)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('detective_rourke')
+do: Choose('carmen_accept')
+
+if: true
+do: PickUp('velvet_ribbon')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: ForceChecks('success')
+do: Talk('stagehand_tito')
+do: Choose('tito_ask')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('detective_rourke')
+do: Choose('carmen_accuse')

@@ -3,31 +3,46 @@
 
 Name: chiba_chip
 Description: a data chip
-Long_Description: A sealed data chip off the Chiba freighter, stamped with an EBI cargo seal.
+Long_Description: A sealed data chip off the Chiba freighter, stamped with an EBI cargo seal. Berth lists, if Kade is to be believed.
 Category: Other
 Weight: 1
 Cost: 400
+PickupFlag: slow_boat_chip_taken
 
-Name: bd_master
-Description: a braindance master
-Long_Description: Shani Kell's last braindance master. The label says SOUTH WALL, NIGHT. You don't want to know.
-Category: Other
-Weight: 1
-Cost: 500
-
-Name: harley_ignition
-Description: an ignition module
-Long_Description: The ignition module off a 1994 Harley-Davidson. Chrome, brass, and somebody's whole life.
+Name: stromberg_ledger
+Description: a black ledger
+Long_Description: Stromberg’s private accounts. Braindance masters bought from EBI: "south wall, night, 14 angles". Buyers. Prices.
 Category: Other
 Weight: 1
 Cost: 300
 
-Name: holo_emitter
-Description: a holo emitter
-Long_Description: A homemade holo emitter. It projects a white face that screams in silence.
+Name: harley_ignition
+Description: an ignition module
+Long_Description: The ignition module off a 1994 Harley-Davidson. Chrome, brass, and somebody’s whole life.
 Category: Other
 Weight: 1
-Cost: 350
+Cost: 120
+
+Name: harley_fuel_cell
+Description: a fuel cell
+Long_Description: A dented fuel cell that fits a bike older than the dome.
+Category: Other
+Weight: 1
+Cost: 120
+
+Name: harley_tank
+Description: a chrome tank
+Long_Description: A chrome fuel tank, flames painted on, scratched by a hundred owners.
+Category: Other
+Weight: 1
+Cost: 120
+
+Name: amira_photo
+Description: a passport photo
+Long_Description: A photo of Amira, taken against a bedsheet. She tried to smile.
+Category: Other
+Weight: 1
+Cost: 5
 
 Name: forged_sin
 Description: a forged SIN card
@@ -36,37 +51,51 @@ Category: Other
 Weight: 1
 Cost: 250
 
-Name: stripe_ledger
-Description: a dealer ledger
-Long_Description: A greasy ledger of names, places and debts. Half the names have been crossed out by EBI already.
+Name: amira_ring
+Description: a wedding ring
+Long_Description: A thin gold ring. Her husband did not make it through the gate.
 Category: Other
 Weight: 1
-Cost: 300
+Cost: 200
+
+Name: velvet_ribbon
+Description: a velvet ribbon
+Long_Description: A dark red velvet ribbon, tied in a neat bow. It came off a dead man’s wrist.
+Category: Other
+Weight: 1
+Cost: 5
 
 Name: carmen_diary
-Description: Carmen's diary
-Long_Description: A diary in tidy handwriting. Five names. Five dates. Five reasons, each of them worse.
+Description: Carmen’s diary
+Long_Description: A diary in tidy handwriting. Five names. Five dates. Five reasons, each one worse.
 Category: Other
 Weight: 1
-Cost: 400
+Cost: 50
 
-Name: proxy_vote
-Description: a signed proxy
-Long_Description: A signed shareholder proxy for fifteen shares of Liverpool Filtration. The signature trembles.
+Name: proxy_card
+Description: a signed proxy card
+Long_Description: Hal’s share vote, signed over in shaky capitals.
+Category: Other
+Weight: 1
+Cost: 50
+
+Name: forged_proxy
+Description: a forged proxy card
+Long_Description: Hal’s signature, better than Hal does it.
+Category: Other
+Weight: 1
+Cost: 50
+
+Name: orbital_specs
+Description: orbital mass-driver specs
+Long_Description: A data chip of mass-driver specifications. Morrow’s life’s work. Orbital Air would kill for it, literally.
 Category: Other
 Weight: 1
 Cost: 600
 
-Name: pump_specs
-Description: pump specs
-Long_Description: Cold-pump design specs, BAT-stamped. The application notes mention cryo storage for... freight.
-Category: Other
-Weight: 1
-Cost: 450
-
 Name: holly_marker
-Description: Holly's debt marker
-Long_Description: A debt marker, Holly Jones, 2000 sat at thirty percent a week. Collateral: herself.
+Description: Holly’s marker
+Long_Description: A promissory note: Holly Jones owes Fargo four hundred, plus whatever he feels like.
 Category: Other
 Weight: 1
-Cost: 350
+Cost: 5

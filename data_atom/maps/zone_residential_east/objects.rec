@@ -100,20 +100,3 @@ Description: an overstuffed mailbox
 item: gold(35)
 item: ebi_pamphlet_1
 Position: (10,18)
-
-Category: UnknownContainer
-Name: slow_boat_stash
-Description: Jalil's footlocker
-lockdifficulty: medium
-lockflag: slow_boat_stash_key
-item: chiba_chip
-item: 10mm_jhp(12)
-Position: (32,18)
-
-Category: UnknownContainer
-Name: ecto_stash
-Description: a deck case
-lockdifficulty: medium
-lockflag: ecto_stash_key
-item: holo_emitter
-Position: (42,10)

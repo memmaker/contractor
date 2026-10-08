@@ -1,0 +1,16 @@
+# F7: Rourke brings Carmen in at dawn.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('carmen_arrest_t')
+
+if: IsHoursAfter('carmen_arrest_t', 6)
+do: LoadMap('zone_commerce')
+do: RemoveActor('singer_carmen')
+do: SetFlag('carmen_taken')

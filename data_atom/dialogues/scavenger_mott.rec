@@ -9,6 +9,11 @@ goto: Default
 name: Default
 npc: (He doesn't stop sorting.) Boots are worth more than rings. People forget that. Buying or selling?
 #
+o_text: You have a chrome bike tank. I'll buy it. (100)
+o_id: mott_buy_tank
+o_cond: HasFlag('JobAccepted(old_harley)') && HasItem('gold', 100) && !HasItem('harley_tank') && !HasFlag('mott_tank_sold')
+o_goto: MottTank
+#
 o_text: (Sell junk.) I have scrap for you.
 o_id: mott_sell_junk
 o_cond: HasItem('junk')
@@ -75,4 +80,11 @@ effect: EndConversation
 
 name: Bye
 npc: Mind the mines past the pylons.
+effect: EndConversation
+
+name: MottTank
+npc: Flames and all. Some fool carried it to the wall to sell for water.
+effect: StackTransferTo(NPC, 'gold', 100)
+effect: StackTransferFrom(NPC, 'harley_tank', 1)
+effect: SetFlag('mott_tank_sold')
 effect: EndConversation

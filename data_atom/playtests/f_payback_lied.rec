@@ -1,0 +1,39 @@
+# Payback (grey): warn Pinky, take his money, lie to Stripe.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(payback, lied)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: Talk('informant_pinky')
+do: Choose('pinky_warn')
+do: Choose('pinky_run')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: ForceChecks('success')
+do: Talk('junkie_stripe')
+do: Choose('payback_lie')

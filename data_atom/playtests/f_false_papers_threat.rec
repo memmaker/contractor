@@ -1,0 +1,35 @@
+# False Papers (talker): lean on Nils for free papers.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(false_papers, delivered)') && HasItem('gold', 250)
+
+%rec: frames
+
+if: true
+do: Talk('refugee_amira')
+do: Choose('papers_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: ForceChecks('success')
+do: Talk('forger_nils')
+do: Choose('nils_order')
+do: Choose('nils_threaten')
+
+if: true
+do: WaitHours(12)
+
+if: true
+do: Talk('forger_nils')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('refugee_amira')
+do: Choose('papers_give')

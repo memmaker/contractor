@@ -1,0 +1,42 @@
+# The Slow Boat (fast): sell the chip to Shaw before the gunmen arrive.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(slow_boat, shaw)') && !HasFlag('slow_boat_ambush')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('fixer_kade')
+do: Choose('slow_boat_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: PickUp('luggage_7')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Use('left_luggage')
+do: Take('chiba_chip')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('shaw_buy_chip')

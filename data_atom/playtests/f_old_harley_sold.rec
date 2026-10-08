@@ -1,0 +1,49 @@
+# The '94 Harley (grey): collect the parts and sell them to Ratchet.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(old_harley, sold)')
+
+%rec: frames
+
+if: true
+do: Give('gold(300)')
+do: Talk('biker_dizzy')
+do: Choose('harley_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('chopper_ratchet')
+do: Choose('ratchet_ignition_buy')
+
+if: true
+do: Give('mechanical_lockpick(5)')
+do: SetSkill('Mechanics', 200)
+do: Use('burned_car')
+do: Take('harley_fuel_cell')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: Talk('scavenger_mott')
+do: Choose('mott_buy_tank')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('chopper_ratchet')
+do: Choose('ratchet_buy_parts')
+do: Choose('ratchet_parts_sold')

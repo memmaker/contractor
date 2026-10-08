@@ -1,16 +1,13 @@
-# Package F "Proxy Vote": Carleton hires you. Flags: JobAccepted(proxy_vote), proxy_vote_paid, proxy_vote_bribed.
+# F8 Proxy Vote. Two days (script f_proxy_deadline). Hal's real vote, a forged one, or nothing.
 %rec: OpeningBranch
 
-cond: HasFlag('proxy_vote_paid')
+cond: HasFlag('proxy_done')
 goto: Done
 
-cond: HasFlag('proxy_vote_bribed')
-goto: Bribed
+cond: HasFlag('proxy_too_late')
+goto: TooLate
 
-cond: HasFlag('JobAccepted(proxy_vote)') && HasItem('proxy_vote')
-goto: Return
-
-cond: HasFlag('JobAccepted(proxy_vote)')
+cond: HasFlag('JobAccepted(proxy)')
 goto: Waiting
 
 cond: true
@@ -19,51 +16,63 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: BAT is buying Liverpool Filtration, quietly. The board votes Monday. One small shareholder is in the way: old Hal, south district. Fifteen shares, and he's sentimental.
+npc: The board votes in two days. I'm one share short. An old dockworker in the south, Hal, holds it and doesn't answer his messages. Get me his proxy.
 #
-o_text: You want his vote.
-o_id: proxy_vote_accept
+o_text: Two days. Deal.
+o_id: proxy_accept
 o_goto: Accepted
 #
-o_text: Not my kind of job.
-o_id: proxy_vote_decline
+o_text: Not interested.
+o_id: proxy_decline
 o_goto: Bye
 
 name: Accepted
-npc: His signed proxy. He keeps it in a strongbox, he keeps the key on him. Six hundred. How you persuade him is your career path, not mine.
-effect: SetFlag('JobAccepted(proxy_vote)')
+npc: Five hundred if it's in my hand before the vote. Nothing after.
+effect: SetFlag('JobAccepted(proxy)')
+effect: RunScript('f_proxy_deadline')
 effect: EndConversation
 
 name: Waiting
-npc: Old Hal. South district. A signature. This is how the top is reached.
-effect: EndConversation
-
-name: Return
-npc: (He checks the signature against a file.) Hal's own hand. Lovely.
+npc: Clock's running.
 #
-o_text: (Hand it over.) 600 sat, as agreed.
-o_id: proxy_vote_give
-o_goto: Paid
+o_text: (Hand over Hal's proxy.)
+o_id: proxy_give_real
+o_cond: HasItem('proxy_card')
+o_goto: PaidReal
 #
-o_text: Not yet.
-o_id: proxy_vote_keep
+o_text: (Hand over the forged proxy.)
+o_id: proxy_give_forged
+o_cond: HasItem('forged_proxy')
+o_goto: PaidForged
+#
+o_text: Working on it.
+o_id: proxy_wait
 o_goto: Bye
 
-name: Paid
-npc: Six hundred. Monday morning, Liverpool Filtration belongs to BAT and the dome's water belongs to us. You're welcome in this building any time.
-effect: StackTransferTo(NPC, 'proxy_vote', 1)
-effect: StackTransferFrom(NPC, 'gold', 600)
-effect: SetFlag('proxy_vote_paid')
+name: PaidReal
+npc: Signed and all. Five hundred.
+effect: StackTransferTo(NPC, 'proxy_card', 1)
+effect: StackTransferFrom(NPC, 'gold', 500)
+effect: SetFlag('proxy_done')
+effect: SetFlag('proxy_real')
 effect: EndConversation
 
-name: Bribed
-npc: The vote failed. By fifteen shares. (His smile stays perfect.) I'll remember your face.
+name: PaidForged
+npc: (He doesn't look closely. He doesn't want to.) Five hundred.
+effect: StackTransferTo(NPC, 'forged_proxy', 1)
+effect: StackTransferFrom(NPC, 'gold', 500)
+effect: SetFlag('proxy_done')
+effect: SetFlag('proxy_forged')
+effect: EndConversation
+
+name: TooLate
+npc: The vote was yesterday. We lost by one. Get out of my building.
 effect: EndConversation
 
 name: Done
-npc: Busy. Always busy.
+npc: Motion carried.
 effect: EndConversation
 
 name: Bye
-npc: My card. Don't call it.
+npc: Two days.
 effect: EndConversation

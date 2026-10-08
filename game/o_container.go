@@ -355,6 +355,9 @@ func (g *GameState) openContainer(container ItemContainer) {
 			g.msg(foundation.Msg("You cannot carry any more items"))
 		} else if amount > 0 {
 			stackTransfer(container, g.Player.GetInventory(), itemTaken, amount)
+			if itemTaken.GetPickupFlag() != "" { // taking from a container counts as picking it up
+				g.gameFlags.Increment(itemTaken.GetPickupFlag())
+			}
 
 			g.ui.PlayCue("world/pickup")
 

@@ -1,14 +1,14 @@
-# Package F "The '94 Harley": Dizzy hires you. Flags: JobAccepted(old_harley), old_harley_paid, old_harley_bribed.
+# F3 The '94 Harley. Three parts: ignition (Ratchet, west), fuel cell (a burned car, west), chrome tank (Mott, at the wall). Six hours to rebuild.
 %rec: OpeningBranch
 
-cond: HasFlag('old_harley_paid')
+cond: HasFlag('harley_rebuilt') || HasFlag('harley_sold_ratchet')
 goto: Done
 
-cond: HasFlag('old_harley_bribed')
-goto: Bribed
+cond: HasFlag('harley_parts_given') && IsHoursAfter('harley_t', 6)
+goto: Ride
 
-cond: HasFlag('JobAccepted(old_harley)') && HasItem('harley_ignition')
-goto: Return
+cond: HasFlag('harley_parts_given')
+goto: Working
 
 cond: HasFlag('JobAccepted(old_harley)')
 goto: Waiting
@@ -19,51 +19,56 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: Somebody lifted the ignition module off my '94 Harley. Antique, real gasoline, the last one in the dome. Without it she's a sculpture.
+npc: My '94 Harley. Real gasoline engine, the last one in the dome. They stripped her while I was in the clinic. Ignition, fuel cell, the chrome tank. Without them she's a sculpture.
 #
-o_text: Who has it?
-o_id: old_harley_accept
+o_text: I'll find your parts.
+o_id: harley_accept
 o_goto: Accepted
 #
-o_text: Not my kind of job.
-o_id: old_harley_decline
+o_text: Good luck with that.
+o_id: harley_decline
 o_goto: Bye
 
 name: Accepted
-npc: Ratchet. Runs a chop shop in the west, parts bin by the back wall. Three hundred if you bring it back. He don't mean no harm. He just don't mean anything.
+npc: Ratchet's chop shop in the west took the ignition, I'd bet my teeth. Fuel cells end up in burned-out cars over there. The tank? Scavengers at the wall buy chrome. Three hundred when she runs.
 effect: SetFlag('JobAccepted(old_harley)')
 effect: EndConversation
 
 name: Waiting
-npc: Ratchet. West. The module. She's waiting.
-effect: EndConversation
-
-name: Return
-npc: (He holds the module like a newborn.) Oh, you beauty.
+npc: Ignition, fuel cell, tank. All three, or she doesn't breathe.
 #
-o_text: (Hand it over.) 300 sat, as agreed.
-o_id: old_harley_give
-o_goto: Paid
+o_text: (Hand over all three parts.)
+o_id: harley_give_parts
+o_cond: HasItem('harley_ignition') && HasItem('harley_fuel_cell') && HasItem('harley_tank')
+o_goto: Rebuilding
 #
-o_text: Not yet.
-o_id: old_harley_keep
+o_text: Still looking.
+o_id: harley_looking
 o_goto: Bye
 
-name: Paid
-npc: Three hundred. Come by when she runs, I'll take you round the dome. Twice.
+name: Rebuilding
+npc: (He lays the parts out on a rag like surgical tools.) Come back in six hours. Don't talk to me before then.
 effect: StackTransferTo(NPC, 'harley_ignition', 1)
-effect: StackTransferFrom(NPC, 'gold', 300)
-effect: SetFlag('old_harley_paid')
+effect: StackTransferTo(NPC, 'harley_fuel_cell', 1)
+effect: StackTransferTo(NPC, 'harley_tank', 1)
+effect: SaveTimeNow('harley_t')
+effect: SetFlag('harley_parts_given')
 effect: EndConversation
 
-name: Bribed
-npc: Ratchet's got a new jacket. Leather. Paid cash. Funny thing.
+name: Working
+npc: (Not looking up.) Six hours, I said.
+effect: EndConversation
+
+name: Ride
+npc: (He kicks her and she ROARS. Every window on the street opens.) Hear that? Three hundred. And any time you need a ride, you ask old Dizzy.
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('harley_rebuilt')
 effect: EndConversation
 
 name: Done
-npc: Hear that? That's a real engine.
+npc: Keep the rubber side down.
 effect: EndConversation
 
 name: Bye
-npc: Keep the rubber side down.
+npc: She's waiting.
 effect: EndConversation

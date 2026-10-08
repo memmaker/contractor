@@ -1,0 +1,16 @@
+# F6: you told Stripe. Twelve hours later Pinky is dead at the wall.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('pinky_sold_t')
+
+if: IsHoursAfter('pinky_sold_t', 12)
+do: LoadMap('zone_wall_south')
+do: ActorsDie('informant_pinky')
+do: SetFlag('pinky_dead')

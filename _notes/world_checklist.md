@@ -41,7 +41,7 @@
 - [x] E6 Grim leaves town, leaves a note
 
 ## Package F: ten more contracts (Night City Stories, Greenwar, Northwest Passage)
-- [x] F1-F10 Slow Boat, Sweet Revenge, '94 Harley, Ecto, False Papers, Payback, Carmen, Proxy Vote, Holiday on Ice, Deadline (4 routes + playtests each)
+- [x] F1-F10 Slow Boat, Sweet Revenge, '94 Harley, Ecto, False Papers, Payback, Carmen, Proxy Vote, Holiday on Ice, Deadline (each with its own structure: ambush, betrayal, collection, night stakeout, timed wait, info-only, evidence, deadline, betrayal-insurance, refusing rescue; 32 playtests)
 
 ## Wrap-up
 - [x] all playtests pass headless (new + old)

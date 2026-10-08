@@ -1,0 +1,46 @@
+# Sweet Revenge (talker): talk Stromberg into voiding her contract.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(sweet_revenge, released)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('star_shani')
+do: Choose('sweet_revenge_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: ForceChecks('success')
+do: Talk('exec_stromberg')
+do: Choose('stromberg_release')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('star_shani')
+do: Choose('sweet_revenge_free')

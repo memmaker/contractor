@@ -1,0 +1,21 @@
+# Proxy Vote: miss the deadline.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(proxy, too_late)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_accept')
+
+if: true
+do: WaitHours(49)

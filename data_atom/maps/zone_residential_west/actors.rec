@@ -164,7 +164,7 @@ Position: (54,17)
 
 Name: chopper_ratchet
 Description: Ratchet
-LongDescription: A chop-shop mechanic in oil to the elbows, whistling. The key to his parts bin hangs from his belt.
+LongDescription: A chop-shop mechanic in oil to the elbows, whistling.
 Dialogue: chopper_ratchet
 faction: chopper_ratchet
 Icon: R
@@ -191,13 +191,13 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(180)
-equipment: key('old_harley_stash_key', "Ratchet's parts bin key")
+equipment: gold(500)
+equipment: harley_ignition
 Position: (30,13)
 
 Name: forger_nils
 Description: Nils
-LongDescription: A soft-spoken forger with magnifying lenses and very clean hands. His desk drawer is locked; he wears the key.
+LongDescription: A soft-spoken forger with magnifying lenses and very clean hands. Papers take time, he says. Art takes time.
 Dialogue: forger_nils
 faction: forger_nils
 Icon: N
@@ -224,13 +224,13 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(180)
-equipment: key('false_papers_stash_key', "Nils' drawer key")
+equipment: gold(400)
+equipment: forged_sin
 Position: (55,12)
 
 Name: detective_rourke
 Description: Detective Rourke
-LongDescription: An old city detective EBI forgot to fire. Three dead men, two dead women, and nobody but him counting.
+LongDescription: An old city detective EBI forgot to fire. Five bodies in the west and nobody but him counting.
 Dialogue: detective_rourke
 faction: detective_rourke
 Icon: R
@@ -257,5 +257,14 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(450)
+equipment: gold(500)
 Position: (40,9)
+
+Name: carmen_victim
+Icon: M
+Foreground: light_gray_2
+Flags: Spawn_Dead
+Description: the latest victim, a velvet ribbon round his wrist
+equipment: velvet_ribbon
+HitPoints: 12
+Position: (44,13)

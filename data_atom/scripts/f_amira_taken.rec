@@ -1,0 +1,16 @@
+# F5: Amira's photo reached EBI. A day later she and her children are gone.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('amira_sold_t')
+
+if: IsHoursAfter('amira_sold_t', 8)
+do: LoadMap('zone_residential_south')
+do: RemoveActor('refugee_amira')
+do: SetFlag('amira_taken')

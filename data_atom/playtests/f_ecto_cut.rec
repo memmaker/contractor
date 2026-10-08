@@ -1,0 +1,29 @@
+# Ecto: wait for the dark, follow the cable, kill the power.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(ecto, power_cut)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_accept')
+
+if: true
+do: WaitUntil('23:00')
+
+if: true
+do: Talk('ecto_ghost')
+do: Choose('ghost_trace')
+
+if: true
+do: Interact('ecto_junction_box', 'a dead junction box')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_report_cut')

@@ -176,11 +176,3 @@ Description: a donation box
 item: water_ration(2)
 item: gold(25)
 Position: (40,14)
-
-Category: UnknownContainer
-Name: sweet_revenge_stash
-Description: a makeup case
-lockdifficulty: easy
-lockflag: sweet_revenge_stash_key
-item: bd_master
-Position: (22,12)
