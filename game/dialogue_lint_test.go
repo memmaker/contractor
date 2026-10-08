@@ -41,3 +41,43 @@ func TestDialogueExpressions(t *testing.T) {
 		}
 	}
 }
+
+// Every script and playtest line compiles against the real script functions (playtests also get the autoplay verbs),
+// and every name it uses is a var defined in the file.
+func TestScriptExpressions(t *testing.T) {
+	g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
+	g.init()
+	field := regexp.MustCompile(`(?m)^(if|do|set|var):\s*(.*?)\s*$`)
+	for _, dir := range []string{"scripts", "playtests"} {
+		funcs := g.GetScriptFuncs()
+		if dir == "playtests" {
+			funcs = mergeMaps(funcs, (&Autoplay{g: g}).verbs())
+		}
+		files, _ := filepath.Glob("../data_atom/" + dir + "/*.rec")
+		for _, f := range files {
+			name := dir + "/" + filepath.Base(f)
+			data, _ := os.ReadFile(f)
+			vars := map[string]bool{}
+			for _, m := range field.FindAllStringSubmatch(string(data), -1) {
+				if m[1] == "var" {
+					vars[m[2]] = true
+				}
+			}
+			for _, m := range field.FindAllStringSubmatch(string(data), -1) {
+				if m[1] == "var" {
+					continue
+				}
+				expr, err := govaluate.NewEvaluableExpressionWithFunctions(m[2], funcs)
+				if err != nil {
+					t.Errorf("%s: %s: %s: %v", name, m[1], m[2], err)
+					continue
+				}
+				for _, v := range expr.Vars() {
+					if !vars[v] {
+						t.Errorf("%s: %s: %s: undefined name %s", name, m[1], m[2], v)
+					}
+				}
+			}
+		}
+	}
+}
