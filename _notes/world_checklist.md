@@ -45,4 +45,4 @@
 - [x] go tests pass
 - [x] walkthrough.html updated per package
 - [ ] one visual playtest at the very end (blocked: "no monitor was found", no display attached; owner to run `autoplay a_tags_fighter`)
-- [ ] commit, push, publish
+- [x] commit, push, publish
