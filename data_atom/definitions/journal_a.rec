@@ -74,6 +74,9 @@ start_text:
 prog_cond: HasItem('rat_poison')
 prog_text: Rat poison. Drop it in the trash heap down in the sewers and give it two hours.
 #
+prog_cond: HasItem('rat_repellent')
+prog_text: A bucket of rat repellent. Pour it on the sewer trash heap and give it two hours: the rats will move deeper.
+#
 end_cond: HasFlag('rats_paid')
 end_text: The sewers are quiet. The cleaner paid 150 and kept his job without ever going down.
 end_id: paid

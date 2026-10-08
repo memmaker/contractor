@@ -23,6 +23,13 @@ Category: Other
 Weight: 1
 Cost: 40
 
+Name: rat_repellent
+Description: a bucket of rat repellent
+Long_Description: Bleach, floor cleaner and something that used to be food. Rats hate it. So does your nose.
+Category: Other
+Weight: 3
+Cost: 5
+
 Name: rat_tail
 Description: a rat's tail
 Category: Other

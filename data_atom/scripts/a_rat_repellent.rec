@@ -1,0 +1,19 @@
+# A3 Rats (BioChemistry): repellent on the sewer trash heap. Two hours later the rats have moved deeper.
+
+%rec: definitions
+
+var: TRASH
+set: ContainerWithName('sewer_trash')
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: IsItemInContainer(TRASH, 'rat_repellent')
+do: SaveTimeNow('a_repellent_laid')
+
+if: IsHoursAfter('a_repellent_laid', 2)
+do: ActorsLeave('rat')
+do: SetFlag('sewer_rats_moved')
