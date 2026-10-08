@@ -337,7 +337,7 @@ def lint(only=None):
     for rel, n in every(r'(?m)^(?:equipment|item):\s*(.+?)\s*$', maps) | every(r'(?m)^equipment:\s*(.+?)\s*$', defs):
         if not n.startswith('key(') and base(n) not in items:
             err(rel, f'unknown item {n!r}')
-    # every key opens a lock, and every lock has a way to open it: key, script flag, flag control, number code or lockpick
+    # every key opens a lock, and every lock has a way to open it: key, script flag, flag control or number code (lockpicking doesn't count)
     key_flags = names(r'key\(' + q) | names(r'(?mi)^lockflag:\s*(\S+)', defs)  # key() items and key item definitions
     script_opened = names(r'(?:SetFlag|ClearFlag)\(' + q) | set(re.findall(r'gameFlags\.(?:Set|SetFlag|Unset|Clear)\w*\("(\w+)"', go))
     lock_flags = set()
@@ -347,8 +347,8 @@ def lint(only=None):
             if not m:
                 continue
             lock_flags.add(m.group(1))
-            if not re.search(r'(?mi)^(?:IsFlagControlled:\s*true|NumberLock:|lockdifficulty:)', rec) and m.group(1) not in key_flags | script_opened:
-                err(rel, f'lock {m.group(1)!r} cannot be opened (no key, script, number code or lock difficulty)')
+            if not re.search(r'(?mi)^(?:IsFlagControlled:\s*true|NumberLock:)', rec) and m.group(1) not in key_flags | script_opened:
+                err(rel, f'lock {m.group(1)!r} cannot be opened (no key, script or number code)')
     for rel, n in every(r'key\(' + q) | every(r'(?mi)^lockflag:\s*(\S+)', defs):
         if n not in lock_flags and n != 'CHANGEME':
             err(rel, f'key {n!r} opens no lock')
