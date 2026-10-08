@@ -251,9 +251,3 @@ o_goto: Goodbye
 o_text: I wanted to ask something else.
 o_goto: SmallTalk
 
-name: Leaving
-npc: Alright, youngster. I think you should be fine on your own now.
-+ And don't forget: Attitude is everything.
-effect: RunScriptLeave('grim')
-effect: StopScript('tutorial')
-effect: EndConversation

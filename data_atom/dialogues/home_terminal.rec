@@ -8,7 +8,6 @@ goto: DefaultIntroduction
 name: DefaultIntroduction
 npc: ** Contractor Client Interface **
 + > Welcome
-effect: None
 #
 # Starter Mission
 o_text: (Job offer) Extract money, reward: 50% cut.

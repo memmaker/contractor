@@ -84,7 +84,8 @@ name: KilledDrake
 npc: I do miss Drake. His demise is a real tragedy.
 + He was a risk though. The world is a safer place without him.
 #
-effect: GotoNode('DefaultIntroduction')
+o_text: (Nod.)
+o_goto: DefaultIntroduction
 
 name: DefaultIntroduction
 npc: What can I do for you?

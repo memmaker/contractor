@@ -43,10 +43,6 @@ o_goto: Bye
 
 ## Default EXIT Begin
 
-name: End
-npc: Exit Code Zero. See ya :)
-effect: EndConversation
-
 ## Default EXIT End
 
 ## Default Character Questions Begin

@@ -117,11 +117,6 @@ o_goto: DefaultIntroduction
 o_text: Let's talk about something else.
 o_goto: DefaultIntroduction
 
-name: RepairOffer
-npc: What do you need?
-#
-effect: OpenRepairMenu
-
 name: ExplainJob
 npc: You came to the right place. For the right price, I can make it happen.
 effect: SetFlag('KnowsAbout(quinns_job)')

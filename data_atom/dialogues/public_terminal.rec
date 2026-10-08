@@ -8,7 +8,6 @@ goto: DefaultIntroduction
 name: DefaultIntroduction
 npc: ** Public Information Interface **
 + > Welcome
-effect: None
 #
 o_text: > Dome Newswire
 o_id: news

@@ -379,6 +379,52 @@ def lint(only=None):
                     err(rel, f"random number lock {name.group(1) if name else '(unnamed)'!r}: no placed item reveals RandomNumberCode for it")
             elif not any(re.search(r'(?<!\d)' + code + r'(?!\d)', re.sub(r'(?mi)^NumberLock:.*$', '', t)) for t in texts.values()):
                 err(rel, f'number lock code {code} is written nowhere in the game')
+    # dialogue trees: every jump lands on a node, tests have both outcomes, nothing is silently dropped
+    node_fields = {'name', 'npc', 'effect', 'o_text', 'o_id', 'o_cond', 'o_goto', 'o_test', 'o_succ', 'o_fail', 'o_effect'}
+    for rel, txt in files.items():
+        if not rel.startswith('dialogues/') or rel.startswith('dialogues/_') or '%rec: Nodes' not in txt:
+            continue
+        head, body = txt.split('%rec: Nodes', 1)
+        recs = [r for r in re.split(r'\n\s*\n', body) if re.search(r'(?m)^name:', r)]
+        nodes = [re.search(r'(?m)^name:\s*(.*?)\s*$', r).group(1) for r in recs]
+        for n in {n for n in nodes if nodes.count(n) > 1}:
+            err(rel, f'node {n!r} defined twice (the last one wins)')
+        targets = set()
+        branches = re.split(r'\n\s*\n', head.split('%rec: OpeningBranch', 1)[-1]) if '%rec: OpeningBranch' in head else []
+        for b in branches:
+            for f in re.findall(r'(?m)^(\w+):', b):
+                if f.lower() not in ('cond', 'goto', 'name'):
+                    err(rel, f'OpeningBranch: unknown field {f!r}')
+            for g in re.findall(r'(?m)^goto:\s*(\S+)', b):
+                targets.add(g)
+        if '%rec: OpeningBranch' not in head:
+            err(rel, 'no %rec: OpeningBranch')
+        for r, n in zip(recs, nodes):
+            opts = re.split(r'(?m)^(?=o_text:)', r)
+            for f in re.findall(r'(?m)^(o_\w+):', opts[0]):
+                err(rel, f'node {n!r}: {f} before any o_text is ignored')
+            for f in re.findall(r'(?m)^([a-z_]+):', r):
+                if f not in node_fields:
+                    err(rel, f'node {n!r}: unknown field {f!r}')
+            ids = []
+            for o in opts[1:]:
+                text = re.search(r'(?m)^o_text:\s*(.*?)\s*$', o).group(1)[:40]
+                has = lambda f: re.search(r'(?m)^' + f + r':', o)
+                if has('o_test') and not (has('o_succ') or has('o_goto')) or has('o_test') and not has('o_fail'):
+                    err(rel, f'node {n!r}, option {text!r}: o_test needs both o_succ and o_fail')
+                if not has('o_test') and has('o_fail'):
+                    err(rel, f'node {n!r}, option {text!r}: o_fail without o_test')
+                for f in ('o_goto', 'o_succ', 'o_fail', 'o_id', 'o_cond', 'o_test'):
+                    if len(re.findall(r'(?m)^' + f + r':', o)) > 1:
+                        err(rel, f'node {n!r}, option {text!r}: {f} given twice')
+                ids += re.findall(r'(?m)^o_id:\s*(\S+)', o)
+                targets |= set(re.findall(r'(?m)^o_(?:goto|succ|fail):\s*(\S+)', o))
+            for i in {i for i in ids if ids.count(i) > 1}:
+                err(rel, f'node {n!r}: o_id {i!r} used twice')
+        for t in sorted(targets - set(nodes)):
+            err(rel, f'jump to unknown node {t!r}')
+        for n in sorted(set(nodes) - targets):
+            err(rel, f'node {n!r} is unreachable')
     for rel, n in every(r'RunScript\(' + q):
         if n not in scripts:
             err(rel, f'no script {n!r} (scripts/{n}.rec)')
@@ -454,7 +500,7 @@ if __name__ == '__main__':
             only = set(open(os.path.join(DATA, 'packs', sys.argv[2] + '.manifest')).read().split())
         problems = lint(only)
         if only is None:  # icons need the real loader: every actor, item and object on every map renders with an icon
-            r = subprocess.run(['go', 'test', './game', '-run', 'TestMapIcons'], cwd=ROOT, capture_output=True, text=True)
+            r = subprocess.run(['go', 'test', './game', '-run', 'TestMapIcons|TestDialogueExpressions'], cwd=ROOT, capture_output=True, text=True)
             if r.returncode:
                 problems += [l.strip() for l in r.stdout.splitlines() if 'has no icon' in l or 'did not load' in l] or [r.stdout + r.stderr]
         print('\n'.join(problems) or 'lint: ok')
