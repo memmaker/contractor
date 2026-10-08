@@ -54,7 +54,7 @@ func (g *GameState) NewReadable(rec recfile.Record, resolver func(objType string
 	}
 
 	sign.CustomIcon = customIcon
-	sign.UseCustomIcon = true
+	sign.UseCustomIcon = customIcon.Char != 0 // otherwise the 'Readable' category icon
 	if sign.InternalName == "" {
 		sign.InternalName = "readable"
 	}
