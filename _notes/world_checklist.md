@@ -43,6 +43,6 @@
 ## Wrap-up
 - [x] all playtests pass headless (new + old)
 - [x] go tests pass
-- [ ] walkthrough.html updated per package
+- [x] walkthrough.html updated per package
 - [ ] one visual playtest at the very end
 - [ ] commit, push, publish

@@ -32,7 +32,7 @@
 <body>
 <main>
 <h1>The Debt: walkthrough</h1>
-<p class="dim">Starter quest "Medical Extortion", plus the Chapter 1 hook. Tick the steps as you playtest; the ticks are saved in this browser.</p>
+<p class="dim">Starter quest "Medical Extortion", Chapters 1-3, nine side contracts and the living world. Tick the steps as you playtest; the ticks are saved in this browser.</p>
 
 <div class="card">
   <h3>Common start</h3>
@@ -53,6 +53,8 @@
   <button role="tab" data-tab="sneak">3 · Thief</button>
   <button role="tab" data-tab="endings">Endings</button>
   <button role="tab" data-tab="chapters">Chapters 1-3</button>
+  <button role="tab" data-tab="side">Side contracts</button>
+  <button role="tab" data-tab="world">Living world</button>
 </nav>
 
 <section id="fight">
@@ -196,6 +198,91 @@
     <tr><td>sold_lab</td><td>Sell the lab to E. for 50000 sat. Rich for a week.</td></tr>
     <tr><td>gave_up</td><td>Home terminal: retire, spend it while it lasts</td></tr>
   </table>
+</section>
+<section id="side" hidden>
+  <h2>Side contracts</h2>
+  <p class="dim">Every contract has a fighter, an avoider and a talker route, at least one grey choice, and no fail state except death. Each route has a headless playtest (data_atom/playtests/a_* … c_*).</p>
+
+  <h3>A1 · The Duck (Anna Whitaker, south)</h3>
+  <ol class="steps">
+    <li>Anna's synth duck Coco ran into the sewers. Old Abe the hermit knows: the pond by the east tunnel.</li>
+    <li><b>Fighter:</b> shoot through the rats (mind Bob's mines). <b>Avoider:</b> sneak past them. Talk to the duck to pick her up.</li>
+    <li>Return her to Anna, or <b>sell her to Big Bob</b> for 300 (Anna pays less) and tell Anna she's dead (social): Anna grieves.</li>
+  </ol>
+
+  <h3>A2 · Tags (Lucy, Terra Vitae)</h3>
+  <ol class="steps">
+    <li>Lucy lost her son Burton in the cleansing at the south wall. She wants his dog tag. Guard Ines tells you where he lies.</li>
+    <li>Open the gate yard: <b>kill</b> the captain (his yard key), <b>bribe</b> him (200), <b>bluff</b> EBI records (social Hard), or pick the yard door (easy). The airlock switch opens the dead field.</li>
+    <li>Return the tag: 100 sat, Terra Vitae warms to you, Father Olaf gives you a gift.</li>
+    <li>Or sell it: Richard Shaw pays 400, Mott the scavenger 60. Lie to Lucy (social Hard): fail and Terra Vitae turns cold, Olaf refuses you.</li>
+  </ol>
+
+  <h3>A3 · Rats (the cleaner, west)</h3>
+  <ol class="steps">
+    <li>The cleaner pays 150 for clearing the sewer rats.</li>
+    <li><b>Fighter:</b> kill five rats (west tunnel). <b>Avoider:</b> buy rat poison from Big Bob and drop it in the reeking trash heap: two hours later every rat is dead (Abe won't forgive you).</li>
+    <li><b>Grey:</b> intimidate the cleaner into doing it himself. He goes down and doesn't come back; his badge turns up in the trash. Two days later the west fills with rats.</li>
+  </ol>
+
+  <h3>B1 · Bar Tab (La Boom)</h3>
+  <ol class="steps">
+    <li>The bartender wants Dec Vega's 400 sat. Kill him or intimidate him (Hard); or lift Dec's stash (medium lock, back table).</li>
+    <li>Talk Dec into instalments (half for you), or tell the bartender he's broke (social Hard): Dec tips you about the ticket scam.</li>
+  </ol>
+
+  <h3>B2 · Dead Freight (Richard Shaw, commerce)</h3>
+  <ol class="steps">
+    <li>Shaw wants the flight manifest from the spaceport terminal. Two dock sentries; one optic is cracked (Clerk Wen will tell you).</li>
+    <li>Destroy the bots, sneak past them, or hack them down. The manifest proves the ships leave with cargo only.</li>
+    <li>Shaw makes it public (500), or Solara Carter buries it (800) and the lottery goes on.</li>
+  </ol>
+
+  <h3>B3 · Shift Change (Foreman Okafor, industry)</h3>
+  <ol class="steps">
+    <li>A pallet of medical supplies went to the gun thugs in commerce. Kill them, pick the pallet at night, or buy it from their leader (300).</li>
+    <li><b>Grey:</b> sell Okafor out to the EBI officer (400): next day an EBI-loyal foreman replaces him and Pell counts his breaks.</li>
+  </ol>
+
+  <h3>C · Lost Badge, Silence, Rent</h3>
+  <ul class="steps">
+    <li><b>Lost Badge</b> (corporate): Benny the tout has Chief Landry's badge. Kill, buy (200) or persuade. Return it and the BAT door opens for you; keep it and get in yourself.</li>
+    <li><b>Silence</b> (EBI campus): Voss wants protester Ines gone. Kill her, pay her off, move her to the BAT campus (social Hard), or warn her.</li>
+    <li><b>Rent</b> (west): widow Marla owes Rook the pawnbroker. Pay 150, intimidate Rook, or have her sell her husband's watch.</li>
+  </ul>
+
+  <h3>Where the gear is</h3>
+  <ul>
+    <li>You start with a trenchcoat, 150 sat, 3 lockpicks, a watch, and a binge.</li>
+    <li>Big Bob sells the 10mm SMG, JHP and AP ammo, and rat poison. The pawnbroker and the Project 21 toolbox have electronic lockpicks.</li>
+    <li>The hospital filing cabinet holds a one-shot tranquilizer pistol. The Project 21 sysop crate holds the bowel disruptor and fusion cells. Your desk holds sunglasses and two lockpicks.</li>
+    <li>The bartender sells binge, brainz, buff and boost. Mott sells water at the wall. Suki sells noodles in the east.</li>
+  </ul>
+</section>
+<section id="world" hidden>
+  <h2>Living world: what reacts</h2>
+  <table>
+    <tr><th>#</th><th>Trigger</th><th>What changes</th></tr>
+    <tr><td>R1</td><td>The Duck</td><td>Anna thanks you, or grieves</td></tr>
+    <tr><td>R2</td><td>Tags</td><td>Terra Vitae greets you, or Olaf turns you away</td></tr>
+    <tr><td>R3</td><td>The cleaner dies</td><td>Rats spread through the west after two days</td></tr>
+    <tr><td>R4</td><td>Gate captain killed</td><td>Two days later a harder captain charges a 50 sat toll</td></tr>
+    <tr><td>R5</td><td>Manifest made public</td><td>Solara leaves town, a thug squats her stall; Tamsin cheers</td></tr>
+    <tr><td>R6</td><td>Okafor sold out</td><td>An EBI-loyal foreman takes over</td></tr>
+    <tr><td>R7</td><td>Dec Vega dead</td><td>The bartender mourns him</td></tr>
+    <tr><td>R8</td><td>Landry's badge returned</td><td>The BAT lobby door opens</td></tr>
+    <tr><td>R9</td><td>Faust's safe cracked</td><td>The mansion household goes on alert</td></tr>
+    <tr><td>R10</td><td>Faust warned</td><td>Faust and Mira flee to the lab</td></tr>
+    <tr><td>R11</td><td>Anything big</td><td>The public terminal's news covers it (8+ items)</td></tr>
+    <tr><td>R12</td><td>Jacob dead</td><td>A squatter moves in, his thugs run wild, Suki's street gets worse</td></tr>
+    <tr><td>R13</td><td>Beggar</td><td>Give three times: an informant and a fourth way to the mansion. Kill him: a shrine and a mourner</td></tr>
+    <tr><td>R14</td><td>Taxi rides</td><td>The driver remembers what you did</td></tr>
+    <tr><td>R15</td><td>Gate captain killed</td><td>The wall shoots on sight for two days</td></tr>
+    <tr><td>R16</td><td>Three days in</td><td>Grim leaves town, leaves a note in your desk</td></tr>
+    <tr><td>R17</td><td>The truth about the ships</td><td>Tell Maren at the spaceport and she leaves for Terra Vitae</td></tr>
+  </table>
+  <h3>Every map has people</h3>
+  <p>Each map has at least three people with something to say, two things to read, and two containers worth opening (the cryo lab has ARK and the sleepers instead). The thinnest maps got Ines and Mott at the wall, Pell and a line worker in industry, Suki in the east, Old Abe in the sewer, and Wen, Tamsin and Maren at the spaceport.</p>
 </section>
 </main>
 <script>
