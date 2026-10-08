@@ -91,6 +91,12 @@ o_test: RollSkill('social', 'Hard')
 o_succ: AlliedSuccess
 o_fail: PersuadeFail
 #
+o_text: Your cryo notes on the desk. That glycol ratio will crystallise in your veins. You need someone who can fix the mix.
+o_id: fix_mix_faust
+o_test: RollSkill('biochemistry', 'Hard')
+o_succ: MixFixed
+o_fail: PersuadeFail
+#
 o_text: Everything you own, for starters.
 o_id: extort_faust
 o_test: RollSkill('intimidate', 'Easy')
@@ -180,6 +186,14 @@ o_goto: KillFaust
 o_text: Not yet.
 o_id: leave_return_fail
 o_goto: End
+
+name: MixFixed
+npc: (He checks your numbers against his, twice, and goes pale.) Three years of work, and I would have woken up as slush.
++ All right. You've earned a hearing.
+#
+o_text: Now talk.
+o_id: mix_now_talk
+o_goto: AlliedSuccess
 
 name: LogAccepted
 npc: (He reads it twice.) No EBI plate on any of this. You came the hard way, then.
