@@ -83,6 +83,11 @@ func (g *GameState) PlayerRest(isHealing bool, duration time.Duration) {
 	}
 	g.ui.FadeFromBlack()
 
+	if isHealing && duration >= time.Hour && g.Player.GetCharSheet().GetActionPoints() < g.Player.GetCharSheet().GetActionPointsMax() {
+		g.Player.GetCharSheet().RestoreActionPoints()
+		g.ui.UpdateStats()
+		g.msg(foundation.Msg("You feel rested. Your action points are back."))
+	}
 	if isHealing && g.Player.GetCharSheet().NeedsHealing() {
 		hours := int(duration.Hours())
 		healingRate := g.Player.GetCharSheet().GetDerivedStat(d100.HealingRate)

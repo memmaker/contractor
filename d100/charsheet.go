@@ -341,6 +341,11 @@ func (cs *CharSheet) Heal(amount int) {
 	cs.hitPointsCurrent = min(cs.hitPointsCurrent+amount, cs.GetHitPointsMax())
 }
 
+func (cs *CharSheet) RestoreActionPoints() {
+	cs.actionPointsCurrent = cs.GetActionPointsMax()
+	cs.onDerivedStatChanged(ActionPoints)
+}
+
 func (cs *CharSheet) GetActionPointsMax() int {
 	return cs.GetDerivedStat(ActionPoints)
 }
