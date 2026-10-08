@@ -105,6 +105,7 @@ equipment: 10mm_pistol
 equipment: 10mm_jhp
 equipment: gold(300)
 Position: (45,16)
+equipment: key('jacob_safe_key', 'Jacob's safe key')
 
 Name: beggar
 Icon: b

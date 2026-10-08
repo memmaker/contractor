@@ -98,6 +98,7 @@ Equipment: rocket_launcher(70)
 equipment: gold(310)
 SourceFile: 00000038.pro
 Position: (28,15)
+equipment: key('bob_safe_key', 'Bob's safe key')
 
 Name: anna_whitaker
 Icon: A
