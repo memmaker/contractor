@@ -1929,6 +1929,18 @@ o_test: RollSkill('intimidate', 'Hard')
 o_succ: Scared
 o_fail: Fight
 #
+o_text: Your books run on that cracked terminal. One keystroke and they're with the EBI tax office.
+o_id: fargo_hack
+o_test: RollSkill('technology', 'Hard')
+o_succ: Hacked
+o_fail: Fight
+#
+o_text: (While he counts, slide the marker off the table.)
+o_id: fargo_lift
+o_test: RollSkill('stealth', 'Medium')
+o_succ: Lifted
+o_fail: Fight
+#
 o_text: No.
 o_id: fargo_no
 o_goto: Bye
@@ -1941,6 +1953,16 @@ effect: EndConversation
 
 name: Scared
 npc: (He weighs it. He tears the marker.) She was bad for business anyway.
+effect: SetFlag('holly_free')
+effect: EndConversation
+
+name: Hacked
+npc: (He looks at the terminal, then at you. He tears the marker.) Nobody touches the books. She's yours.
+effect: SetFlag('holly_free')
+effect: EndConversation
+
+name: Lifted
+npc: Four hundred, I said. (The marker is in your sleeve. Holly sees it and walks out behind you.)
 effect: SetFlag('holly_free')
 effect: EndConversation
 
@@ -2023,6 +2045,8 @@ start=lambda: Trip().go('zone_corporate').do("Talk('assistant_caitlin')","Choose
 back=lambda t,o: t.go('zone_corporate').do("Talk('assistant_caitlin')",f"Choose('{o}')")
 p.playtest('f_deadline_paid', 'Deadline: pay off the marker, send Holly home.', "HasFlag('QuestCompleted(deadline, home)')", back(start().do("Give('gold(100)')","Talk('loanshark_fargo')","Choose('fargo_holly')","Choose('fargo_pay')").do("Talk('holly_jones')","Choose('holly_go_home')"),'deadline_home'))
 p.playtest('f_deadline_stayed', 'Deadline (talker): scare Fargo, give Holly the choice. She stays.', "HasFlag('QuestCompleted(deadline, stayed)')", back(start().do("ForceChecks('success')","Talk('loanshark_fargo')","Choose('fargo_holly')","Choose('fargo_threaten')").do("Talk('holly_jones')","Choose('holly_choice')"),'deadline_stays'))
+p.playtest('f_deadline_hacked', 'Deadline (technology): threaten Fargo\'s books, send Holly home.', "HasFlag('QuestCompleted(deadline, home)') && !HasFlag('Killed(loanshark_fargo)')", back(start().do("ForceChecks('success')","Talk('loanshark_fargo')","Choose('fargo_holly')","Choose('fargo_hack')").do("Talk('holly_jones')","Choose('holly_go_home')"),'deadline_home'))
+p.playtest('f_deadline_lifted', 'Deadline (stealth): lift the marker while Fargo counts, send Holly home.', "HasFlag('QuestCompleted(deadline, home)') && !HasFlag('Killed(loanshark_fargo)')", back(start().do("ForceChecks('success')","Talk('loanshark_fargo')","Choose('fargo_holly')","Choose('fargo_lift')").do("Talk('holly_jones')","Choose('holly_go_home')"),'deadline_home'))
 p.playtest('f_deadline_fight', 'Deadline (fighter): the threat fails, so fight Fargo and his goons.', "HasFlag('QuestCompleted(deadline, home)') && HasFlag('Killed(loanshark_fargo)')", back(start().do(*GUN,"SetDerivedStat('HitPoints', 40)","ForceChecks('fail')","Talk('loanshark_fargo')","Choose('fargo_holly')","Choose('fargo_threaten')").do("Kill('loanshark_fargo')").do("Kill('fargo_goon')").do("Kill('fargo_goon')").do("Unequip('10mm_smg')","Talk('holly_jones')","Choose('holly_go_home')"),'deadline_home'))
 
 

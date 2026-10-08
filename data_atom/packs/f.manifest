@@ -39,6 +39,8 @@ playtests/f_carmen_confront.rec
 playtests/f_carmen_diary.rec
 playtests/f_carmen_ribbon_witness.rec
 playtests/f_deadline_fight.rec
+playtests/f_deadline_hacked.rec
+playtests/f_deadline_lifted.rec
 playtests/f_deadline_paid.rec
 playtests/f_deadline_stayed.rec
 playtests/f_ecto_cut.rec

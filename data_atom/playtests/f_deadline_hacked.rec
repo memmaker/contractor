@@ -1,0 +1,54 @@
+# Deadline (technology): threaten Fargo's books, send Holly home.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(deadline, home)') && !HasFlag('Killed(loanshark_fargo)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('assistant_caitlin')
+do: Choose('deadline_accept')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: ForceChecks('success')
+do: Talk('loanshark_fargo')
+do: Choose('fargo_holly')
+do: Choose('fargo_hack')
+
+if: true
+do: Talk('holly_jones')
+do: Choose('holly_go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('assistant_caitlin')
+do: Choose('deadline_home')
