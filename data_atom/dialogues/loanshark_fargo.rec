@@ -1,0 +1,63 @@
+# Package F "Deadline": Fargo has the key to the stash (deadline_stash) that holds the Holly's debt marker.
+%rec: OpeningBranch
+
+cond: HasFlag('deadline_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: You want money? Everybody wants money.
+#
+o_text: Holly's marker. Hand it over, or your knees and I have a conversation.
+o_id: deadline_talk
+o_cond: HasFlag('JobAccepted(deadline)') && !HasItem('deadline_stash_key')
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: Her sister hired me. What do you pay to keep Holly?
+o_id: deadline_bribe
+o_cond: HasFlag('JobAccepted(deadline)') && !HasItem('holly_marker') && !HasFlag('deadline_paid')
+o_goto: Bribe
+#
+o_text: Who borrows from you?
+o_id: deadline_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: deadline_bye
+o_goto: Bye
+
+name: Lore
+npc: Everybody who bought a lottery slip. Ninety percent of my clients are waiting for the draw. When the ships leave without them, I collect.
+#
+o_text: Back.
+o_id: deadline_lore_back
+o_goto: Default
+
+name: Yield
+npc: (He looks at your hands, then your eyes.) Holly's not worth it. Here, the key. Take the marker.
+effect: StackTransferFrom(NPC, 'deadline_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: (He laughs.) I've been threatened by better.
+effect: EndConversation
+
+name: Bribe
+npc: (He counts out two hundred.) Tell the sister Holly signed a new contract. Smart.
+effect: StackTransferFrom(NPC, 'gold', 200)
+effect: SetFlag('deadline_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: Welcome back. Need a loan?
+effect: EndConversation
+
+name: Bye
+npc: Interest runs daily.
+effect: EndConversation

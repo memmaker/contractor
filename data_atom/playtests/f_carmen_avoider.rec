@@ -1,0 +1,43 @@
+# Carmen (avoider).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(carmen, delivered)') && !HasFlag('Killed(singer_carmen)') && !HasItem('carmen_stash_key')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('detective_rourke')
+do: Choose('carmen_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: SetSkill('Mechanics', 200)
+do: Give('mechanical_lockpick(5)')
+do: Sneak()
+do: Use('carmen_stash')
+do: Take('carmen_diary')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('detective_rourke')
+do: Choose('carmen_give')

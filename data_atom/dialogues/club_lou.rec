@@ -1,0 +1,69 @@
+# Package F "Ecto": Lou hires you. Flags: JobAccepted(ecto), ecto_paid, ecto_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('ecto_paid')
+goto: Done
+
+cond: HasFlag('ecto_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(ecto)') && HasItem('holo_emitter')
+goto: Return
+
+cond: HasFlag('JobAccepted(ecto)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: My club's haunted. Lights, voices, a face in the mirror. My last manager they found in a cupboard, skinny as a rake. Nobody comes anymore.
+#
+o_text: Ghosts aren't real.
+o_id: ecto_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: ecto_decline
+o_goto: Bye
+
+name: Accepted
+npc: That's what I need you to prove. Somebody's running a projector on my club. The signal comes from the east side, a kid called Pixel. Bring me whatever runs it. Three-fifty.
+effect: SetFlag('JobAccepted(ecto)')
+effect: EndConversation
+
+name: Waiting
+npc: The east side. Pixel. Make the ghost go away.
+effect: EndConversation
+
+name: Return
+npc: (He turns the emitter over.) That's it? A box? I went white over a box?
+#
+o_text: (Hand it over.) 350 sat, as agreed.
+o_id: ecto_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: ecto_keep
+o_goto: Bye
+
+name: Paid
+npc: Three-fifty. I'm opening tonight. Come by, the drinks are on the ghost.
+effect: StackTransferTo(NPC, 'holo_emitter', 1)
+effect: StackTransferFrom(NPC, 'gold', 350)
+effect: SetFlag('ecto_paid')
+effect: EndConversation
+
+name: Bribed
+npc: The ghost was back last night. Louder. I thought you were a professional.
+effect: EndConversation
+
+name: Done
+npc: No ghosts tonight. Just paying customers.
+effect: EndConversation
+
+name: Bye
+npc: Stay out of the mirrors.
+effect: EndConversation

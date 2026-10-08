@@ -1,0 +1,69 @@
+# Package F "Deadline": Caitlin hires you. Flags: JobAccepted(deadline), deadline_paid, deadline_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('deadline_paid')
+goto: Done
+
+cond: HasFlag('deadline_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(deadline)') && HasItem('holly_marker')
+goto: Return
+
+cond: HasFlag('JobAccepted(deadline)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: My sister Holly owes money to a loan shark called Fargo. He has her marker, and he says she works it off at his club or she disappears. My employer can't know.
+#
+o_text: I can get the marker.
+o_id: deadline_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: deadline_decline
+o_goto: Bye
+
+name: Accepted
+npc: He keeps markers in a lockbox in the commerce district, the key on him. Three-fifty. Holly is stupid, but she's mine.
+effect: SetFlag('JobAccepted(deadline)')
+effect: EndConversation
+
+name: Waiting
+npc: Fargo. Commerce district. Please be quick.
+effect: EndConversation
+
+name: Return
+npc: (She tears the marker into very small pieces.) Holly's free.
+#
+o_text: (Hand it over.) 350 sat, as agreed.
+o_id: deadline_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: deadline_keep
+o_goto: Bye
+
+name: Paid
+npc: Three-fifty. (Her calm comes back like a mask.) This conversation did not happen.
+effect: StackTransferTo(NPC, 'holly_marker', 1)
+effect: StackTransferFrom(NPC, 'gold', 350)
+effect: SetFlag('deadline_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Holly's working at the club. Fargo says you were reasonable. (She does not finish the sentence.)
+effect: EndConversation
+
+name: Done
+npc: Mr. Washington is in a meeting.
+effect: EndConversation
+
+name: Bye
+npc: I have a call on line one.
+effect: EndConversation

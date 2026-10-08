@@ -1,0 +1,69 @@
+# Package F "Payback": Stripe hires you. Flags: JobAccepted(payback), payback_paid, payback_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('payback_paid')
+goto: Done
+
+cond: HasFlag('payback_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(payback)') && HasItem('stripe_ledger')
+goto: Return
+
+cond: HasFlag('JobAccepted(payback)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Pink hair. Shift tacts. Calls himself Pinky. He sold my stash list to EBI and they cleaned out every dealer I knew. I want my ledger back. He kept it.
+#
+o_text: Where is he?
+o_id: payback_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: payback_decline
+o_goto: Bye
+
+name: Accepted
+npc: South district, hiding near the clinic. He's got a strongbox. Bring me the ledger. Three hundred. What happens to him is your business.
+effect: SetFlag('JobAccepted(payback)')
+effect: EndConversation
+
+name: Waiting
+npc: Pinky. South. The ledger. You know the rest.
+effect: EndConversation
+
+name: Return
+npc: (He flips through the ledger, lips moving.) Every name. Every name he sold.
+#
+o_text: (Hand it over.) 300 sat, as agreed.
+o_id: payback_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: payback_keep
+o_goto: Bye
+
+name: Paid
+npc: Three hundred. (He's already somewhere else in his head.) Now I know who to visit.
+effect: StackTransferTo(NPC, 'stripe_ledger', 1)
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('payback_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Pinky's still walking around. I can smell him on you.
+effect: EndConversation
+
+name: Done
+npc: We're done. Don't look at me like that.
+effect: EndConversation
+
+name: Bye
+npc: Yeah, yeah.
+effect: EndConversation

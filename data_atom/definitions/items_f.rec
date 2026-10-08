@@ -1,0 +1,72 @@
+# Package F items.
+%rec: Misc
+
+Name: chiba_chip
+Description: a data chip
+Long_Description: A sealed data chip off the Chiba freighter, stamped with an EBI cargo seal.
+Category: Other
+Weight: 1
+Cost: 400
+
+Name: bd_master
+Description: a braindance master
+Long_Description: Shani Kell's last braindance master. The label says SOUTH WALL, NIGHT. You don't want to know.
+Category: Other
+Weight: 1
+Cost: 500
+
+Name: harley_ignition
+Description: an ignition module
+Long_Description: The ignition module off a 1994 Harley-Davidson. Chrome, brass, and somebody's whole life.
+Category: Other
+Weight: 1
+Cost: 300
+
+Name: holo_emitter
+Description: a holo emitter
+Long_Description: A homemade holo emitter. It projects a white face that screams in silence.
+Category: Other
+Weight: 1
+Cost: 350
+
+Name: forged_sin
+Description: a forged SIN card
+Long_Description: A forged identity card. Ration-ready. The name on it belongs to nobody, which is the point.
+Category: Other
+Weight: 1
+Cost: 250
+
+Name: stripe_ledger
+Description: a dealer ledger
+Long_Description: A greasy ledger of names, places and debts. Half the names have been crossed out by EBI already.
+Category: Other
+Weight: 1
+Cost: 300
+
+Name: carmen_diary
+Description: Carmen's diary
+Long_Description: A diary in tidy handwriting. Five names. Five dates. Five reasons, each of them worse.
+Category: Other
+Weight: 1
+Cost: 400
+
+Name: proxy_vote
+Description: a signed proxy
+Long_Description: A signed shareholder proxy for fifteen shares of Liverpool Filtration. The signature trembles.
+Category: Other
+Weight: 1
+Cost: 600
+
+Name: pump_specs
+Description: pump specs
+Long_Description: Cold-pump design specs, BAT-stamped. The application notes mention cryo storage for... freight.
+Category: Other
+Weight: 1
+Cost: 450
+
+Name: holly_marker
+Description: Holly's debt marker
+Long_Description: A debt marker, Holly Jones, 2000 sat at thirty percent a week. Collateral: herself.
+Category: Other
+Weight: 1
+Cost: 350

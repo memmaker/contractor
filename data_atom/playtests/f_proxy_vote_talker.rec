@@ -1,0 +1,45 @@
+# Proxy Vote (talker).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(proxy_vote, delivered)') && !HasFlag('Killed(shareholder_hal)') && HasItem('proxy_vote_stash_key')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_vote_accept')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: ForceChecks('success')
+do: Talk('shareholder_hal')
+do: Choose('proxy_vote_talk')
+
+if: true
+do: Use('proxy_vote_stash')
+do: Take('proxy_vote')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_vote_give')

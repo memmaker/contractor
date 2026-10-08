@@ -1,0 +1,69 @@
+# Package F "False Papers": Amira hires you. Flags: JobAccepted(false_papers), false_papers_paid, false_papers_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('false_papers_paid')
+goto: Done
+
+cond: HasFlag('false_papers_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(false_papers)') && HasItem('forged_sin')
+goto: Return
+
+cond: HasFlag('JobAccepted(false_papers)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: No SIN, no ration card. No ration card, my children don't eat. There is a forger in the west, Nils. He took my last money and gave me nothing.
+#
+o_text: I'll get your papers.
+o_id: false_papers_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: false_papers_decline
+o_goto: Bye
+
+name: Accepted
+npc: He keeps them in a drawer, locked, the key on him. I have two-fifty. It's all of it. Please.
+effect: SetFlag('JobAccepted(false_papers)')
+effect: EndConversation
+
+name: Waiting
+npc: Nils. The west. My papers. Please.
+effect: EndConversation
+
+name: Return
+npc: (She reads the name on the card. It is not hers. She practises saying it.) Thank you.
+#
+o_text: (Hand it over.) 250 sat, as agreed.
+o_id: false_papers_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: false_papers_keep
+o_goto: Bye
+
+name: Paid
+npc: Two-fifty. (She hesitates over the money, then gives it anyway.) My children have a name now.
+effect: StackTransferTo(NPC, 'forged_sin', 1)
+effect: StackTransferFrom(NPC, 'gold', 250)
+effect: SetFlag('false_papers_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Nils says I was never his customer. You talked to him, I know you did. (She turns away.)
+effect: EndConversation
+
+name: Done
+npc: (One of her children waves at you.)
+effect: EndConversation
+
+name: Bye
+npc: Go well.
+effect: EndConversation

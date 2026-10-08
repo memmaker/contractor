@@ -1,0 +1,63 @@
+# Package F "Payback": Pinky has the key to the stash (payback_stash) that holds the a dealer ledger.
+%rec: OpeningBranch
+
+cond: HasFlag('payback_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: I don't know you. I don't know anyone.
+#
+o_text: Stripe wants his ledger. Give it to me and maybe he stops looking for you.
+o_id: payback_talk
+o_cond: HasFlag('JobAccepted(payback)') && !HasItem('payback_stash_key')
+o_test: RollSkill('social', 'Hard')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: I could tell Stripe you left the dome.
+o_id: payback_bribe
+o_cond: HasFlag('JobAccepted(payback)') && !HasItem('stripe_ledger') && !HasFlag('payback_paid')
+o_goto: Bribe
+#
+o_text: Why sell him out?
+o_id: payback_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: payback_bye
+o_goto: Bye
+
+name: Lore
+npc: EBI asked nicely, and then not nicely. Everybody in this dome works for EBI eventually. Even you. You'll see.
+#
+o_text: Back.
+o_id: payback_lore_back
+o_goto: Default
+
+name: Yield
+npc: (He shakes.) He won't stop. But if he has the book, maybe he stops looking at me first. Take the key.
+effect: StackTransferFrom(NPC, 'payback_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: Stripe will kill me with or without it. I'm keeping my insurance.
+effect: EndConversation
+
+name: Bribe
+npc: (He empties his pockets.) Two-fifty. Tell him I went over the wall. Tell him I'm dead. Anything.
+effect: StackTransferFrom(NPC, 'gold', 250)
+effect: SetFlag('payback_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: I owe you. Really. I owe you.
+effect: EndConversation
+
+name: Bye
+npc: You didn't see me.
+effect: EndConversation

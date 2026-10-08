@@ -1,0 +1,55 @@
+# A Holiday on Ice (fighter).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(holiday_on_ice, delivered)') && HasFlag('Killed(engineer_morrow)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_on_ice_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Give('10mm_smg(100)')
+do: Give('10mm_jhp(48)')
+do: Give('10mm_ap(48)')
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 80)
+do: Kill('engineer_morrow')
+
+if: true
+do: Unequip('10mm_smg')
+do: PickUp('holiday_on_ice_stash_key')
+do: Use('holiday_on_ice_stash')
+do: Take('pump_specs')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_on_ice_give')

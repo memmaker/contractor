@@ -204,11 +204,15 @@ func (a *Autoplay) answerModal() {
 			a.modal = nil // done with this container
 			return
 		}
-		pop()
 		from, transfer := m.theirs, m.take
 		if next.kind == "put" {
 			from, transfer = m.mine, m.put
 		}
+		if !slices.ContainsFunc(from, func(item foundation.Item) bool { return item.GetInternalName() == next.label }) {
+			a.modal = nil // the game reopened this container after a take: the answer is for the next one; a typo shows up as unused
+			return
+		}
+		pop()
 		if transfer == nil {
 			a.fail("%s: cannot put items into %s", next, m.title)
 			return
@@ -770,7 +774,11 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 				}
 				for _, corpse := range g.currentMap().DownedActors() { // or loot it off a corpse: step onto it with the take queued
 					if corpse.GetInventory().GetItemByName(name) != nil {
-						a.withAnswer(answer{kind: "take", label: name}, func() { a.walkStep(corpse.Position(), false) })
+						a.withAnswer(answer{kind: "take", label: name}, func() {
+							if a.walkStep(corpse.Position(), false) { // already on or beside it: stepping won't reopen the loot
+								g.openInventoryOf(corpse)
+							}
+						})
 						return false
 					}
 				}

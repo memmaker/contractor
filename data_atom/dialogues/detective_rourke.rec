@@ -1,0 +1,69 @@
+# Package F "Carmen": Detective Rourke hires you. Flags: JobAccepted(carmen), carmen_paid, carmen_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('carmen_paid')
+goto: Done
+
+cond: HasFlag('carmen_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(carmen)') && HasItem('carmen_diary')
+goto: Return
+
+cond: HasFlag('JobAccepted(carmen)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Five bodies in the west since the dome sealed. Same knife. My bosses call it gang trouble. I call it Carmen. The singer at the commerce bar, the one everybody thought was dead.
+#
+o_text: What do you need?
+o_id: carmen_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: carmen_decline
+o_goto: Bye
+
+name: Accepted
+npc: Proof. She keeps a diary in a trunk in her dressing room, she wears the key. Bring it. Four hundred from my own pocket. If she comes at you, you defend yourself.
+effect: SetFlag('JobAccepted(carmen)')
+effect: EndConversation
+
+name: Waiting
+npc: Carmen. The diary. Watch her hands.
+effect: EndConversation
+
+name: Return
+npc: (He reads three pages, closes it, and is quiet for a long time.) It's her.
+#
+o_text: (Hand it over.) 400 sat, as agreed.
+o_id: carmen_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: carmen_keep
+o_goto: Bye
+
+name: Paid
+npc: Four hundred. I'll take it upstairs. If upstairs buries it, I'll take it to the news terminal.
+effect: StackTransferTo(NPC, 'carmen_diary', 1)
+effect: StackTransferFrom(NPC, 'gold', 400)
+effect: SetFlag('carmen_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Another body this morning. Third street, behind the pawnshop. (He doesn't look at you.)
+effect: EndConversation
+
+name: Done
+npc: No new bodies. First week since the dome sealed.
+effect: EndConversation
+
+name: Bye
+npc: Lock your door tonight.
+effect: EndConversation

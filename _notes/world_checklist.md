@@ -40,6 +40,9 @@
 - [x] E5 wanted at the wall for 2 days
 - [x] E6 Grim leaves town, leaves a note
 
+## Package F: ten more contracts (Night City Stories, Greenwar, Northwest Passage)
+- [x] F1-F10 Slow Boat, Sweet Revenge, '94 Harley, Ecto, False Papers, Payback, Carmen, Proxy Vote, Holiday on Ice, Deadline (4 routes + playtests each)
+
 ## Wrap-up
 - [x] all playtests pass headless (new + old)
 - [x] go tests pass

@@ -23,6 +23,7 @@ do: Equip('10mm_pistol')
 do: SetSkill('RangedCombat', 46)
 do: Use('dead_drop')
 do: Take('10mm_jhp')
+do: Give('10mm_jhp(24)')
 
 if: true
 do: Kill('daniel_harker')

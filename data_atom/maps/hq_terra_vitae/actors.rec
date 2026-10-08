@@ -219,3 +219,36 @@ equipment: 10mm_jhp
 equipment: binge
 Position: (48,17)
 
+
+Name: star_shani
+Description: Shani Kell
+LongDescription: A woman with a famous face under a cheap hood. She flinches every time a camera drone passes over the commune.
+Dialogue: star_shani
+faction: star_shani
+Icon: s
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 28
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 2
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 5
+Perception: 4
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: gold(330)
+equipment: key('sweet_revenge_stash_key', "Shani's case key")
+Position: (20,12)

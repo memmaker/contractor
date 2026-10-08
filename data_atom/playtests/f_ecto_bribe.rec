@@ -1,0 +1,27 @@
+# Ecto (bribe).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(ecto, bribed)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('runner_pixel')
+do: Choose('ecto_bribe')
