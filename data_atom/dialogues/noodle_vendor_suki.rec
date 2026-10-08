@@ -12,6 +12,11 @@ goto: Default
 name: Default
 npc: Noodles, ten sat. Gossip is free if you buy noodles.
 #
+o_text: Seen a man with pink hair and shift tacts?
+o_id: suki_pinky
+o_cond: HasFlag('JobAccepted(payback)') && !HasFlag('pinky_found')
+o_goto: SukiPinky
+#
 o_text: (Buy noodles.) Ten.
 o_id: suki_buy
 o_cond: HasItem('gold', 10)
@@ -47,4 +52,9 @@ effect: EndConversation
 
 name: Bye
 npc: Come back hungry.
+effect: EndConversation
+
+name: SukiPinky
+npc: Pinky? Bought noodles with shaking hands, then went south to the wall to hide with the scavengers. Everybody knows. He's not good at hiding.
+effect: SetFlag('pinky_found')
 effect: EndConversation

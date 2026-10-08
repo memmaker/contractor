@@ -1,0 +1,53 @@
+# Holiday on Ice (talker): learn who Nueman is first, then take insurance.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(holiday, insured)') && !HasFlag('nueman_cleaners_sent')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: ForceChecks('success')
+do: Talk('engineer_morrow')
+do: Choose('morrow_nueman')
+
+if: true
+do: Talk('engineer_morrow')
+do: Choose('morrow_bluff')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_insure')
+
+if: true
+do: WaitMinutes(35)

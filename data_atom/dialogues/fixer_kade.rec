@@ -1,14 +1,11 @@
-# Package F "The Slow Boat": Kade hires you. Flags: JobAccepted(slow_boat), slow_boat_paid, slow_boat_bribed.
+# F1 The Slow Boat. Flags: JobAccepted(slow_boat), slow_boat_kade. Script f_slow_boat: gunmen hunt whoever holds the chip in commerce.
 %rec: OpeningBranch
 
-cond: HasFlag('slow_boat_paid')
+cond: HasFlag('slow_boat_kade') || HasFlag('slow_boat_shaw') || HasFlag('slow_boat_olaf')
 goto: Done
 
-cond: HasFlag('slow_boat_bribed')
-goto: Bribed
-
 cond: HasFlag('JobAccepted(slow_boat)') && HasItem('chiba_chip')
-goto: Return
+goto: HasChip
 
 cond: HasFlag('JobAccepted(slow_boat)')
 goto: Waiting
@@ -19,9 +16,9 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: Easy money. A courier came in on the Chiba freighter with a chip for me. Somebody put a knife in him at the docks before my pickup. The chip walked.
+npc: Times are slow, so here's easy money. A courier came in on the Chiba freighter carrying something for me. Meet him at the east side taxi stand, take the package, bring it here. Four hundred.
 #
-o_text: Who took it?
+o_text: What does the package look like?
 o_id: slow_boat_accept
 o_goto: Accepted
 #
@@ -30,18 +27,19 @@ o_id: slow_boat_decline
 o_goto: Bye
 
 name: Accepted
-npc: Jalil. Smuggler, eastern residential, keeps his stock in a footlocker and the key round his neck. Bring me the chip, four hundred. Don't plug it into anything.
+npc: No idea. That's why I need someone who can think. His name is Hiro. Freight jacket. Go.
 effect: SetFlag('JobAccepted(slow_boat)')
+effect: RunScript('f_slow_boat')
 effect: EndConversation
 
 name: Waiting
-npc: Jalil, east side. Footlocker. Chip. Simple.
+npc: Hiro, east side. Don't come back empty-handed.
 effect: EndConversation
 
-name: Return
-npc: (He sees the chip in your hand and goes very still.) You didn't plug it in. Tell me you didn't plug it in.
+name: HasChip
+npc: (He sees the chip and goes very still.) You found it. Did anybody follow you?
 #
-o_text: (Hand it over.) 400 sat, as agreed.
+o_text: (Hand it over.) Four hundred.
 o_id: slow_boat_give
 o_goto: Paid
 #
@@ -50,20 +48,16 @@ o_id: slow_boat_keep
 o_goto: Bye
 
 name: Paid
-npc: (He pockets it.) Berth lists. Who goes to the stars, and who doesn't. Now you know why the courier died. Forget it.
+npc: (He pockets it.) Berth lists. Who goes up to the stars and who stays down here. Now you know why the courier died. Forget it.
 effect: StackTransferTo(NPC, 'chiba_chip', 1)
 effect: StackTransferFrom(NPC, 'gold', 400)
-effect: SetFlag('slow_boat_paid')
-effect: EndConversation
-
-name: Bribed
-npc: Jalil says you came and went. Funny. He's buying drinks for the whole street now. Don't come back here.
+effect: SetFlag('slow_boat_kade')
 effect: EndConversation
 
 name: Done
-npc: Our business is done. Leave the door how you found it.
+npc: We're done. Leave the door how you found it.
 effect: EndConversation
 
 name: Bye
-npc: Door's behind you.
+npc: The door's behind you.
 effect: EndConversation

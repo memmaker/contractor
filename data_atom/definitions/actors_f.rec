@@ -1,0 +1,96 @@
+# Package F actors: spawned by scripts.
+%rec: Actor
+
+Name: chiba_gunman
+Description: a gunman in a long coat
+Long_Description: One of two men who followed the Chiba courier off the boat. They want the chip and they do not ask twice.
+Icon: g
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 2
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 5
+Perception: 4
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+faction: chiba
+aggressive: true
+equipment: 10mm_pistol
+equipment: 10mm_jhp(24)
+
+Name: ecto_ghost
+Description: a white face
+Long_Description: A pale face hanging in the air, mouth open in a scream with no sound. When it turns, you see a cable glint behind it.
+Icon: @
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 999
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 2
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 5
+Perception: 4
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+Dialogue: ecto_ghost
+faction: ecto
+
+Name: nueman_cleaner
+Description: a man in a grey suit
+Long_Description: A cleaner from an orbital consultancy. He has no face you will remember.
+Icon: c
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 30
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 2
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 5
+Perception: 4
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+faction: nueman
+aggressive: true
+equipment: 10mm_pistol
+equipment: 10mm_jhp(24)

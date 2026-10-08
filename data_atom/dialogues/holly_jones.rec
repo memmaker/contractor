@@ -1,0 +1,43 @@
+# F10: Holly is free once the marker is gone. She decides whether to go home.
+%rec: OpeningBranch
+
+cond: HasFlag('holly_home') || HasFlag('holly_stays')
+goto: Done
+
+cond: HasFlag('holly_free') || HasFlag('Killed(loanshark_fargo)')
+goto: Free
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: More coffee? (She doesn't look up.)
+effect: EndConversation
+
+name: Free
+npc: (She stares at you.) It's over? ... Caitlin sent you. The show.
+#
+o_text: Your show needs you. Go home.
+o_id: holly_go_home
+o_goto: Home
+#
+o_text: It's your choice. You don't owe anybody now.
+o_id: holly_choice
+o_goto: Choice
+
+name: Home
+npc: Yeah. Yeah, okay. I know how to read a teleprompter. (She takes off the apron.)
+effect: SetFlag('holly_home')
+effect: RemoveActor('holly_jones')
+effect: EndConversation
+
+name: Choice
+npc: Choice. (She laughs.) Nobody asked me that in years. I read other people's lies for eight years. Here, at least, the coffee's honest. I'm staying.
+effect: SetFlag('holly_stays')
+effect: EndConversation
+
+name: Done
+npc: Coffee?
+effect: EndConversation

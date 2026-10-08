@@ -1,0 +1,55 @@
+# F7: Tito saw Carmen leave with the latest victim. Ask nicely (social Easy) or pay 50.
+%rec: OpeningBranch
+
+cond: HasFlag('carmen_witness')
+goto: Said
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: I just coil cable.
+#
+o_text: The night the last man died. Did Carmen leave with anyone?
+o_id: tito_ask
+o_cond: HasFlag('JobAccepted(carmen)')
+o_test: RollSkill('social', 'Easy')
+o_succ: Witness
+o_fail: Silent
+#
+o_text: Bye.
+o_id: tito_bye
+o_goto: Bye
+
+name: Silent
+npc: I coil cable. Cable doesn't talk, I don't talk.
+#
+o_text: (Pay him 50.)
+o_id: tito_pay
+o_cond: HasItem('gold', 50)
+o_goto: PaidWitness
+#
+o_text: Fine.
+o_id: tito_silent_bye
+o_goto: Bye
+
+name: PaidWitness
+npc: (The money goes.) She left with him. Back door. Red ribbon in her hair. I'll say it to the detective, once.
+effect: StackTransferTo(NPC, 'gold', 50)
+effect: SetFlag('carmen_witness')
+effect: EndConversation
+
+name: Witness
+npc: (He looks at the stage door.) She left with him. Back door. Red ribbon in her hair. I'll say it to the detective, once.
+effect: SetFlag('carmen_witness')
+effect: EndConversation
+
+name: Said
+npc: I said it already.
+effect: EndConversation
+
+name: Bye
+npc: Mind the cable.
+effect: EndConversation

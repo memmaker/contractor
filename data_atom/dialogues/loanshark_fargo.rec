@@ -1,8 +1,8 @@
-# Package F "Deadline": Fargo has the key to the stash (deadline_stash) that holds the Holly's debt marker.
+# F10: Fargo. Pay the marker, scare him off it, or fight him and his goons.
 %rec: OpeningBranch
 
-cond: HasFlag('deadline_bribed')
-goto: Bribed
+cond: HasFlag('holly_free')
+goto: Done
 
 cond: true
 goto: Default
@@ -10,54 +10,55 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: You want money? Everybody wants money.
+npc: Everyone pays Fargo. Some pay with money, some with time.
 #
-o_text: Holly's marker. Hand it over, or your knees and I have a conversation.
-o_id: deadline_talk
-o_cond: HasFlag('JobAccepted(deadline)') && !HasItem('deadline_stash_key')
-o_test: RollSkill('intimidate', 'Hard')
-o_succ: Yield
-o_fail: Refuse
-#
-o_text: Her sister hired me. What do you pay to keep Holly?
-o_id: deadline_bribe
-o_cond: HasFlag('JobAccepted(deadline)') && !HasItem('holly_marker') && !HasFlag('deadline_paid')
-o_goto: Bribe
-#
-o_text: Who borrows from you?
-o_id: deadline_lore
-o_goto: Lore
+o_text: I'm here about Holly Jones.
+o_id: fargo_holly
+o_cond: HasFlag('JobAccepted(deadline)')
+o_goto: Holly
 #
 o_text: Bye.
-o_id: deadline_bye
+o_id: fargo_bye
 o_goto: Bye
 
-name: Lore
-npc: Everybody who bought a lottery slip. Ninety percent of my clients are waiting for the draw. When the ships leave without them, I collect.
+name: Holly
+npc: Four hundred and she walks. Cash.
 #
-o_text: Back.
-o_id: deadline_lore_back
-o_goto: Default
+o_text: (Pay 400.)
+o_id: fargo_pay
+o_cond: HasItem('gold', 400)
+o_goto: Paid
+#
+o_text: Tear up the marker, or I tear up you.
+o_id: fargo_threaten
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: Scared
+o_fail: Fight
+#
+o_text: No.
+o_id: fargo_no
+o_goto: Bye
 
-name: Yield
-npc: (He looks at your hands, then your eyes.) Holly's not worth it. Here, the key. Take the marker.
-effect: StackTransferFrom(NPC, 'deadline_stash_key', 1)
+name: Paid
+npc: Pleasure. (He tears the marker.) She's yours.
+effect: StackTransferTo(NPC, 'gold', 400)
+effect: SetFlag('holly_free')
 effect: EndConversation
 
-name: Refuse
-npc: (He laughs.) I've been threatened by better.
+name: Scared
+npc: (He weighs it. He tears the marker.) She was bad for business anyway.
+effect: SetFlag('holly_free')
 effect: EndConversation
 
-name: Bribe
-npc: (He counts out two hundred.) Tell the sister Holly signed a new contract. Smart.
-effect: StackTransferFrom(NPC, 'gold', 200)
-effect: SetFlag('deadline_bribed')
+name: Fight
+npc: Boys.
+effect: ProvokeFaction('loanshark_fargo')
 effect: EndConversation
 
-name: Bribed
-npc: Welcome back. Need a loan?
+name: Done
+npc: We're square.
 effect: EndConversation
 
 name: Bye
-npc: Interest runs daily.
+npc: Interest is daily.
 effect: EndConversation

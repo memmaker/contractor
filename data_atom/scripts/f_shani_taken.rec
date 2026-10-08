@@ -1,0 +1,16 @@
+# F2: Stromberg's people collect Shani Kell six hours after you sold her out.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('shani_sold_t')
+
+if: IsHoursAfter('shani_sold_t', 6)
+do: LoadMap('hq_terra_vitae')
+do: RemoveActor('star_shani')
+do: SetFlag('shani_taken')

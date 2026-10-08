@@ -391,17 +391,20 @@ func (a *Autoplay) walkStep(target geometry.Point, adjacent bool) (arrived bool)
 			return isObj && !mine.IsHidden() && mine.IsProximityTriggered()
 		})) > 0
 	}
-	walkable := func(avoidMines bool) func(p geometry.Point) bool {
+	walkable := func(avoidMines, avoidCorpses bool) func(p geometry.Point) bool {
 		return func(p geometry.Point) bool {
 			_, corpse := m.TryGetDownedActorAt(p) // stepping on a corpse opens its loot and would eat a pending answer
 			obj, hasObj := m.TryGetObjectAt(p)    // bumping a bed or terminal on the way opens its menu, doors are fine
 			furniture := hasObj && !(obj.GetCategory() >= foundation.ObjectLockedDoor && obj.GetCategory() <= foundation.ObjectBrokenDoor)
-			return p == target || (!m.IsTransitionAt(p) && !corpse && !furniture && !(avoidMines && mined(p)) && !trespass(p) && (m.IsWalkableFor(p, g.Player) || (hasObj && obj.GetCategory() == foundation.ObjectClosedDoor))) // the target may be an occupied or caged tile
+			return p == target || (!m.IsTransitionAt(p) && !(avoidCorpses && corpse) && !furniture && !(avoidMines && mined(p)) && !trespass(p) && (m.IsWalkableFor(p, g.Player) || (hasObj && obj.GetCategory() == foundation.ObjectClosedDoor))) // the target may be an occupied or caged tile
 		}
 	}
-	path := m.GetAStarPath(pos, target, walkable(true))
+	path := m.GetAStarPath(pos, target, walkable(true, true))
+	if len(path) == 0 { // corpses block the way round the mines: step over them rather than past a mine
+		path = m.GetAStarPath(pos, target, walkable(true, false))
+	}
 	if len(path) == 0 { // no way around the mines: a player would risk it
-		path = m.GetAStarPath(pos, target, walkable(false))
+		path = m.GetAStarPath(pos, target, walkable(false, true))
 	}
 	if len(path) == 0 && adjacent { // unreachable (caged, in water): get as close as the map allows
 		reach := m.GetDijkstraMapWithActorsNotBlocking(g.Player, 400)
@@ -502,6 +505,10 @@ func (a *Autoplay) waitUntil(desc string, at func() time.Time) (interface{}, err
 func (a *Autoplay) trace() {
 	name := os.Getenv("AUTOPLAY_TRACE")
 	if name == "" {
+		return
+	}
+	if name == "player" {
+		a.logf("TRACE player at %v hp=%d", a.g.Player.Position(), a.g.Player.GetHitPoints())
 		return
 	}
 	for mapName, m := range a.g.activeMaps {

@@ -1,14 +1,8 @@
-# Package F "Deadline": Caitlin hires you. Flags: JobAccepted(deadline), deadline_paid, deadline_bribed.
+# F10 Deadline. Free Holly from Fargo. Holly decides whether to come back.
 %rec: OpeningBranch
 
 cond: HasFlag('deadline_paid')
 goto: Done
-
-cond: HasFlag('deadline_bribed')
-goto: Bribed
-
-cond: HasFlag('JobAccepted(deadline)') && HasItem('holly_marker')
-goto: Return
 
 cond: HasFlag('JobAccepted(deadline)')
 goto: Waiting
@@ -19,51 +13,55 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: My sister Holly owes money to a loan shark called Fargo. He has her marker, and he says she works it off at his club or she disappears. My employer can't know.
+npc: Holly Jones. The news. She hasn't been on air in a week. She gambled, she borrowed from a man called Fargo in the commerce district, and now she works off the debt in his back room. The show goes on without her in three days.
 #
-o_text: I can get the marker.
+o_text: I'll bring her back.
 o_id: deadline_accept
 o_goto: Accepted
 #
-o_text: Not my kind of job.
+o_text: Not my problem.
 o_id: deadline_decline
 o_goto: Bye
 
 name: Accepted
-npc: He keeps markers in a lockbox in the commerce district, the key on him. Three-fifty. Holly is stupid, but she's mine.
+npc: Here's three hundred up front. Pay him, scare him, I don't care. Three-fifty more when she's on air.
 effect: SetFlag('JobAccepted(deadline)')
+effect: StackTransferFrom(NPC, 'gold', 300)
 effect: EndConversation
 
 name: Waiting
-npc: Fargo. Commerce district. Please be quick.
-effect: EndConversation
-
-name: Return
-npc: (She tears the marker into very small pieces.) Holly's free.
+npc: Well?
 #
-o_text: (Hand it over.) 350 sat, as agreed.
-o_id: deadline_give
+o_text: She's on her way home.
+o_id: deadline_home
+o_cond: HasFlag('holly_home')
 o_goto: Paid
 #
-o_text: Not yet.
-o_id: deadline_keep
+o_text: She's free. She chose not to come back.
+o_id: deadline_stays
+o_cond: HasFlag('holly_stays')
+o_goto: Stays
+#
+o_text: Working on it.
+o_id: deadline_wait
 o_goto: Bye
 
 name: Paid
-npc: Three-fifty. (Her calm comes back like a mask.) This conversation did not happen.
-effect: StackTransferTo(NPC, 'holly_marker', 1)
+npc: (All three phones ring at once.) She's back! Three-fifty. You saved a show, you know that?
 effect: StackTransferFrom(NPC, 'gold', 350)
 effect: SetFlag('deadline_paid')
 effect: EndConversation
 
-name: Bribed
-npc: Holly's working at the club. Fargo says you were reasonable. (She does not finish the sentence.)
+name: Stays
+npc: Chose? (She sits down.) ... Then it's her life. One-fifty. I hope she's happy.
+effect: StackTransferFrom(NPC, 'gold', 150)
+effect: SetFlag('deadline_paid')
 effect: EndConversation
 
 name: Done
-npc: Mr. Washington is in a meeting.
+npc: The show goes on.
 effect: EndConversation
 
 name: Bye
-npc: I have a call on line one.
+npc: Three days.
 effect: EndConversation

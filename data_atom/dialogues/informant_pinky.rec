@@ -1,8 +1,8 @@
-# Package F "Payback": Pinky has the key to the stash (payback_stash) that holds the a dealer ledger.
+# F6: Pinky. Finding him sets pinky_found. Warn him (he pays and runs) or kill him.
 %rec: OpeningBranch
 
-cond: HasFlag('payback_bribed')
-goto: Bribed
+cond: HasFlag('pinky_warned')
+goto: Leaving
 
 cond: true
 goto: Default
@@ -11,52 +11,49 @@ goto: Default
 
 name: Default
 npc: I don't know you. I don't know anyone.
+effect: SetFlag('pinky_found')
 #
-o_text: Stripe wants his ledger. Give it to me and maybe he stops looking for you.
-o_id: payback_talk
-o_cond: HasFlag('JobAccepted(payback)') && !HasItem('payback_stash_key')
-o_test: RollSkill('social', 'Hard')
-o_succ: Yield
-o_fail: Refuse
+o_text: Stripe is looking for you.
+o_id: pinky_warn
+o_cond: HasFlag('JobAccepted(payback)')
+o_goto: Plead
 #
-o_text: I could tell Stripe you left the dome.
-o_id: payback_bribe
-o_cond: HasFlag('JobAccepted(payback)') && !HasItem('stripe_ledger') && !HasFlag('payback_paid')
-o_goto: Bribe
-#
-o_text: Why sell him out?
-o_id: payback_lore
+o_text: Why are you hiding at the wall?
+o_id: pinky_lore
 o_goto: Lore
 #
-o_text: Bye.
-o_id: payback_bye
+o_text: Nothing.
+o_id: pinky_bye
 o_goto: Bye
 
+name: Plead
+npc: (He goes grey.) EBI made me. They asked nicely and then not nicely. Please.
+#
+o_text: Run. Tonight.
+o_id: pinky_run
+o_goto: Warned
+#
+o_text: Just checking it was you.
+o_id: pinky_checked
+o_goto: Bye
+
+name: Warned
+npc: (He empties his pockets into your hands.) One-eighty, all of it. Tell him I'm dead. Tell him anything.
+effect: StackTransferFrom(NPC, 'gold', 180)
+effect: SetFlag('pinky_warned')
+effect: RunScript('f_pinky_leaves')
+effect: EndConversation
+
+name: Leaving
+npc: I'm going, I'm going.
+effect: EndConversation
+
 name: Lore
-npc: EBI asked nicely, and then not nicely. Everybody in this dome works for EBI eventually. Even you. You'll see.
+npc: Because nobody looks at the wall. Nobody wants to see what's out there. Best hiding place in the dome.
 #
 o_text: Back.
-o_id: payback_lore_back
+o_id: pinky_lore_back
 o_goto: Default
-
-name: Yield
-npc: (He shakes.) He won't stop. But if he has the book, maybe he stops looking at me first. Take the key.
-effect: StackTransferFrom(NPC, 'payback_stash_key', 1)
-effect: EndConversation
-
-name: Refuse
-npc: Stripe will kill me with or without it. I'm keeping my insurance.
-effect: EndConversation
-
-name: Bribe
-npc: (He empties his pockets.) Two-fifty. Tell him I went over the wall. Tell him I'm dead. Anything.
-effect: StackTransferFrom(NPC, 'gold', 250)
-effect: SetFlag('payback_bribed')
-effect: EndConversation
-
-name: Bribed
-npc: I owe you. Really. I owe you.
-effect: EndConversation
 
 name: Bye
 npc: You didn't see me.

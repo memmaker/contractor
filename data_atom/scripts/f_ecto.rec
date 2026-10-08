@@ -1,0 +1,12 @@
+# F4: at night the ghost appears on Ecto's floor.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: IsNight()
+do: SpawnActor('ecto_ghost', 'zone_commerce', 'ecto_floor')
+do: SetFlag('ecto_ghost_seen')

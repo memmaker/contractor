@@ -58,9 +58,16 @@ item: electronic_lockpick
 Position: (72,19)
 
 Category: UnknownContainer
-Name: holiday_on_ice_stash
-Description: a briefcase
+Name: stromberg_safe
+Description: Stromberg's office safe
 lockdifficulty: hard
-lockflag: holiday_on_ice_stash_key
-item: pump_specs
-Position: (32,18)
+item: stromberg_ledger
+item: gold(150)
+Position: (42,18)
+
+Category: UnknownContainer
+Name: morrow_briefcase
+Description: a steel briefcase
+lockdifficulty: hard
+item: orbital_specs
+Position: (50,18)

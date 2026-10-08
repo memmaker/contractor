@@ -1,8 +1,8 @@
-# Package F "Carmen": Carmen has the key to the stash (carmen_stash) that holds the Carmen's diary.
+# F7: Carmen. Confront her (she attacks) or let her buy you.
 %rec: OpeningBranch
 
-cond: HasFlag('carmen_bribed')
-goto: Bribed
+cond: HasFlag('carmen_bought')
+goto: Bought
 
 cond: true
 goto: Default
@@ -12,51 +12,45 @@ goto: Default
 name: Default
 npc: You came to hear me sing? Everybody comes to hear me sing.
 #
-o_text: Rourke knows. Give me the diary, and you get a trial instead of a bullet.
-o_id: carmen_talk
-o_cond: HasFlag('JobAccepted(carmen)') && !HasItem('carmen_stash_key')
-o_test: RollSkill('social', 'Hard')
-o_succ: Yield
-o_fail: Refuse
+o_text: I know about the five.
+o_id: carmen_confront
+o_cond: HasFlag('JobAccepted(carmen)')
+o_goto: Confront
 #
-o_text: Rourke is paying me. You could pay more.
-o_id: carmen_bribe
-o_cond: HasFlag('JobAccepted(carmen)') && !HasItem('carmen_diary') && !HasFlag('carmen_paid')
-o_goto: Bribe
+o_text: Rourke is on to you. What's it worth to make that go away?
+o_id: carmen_sellout
+o_cond: HasFlag('JobAccepted(carmen)') && !HasFlag('carmen_arrested')
+o_goto: Offer
 #
-o_text: Why do people think you were dead?
+o_text: Why does everyone think you're dead?
 o_id: carmen_lore
 o_goto: Lore
 #
-o_text: Bye.
+o_text: Another time.
 o_id: carmen_bye
 o_goto: Bye
 
+name: Confront
+npc: (Her smile doesn't move.) Then you know how this ends, darling.
+effect: ProvokeFaction('singer_carmen')
+effect: EndConversation
+
+name: Offer
+npc: (She counts out five hundred without looking.) Tell the old man the trail went cold. Sit in the front row sometime.
+effect: StackTransferFrom(NPC, 'gold', 500)
+effect: SetFlag('carmen_bought')
+effect: EndConversation
+
+name: Bought
+npc: Front row, darling.
+effect: EndConversation
+
 name: Lore
-npc: Because I wanted them to. A woman disappears, a man appears. A man disappears... The dome is small, darling. People are so easy to lose.
+npc: Because I wanted them to. A woman disappears, a man appears. The dome is small, darling. People are so easy to lose.
 #
 o_text: Back.
 o_id: carmen_lore_back
 o_goto: Default
-
-name: Yield
-npc: (She laughs, softly, and gives you the key.) A trial. How old-fashioned. Fine. Let them read it. They'll understand.
-effect: StackTransferFrom(NPC, 'carmen_stash_key', 1)
-effect: EndConversation
-
-name: Refuse
-npc: (Her smile does not reach her eyes.) Run along, darling.
-effect: EndConversation
-
-name: Bribe
-npc: (She counts out four hundred without looking.) Tell the old man the trail went cold. Come and hear me sing sometime.
-effect: StackTransferFrom(NPC, 'gold', 400)
-effect: SetFlag('carmen_bribed')
-effect: EndConversation
-
-name: Bribed
-npc: Sit in the front row, darling.
-effect: EndConversation
 
 name: Bye
 npc: Sweet dreams.

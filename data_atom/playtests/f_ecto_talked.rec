@@ -1,0 +1,28 @@
+# Ecto (talker): talk back through the projector, Pixel stops.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(ecto, talked)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_accept')
+
+if: true
+do: WaitUntil('23:00')
+
+if: true
+do: ForceChecks('success')
+do: Talk('ecto_ghost')
+do: Choose('ghost_talk')
+do: Choose('ghost_pixel_stop')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_report_kid')

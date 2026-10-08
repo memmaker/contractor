@@ -1,0 +1,15 @@
+# F9: thirty minutes after the deal, Nueman's cleaners come for the contractor.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('nueman_t')
+
+if: IsMinutesAfter('nueman_t', 30) && IsMap('zone_commerce')
+do: SpawnTeamHunting('nueman_cleaners', 'zone_commerce', 'taxi_stand', 'player')
+do: SetFlag('nueman_cleaners_sent')

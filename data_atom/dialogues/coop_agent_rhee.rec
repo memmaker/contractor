@@ -1,0 +1,21 @@
+# F8: the co-op wants Hal's vote too.
+%rec: OpeningBranch
+
+cond: HasFlag('proxy_coop') && !HasFlag('rhee_paid')
+goto: Thanks
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: One share, one vote. Terra Vitae's board wants to sell the hydroponics to Carleton's people. Every pensioner's proxy counts.
+effect: SetFlag('rhee_met')
+effect: EndConversation
+
+name: Thanks
+npc: Hal signed to us? (She hugs you, briefly, hard.) We can't pay what Carleton pays. One-fifty.
+effect: StackTransferFrom(NPC, 'gold', 150)
+effect: SetFlag('rhee_paid')
+effect: EndConversation

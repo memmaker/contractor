@@ -1,0 +1,15 @@
+# F1: twenty minutes after the chip leaves the locker, the courier's killers catch up in the commerce district.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('slow_boat_chip_taken')
+do: SaveTimeNow('slow_boat_t')
+
+if: IsMinutesAfter('slow_boat_t', 20) && IsMap('zone_commerce')
+do: SpawnTeamHunting('chiba_gunmen', 'zone_commerce', 'taxi_stand', 'player')
+do: SetFlag('slow_boat_ambush')

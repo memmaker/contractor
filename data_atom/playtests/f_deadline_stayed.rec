@@ -1,0 +1,54 @@
+# Deadline (talker): scare Fargo, give Holly the choice. She stays.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(deadline, stayed)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('assistant_caitlin')
+do: Choose('deadline_accept')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: ForceChecks('success')
+do: Talk('loanshark_fargo')
+do: Choose('fargo_holly')
+do: Choose('fargo_threaten')
+
+if: true
+do: Talk('holly_jones')
+do: Choose('holly_choice')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('assistant_caitlin')
+do: Choose('deadline_stays')

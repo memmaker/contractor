@@ -1,0 +1,15 @@
+# F6: warned, Pinky leaves the dome by morning.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('pinky_warned_t')
+
+if: IsHoursAfter('pinky_warned_t', 2)
+do: LoadMap('zone_wall_south')
+do: RemoveActor('informant_pinky')

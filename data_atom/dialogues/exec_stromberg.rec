@@ -1,17 +1,5 @@
-# Package F "Sweet Revenge": Stromberg hires you. Flags: JobAccepted(sweet_revenge), sweet_revenge_paid, sweet_revenge_bribed.
+# F2 Sweet Revenge: the target. Release her (social Hard) or sell her out (800).
 %rec: OpeningBranch
-
-cond: HasFlag('sweet_revenge_paid')
-goto: Done
-
-cond: HasFlag('sweet_revenge_bribed')
-goto: Bribed
-
-cond: HasFlag('JobAccepted(sweet_revenge)') && HasItem('bd_master')
-goto: Return
-
-cond: HasFlag('JobAccepted(sweet_revenge)')
-goto: Waiting
 
 cond: true
 goto: Default
@@ -19,51 +7,51 @@ goto: Default
 %rec: Nodes
 
 name: Default
-npc: Shani Kell. Biggest braindance star in the dome. She walked out on her contract, and she took her last master recording with her. Terra Vitae is hiding her.
+npc: My time costs more than yours. Talk.
 #
-o_text: You want the recording.
-o_id: sweet_revenge_accept
-o_goto: Accepted
+o_text: Shani Kell wants out of her contract. Let her go before this gets ugly.
+o_id: stromberg_release
+o_cond: HasFlag('JobAccepted(sweet_revenge)') && !HasFlag('sweet_revenge_released')
+o_test: RollSkill('social', 'Hard')
+o_succ: Released
+o_fail: Refused
 #
-o_text: Not my kind of job.
-o_id: sweet_revenge_decline
+o_text: I know where Shani Kell is hiding.
+o_id: stromberg_betray
+o_cond: HasFlag('JobAccepted(sweet_revenge)') && !HasFlag('sweet_revenge_betrayed')
+o_goto: Betray
+#
+o_text: What do you sell?
+o_id: stromberg_lore
+o_goto: Lore
+#
+o_text: Nothing.
+o_id: stromberg_bye
 o_goto: Bye
 
-name: Accepted
-npc: The master. Her makeup case, at the commune; she keeps the key. Five hundred. And leave her face alone, it's worth more than you are.
-effect: SetFlag('JobAccepted(sweet_revenge)')
-effect: EndConversation
-
-name: Waiting
-npc: Terra Vitae. The master recording. My lawyers are patient. I'm not.
-effect: EndConversation
-
-name: Return
-npc: (He takes it with both hands.) Every second of her. Do you know what a dead star sells for? Twice what a living one does.
+name: Lore
+npc: Feelings. Other people's. A braindance of a first kiss sells. A braindance of a last breath sells better. The dome is bored, and I am its cure.
 #
-o_text: (Hand it over.) 500 sat, as agreed.
-o_id: sweet_revenge_give
-o_goto: Paid
-#
-o_text: Not yet.
-o_id: sweet_revenge_keep
-o_goto: Bye
+o_text: Back.
+o_id: stromberg_lore_back
+o_goto: Default
 
-name: Paid
-npc: Five hundred. She'll sue. She'll lose. Have a good evening.
-effect: StackTransferTo(NPC, 'bd_master', 1)
-effect: StackTransferFrom(NPC, 'gold', 500)
-effect: SetFlag('sweet_revenge_paid')
+name: Released
+npc: (A long look.) She's damaged goods anyway. Fine. (He taps his earpiece.) Legal, void the Kell contract. Now get out of my building.
+effect: SetFlag('sweet_revenge_released')
 effect: EndConversation
 
-name: Bribed
-npc: My people say she's still at the commune with her master. You were there. Interesting.
+name: Refused
+npc: She signed. Ink is forever. Security will see you out.
 effect: EndConversation
 
-name: Done
-npc: You're not in my calendar.
+name: Betray
+npc: (He smiles for the first time.) Eight hundred. My people collect her tonight.
+effect: PlayerAddGold(800)
+effect: SetFlag('sweet_revenge_betrayed')
+effect: RunScript('f_shani_taken')
 effect: EndConversation
 
 name: Bye
-npc: My time costs more than yours.
+npc: James, my next appointment.
 effect: EndConversation

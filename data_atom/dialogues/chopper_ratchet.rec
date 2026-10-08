@@ -1,8 +1,5 @@
-# Package F "The '94 Harley": Ratchet has the key to the stash (old_harley_stash) that holds the an ignition module.
+# F3: Ratchet has the ignition. Buy it (150), talk it free (social Easy), or sell him all three parts (450).
 %rec: OpeningBranch
-
-cond: HasFlag('old_harley_bribed')
-goto: Bribed
 
 cond: true
 goto: Default
@@ -12,51 +9,74 @@ goto: Default
 name: Default
 npc: Parts, labour, no questions. What do you need?
 #
-o_text: The Harley ignition is Dizzy's. He's old, and it's all he has.
-o_id: old_harley_talk
-o_cond: HasFlag('JobAccepted(old_harley)') && !HasItem('old_harley_stash_key')
+o_text: That Harley ignition. It's Dizzy's. He's old and it's all he has.
+o_id: ratchet_ignition_talk
+o_cond: HasFlag('JobAccepted(old_harley)') && !HasItem('harley_ignition') && !HasFlag('ratchet_ignition_gone')
 o_test: RollSkill('social', 'Easy')
-o_succ: Yield
+o_succ: GiveIgnition
 o_fail: Refuse
 #
-o_text: Make it worth my while and I tell Dizzy it's gone.
-o_id: old_harley_bribe
-o_cond: HasFlag('JobAccepted(old_harley)') && !HasItem('harley_ignition') && !HasFlag('old_harley_paid')
-o_goto: Bribe
+o_text: (Buy the ignition.) 150.
+o_id: ratchet_ignition_buy
+o_cond: HasFlag('JobAccepted(old_harley)') && HasItem('gold', 150) && !HasFlag('ratchet_ignition_gone')
+o_goto: SellIgnition
+#
+o_text: (Show him all three parts.) What would a corporate collector pay?
+o_id: ratchet_buy_parts
+o_cond: HasItem('harley_ignition') && HasItem('harley_fuel_cell') && HasItem('harley_tank') && !HasFlag('harley_parts_given')
+o_goto: BuyParts
 #
 o_text: Business good?
-o_id: old_harley_lore
+o_id: ratchet_lore
 o_goto: Lore
 #
 o_text: Bye.
-o_id: old_harley_bye
+o_id: ratchet_bye
 o_goto: Bye
 
-name: Lore
-npc: Since the dome sealed, nothing new comes in. Everything is old parts on older machines. I'm not a thief, I'm an archaeologist.
-#
-o_text: Back.
-o_id: old_harley_lore_back
-o_goto: Default
+name: GiveIgnition
+npc: (He sighs.) Dizzy's? I didn't know. Here. Tell him no hard feelings.
+effect: StackTransferFrom(NPC, 'harley_ignition', 1)
+effect: SetFlag('ratchet_ignition_gone')
+effect: EndConversation
 
-name: Yield
-npc: (He sighs.) Dizzy. Yeah. I didn't know it was his. Here, key to the bin. Tell him no hard feelings.
-effect: StackTransferFrom(NPC, 'old_harley_stash_key', 1)
+name: SellIgnition
+npc: Pleasure.
+effect: StackTransferTo(NPC, 'gold', 150)
+effect: StackTransferFrom(NPC, 'harley_ignition', 1)
+effect: SetFlag('ratchet_ignition_gone')
 effect: EndConversation
 
 name: Refuse
 npc: It's mine now. That's how parts work.
 effect: EndConversation
 
-name: Bribe
-npc: (He grins.) One-fifty. That module is going into a racer for a corporate kid. Pleasure doing business.
-effect: StackTransferFrom(NPC, 'gold', 150)
-effect: SetFlag('old_harley_bribed')
+name: BuyParts
+npc: (He whistles.) A complete set. There's a corporate kid who wants a real racer. Four-fifty for the lot, cash.
+#
+o_text: Sold.
+o_id: ratchet_parts_sold
+o_goto: PartsSold
+#
+o_text: No. They're Dizzy's.
+o_id: ratchet_parts_no
+o_goto: Bye
+
+name: PartsSold
+npc: Smart. Old men and old bikes, both on borrowed time.
+effect: StackTransferTo(NPC, 'harley_ignition', 1)
+effect: StackTransferTo(NPC, 'harley_fuel_cell', 1)
+effect: StackTransferTo(NPC, 'harley_tank', 1)
+effect: StackTransferFrom(NPC, 'gold', 450)
+effect: SetFlag('harley_sold_ratchet')
 effect: EndConversation
 
-name: Bribed
-npc: Need anything else stripped?
-effect: EndConversation
+name: Lore
+npc: Since the dome sealed nothing new comes in. Old parts on older machines. I'm not a thief, I'm an archaeologist.
+#
+o_text: Back.
+o_id: ratchet_lore_back
+o_goto: Default
 
 name: Bye
 npc: Mind the oil.

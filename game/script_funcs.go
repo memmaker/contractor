@@ -207,6 +207,11 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			hours := args[1].(float64)
 			return g.IsHoursAfter(namedTime, int(hours)), nil
 		},
+		// IsNight(): 22:00 to 05:00 game time
+		"IsNight": func(args ...interface{}) (interface{}, error) {
+			h := g.gameTime.Time.Hour()
+			return h >= 22 || h < 5, nil
+		},
 		"IsDaysAfter": func(args ...interface{}) (interface{}, error) {
 			namedTime := args[0].(string)
 			days := args[1].(float64)

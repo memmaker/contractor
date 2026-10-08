@@ -1,4 +1,4 @@
-# Package F: ten more side contracts (inspired by Night City Stories, Greenwar, Northwest Passage).
+# Package F: ten more contracts, each shaped after its source (Night City Stories, Greenwar, Northwest Passage).
 %rec: journalEntry
 %key: id
 
@@ -7,113 +7,132 @@ name: The Slow Boat
 xp: 250
 #
 start_cond: HasFlag('JobAccepted(slow_boat)')
-start_text: A courier off the Chiba freighter was knifed at the docks. Kade's chip ended up with Jalil, a smuggler in the eastern district. Kade pays 400.
+start_text: Kade, a fixer in the commerce district, wants a package from Hiro, a courier off the Chiba freighter. Meet him at the east side taxi stand.
 #
 prog_cond: HasItem('chiba_chip')
-prog_text: You have the Chiba chip. Kade is waiting in the commerce district.
+prog_text: Hiro was dead. His claim ticket opened locker #7 and a chip with an EBI seal. Somebody else wants it too. Kade pays 400, Shaw would pay more, and Father Olaf would want to read it.
 #
-end_cond: HasFlag('slow_boat_paid')
-end_text: Kade has his chip. It held the berth lists. Somebody decides who goes to the stars.
-end_id: delivered
+end_cond: HasFlag('slow_boat_kade')
+end_text: Kade has the berth lists. You never learned who he sells them to.
+end_id: kade
 #
-end_cond: HasFlag('slow_boat_bribed')
-end_text: You took Jalil's money and told nobody. The chip is still out there.
-end_id: bribed
-end_xp: 125
+end_cond: HasFlag('slow_boat_shaw')
+end_text: Shaw paid 600 and the berth lists are public. Not one name from the poor districts.
+end_id: shaw
+#
+end_cond: HasFlag('slow_boat_olaf')
+end_text: Father Olaf read the berth lists. Terra Vitae has stopped waiting for the ships.
+end_id: olaf
 
 id: sweet_revenge
 name: Sweet Revenge
 xp: 250
 #
 start_cond: HasFlag('JobAccepted(sweet_revenge)')
-start_text: Stromberg wants Shani Kell's last braindance master. She is hiding at Terra Vitae. 500 sat.
+start_text: Shani Kell, a braindance star hiding at Terra Vitae, wants revenge on Stromberg, the exec who sold her recording of the cleansing. Kill him, steal his black ledger from his office safe, or make him release her.
 #
-prog_cond: HasItem('bd_master')
-prog_text: You have Shani's master. Stromberg pays in the corporate district.
+end_cond: HasFlag('sweet_revenge_betrayed')
+end_text: You sold Shani Kell to Stromberg for 800. His people collected her from Terra Vitae that night.
+end_id: betrayed
+end_xp: 100
 #
-end_cond: HasFlag('sweet_revenge_paid')
-end_text: Stromberg owns every second of Shani Kell now, including the night of the cleansing.
-end_id: delivered
+end_cond: HasFlag('sweet_revenge_exposed')
+end_text: Stromberg's ledger is on every screen. Fourteen angles of the cleansing, and the names of everyone who bought them.
+end_id: exposed
 #
-end_cond: HasFlag('sweet_revenge_bribed')
-end_text: Shani paid you to look away. Stromberg will send someone less sentimental.
-end_id: bribed
-end_xp: 125
+end_cond: HasFlag('sweet_revenge_avenged')
+end_text: Stromberg is dead. Shani Kell felt nothing, and paid anyway.
+end_id: killed
+#
+end_cond: HasFlag('sweet_revenge_freed')
+end_text: Stromberg voided Shani's contract. She sings at Terra Vitae now, for no camera.
+end_id: released
 
 id: old_harley
 name: The '94 Harley
-xp: 150
+xp: 200
 #
 start_cond: HasFlag('JobAccepted(old_harley)')
-start_text: Dizzy's antique Harley lost its ignition module to Ratchet's chop shop in the west. 300 sat to bring it back.
+start_text: Dizzy's 1994 Harley was stripped: ignition, fuel cell, chrome tank. Ratchet's chop shop in the west, a burned-out car over there, and the scavengers at the wall.
 #
-prog_cond: HasItem('harley_ignition')
-prog_text: You have the Harley's ignition. Dizzy lives in the south.
+prog_cond: HasItem('harley_ignition') && HasItem('harley_fuel_cell') && HasItem('harley_tank')
+prog_text: All three parts. Dizzy is in the south. Ratchet would pay more.
 #
-end_cond: HasFlag('old_harley_paid')
-end_text: Dizzy's Harley runs. The only real engine in the dome, and you can hear it from the wall.
-end_id: delivered
+end_cond: HasFlag('harley_rebuilt')
+end_text: Dizzy's Harley roars. The only real engine in the dome, and you can hear it from the wall.
+end_id: rebuilt
 #
-end_cond: HasFlag('old_harley_bribed')
-end_text: Ratchet paid you and sold the module. Dizzy still polishes a bike that will never run.
-end_id: bribed
-end_xp: 75
+end_cond: HasFlag('harley_sold_ratchet')
+end_text: Ratchet paid 450 for the parts. A corporate kid has a racer. Dizzy still polishes a sculpture.
+end_id: sold
+end_xp: 100
 
 id: ecto
 name: Ecto
 xp: 200
 #
 start_cond: HasFlag('JobAccepted(ecto)')
-start_text: Lou's club Ecto is haunted. The ghost is a projector run by a netrunner kid called Pixel in the eastern district. 350 sat to end it.
+start_text: Lou's club Ecto in the commerce district is haunted after dark. Stay the night and make it stop. 350 sat.
 #
-prog_cond: HasItem('holo_emitter')
-prog_text: You have Pixel's holo emitter. Lou is in the commerce district.
+prog_cond: HasFlag('ecto_ghost_seen')
+prog_text: The ghost is real enough to see. It flickers like a picture.
 #
-end_cond: HasFlag('ecto_paid')
-end_text: Ecto is open again. The ghost was a box with a kid behind it.
-end_id: delivered
+end_cond: HasFlag('ecto_lied')
+end_text: Pixel paid you and Lou paid you. The ghost still dances at Ecto. Somebody had it coming.
+end_id: haunted
 #
-end_cond: HasFlag('ecto_bribed')
-end_text: Pixel paid you, and Lou's club stays haunted. Maybe it deserves to be.
-end_id: bribed
-end_xp: 100
+end_cond: HasFlag('ecto_fixed') && HasFlag('ecto_power_cut')
+end_text: The ghost was a projector on a junction box. You pulled the plug. Ecto is open again.
+end_id: power_cut
+#
+end_cond: HasFlag('ecto_fixed')
+end_text: The ghost was a girl called Pixel with a grudge. She switched it off herself.
+end_id: talked
 
 id: false_papers
 name: False Papers
 xp: 200
 #
 start_cond: HasFlag('JobAccepted(false_papers)')
-start_text: Amira, a refugee in the south district, paid Nils the forger for papers and got nothing. Her papers are in his locked drawer in the west.
+start_text: Amira, a refugee in the south district, needs papers for her family. Take her photo to Nils the forger in the west. He asks 250; she has 100.
 #
-prog_cond: HasItem('forged_sin')
-prog_text: You have Amira's papers. She waits in the south district.
+prog_cond: HasFlag('nils_working')
+prog_text: Nils is making the papers. Twelve hours.
 #
-end_cond: HasFlag('false_papers_paid')
-end_text: Amira's children have a name and a ration card. Nils has one customer less.
+end_cond: HasFlag('papers_delivered')
+end_text: Amira's children have a name and a ration card. She gave you her wedding ring.
 end_id: delivered
 #
-end_cond: HasFlag('false_papers_bribed')
-end_text: Nils sold Amira's papers to someone with money. You were paid to forget her.
-end_id: bribed
-end_xp: 100
+end_cond: HasFlag('papers_sold')
+end_text: You sold Amira's face to an EBI clerk for 300. The next day her corner was empty.
+end_id: sold
+end_xp: 50
 
 id: payback
 name: Payback
 xp: 200
 #
 start_cond: HasFlag('JobAccepted(payback)')
-start_text: Stripe the lace junkie wants his ledger back from Pinky, the informant who sold him out to EBI. Pinky hides in the south. 300 sat.
+start_text: Stripe, a lace junkie in the eastern district, pays 300 to know where Pinky hides, the informant who sold him to EBI. Just the where.
 #
-prog_cond: HasItem('stripe_ledger')
-prog_text: You have Stripe's ledger. He is in the eastern district.
+prog_cond: HasFlag('pinky_found')
+prog_text: Pinky hides with the scavengers at the south wall. Stripe only wants to know where.
 #
-end_cond: HasFlag('payback_paid')
-end_text: Stripe has his ledger and a list of people to visit.
-end_id: delivered
+end_cond: HasFlag('pinky_sold')
+end_text: You told Stripe where Pinky sleeps. You never asked what happened next. The scavengers found him in the morning.
+end_id: sold
 #
-end_cond: HasFlag('payback_bribed')
-end_text: Pinky paid you to say he left the dome. He still faces the door.
-end_id: bribed
+end_cond: HasFlag('pinky_killed_paid')
+end_text: You killed Pinky yourself and Stripe paid everything he had.
+end_id: killed
+#
+end_cond: HasFlag('stripe_lied')
+end_text: Pinky ran and Stripe believes he went over the wall.
+end_id: lied
+#
+end_cond: HasFlag('stripe_doubts')
+end_text: Pinky ran. Stripe didn't believe you, and now he wonders about you.
+end_id: doubted
 end_xp: 100
 
 id: carmen
@@ -121,73 +140,78 @@ name: Carmen
 xp: 300
 #
 start_cond: HasFlag('JobAccepted(carmen)')
-start_text: Detective Rourke in the west believes Carmen, a singer in the commerce district, is the killer behind five murders. Her diary is the proof. 400 sat.
+start_text: Detective Rourke in the west thinks Carmen, a singer in the commerce district, killed five people. He needs two pieces of proof: the latest victim behind the pawnshop, a witness at the bar, her notes.
 #
-prog_cond: HasItem('carmen_diary')
-prog_text: You have Carmen's diary. Rourke is in the western district.
+end_cond: HasFlag('carmen_arrested')
+end_text: Rourke arrested Carmen at dawn. The killings in the west have stopped.
+end_id: arrested
 #
-end_cond: HasFlag('carmen_paid')
-end_text: Rourke has Carmen's diary. Whether anyone upstairs reads it is another question.
-end_id: delivered
+end_cond: HasFlag('carmen_dead_paid')
+end_text: Carmen is dead. No trial, no answers for the families.
+end_id: killed
 #
-end_cond: HasFlag('carmen_bribed')
-end_text: Carmen paid you four hundred. The bodies keep turning up in the west.
-end_id: bribed
-end_xp: 150
+end_cond: HasFlag('carmen_bought')
+end_text: Carmen paid you 500. The bodies keep turning up in the west.
+end_id: bought
+end_xp: 50
 
-id: proxy_vote
+id: proxy
 name: Proxy Vote
-xp: 250
+xp: 200
 #
-start_cond: HasFlag('JobAccepted(proxy_vote)')
-start_text: Carleton of BAT needs old Hal's proxy vote to take over Liverpool Filtration, the dome's water. Hal lives in the south. 600 sat.
+start_cond: HasFlag('JobAccepted(proxy)')
+start_text: Carleton in the corporate district needs Hal’s share vote, from the south district, within two days. 500 sat.
 #
-prog_cond: HasItem('proxy_vote')
-prog_text: You have Hal's proxy. Carleton is in the corporate district.
+end_cond: HasFlag('proxy_real')
+end_text: You fixed Hal’s robot dog and he signed. Carleton won his vote.
+end_id: favour
 #
-end_cond: HasFlag('proxy_vote_paid')
-end_text: BAT owns the dome's water now. Carleton remembers your name fondly.
-end_id: delivered
+end_cond: HasFlag('proxy_forged')
+end_text: Nils forged Hal’s signature. Carleton won his vote, and Hal never knew he voted.
+end_id: forged
 #
-end_cond: HasFlag('proxy_vote_bribed')
-end_text: Hal paid you to walk away and the vote failed by fifteen shares. Carleton remembers your name too.
-end_id: bribed
-end_xp: 125
+end_cond: HasFlag('proxy_coop')
+end_text: Hal gave his vote to the food co-op. Carleton lost by one.
+end_id: coop
+#
+end_cond: HasFlag('proxy_too_late')
+end_text: The vote came and went. Carleton lost by one.
+end_id: too_late
+end_xp: 0
 
-id: holiday_on_ice
+id: holiday
 name: A Holiday on Ice
 xp: 250
 #
-start_cond: HasFlag('JobAccepted(holiday_on_ice)')
-start_text: Nueman, an 'Orbital Air agent', wants Morrow's cold-pump specs. Morrow is a BAT engineer in the corporate district. 450 sat.
+start_cond: HasFlag('JobAccepted(holiday)')
+start_text: Nueman in the commerce district pays 600 for an engineer’s specs. Morrow, corporate district, never puts his briefcase down.
 #
-prog_cond: HasItem('pump_specs')
-prog_text: You have the pump specs. Nueman waits in the commerce district.
+end_cond: HasFlag('specs_returned')
+end_text: You gave Morrow his specs back. Nueman will find someone else.
+end_id: returned
 #
-end_cond: HasFlag('holiday_on_ice_paid')
-end_text: Nueman has the specs. The cold units are big enough for a person, and somebody now knows it.
-end_id: delivered
+end_cond: HasFlag('nueman_insured')
+end_text: You knew what Nueman does to his contractors and made sure he couldn’t. He paid 800 instead.
+end_id: insured
 #
-end_cond: HasFlag('holiday_on_ice_bribed')
-end_text: Morrow paid you to stay quiet about his sloppy security. The specs stayed with BAT.
-end_id: bribed
-end_xp: 125
+end_cond: HasFlag('nueman_paid') && HasFlag('Killed(nueman_cleaner)')
+end_text: Nueman paid, then sent cleaners. They are the ones on holiday now.
+end_id: survived
 
 id: deadline
 name: Deadline
 xp: 250
 #
 start_cond: HasFlag('JobAccepted(deadline)')
-start_text: Caitlin's sister Holly owes Fargo the loan shark. Her debt marker is in his lockbox in the commerce district. 350 sat.
+start_text: Holly Jones, the news presenter, works off a debt to Fargo, a loan shark in the commerce district. Her assistant Caitlin in the corporate district wants her back on air.
 #
-prog_cond: HasItem('holly_marker')
-prog_text: You have Holly's marker. Caitlin is in the corporate district.
+prog_cond: HasFlag('holly_free') || HasFlag('Killed(loanshark_fargo)')
+prog_text: Holly is free. Whether she goes back is up to her.
 #
-end_cond: HasFlag('deadline_paid')
-end_text: Holly's marker is confetti. Caitlin pays and pretends it never happened.
-end_id: delivered
+end_cond: HasFlag('deadline_paid') && HasFlag('holly_home')
+end_text: Holly Jones is back on air. Fargo’s back room needs a new waitress.
+end_id: home
 #
-end_cond: HasFlag('deadline_bribed')
-end_text: Fargo paid you, and Holly works at his club now.
-end_id: bribed
-end_xp: 125
+end_cond: HasFlag('deadline_paid') && HasFlag('holly_stays')
+end_text: Holly is free and chose to stay. Caitlin paid less and understood more.
+end_id: stayed

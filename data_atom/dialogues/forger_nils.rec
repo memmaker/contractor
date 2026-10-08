@@ -1,8 +1,11 @@
-# Package F "False Papers": Nils has the key to the stash (false_papers_stash) that holds the a forged SIN card.
+# F5: Nils forges Amira's papers in twelve hours (pay or intimidate), or buys her photo for EBI.
 %rec: OpeningBranch
 
-cond: HasFlag('false_papers_bribed')
-goto: Bribed
+cond: HasFlag('nils_working') && IsHoursAfter('nils_t', 12) && !HasFlag('papers_picked')
+goto: Ready
+
+cond: HasFlag('nils_working') && !HasFlag('papers_picked')
+goto: NotReady
 
 cond: true
 goto: Default
@@ -12,52 +15,92 @@ goto: Default
 name: Default
 npc: Papers are an art. Art has a price. What do you need?
 #
-o_text: The refugee woman paid you. Give her the papers, or I make sure EBI hears your name.
-o_id: false_papers_talk
-o_cond: HasFlag('JobAccepted(false_papers)') && !HasItem('false_papers_stash_key')
-o_test: RollSkill('intimidate', 'Easy')
-o_succ: Yield
-o_fail: Refuse
+o_text: Can you do a shareholder's signature? Hal, from the south.
+o_id: nils_proxy
+o_cond: HasFlag('JobAccepted(proxy)') && HasItem('gold', 200) && !HasFlag('proxy_done')
+o_goto: NilsProxy
 #
-o_text: She can't pay. You can. How much for me to forget her?
-o_id: false_papers_bribe
-o_cond: HasFlag('JobAccepted(false_papers)') && !HasItem('forged_sin') && !HasFlag('false_papers_paid')
-o_goto: Bribe
+o_text: (Show him Amira's photo.) Papers for this woman.
+o_id: nils_order
+o_cond: HasItem('amira_photo')
+o_goto: Price
 #
 o_text: Who buys papers?
-o_id: false_papers_lore
+o_id: nils_lore
 o_goto: Lore
 #
-o_text: Bye.
-o_id: false_papers_bye
+o_text: Nothing.
+o_id: nils_bye
 o_goto: Bye
 
-name: Lore
-npc: Refugees. Runaways. EBI, when they want someone to disappear on paper first. A Saudi passport with a level-three chip, four thousand. The ticket lottery uses my slips too.
+name: Price
+npc: Two-fifty. Twelve hours. Good papers take time.
 #
-o_text: Back.
-o_id: false_papers_lore_back
-o_goto: Default
+o_text: (Pay.) Two-fifty.
+o_id: nils_pay
+o_cond: HasItem('gold', 250)
+o_goto: Started
+#
+o_text: You'll do it for nothing, or EBI hears your name.
+o_id: nils_threaten
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: StartedFree
+o_fail: Laughs
+#
+o_text: EBI pays for faces like hers, doesn't it?
+o_id: nils_sell_photo
+o_goto: SellOut
 
-name: Yield
-npc: (He sighs, as if bored.) Fine. She paid. Here, the drawer key. Her card's on top.
-effect: StackTransferFrom(NPC, 'false_papers_stash_key', 1)
+name: Started
+npc: Twelve hours.
+effect: StackTransferTo(NPC, 'amira_photo', 1)
+effect: StackTransferTo(NPC, 'gold', 250)
+effect: SaveTimeNow('nils_t')
+effect: SetFlag('nils_working')
 effect: EndConversation
 
-name: Refuse
+name: StartedFree
+npc: (A thin smile.) For the cause, then. Twelve hours.
+effect: StackTransferTo(NPC, 'amira_photo', 1)
+effect: SaveTimeNow('nils_t')
+effect: SetFlag('nils_working')
+effect: EndConversation
+
+name: Laughs
 npc: EBI buys my papers too. Threaten someone else.
 effect: EndConversation
 
-name: Bribe
-npc: (He smiles.) One-fifty. I'll sell her card to someone who can pay. That's not cruelty. It's a market.
-effect: StackTransferFrom(NPC, 'gold', 150)
-effect: SetFlag('false_papers_bribed')
+name: SellOut
+npc: (He takes the photo with two fingers.) Three hundred. An EBI clerk collects faces of undocumented people. What happens next is not my department.
+effect: StackTransferTo(NPC, 'amira_photo', 1)
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('papers_sold')
+effect: RunScript('f_amira_taken')
 effect: EndConversation
 
-name: Bribed
-npc: Need a new name? Discount for friends.
+name: NotReady
+npc: Forever takes a while.
 effect: EndConversation
+
+name: Ready
+npc: (He blows on the card.) Nobody's name, nobody's face. Perfect.
+effect: StackTransferFrom(NPC, 'forged_sin', 1)
+effect: SetFlag('papers_picked')
+effect: EndConversation
+
+name: Lore
+npc: Refugees. Runaways. EBI, when they want someone to disappear on paper first. A Saudi passport with a level-three chip, four thousand. These things take forever to make.
+#
+o_text: Back.
+o_id: nils_lore_back
+o_goto: Default
 
 name: Bye
 npc: Stay legal.
+effect: EndConversation
+
+name: NilsProxy
+npc: Signatures are quick. Two hundred, and ten minutes. (He scribbles. It is better than Hal.)
+effect: StackTransferTo(NPC, 'gold', 200)
+effect: PlayerAddItem('forged_proxy')
 effect: EndConversation

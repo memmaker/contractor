@@ -1,0 +1,51 @@
+# Proxy Vote (avoider): Nils forges the signature, Hal is never asked.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(proxy, forged)') && !HasFlag('TalkedTo(shareholder_hal)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_accept')
+
+if: true
+do: Give('gold(200)')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_west')
+
+if: true
+do: Talk('forger_nils')
+do: Choose('nils_proxy')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_give_forged')

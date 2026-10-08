@@ -1,0 +1,35 @@
+# Proxy Vote (grey): talk Hal into giving his vote to the co-op.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(proxy, coop)') && HasFlag('rhee_paid')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('exec_carleton')
+do: Choose('proxy_accept')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('coop_agent_rhee')
+
+if: true
+do: Talk('shareholder_hal')
+do: Choose('hal_coop')
+
+if: true
+do: Talk('coop_agent_rhee')

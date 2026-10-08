@@ -1,0 +1,14 @@
+# F8: the vote is held two days after Carleton hires you.
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: true
+do: SaveTimeNow('proxy_t')
+
+if: IsDaysAfter('proxy_t', 2) && !HasFlag('proxy_done')
+do: SetFlag('proxy_too_late')

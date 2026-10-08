@@ -372,45 +372,12 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(300)
+equipment: amira_ring
 Position: (55,15)
 
-Name: informant_pinky
-Description: Pinky
-LongDescription: A nervous man with pink hair and colour-shift contacts. He is always facing the door.
-Dialogue: informant_pinky
-faction: informant_pinky
-Icon: P
-Foreground: light_gray_2
-Age: 35
-BodyType: 0
-XP: 60
-KillType: 0
-DamageType: 0
-TeamNum: 1
-HitPoints: 28
-ActionPoints: 6
-ArmorClass: 5
-MeleeDamage: 2
-CarryWeight: 100
-Sequence: 8
-HealingRate: 1
-CriticalChance: 2
-Strength: 5
-Perception: 4
-Endurance: 4
-Cool: 5
-Intelligence: 5
-Agility: 5
-Luck: 5
-DREMP: 500
-equipment: gold(280)
-equipment: key('payback_stash_key', "Pinky's strongbox key")
-Position: (20,9)
-
 Name: shareholder_hal
-Description: Old Hal
-LongDescription: A retired filtration engineer with fifteen shares and a framed photo of the plant he helped build.
+Description: Hal
+LongDescription: An old dockworker who got one share of Terra Vitae stock as a retirement gift. A broken robot dog sits at his feet.
 Dialogue: shareholder_hal
 faction: shareholder_hal
 Icon: H
@@ -437,6 +404,37 @@ Intelligence: 5
 Agility: 5
 Luck: 5
 DREMP: 500
-equipment: gold(330)
-equipment: key('proxy_vote_stash_key', "Hal's strongbox key")
-Position: (60,12)
+equipment: proxy_card
+Position: (40,18)
+
+Name: coop_agent_rhee
+Description: Rhee
+LongDescription: An organiser for the food co-op, collecting shareholder proxies one old pensioner at a time.
+Dialogue: coop_agent_rhee
+faction: coop_agent_rhee
+Icon: R
+Foreground: light_gray_2
+Age: 35
+BodyType: 0
+XP: 60
+KillType: 0
+DamageType: 0
+TeamNum: 1
+HitPoints: 28
+ActionPoints: 6
+ArmorClass: 5
+MeleeDamage: 2
+CarryWeight: 100
+Sequence: 8
+HealingRate: 1
+CriticalChance: 2
+Strength: 5
+Perception: 4
+Endurance: 4
+Cool: 5
+Intelligence: 5
+Agility: 5
+Luck: 5
+DREMP: 500
+equipment: gold(300)
+Position: (46,18)
