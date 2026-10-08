@@ -56,18 +56,3 @@ lockdifficulty: easy
 item: gold(250)
 item: electronic_lockpick
 Position: (72,19)
-
-Category: UnknownContainer
-Name: stromberg_safe
-Description: Stromberg's office safe
-lockdifficulty: hard
-item: stromberg_ledger
-item: gold(150)
-Position: (42,18)
-
-Category: UnknownContainer
-Name: morrow_briefcase
-Description: a steel briefcase
-lockdifficulty: hard
-item: orbital_specs
-Position: (50,18)

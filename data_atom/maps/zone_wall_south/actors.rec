@@ -456,7 +456,6 @@ equipment: 10mm_jhp(12)
 Position: (45,4)
 
 Name: scavenger_mott
-equipment: harley_tank
 Description: Mott
 LongDescription: A wiry scavenger in a filter mask, sorting buttons, rings and boots into piles on a tarp.
 Dialogue: scavenger_mott
@@ -488,35 +487,3 @@ equipment: junk(3)
 equipment: water_ration(2)
 equipment: gold(60)
 Position: (52,8)
-
-Name: informant_pinky
-Description: Pinky
-LongDescription: A nervous man with pink hair and colour-shift contacts, hiding among the scavengers at the wall. He is always facing the street.
-Dialogue: informant_pinky
-faction: informant_pinky
-Icon: P
-Foreground: light_gray_2
-Age: 35
-BodyType: 0
-XP: 60
-KillType: 0
-DamageType: 0
-TeamNum: 1
-HitPoints: 28
-ActionPoints: 6
-ArmorClass: 5
-MeleeDamage: 2
-CarryWeight: 100
-Sequence: 8
-HealingRate: 1
-CriticalChance: 2
-Strength: 5
-Perception: 4
-Endurance: 4
-Cool: 5
-Intelligence: 5
-Agility: 5
-Luck: 5
-DREMP: 500
-equipment: gold(180)
-Position: (56,6)

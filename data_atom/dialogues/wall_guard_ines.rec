@@ -32,7 +32,7 @@ npc: The south gate four hundred. Terra Vitae people, mostly. They wanted in whe
 #
 o_text: Somebody is looking for one of them. Burton.
 o_id: ines_burton
-o_cond: HasFlag('QuestAccepted(tags)') && !HasItem('burton_dog_tag')
+o_cond: HasFlag('JobAccepted(tags)') && !HasItem('burton_dog_tag')
 o_goto: Burton
 #
 o_text: Back.

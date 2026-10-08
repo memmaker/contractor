@@ -42,7 +42,7 @@ do: Give('10mm_smg(100)')
 do: Give('10mm_jhp(48)')
 do: Give('10mm_ap(48)')
 do: Equip('10mm_smg')
-do: SetSkill('RangedCombat', 80)
+do: SetSkill('RangedCombat', 100)
 do: WaitMinutes(30)
 
 if: true

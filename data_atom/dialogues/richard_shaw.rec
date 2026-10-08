@@ -16,11 +16,13 @@ goto: Default
 
 name: Default
 npc: (A neat man surrounded by folders.) Richard Shaw. I collect records. Receipts, logs, manifests. The things that outlive us.
+# >>> pack f
 #
 o_text: (Show him the Chiba chip.) Berth lists. Interested?
 o_id: shaw_buy_chip
 o_cond: HasItem('chiba_chip')
 o_goto: ShawChip
+# <<< pack f
 #
 o_text: (Show him the dog tag from the wall.) You collect the cleansing too?
 o_id: sell_tag
@@ -133,9 +135,11 @@ effect: PlayerAddGold(400)
 effect: SetFlag('tag_sold')
 effect: EndConversation
 
+# >>> pack f
 name: ShawChip
 npc: (He reads the seal and stops breathing for a second.) The real thing. Six hundred, and every screen in the dome shows it by morning.
 effect: StackTransferTo(NPC, 'chiba_chip', 1)
 effect: PlayerAddGold(600)
 effect: SetFlag('slow_boat_shaw')
 effect: EndConversation
+# <<< pack f

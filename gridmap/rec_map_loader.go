@@ -103,15 +103,9 @@ func (t *RecMapLoader[ActorType, ItemType, ObjectType]) LoadMap(mapName string) 
 		zoneMeta = NewZoneMetadata(zoneRecords)
 	}
 
-	if fxtools.FileExists(filepath.Join(mapDir, "actors.rec")) {
-		actorRecords, _ = recfile.ReadAndClose(fxtools.MustOpen(filepath.Join(mapDir, "actors.rec")))
-	}
-	if fxtools.FileExists(filepath.Join(mapDir, "objects.rec")) {
-		objectRecords, _ = recfile.ReadAndClose(fxtools.MustOpen(filepath.Join(mapDir, "objects.rec")))
-	}
-	if fxtools.FileExists(filepath.Join(mapDir, "items.rec")) {
-		itemRecords, _ = recfile.ReadAndClose(fxtools.MustOpen(filepath.Join(mapDir, "items.rec")))
-	}
+	actorRecords = readMapRecords(mapDir, "actors")
+	objectRecords = readMapRecords(mapDir, "objects")
+	itemRecords = readMapRecords(mapDir, "items")
 
 	// Optional: Read init flags, if they exist and haven't been loaded before
 	flagsFile := filepath.Join(mapDir, "initFlags.rec")
@@ -309,4 +303,18 @@ func NewZoneMetadata(records []recfile.Record) map[string]ZoneMetadata {
 		result[zoneName] = meta
 	}
 	return result
+}
+
+// readMapRecords reads <kind>.rec plus every <kind>_<pack>.rec, so a content pack keeps its placements in its own file.
+func readMapRecords(mapDir, kind string) []recfile.Record {
+	files, _ := filepath.Glob(filepath.Join(mapDir, kind+"_*.rec"))
+	files = append([]string{filepath.Join(mapDir, kind+".rec")}, files...)
+	var records []recfile.Record
+	for _, file := range files {
+		if fxtools.FileExists(file) {
+			fileRecords, _ := recfile.ReadAndClose(fxtools.MustOpen(file))
+			records = append(records, fileRecords...)
+		}
+	}
+	return records
 }
