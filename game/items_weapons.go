@@ -813,8 +813,6 @@ func (t DamageType) String() string {
 		return "Explosive"
 	case DamageTypeRadiation:
 		return "Radiation"
-	case DamageTypePoison:
-		return "Poison"
 	}
 	return "Unknown"
 }
@@ -828,7 +826,6 @@ const (
 	DamageTypeEMP
 	DamageTypeExplosive
 	DamageTypeRadiation
-	DamageTypePoison
 	// DamageTypeEnergy is a catch-all for all energy damage types on armors
 	DamageTypeEnergy
 	DamageTypeCount
@@ -853,8 +850,6 @@ func DamageTypeFromString(value string) DamageType {
 		return DamageTypeExplosive
 	case "radiation":
 		return DamageTypeRadiation
-	case "poison":
-		return DamageTypePoison
 	}
 	panic("Invalid damage type: " + value)
 	return DamageTypeNormal

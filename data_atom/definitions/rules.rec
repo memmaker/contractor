@@ -95,7 +95,6 @@ HitPoints: 15 + (2 * end) + str
 MeleeDamageBonus: max(1, str - 5)
 PartyLimit: floor(coo / 2.0)
 PerkRate: 3
-PoisonResistance: end * 5
 Speed: 2 * agi
 SkillRate: 3 + (int * 2)
 

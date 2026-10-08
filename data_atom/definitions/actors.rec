@@ -59,7 +59,6 @@ DRElectrical: 15
 DREMP: 500
 DRExplosive: 10
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000005.pro
 
 Name: deathclaw
@@ -102,7 +101,6 @@ DRElectrical: 15
 DREMP: 500
 DRExplosive: 15
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000007.pro
 
 Name: dog
@@ -141,7 +139,6 @@ DRElectrical: 20
 DREMP: 500
 DRExplosive: 10
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000009.pro
 
 Name: brahmin
@@ -181,7 +178,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 10
 DRRadiation: 16
-DRPoison: 40
 SourceFile: 00000010.pro
 
 Name: rat
@@ -218,7 +214,6 @@ Luck: 1
 SkillBonusMeleeCombat: 27
 DREMP: 500
 DRRadiation: 2
-DRPoison: 5
 SourceFile: 00000011.pro
 
 Name: mantis
@@ -252,7 +247,6 @@ Luck: 1
 SkillBonusMeleeCombat: 28
 DREMP: 500
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000012.pro
 
 Name: adrian_voss
@@ -509,7 +503,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 
 Name: repair_bot
@@ -550,7 +543,6 @@ DRFire: 10
 DRPlasma: 20
 DRExplosive: 25
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000073.pro
 
 Name: repair_bot_mark_ii
@@ -592,7 +584,6 @@ DRFire: 10
 DRPlasma: 20
 DRExplosive: 25
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000074.pro
 
 Name: patrol_bat
@@ -631,7 +622,6 @@ DRPlasma: 50
 DRElectrical: 50
 DRExplosive: 40
 DRRadiation: 16
-DRPoison: 40
 
 Name: floating_eye_bot
 Description: Floating Eye Bot
@@ -673,7 +663,6 @@ DRFire: 10
 DRPlasma: 20
 DRExplosive: 25
 DRRadiation: 14
-DRPoison: 35
 SourceFile: 00000076.pro
 
 Name: sentry_bot_mark_ii
@@ -718,7 +707,6 @@ DRElectrical: 50
 DREMP: 15
 DRExplosive: 60
 DRRadiation: 16
-DRPoison: 40
 SourceFile: 00000078.pro
 
 Name: shop_owner
@@ -752,7 +740,6 @@ SkillBonusMeleeCombat: 25
 SkillBonusSocial: 87
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000150.pro
 
 Name: generic_ghoul
@@ -787,7 +774,6 @@ SkillBonusMeleeCombat: 46
 SkillBonusFirstAid: 15
 DREMP: 500
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000159.pro
 
 Name: corpse_male
@@ -844,7 +830,6 @@ SkillBonusMeleeCombat: 46
 SkillBonusFirstAid: 15
 DREMP: 500
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000159.pro
 
 

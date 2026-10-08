@@ -45,7 +45,6 @@ DRElectrical: 50
 DREMP: 15
 DRExplosive: 60
 DRRadiation: 16
-DRPoison: 40
 SourceFile: 00000078.pro
 Position: (71,12)
 
@@ -94,7 +93,6 @@ DRElectrical: 50
 DREMP: 15
 DRExplosive: 60
 DRRadiation: 16
-DRPoison: 40
 SourceFile: 00000078.pro
 Position: (71,15)
 

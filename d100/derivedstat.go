@@ -62,7 +62,6 @@ const (
 	CriticalImpactModifier
 	MeleeDamageBonus
 	DamageResistance
-	PoisonResistance
 	PartyLimit
 	SkillRate
 	PerkRate
@@ -93,8 +92,6 @@ func (s DerivedStat) String() string {
 		return "Party Limit"
 	case PerkRate:
 		return "Perk Rate"
-	case PoisonResistance:
-		return "Poison Resistance"
 	case Speed:
 		return "Speed"
 	case SkillRate:
@@ -128,8 +125,6 @@ func DerivedStatFromString(name string) DerivedStat {
 		return PartyLimit
 	case "perkrate":
 		return PerkRate
-	case "poisonresistance":
-		return PoisonResistance
 	case "speed":
 		return Speed
 	case "skillrate":
@@ -163,8 +158,6 @@ func (s DerivedStat) ToShortString() string {
 	case PartyLimit:
 		return "PL"
 	case PerkRate:
-		return "PR"
-	case PoisonResistance:
 		return "PR"
 	case Speed:
 		return "SP"

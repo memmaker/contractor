@@ -38,7 +38,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (44,8)
 
@@ -80,7 +79,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (33,14)
 
@@ -121,7 +119,6 @@ SkillBonusMeleeCombat: 25
 SkillBonusSocial: 53
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000150.pro
 equipment: binge(6)
 Position: (66,16)
@@ -165,7 +162,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 equipment: pallet_key
 Position: (40,8)
@@ -208,7 +204,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (73,5)
 
@@ -250,7 +245,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (57,16)
 
@@ -293,7 +287,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 equipment: vega_wallet
 Position: (36,4)
@@ -336,7 +329,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (57,14)
 
@@ -378,7 +370,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (32,4)
 

@@ -269,7 +269,6 @@ SkillBonusMeleeCombat: 25
 SkillBonusSocial: 87
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000150.pro
 Position: (46,15)
 
@@ -310,7 +309,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (74,10)
 
@@ -387,6 +385,5 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 SourceFile: 00000036.pro
 Position: (73,10)
