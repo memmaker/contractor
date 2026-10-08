@@ -17,10 +17,17 @@ o_goto: Default
 #
 o_text: Marla's rent. It waits.
 o_id: rook_intimidate
-o_cond: !HasFlag('rent_paid') && !HasFlag('rent_waived') && !HasFlag('rent_watch_sold')
+o_cond: !HasFlag('rent_paid') && !HasFlag('rent_waived') && !HasFlag('rent_watch_sold') && !HasFlag('rent_ledger_torn')
 o_test: RollSkill('intimidate', 'Easy')
 o_succ: Waived
 o_fail: NotWaived
+#
+o_text: (Ask to see the back shelf. While he turns, tear Marla's page out of his ledger.)
+o_id: rook_ledger
+o_cond: !HasFlag('rent_paid') && !HasFlag('rent_waived') && !HasFlag('rent_watch_sold') && !HasFlag('rent_ledger_torn') && !HasFlag('rook_ledger_caught')
+o_test: RollSkill('stealth', 'Medium')
+o_succ: LedgerTorn
+o_fail: LedgerCaught
 #
 o_text: Marla is paying. Her husband's watch.
 o_id: rook_watch
@@ -44,6 +51,22 @@ npc: Rent is rent. You want to pay it, pay it. You want to threaten me, there is
 #
 o_text: Noted.
 o_id: rook_not_waived_leave
+o_goto: End
+
+name: LedgerTorn
+npc: Back shelf is relics, nothing for you. (He never looks at the ledger. Marla's page is in your pocket.)
+effect: SetFlag('rent_ledger_torn')
+#
+o_text: Maybe next time.
+o_id: rook_ledger_done
+o_goto: End
+
+name: LedgerCaught
+npc: (His hand lands on the ledger before yours does.) That book stays on my side of the counter.
+effect: SetFlag('rook_ledger_caught')
+#
+o_text: Just looking.
+o_id: rook_ledger_leave
 o_goto: End
 
 name: Watch

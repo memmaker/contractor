@@ -26,6 +26,13 @@ o_id: benny_buy_badge
 o_cond: !HasFlag('benny_badge_gone') && HasItem('gold', 200)
 o_goto: BadgeSold
 #
+o_text: (Ask about the draw and lift the badge while he talks.)
+o_id: benny_lift
+o_cond: !HasFlag('benny_badge_gone') && !HasFlag('benny_lift_failed')
+o_test: RollSkill('stealth', 'Medium')
+o_succ: BadgeLifted
+o_fail: LiftCaught
+#
 o_text: Not today.
 o_id: benny_leave
 o_goto: End
@@ -56,6 +63,23 @@ effect: SetFlag('benny_badge_gone')
 #
 o_text: What conversation.
 o_id: benny_sold_done
+o_goto: End
+
+name: BadgeLifted
+npc: ...and the draw is next month, or the one after. (He never feels the badge leave his pocket.)
+effect: StackTransferFrom(NPC, 'bat_badge')
+effect: SetFlag('benny_badge_gone')
+#
+o_text: Good luck with that.
+o_id: benny_lifted_done
+o_goto: End
+
+name: LiftCaught
+npc: (He catches your wrist.) Pickpocket a pickpocket? Cute. Hands where I see them from now on.
+effect: SetFlag('benny_lift_failed')
+#
+o_text: Worth a try.
+o_id: benny_caught_leave
 o_goto: End
 
 name: BadgeRefused

@@ -1,0 +1,37 @@
+# Lost Badge (stealth): lift the badge from the tout's pocket mid-pitch and return it. Hear the preacher out on the way.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(lost_badge, returned)') && HasFlag('badge_returned') && HasFlag('KnowsAboutTerraVitae')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: ForceChecks('success')
+do: Talk('brother_cassius')
+do: Choose('cassius_where')
+do: Choose('where_back')
+do: Choose('cassius_leave')
+
+if: true
+do: Talk('chief_landry')
+do: Choose('landry_who')
+do: Choose('who_back')
+do: Choose('landry_leave')
+
+if: true
+do: Talk('tout_benny')
+do: Choose('benny_lift')
+do: Choose('benny_lifted_done')
+
+if: true
+do: Talk('chief_landry')
+do: Choose('landry_return')
+do: Choose('landry_done')
