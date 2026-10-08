@@ -200,7 +200,7 @@ func (u *UI) UpdateStats() {
 }
 
 func (u *UI) ShowGiveAndTakeContainer(leftName string, leftItems []foundation.Item, rightName string, rightItems []foundation.Item, transferToLeft func(itemTaken foundation.Item, stackCount int), transferToRight func(itemTaken foundation.Item, stackCount int), takeAll func()) {
-	u.showGiveAndTakePage(pageTitle(leftName, u.ammoPage), onPage(leftItems, u.ammoPage), pageTitle(rightName, u.ammoPage), onPage(rightItems, u.ammoPage), transferToLeft, transferToRight, takeAll, func() {
+	u.showGiveAndTakePage(leftName, onPage(leftItems, u.ammoPage), rightName, onPage(rightItems, u.ammoPage), transferToLeft, transferToRight, takeAll, func() {
 		u.ammoPage = !u.ammoPage
 		u.ShowGiveAndTakeContainer(leftName, leftItems, rightName, rightItems, transferToLeft, transferToRight, takeAll)
 	})
@@ -266,6 +266,7 @@ func (u *UI) showGiveAndTakePage(leftName string, leftItems []foundation.Item, r
 	leftWidth := longestItemLeft + 2
 
 	leftMenu.SetTitle(leftName)
+	withPageTabs(leftMenu, u.ammoPage)
 	leftMenu.SetSelectedFocusOnly(true)
 
 	if len(rightItems) > 0 {
@@ -277,6 +278,7 @@ func (u *UI) showGiveAndTakePage(leftName string, leftItems []foundation.Item, r
 	longestItemRight = max(longestItemRight, len(rightName))
 	rightWidth := longestItemRight + 2
 	rightMenu.SetTitle(rightName)
+	withPageTabs(rightMenu, u.ammoPage)
 	rightMenu.ShowFocus(true)
 	rightMenu.SetSelectedFocusOnly(true)
 
@@ -309,7 +311,7 @@ func (u *UI) showGiveAndTakePage(leftName string, leftItems []foundation.Item, r
 	halfCenterGap := centerGap / 2
 	centerScreen := screenWidth / 2
 
-	leftListStart := centerScreen - leftWidth - halfCenterGap
+	leftListStart := max(0, centerScreen-leftWidth-halfCenterGap)
 	rightListStart := leftListStart + leftWidth + centerGap
 	leftMenu.ShowFocus(true)
 	leftMenu.SetMouseCapture(func(action cview.MouseAction, event *tcell.EventMouse) (cview.MouseAction, *tcell.EventMouse) {
@@ -446,7 +448,8 @@ func (u *UI) ShowTakeOnlyContainer(name string, containedItems []foundation.Item
 	}
 
 	menu := u.openSimpleMenu(menuItems, func() { u.ammoPage = false })
-	menu.SetTitle(pageTitle(name, u.ammoPage))
+	menu.SetTitle(name)
+	withPageTabs(menu, u.ammoPage)
 	keyForTakeAll := u.GetKeysForCommandAsString(KeyLayerMain, "pickup")
 	u.Print(foundation.HiLite("Press %s to take all items", keyForTakeAll))
 	originalCapture := menu.GetInputCapture() // will manage pressing escape
@@ -547,7 +550,8 @@ func (u *UI) OpenVendorMenu(title string, allForSale []foundation.Item, buyItem 
 			onClose()
 		}
 	})
-	menu.SetTitle(pageTitle(title, u.ammoPage))
+	menu.SetTitle(title)
+	withPageTabs(menu, u.ammoPage)
 	origCapture := menu.GetInputCapture()
 	menu.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if isPageToggle(event) {
