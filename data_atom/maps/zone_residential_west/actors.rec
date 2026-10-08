@@ -52,6 +52,7 @@ CarryWeight: 100
 HealingRate: 1
 CriticalChance: 1
 Position: (13,19)
+equipment: key('resident_key_1', 'a flat key')
 
 Name: widow_marla
 Description: Marla
@@ -76,6 +77,7 @@ CriticalChance: 2
 Luck: 5
 DREMP: 500
 Position: (63,16)
+equipment: key('residential_locked_key', 'a spare door key')
 
 Name: kid_tobias
 Description: Tobias

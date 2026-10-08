@@ -141,6 +141,7 @@ DRRadiation: 10
 SourceFile: 00000036.pro
 equipment: pallet_key
 Position: (40,8)
+equipment: key('cb_altar_room', 'the altar room key')
 
 Name: solara_carter
 Icon: S

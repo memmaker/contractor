@@ -43,6 +43,7 @@ equipment: 10mm_pistol
 equipment: 10mm_jhp
 equipment: binge
 Position: (24,18)
+equipment: key('terra_vitae_entrance_key', 'the Terra Vitae side door key')
 
 Name: town_son_santiago
 Icon: S

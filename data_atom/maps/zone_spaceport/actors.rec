@@ -110,6 +110,11 @@ Luck: 5
 DREMP: 500
 faction: spaceport
 Position: (10,13)
+equipment: key('spaceport_door_1', 'a dock door key #1')
+equipment: key('spaceport_door_2', 'a dock door key #2')
+equipment: key('spaceport_door_3', 'a dock door key #3')
+equipment: key('spaceport_door_4', 'a dock door key #4')
+equipment: key('spaceport_door_5', 'a dock door key #5')
 
 Name: loader_tamsin
 Description: Tamsin
