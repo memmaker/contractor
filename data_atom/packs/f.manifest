@@ -61,6 +61,7 @@ playtests/f_proxy_coop.rec
 playtests/f_proxy_favour.rec
 playtests/f_proxy_forged.rec
 playtests/f_proxy_too_late.rec
+playtests/f_slow_boat_hacked.rec
 playtests/f_slow_boat_kade.rec
 playtests/f_slow_boat_olaf.rec
 playtests/f_slow_boat_shaw.rec

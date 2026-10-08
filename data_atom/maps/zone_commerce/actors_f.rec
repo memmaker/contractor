@@ -25,6 +25,7 @@ Awareness: 4
 Luck: 5
 DREMP: 500
 equipment: gold(450)
+equipment: key('luggage_7', 'locker code #7')
 Position: (30,12)
 
 Name: club_lou

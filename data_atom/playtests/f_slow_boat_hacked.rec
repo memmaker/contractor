@@ -1,0 +1,28 @@
+# The Slow Boat (technology): pull the locker code from the freighter manifest, skip the dead courier, sell to Shaw.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(slow_boat, shaw)') && HasFlag('slow_boat_hacked')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: ForceChecks('success')
+do: Talk('fixer_kade')
+do: Choose('slow_boat_accept')
+
+if: true
+do: Talk('fixer_kade')
+do: Choose('slow_boat_hack')
+
+if: true
+do: Use('left_luggage')
+do: Take('chiba_chip')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('shaw_buy_chip')
