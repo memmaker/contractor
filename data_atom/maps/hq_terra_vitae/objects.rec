@@ -124,7 +124,7 @@ TextFile: town_for_sale
 Position: (9,6)
 
 Category: Transition
-Description: CHANGEME
+Description: the stairs down to the western residential district
 Location: stairs_to_west
 TargetMap: zone_residential_west
 TargetLocation: stairs_to_terra_vitae

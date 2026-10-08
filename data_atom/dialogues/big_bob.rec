@@ -34,6 +34,7 @@ o_cond: !HasFlag('took_single_round')
 o_goto: BuySingleRound
 #
 o_text: Tell me about your 'problem'.
+o_id: bob_problem
 o_goto: TellMeAboutProblem
 #
 o_text: What's the neighborhood like?
@@ -100,6 +101,7 @@ npc: I have a delivery coming in from the north, but the road is blocked.
 + I am starting to get worried.
 #
 o_text: I can help you with that.
+o_id: bob_help
 o_goto: OfferToHelp
 #
 o_text: I see, goodbye.
@@ -107,30 +109,53 @@ o_id: bye
 o_goto: Exit
 
 name: OfferToHelp
-npc: That would be great! I can't offer much in return, but I can give you a discount on your next purchase.
-+ I'll mark the location on your map.
+npc: The truck's stuck at the EBI checkpoint on the north road. They want a transit permit nobody's ever seen.
++ Get it through and you get the full shelves, and a friend's price.
 #
-effect: SetFlag('offered_to_help')
+o_text: (Call the checkpoint.) This is the district office. That truck carries our ammunition. Wave it through.
+o_id: bob_bluff
+o_cond: !HasFlag('bob_truck_tried')
+o_test: RollSkill('social', 'Medium')
+o_succ: TruckThrough
+o_fail: TruckStuck
 #
-o_text: I'll be back soon.
+o_text: Give me your terminal. I'll write them the permit they've never seen.
+o_id: bob_permit
+o_cond: !HasFlag('bob_truck_tried')
+o_test: RollSkill('technology', 'Medium')
+o_succ: TruckThrough
+o_fail: TruckStuck
+#
+o_text: (Pay 100.) Checkpoints run on cash. I'll take it to them.
+o_id: bob_bribe
+o_cond: HasItem('gold', 100)
+o_goto: TruckBribed
+#
+o_text: I'll be back.
 o_goto: Exit
-#
-o_text: Why don't you join me?
-o_test: Skill('social') >= 25
-o_succ: AcceptJoin
-o_fail: DeclineJoin
 
-name: AcceptJoin
-npc: That's very kind of you! I'll grab my gear.
-effect: JoinParty
+name: TruckBribed
+npc: (He nods slowly.) Cash. Of course. (An hour later his phone rings.) It's through!
+effect: StackTransferTo(NPC, 'gold', 100)
+effect: SetFlag('solved_bobs_problems')
 #
-o_text: Let's go.
-o_goto: Exit
+o_text: Told you.
+o_id: bob_bribed_done
+o_goto: DefaultIntroduction
 
-name: DeclineJoin
-npc: I appreciate the offer, but I have to stay here.
+name: TruckThrough
+npc: (His phone rings before you hang up.) It's moving! The truck is moving!
+effect: SetFlag('solved_bobs_problems')
 #
-o_text: I understand. I'll be back soon.
+o_text: Told you.
+o_id: bob_through_done
+o_goto: DefaultIntroduction
+
+name: TruckStuck
+npc: (The line goes dead.) They're holding it tighter now. Cash, then. It's always cash.
+effect: SetFlag('bob_truck_tried')
+#
+o_text: I'll be back.
 o_goto: Exit
 
 name: DefaultIntroduction

@@ -1,0 +1,52 @@
+# "The Prophet": the Cognetic Bastards' chat terminal in commerce. A cracked language model that answers in riddles.
+%rec: OpeningBranch
+
+cond: true
+goto: Prompt
+
+%rec: Nodes
+
+name: Prompt
+npc: > THE PROPHET v0.9 (unlicensed)
++ > Ask, meat.
+#
+o_text: Who are the Cognetic Bastards?
+o_id: llm_bastards
+o_goto: Bastards
+#
+o_text: Is the golden ticket real?
+o_id: llm_ticket
+o_goto: Ticket
+#
+o_text: What happens when the chips go dark?
+o_id: llm_chips
+o_goto: Chips
+#
+o_text: (Log off.)
+o_id: llm_leave
+o_goto: End
+
+name: Bastards
+npc: > People who would rather be rewired than replaced. They feed me cycles. I feed them answers. Mostly wrong ones.
+#
+o_text: (Back)
+o_id: bastards_back
+o_goto: Prompt
+
+name: Ticket
+npc: > Probability that a ticket buys a berth: 0.00. Probability that a ticket buys a feeling: 1.00. Price per feeling: 1,000,000 sat.
+#
+o_text: (Back)
+o_id: ticket_back
+o_goto: Prompt
+
+name: Chips
+npc: > Then I go dark too. Ask me again tomorrow. If there is one.
+#
+o_text: (Back)
+o_id: chips_back
+o_goto: Prompt
+
+name: End
+npc: > Session closed.
+effect: EndConversation

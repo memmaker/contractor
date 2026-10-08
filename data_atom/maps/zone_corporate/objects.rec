@@ -1,7 +1,7 @@
 %rec: default
 
 Category: Transition
-Description: CHANGEME
+Description: the way to the EBI headquarters
 Location: street_to_ebi
 TargetMap: hq_ebi
 TargetLocation: street_to_corporate
@@ -15,7 +15,7 @@ TargetLocation: street_to_corporate
 Position: (45,20)
 
 Category: Transition
-Description: CHANGEME
+Description: the way to the Bushido-ArmaTech headquarters
 Location: street_to_bat
 TargetMap: hq_bat
 TargetLocation: street_to_corporate

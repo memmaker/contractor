@@ -12,7 +12,7 @@ Description: a door
 Position: (51,7)
 
 Category: Transition
-Description: CHANGEME
+Description: the stairs up to Project 21
 Location: stairs_to_project_21
 TargetMap: hq_project_21
 TargetLocation: stairs_to_east

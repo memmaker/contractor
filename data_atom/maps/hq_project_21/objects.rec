@@ -6,7 +6,7 @@ Dialogue: project_21
 Position: (41,10)
 
 Category: Transition
-Description: CHANGEME
+Description: the stairs down to the eastern residential district
 Location: stairs_to_east
 TargetMap: zone_residential_east
 TargetLocation: stairs_to_project_21

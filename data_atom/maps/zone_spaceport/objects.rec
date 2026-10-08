@@ -59,7 +59,7 @@ item: meld
 Position: (38,15)
 
 Category: UnknownContainer
-Description: CHANGEME
+Description: a cargo locker
 item: meld
 Position: (6,14)
 
@@ -90,7 +90,7 @@ item: meld
 Position: (65,13)
 
 Category: UnknownContainer
-Description: CHANGEME
+Description: a cargo locker
 item: meld
 Position: (26,14)
 
@@ -208,12 +208,12 @@ LockFlag: CHANGEME
 Position: (74,16)
 
 Category: UnknownContainer
-Description: CHANGEME
+Description: a cargo locker
 item: meld
 Position: (4,13)
 
 Category: UnknownContainer
-Description: CHANGEME
+Description: a cargo locker
 item: meld
 Position: (5,15)
 

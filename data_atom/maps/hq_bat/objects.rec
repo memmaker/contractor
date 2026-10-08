@@ -10,12 +10,12 @@ Position: (46,6)
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: bat_terminal
 Position: (67,15)
 
 Category: Terminal
 Description: a terminal
-Dialogue: CHANGEME
+Dialogue: bat_terminal
 Position: (69,5)
 
 Category: ClosedDoor

@@ -1,0 +1,52 @@
+# Dr. Iris Kwan, EBI chief biologist, New World Program. Lore NPC: says the quiet part out loud.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (She doesn't look up from the tablet.) Visitors go through the front desk. You're not at the front desk.
+#
+o_text: What is the New World Program?
+o_id: kwan_program
+o_goto: Program
+#
+o_text: The south gate. Four hundred bodies.
+o_id: kwan_gate
+o_goto: Gate
+#
+o_text: Leaving.
+o_id: kwan_leave
+o_goto: End
+
+name: Program
+npc: A smaller humanity that fits its planet. Fewer mouths, better genes, no chips for anyone to hijack.
++ Nature prunes. We simply stopped pretending we're exempt.
+#
+o_text: And who decides what gets pruned?
+o_id: kwan_who
+o_goto: Who
+#
+o_text: (Back)
+o_id: program_back
+o_goto: Default
+
+name: Who
+npc: (Now she looks up.) People who can read a genome. Not people who can read a ticket.
+#
+o_text: (Back)
+o_id: who_back
+o_goto: Default
+
+name: Gate
+npc: A sanitation event. The report is public, if you can find it. (She can't hide a small smile.) You can't.
+#
+o_text: (Back)
+o_id: gate_back
+o_goto: Default
+
+name: End
+npc: (She goes back to the tablet.)
+effect: EndConversation

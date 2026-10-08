@@ -1,0 +1,32 @@
+# EBI lobby terminals. Public notices; Eschaton's version of everything.
+%rec: OpeningBranch
+
+cond: true
+goto: Notices
+
+%rec: Nodes
+
+name: Notices
+npc: ESCHATON BUREAU OF INTEGRATION // PUBLIC NOTICES
++ 1. Curfew in the eastern rim is extended.
++ 2. The south gate incident is closed. Report rumours to your district officer.
++ 3. Golden Ticket draws continue as scheduled.
+#
+o_text: How many died at the south gate?
+o_id: ebi_gate
+o_goto: Gate
+#
+o_text: (Log off.)
+o_id: ebi_leave
+o_goto: End
+
+name: Gate
+npc: QUERY REFUSED. Clearance: none. This request has been logged.
+#
+o_text: (Log off.)
+o_id: gate_leave
+o_goto: End
+
+name: End
+npc: The notices scroll on.
+effect: EndConversation

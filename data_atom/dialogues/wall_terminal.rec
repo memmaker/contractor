@@ -1,0 +1,32 @@
+# Gate log terminals at the south wall. Read-only: the cleansing in numbers.
+%rec: OpeningBranch
+
+cond: true
+goto: Log
+
+%rec: Nodes
+
+name: Log
+npc: SOUTH GATE // EBI PERIMETER LOG
++ Airlock cycles today: 3. Outbound cargo: 2 trucks, sealed, EBI plate. Inbound: none.
++ Remains in the dead field: 412. Recovery: not scheduled.
+#
+o_text: Who signed the cleansing order?
+o_id: wall_order
+o_goto: Order
+#
+o_text: (Log off.)
+o_id: wall_leave
+o_goto: End
+
+name: Order
+npc: ORDER 77-S. Issued by: Eschaton Bureau of Integration. Countersigned: Bushido-ArmaTech, munitions.
++ Status: complete. Notes: none.
+#
+o_text: (Log off.)
+o_id: order_leave
+o_goto: End
+
+name: End
+npc: The screen goes back to the airlock counter.
+effect: EndConversation
