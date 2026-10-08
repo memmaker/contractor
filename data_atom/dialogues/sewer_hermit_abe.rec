@@ -4,10 +4,20 @@
 cond: HasFlag('sewer_rats_poisoned')
 goto: Poisoned
 
+cond: HasFlag('sewer_rats_moved')
+goto: Moved
+
 cond: true
 goto: Default
 
 %rec: Nodes
+
+name: Moved
+npc: You stank them out of the trash and sent them deeper. Didn't kill one. (He sniffs.) Clever, topsider. They still eat what you throw away, just further down.
+#
+o_text: Everybody wins.
+o_id: abe_moved_bye
+o_goto: Bye
 
 name: Default
 npc: Quiet down here, until you came. What do you want, topsider?

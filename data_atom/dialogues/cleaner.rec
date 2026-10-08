@@ -9,7 +9,7 @@ goto: Working
 cond: HasFlag('rats_paid')
 goto: PaidDone
 
-cond: HasFlag('JobAccepted(rats)') && (HasFlag('sewer_rats_poisoned') || GetFlag('Killed(rat)') >= 5)
+cond: HasFlag('JobAccepted(rats)') && (HasFlag('sewer_rats_poisoned') || HasFlag('sewer_rats_moved') || GetFlag('Killed(rat)') >= 5)
 goto: Proof
 
 cond: HasFlag('JobAccepted(rats)')
@@ -47,8 +47,35 @@ o_test: RollSkill('intimidate', 'Easy')
 o_succ: GoesDown
 o_fail: Refuses
 #
+o_text: Poison kills everything down there. Give me a bucket: I can brew something from the trash that sends them deeper.
+o_id: rats_repellent
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Repellent
+o_fail: RepellentFail
+#
 o_text: Not my problem.
 o_id: decline_rats
+o_goto: Bye
+
+name: Repellent
+npc: (You mix bleach, his floor cleaner and something from his fridge. He watches the bucket like it might bite.)
++ Deeper, dead, I don't care. Pour it on the trash heap down there and they're somebody else's rats. 150 when it's quiet.
+effect: SetFlag('JobAccepted(rats)')
+effect: PlayerAddItem('rat_repellent')
+#
+o_text: Two hours, tops.
+o_id: repellent_bye
+o_goto: Bye
+
+name: RepellentFail
+npc: (The bucket fizzes, smokes, and eats a hole in his floor.) Out. Bob sells poison like a normal person.
+#
+o_text: Fine. I'll do it the usual way.
+o_id: repellent_fail_accept
+o_goto: AcceptRats
+#
+o_text: Forget it.
+o_id: repellent_fail_bye
 o_goto: Bye
 
 name: AcceptRats

@@ -536,6 +536,22 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			}
 			return nil, nil
 		},
+		// ActorsLeave('rat'): every living actor with that internal name leaves the game, on every loaded map.
+		"ActorsLeave": func(args ...interface{}) (interface{}, error) {
+			name := args[0].(string)
+			for _, m := range g.activeMaps {
+				var leaving []*Actor
+				for _, actor := range m.Actors() {
+					if actor.GetInternalName() == name && actor.IsAlive() && actor != g.Player {
+						leaving = append(leaving, actor)
+					}
+				}
+				for _, actor := range leaving {
+					m.RemoveActor(actor)
+				}
+			}
+			return nil, nil
+		},
 		"PlayerAddCyberware": func(args ...interface{}) (interface{}, error) {
 			cyberwareName := args[0].(string)
 			g.playerAddCyberware(NewCyberWareFromString(cyberwareName))

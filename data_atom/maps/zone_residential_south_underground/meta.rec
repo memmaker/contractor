@@ -6,3 +6,4 @@ IsOutdoor: false
 IndoorAmbientLight: (0.3, 0.3, 0.3)
 RunScript: drakes_escape
 RunScript: a_rat_poison
+RunScript: a_rat_repellent
