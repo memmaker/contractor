@@ -78,6 +78,10 @@ npc: (He turns his glass.) A man who retires and keeps his old bar stool isn't r
 o_text: Suit yourself, old man.
 o_goto: Goodbye
 #
+o_text: Then go now. I can stand on my own.
+o_id: send_grim_off
+o_goto: Leaving
+#
 o_text: I wanted to ask something else.
 o_goto: SmallTalk
 
@@ -251,3 +255,9 @@ o_goto: Goodbye
 o_text: I wanted to ask something else.
 o_goto: SmallTalk
 
+name: Leaving
+npc: Alright, youngster. I think you should be fine on your own now.
++ And don't forget: Attitude is everything.
+effect: RunScriptLeave(NPC)
+effect: StopScript('tutorial')
+effect: EndConversation
