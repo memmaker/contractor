@@ -1,6 +1,7 @@
 %rec: default
 
 Name: town_lucy
+Dialogue: town_lucy
 Icon: L
 Foreground: light_blue
 Description: Lucy
@@ -20,9 +21,10 @@ aggressive: false
 equipment: 10mm_pistol
 equipment: 10mm_jhp
 equipment: binge
-Position: (51,5)
+Position: (43,18)
 
 Name: town_father_olaf
+Dialogue: town_father_olaf
 Icon: O
 Foreground: light_blue
 Description: Father Olaf

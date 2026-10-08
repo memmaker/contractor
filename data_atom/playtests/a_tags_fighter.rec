@@ -1,0 +1,59 @@
+# Tags (fighter): Lucy wants her son's dog tag from the dead outside the wall. Kill the gate captain, take his yard key, open the airlock, bring it home. Father Olaf warms to you (R2).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(tags, returned)') && HasFlag('Killed(gate_captain)') && HasFlag('olaf_gift_given')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('ask_photo')
+do: Choose('accept_tags')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: Give('10mm_smg(100)')
+do: Give('10mm_jhp(48)')
+do: Equip('10mm_smg')
+do: SetSkill('RangedCombat', 60)
+do: ForceChecks('fail')
+do: Talk('gate_captain')
+do: Choose('ask_trucks')
+do: Choose('intimidate')
+do: Choose('fight')
+
+if: true
+do: Kill('gate_captain')
+do: PickUp('south_gate_locked')
+do: Use('wall_yard_door')
+do: Interact('airlock_switch', 'Airlock open (*DANGER*)')
+do: PickUp('burton_dog_tag')
+
+if: true
+do: Unequip('10mm_smg')
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('give_tag')
+do: Choose('returned_bye')
+
+if: true
+do: Talk('town_father_olaf')
+do: Choose('accept_gift')

@@ -1,0 +1,43 @@
+# Tags (avoider): pick the yard door lock under the captain's nose without being seen, open the airlock, take the tag. Nobody dies.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(tags, returned)') && !HasFlag('Killed(gate_captain)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('ask_photo')
+do: Choose('accept_tags')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: SetSkill('Mechanics', 200)
+do: Sneak()
+do: Use('wall_yard_door')
+do: Interact('airlock_switch', 'Airlock open (*DANGER*)')
+do: PickUp('burton_dog_tag')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('give_tag')
+do: Choose('returned_bye')

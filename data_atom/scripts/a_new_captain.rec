@@ -1,0 +1,17 @@
+# R4: the gate captain is dead. Once the wall stops hunting the killer (two days, see e_wall_wanted), a replacement arrives and charges a toll for the yard.
+
+%rec: definitions
+
+%rec: outcomes
+
+%rec: cancel
+
+%rec: frames
+
+if: HasFlag('Killed(gate_captain)')
+do: SaveTimeNow('a_captain_dead_at')
+
+if: IsDaysAfter('a_captain_dead_at', 2)
+do: SpawnActor('gate_captain_2', 'zone_wall_south', 'south_gate')
+do: SetFlag('south_gate_locked')
+do: SetFlag('a_new_captain')

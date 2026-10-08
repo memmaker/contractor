@@ -17,6 +17,11 @@ goto: Default
 name: Default
 npc: (A neat man surrounded by folders.) Richard Shaw. I collect records. Receipts, logs, manifests. The things that outlive us.
 #
+o_text: (Show him the dog tag from the wall.) You collect the cleansing too?
+o_id: sell_tag
+o_cond: HasItem('burton_dog_tag')
+o_goto: BuyTag
+#
 o_text: Looking for anything in particular?
 o_id: ask_job
 o_goto: Job
@@ -55,6 +60,11 @@ o_goto: End
 name: Return
 npc: The manifest?
 #
+o_text: (Show him the dog tag from the wall.) You collect the cleansing too?
+o_id: sell_tag
+o_cond: HasItem('burton_dog_tag')
+o_goto: BuyTag
+#
 o_text: Here. Cargo only. Zero berths, all hulls.
 o_id: give_manifest
 o_cond: HasItem('spaceport_manifest')
@@ -81,6 +91,11 @@ o_goto: End
 name: Done
 npc: Paper remembers what people won't. Good day.
 #
+o_text: (Show him the dog tag from the wall.) You collect the cleansing too?
+o_id: sell_tag
+o_cond: HasItem('burton_dog_tag')
+o_goto: BuyTag
+#
 o_text: Good day.
 o_id: done_bye
 o_goto: End
@@ -92,4 +107,23 @@ effect: EndConversation
 
 name: End
 npc: (He returns to his folders.)
+effect: EndConversation
+
+name: BuyTag
+npc: (He handles it with cotton gloves.) BURTON, L. Terra Vitae. One of the south gate four hundred.
++ Those are rare. EBI took most of the tags. Four hundred sat, and it goes in the case next to the gate log copies.
+#
+o_text: Four hundred. Done.
+o_id: tag_sold_yes
+o_goto: TagBought
+#
+o_text: I'll keep it.
+o_id: tag_keep
+o_goto: End
+
+name: TagBought
+npc: (The tag disappears into a velvet tray.) The things that outlive us.
+effect: StackTransferTo(NPC, 'burton_dog_tag')
+effect: PlayerAddGold(400)
+effect: SetFlag('tag_sold')
 effect: EndConversation

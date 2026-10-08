@@ -1,0 +1,52 @@
+# Tags (grey): bluff your way past as EBI records, sell the tag to Richard Shaw for 400, tell Lucy her son was never found.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(tags, sold_and_lied)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('ask_photo')
+do: Choose('accept_tags')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('success')
+do: Talk('gate_captain')
+do: Choose('bluff_captain')
+
+if: true
+do: Use('wall_yard_door')
+do: PickUp('burton_dog_tag')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('richard_shaw')
+do: Choose('sell_tag')
+do: Choose('tag_sold_yes')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('lie_after_sale')

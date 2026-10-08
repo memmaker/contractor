@@ -501,6 +501,7 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 			g.currentMap().RemoveActor(driver)
 			g.transitionToMapLocation(args[1].(string), args[2].(string))
 			g.currentMap().AddActor(driver, g.currentMap().GetNamedLocation("taxi_driver"))
+			driver.SpawnMapName, driver.SpawnPosition = g.currentMapName, driver.Position() // idle actors walk back to spawn: the new stand is home now
 			g.ui.FadeFromBlack()
 			return nil, nil
 		},
