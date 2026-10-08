@@ -222,6 +222,11 @@ o_text: I can see a list of solvent clients on your terminal. I am sure you can 
 o_id: terminal_1000
 o_cond: Skill('Technology') >= 40
 o_goto: JacobTerminalThreat
+#
+o_text: "Out of supplies"? Those vials behind you are unlicensed neural stims. One call to the EBI. 1000 sat and I didn't see them.
+o_id: stims_1000
+o_cond: Skill('BioChemistry') >= 40
+o_goto: JacobStimsThreat
 
 name: JacobDoubleThreat
 npc: Alright, alright. No need to get nasty.
@@ -243,6 +248,17 @@ effect: SetFlag('Angered(daniel_harker)')
 #
 o_text: Thanks.
 o_id: terminal_1000_thanks
+o_goto: DefaultIntroduction
+
+name: JacobStimsThreat
+npc: (He pulls the curtain across the shelf.) Those are... yes. Fine. Let's keep this between us.
++ (Daniel gives you the money.)
+effect: StackTransferFrom(NPC, 'gold', 1000)
+effect: SetFlag('starter(money_collected)')
+effect: SetFlag('Angered(daniel_harker)')
+#
+o_text: Thanks.
+o_id: stims_1000_thanks
 o_goto: DefaultIntroduction
 
 name: JacobRelationship
