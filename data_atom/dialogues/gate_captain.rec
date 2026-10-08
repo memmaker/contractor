@@ -6,6 +6,12 @@
 cond: IsActorInCombatWithPlayer(NPC)
 goto: PlayerCombatBranch
 
+cond: HasFlag('Killed(gate_captain)') && !HasFlag('a_toll_paid')
+goto: NewCaptain
+
+cond: HasFlag('Killed(gate_captain)')
+goto: NewCaptainPaid
+
 cond: HasFlag('LocationKnown(mansion)')
 goto: AlreadyTold
 
@@ -20,7 +26,22 @@ effect: EndConversation
 
 name: AlreadyTold
 npc: You know the way. Don't make me regret it.
-effect: EndConversation
+#
+o_text: (Nod at the yard door.) I need five minutes with the dead outside. Two hundred says you never saw me.
+o_id: bribe_captain
+o_cond: HasFlag('JobAccepted(tags)') && HasItem('gold', 200) && !HasFlag('a_yard_open')
+o_goto: Bribed
+#
+o_text: EBI records office. We're cataloguing the south gate remains. Open the airlock.
+o_id: bluff_captain
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_bluff_failed')
+o_test: RollSkill('social', 'Hard')
+o_succ: Bluffed
+o_fail: BluffFailed
+#
+o_text: I'm going.
+o_id: already_bye
+o_goto: Bye
 
 name: DefaultIntroduction
 npc: Gate's closed to foot traffic. State your business or move along.
@@ -28,6 +49,18 @@ npc: Gate's closed to foot traffic. State your business or move along.
 o_text: Trucks have been going out this gate at night. Where to?
 o_id: ask_trucks
 o_goto: AskTrucks
+#
+o_text: (Nod at the yard door.) I need five minutes with the dead outside. Two hundred says you never saw me.
+o_id: bribe_captain
+o_cond: HasFlag('JobAccepted(tags)') && HasItem('gold', 200) && !HasFlag('a_yard_open')
+o_goto: Bribed
+#
+o_text: EBI records office. We're cataloguing the south gate remains. Open the airlock.
+o_id: bluff_captain
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_bluff_failed')
+o_test: RollSkill('social', 'Hard')
+o_succ: Bluffed
+o_fail: BluffFailed
 #
 o_text: Nothing. Just looking.
 o_id: leave
@@ -68,4 +101,61 @@ effect: StartCombat
 
 name: Bye
 npc: Move along.
+effect: EndConversation
+
+name: Bribed
+npc: (The money is gone before you see his hand move.) Airlock's on a timer. Don't touch anything that's still breathing.
+effect: StackTransferTo(NPC, 'gold', 200)
+effect: SetFlag('a_yard_open')
+effect: ClearFlag('south_gate_locked')
+effect: ClearFlag('interior_airlock_closed')
+effect: ClearFlag('exterior_airlock_closed')
+effect: EndConversation
+
+name: Bluffed
+npc: (He reads your face for a long second, then shrugs.) Nobody told me. Nobody ever tells me. Go on, records.
+effect: SetFlag('a_yard_open')
+effect: ClearFlag('south_gate_locked')
+effect: ClearFlag('interior_airlock_closed')
+effect: ClearFlag('exterior_airlock_closed')
+effect: EndConversation
+
+name: BluffFailed
+npc: EBI records. (He laughs.) EBI doesn't send anyone to look at that. That's the point of it. Move along before I log you.
+effect: SetFlag('a_bluff_failed')
+effect: EndConversation
+
+name: NewCaptain
+npc: (Younger, harder, a fresh EBI patch on his sleeve.) The last captain got sloppy. I don't. The yard costs fifty a visit now. Toll.
+#
+o_text: (Pay the toll.) Fifty.
+o_id: pay_toll
+o_cond: HasItem('gold', 50)
+o_goto: TollPaid
+#
+o_text: I know what happened to the last one.
+o_id: threaten_new
+o_test: RollSkill('intimidate', 'Hard')
+o_succ: TollWaived
+o_fail: Bye
+#
+o_text: Not today.
+o_id: toll_bye
+o_goto: Bye
+
+name: TollPaid
+npc: (He pockets it and opens the yard.) Don't make me count you twice.
+effect: StackTransferTo(NPC, 'gold', 50)
+effect: SetFlag('a_toll_paid')
+effect: ClearFlag('south_gate_locked')
+effect: EndConversation
+
+name: TollWaived
+npc: (His jaw works.) ... Go through. Once.
+effect: SetFlag('a_toll_paid')
+effect: ClearFlag('south_gate_locked')
+effect: EndConversation
+
+name: NewCaptainPaid
+npc: Paid up. Keep moving.
 effect: EndConversation

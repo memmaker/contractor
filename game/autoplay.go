@@ -392,7 +392,7 @@ func (a *Autoplay) walkStep(target geometry.Point, adjacent bool) (arrived bool)
 			_, corpse := m.TryGetDownedActorAt(p) // stepping on a corpse opens its loot and would eat a pending answer
 			obj, hasObj := m.TryGetObjectAt(p)    // bumping a bed or terminal on the way opens its menu, doors are fine
 			furniture := hasObj && !(obj.GetCategory() >= foundation.ObjectLockedDoor && obj.GetCategory() <= foundation.ObjectBrokenDoor)
-			return p == target || (!m.IsTransitionAt(p) && !corpse && !furniture && !(avoidMines && mined(p)) && !trespass(p) && m.IsWalkableFor(p, g.Player)) // the target may be an occupied or caged tile
+			return p == target || (!m.IsTransitionAt(p) && !corpse && !furniture && !(avoidMines && mined(p)) && !trespass(p) && (m.IsWalkableFor(p, g.Player) || (hasObj && obj.GetCategory() == foundation.ObjectClosedDoor))) // the target may be an occupied or caged tile
 		}
 	}
 	path := m.GetAStarPath(pos, target, walkable(true))
@@ -516,7 +516,7 @@ func (a *Autoplay) trace() {
 func (a *Autoplay) queue(desc string, step func() bool) (interface{}, error) {
 	a.intents = append(a.intents, intent{desc: desc, step: func() bool {
 		if a.stuck > 60 {
-			return a.fail("stuck: %s on %s", desc, a.g.currentMapName)
+			return a.fail("stuck: %s on %s at %v", desc, a.g.currentMapName, a.g.Player.Position())
 		}
 		return step()
 	}})
@@ -645,7 +645,12 @@ func (a *Autoplay) verbs() map[string]govaluate.ExpressionFunction {
 			return a.approach("Interact "+name, name, func() bool {
 				pos, _ := a.locate(name)
 				a.withAnswer(answer{kind: "choose", label: label}, func() {
-					if !g.OpenContextMenuFor(pos) {
+					if g.OpenContextMenuFor(pos) {
+						return
+					}
+					if obj := a.object(name); obj != nil { // switches have no context menu: bump them like a player would
+						obj.OnBump(g.Player)
+					} else {
 						a.fail("Interact: no context menu on %s", name)
 					}
 				})

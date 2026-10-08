@@ -1,0 +1,84 @@
+# Father Olaf, Terra Vitae's preacher. R2: warms to you after Lucy gets Burton's tag back, refuses you if you sold it and she found out.
+
+%rec: OpeningBranch
+
+cond: HasFlag('terra_vitae_cold')
+goto: Cold
+
+cond: HasFlag('terra_vitae_friend')
+goto: Warm
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (A tall man in a coat stitched from old flags.) Life finds a way, child. Even in here. Even after the cleansing.
+#
+o_text: What cleansing?
+o_id: ask_cleansing
+o_goto: Cleansing
+#
+o_text: Is there work?
+o_id: ask_work
+o_goto: Work
+#
+o_text: Bless you, Father.
+o_id: bye
+o_goto: Exit
+
+name: Cleansing
+npc: The dome was full, they said. So EBI sealed the south gate and let the air do the rest. Hundreds.
++ They still lie out there between the airlocks. The gate captain guards them like they might run off.
+#
+o_text: Why guard the dead?
+o_id: why_guard
+o_goto: WhyGuard
+#
+o_text: I see.
+o_id: cleansing_bye
+o_goto: Exit
+
+name: WhyGuard
+npc: Because the dead have faces, and faces have names, and names end up in Richard Shaw's collection and on the news.
++ Ask Lucy about her boy. Gently.
+#
+o_text: I will.
+o_id: why_guard_bye
+o_goto: Exit
+
+name: Work
+npc: Lucy Burton needs a kindness more than you need money. Speak with her.
+#
+o_text: I'll talk to her.
+o_id: work_bye
+o_goto: Exit
+
+name: Warm
+npc: The one who brought Burton home. (He grips your shoulder.) Our doors are yours. Take this, from the commune garden. It's not much.
+effect: SetFlag('olaf_blessing')
+#
+o_text: (Accept.)
+o_id: accept_gift
+o_cond: !HasFlag('olaf_gift_given')
+o_goto: Gift
+#
+o_text: Thank you, Father.
+o_id: warm_bye
+o_goto: Exit
+
+name: Gift
+npc: (A jar of something green and a small bottle of something stronger.) Go gently.
+effect: PlayerAddItem('binge')
+effect: PlayerAddItem('meld')
+effect: SetFlag('olaf_gift_given')
+effect: EndConversation
+
+name: Cold
+npc: (He looks through you.) There's nothing for you here. Lucy told us. Go and sell someone else's grief.
+effect: EndConversation
+
+name: Exit
+npc: Life finds a way.
+effect: EndConversation

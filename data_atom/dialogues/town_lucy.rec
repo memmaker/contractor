@@ -1,0 +1,138 @@
+# Lucy Burton, Terra Vitae. A2 "Tags": JobAccepted(tags), tag_returned, tag_sold, lied_to_lucy, lucy_knows.
+
+%rec: OpeningBranch
+
+cond: HasFlag('lucy_knows')
+goto: Knows
+
+cond: HasFlag('tag_returned')
+goto: Grateful
+
+cond: HasFlag('lied_to_lucy')
+goto: StillLooking
+
+cond: HasItem('burton_dog_tag')
+goto: HasTag
+
+cond: HasFlag('tag_sold') && HasFlag('JobAccepted(tags)')
+goto: AfterSale
+
+cond: HasFlag('JobAccepted(tags)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (A woman in a hand-knitted shawl, a photo of a young man pinned to it.) You're not one of ours. Are you hungry?
+#
+o_text: Who's the boy in the photo?
+o_id: ask_photo
+o_goto: Burton
+#
+o_text: Just passing through.
+o_id: bye
+o_goto: Exit
+
+name: Burton
+npc: Burton. My son. He was outside the wall when EBI sealed the south gate for the cleansing.
++ They never brought the bodies in. They just... left them, between the airlocks and the dust.
++ He wore his father's dog tag. I want it back. I can pay a hundred. It's all we have.
+#
+o_text: I'll bring it to you.
+o_id: accept_tags
+o_goto: Accepted
+#
+o_text: I'm sorry. I can't.
+o_id: decline_tags
+o_goto: Exit
+
+name: Accepted
+npc: The gate captain won't let anyone near them. He says it's evidence. Evidence of what, he never says.
++ (She presses your hand.) Thank you.
+effect: SetFlag('JobAccepted(tags)')
+effect: EndConversation
+
+name: Waiting
+npc: Did you see him? Is he... still there?
+#
+o_text: Not yet. I'm working on it.
+o_id: not_yet
+o_goto: Exit
+
+name: HasTag
+npc: (She sees the chain in your hand before you say anything.)
+#
+o_text: (Give her the tag.) He was easy to find. He's at peace.
+o_id: give_tag
+o_goto: Returned
+#
+o_text: I looked. He wasn't there.
+o_id: lie_tag
+o_test: RollSkill('social', 'Hard')
+o_succ: Believes
+o_fail: SeesThrough
+#
+o_text: Not yet.
+o_id: has_tag_leave
+o_goto: Exit
+
+name: AfterSale
+npc: Did you see him? Is he... still there?
+#
+o_text: I looked. He wasn't there.
+o_id: lie_after_sale
+o_test: RollSkill('social', 'Hard')
+o_succ: Believes
+o_fail: SeesThrough
+#
+o_text: Not yet.
+o_id: after_sale_leave
+o_goto: Exit
+
+name: Returned
+npc: (She holds it against her cheek for a long time.) Here. A hundred. And you eat with us whenever you're on this side of town. Father Olaf will hear of this.
+effect: StackTransferTo(NPC, 'burton_dog_tag')
+effect: PlayerAddGold(100)
+effect: SetFlag('tag_returned')
+effect: SetFlag('terra_vitae_friend')
+#
+o_text: Take care, Lucy.
+o_id: returned_bye
+o_goto: Exit
+
+name: Believes
+npc: (She nods slowly.) Then the dust has him. Maybe that's better. Thank you for looking.
+effect: SetFlag('lied_to_lucy')
+effect: EndConversation
+
+name: SeesThrough
+npc: (Her eyes go to your pocket, then back to your face.) Richard Shaw has a new piece in his window. A dog tag. BURTON, L.
++ Get out. Everyone here will know what you are.
+effect: SetFlag('lucy_knows')
+effect: SetFlag('terra_vitae_cold')
+effect: EndConversation
+
+name: Grateful
+npc: (She is wearing the tag.) There's soup. There's always soup for you.
+#
+o_text: Thanks, Lucy.
+o_id: grateful_bye
+o_goto: Exit
+
+name: StillLooking
+npc: (She is looking south through a window that doesn't face south.) Hello again.
+#
+o_text: Take care.
+o_id: still_bye
+o_goto: Exit
+
+name: Knows
+npc: (She turns her back on you.)
+effect: EndConversation
+
+name: Exit
+npc: Go gently.
+effect: EndConversation

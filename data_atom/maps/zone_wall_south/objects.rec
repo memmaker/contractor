@@ -17,8 +17,10 @@ Dialogue: CHANGEME
 Position: (29,12)
 
 Category: LockedDoor
-Description: a door
-LockFlag: CHANGEME
+Name: wall_yard_door
+Description: the gate yard door
+LockFlag: south_gate_locked
+lockdifficulty: easy
 Position: (41,10)
 
 Category: LockedDoor
@@ -35,7 +37,8 @@ TargetLocation: street_to_wall
 Position: (42,0)
 
 Category: StateChanger
-Description: a switch
+Name: airlock_switch
+Description: the airlock switch
 #
 state_0_label: Airlock sealed
 state_0_change: SetFlag('interior_airlock_closed') && SetFlag('exterior_airlock_closed')

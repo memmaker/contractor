@@ -136,11 +136,12 @@ Description: female corpse
 HitPoints: 12
 Position: (39,17)
 
-Name: corpse_male
+Name: burton_corpse
 Icon: M
 Foreground: light_gray_2
 Flags: Spawn_Dead
-Description: male refugee
+Description: young male refugee, a chain glints at his neck
+equipment: burton_dog_tag
 HitPoints: 12
 Position: (33,18)
 
@@ -302,7 +303,7 @@ Foreground: light_gray_2
 Flags: Spawn_Dead
 Description: male corpse
 HitPoints: 12
-Position: (41,17)
+Position: (38,19)
 
 Name: corpse_female
 Icon: F
@@ -417,5 +418,6 @@ SkillBonusMeleeCombat: 30
 equipment: eb8_service_pistol
 equipment: 9mm(36)
 equipment: gate_log
+equipment: key('south_gate_locked', 'the gate yard key')
 equipment: gold(60)
 Position: (44,6)

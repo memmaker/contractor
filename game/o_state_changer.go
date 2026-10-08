@@ -51,6 +51,8 @@ func (g *GameState) NewStateChanger(record recfile.Record, resolver func(objType
 			box.CustomIcon = box.iconForObject(field.Value)
 		case "position":
 			box.RawPosition, _ = geometry.NewPointFromEncodedString(field.Value)
+		case "name":
+			box.InternalName = field.Value
 		case "description":
 			box.DisplayName = field.Value
 		default:
