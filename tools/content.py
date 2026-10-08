@@ -121,7 +121,7 @@ def free_spot(m, near, avoid=frozenset(), skip_pack=None):
 # ---------- the pack ----------
 
 # Stats for a plain townsperson. Override any of them with keywords, e.g. p.actor(..., Strength=8).
-NPC_STATS = {'Age': 35, 'BodyType': 0, 'XP': 60, 'KillType': 0, 'DamageType': 0, 'TeamNum': 1, 'HitPoints': 28,
+NPC_STATS = {'Age': 35, 'BodyType': 0, 'KillType': 0, 'DamageType': 0, 'TeamNum': 1, 'HitPoints': 28,
              'ActionPoints': 6, 'ArmorClass': 5, 'MeleeDamage': 2, 'CarryWeight': 100, 'Sequence': 8, 'HealingRate': 1,
              'CriticalChance': 2, 'Strength': 5, 'Perception': 4, 'Endurance': 4, 'Cool': 5, 'Intelligence': 5,
              'Agility': 5, 'Luck': 5, 'DREMP': 500}

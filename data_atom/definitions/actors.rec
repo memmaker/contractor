@@ -31,7 +31,6 @@ audio: radscorpion
 Foreground: light_gray_2
 Age: 25
 BodyType: 1
-XP: 60
 KillType: 6
 DamageType: 0
 TeamNum: 1
@@ -69,7 +68,6 @@ Icon: D
 Foreground: light_gray_2
 Age: 25
 BodyType: 1
-XP: 250
 KillType: 13
 DamageType: 0
 TeamNum: 1
@@ -111,7 +109,6 @@ Icon: D
 Foreground: light_gray_2
 Age: 25
 BodyType: 1
-XP: 40
 KillType: 11
 DamageType: 0
 TeamNum: 1
@@ -150,7 +147,6 @@ Foreground: light_gray_2
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 80
 KillType: 5
 DamageType: 0
 TeamNum: 1
@@ -192,7 +188,6 @@ Foreground: light_gray_1
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -225,7 +220,6 @@ Foreground: light_gray_2
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 70
 KillType: 12
 DamageType: 0
 TeamNum: 1
@@ -258,7 +252,6 @@ Icon: A
 Foreground: green_1
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -289,7 +282,6 @@ Icon: I
 Foreground: green_2
 Age: 42
 BodyType: 1
-XP: 95
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -316,7 +308,6 @@ Icon: E
 Foreground: green_1
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -349,7 +340,6 @@ Icon: E
 Foreground: light_gray_2
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -384,7 +374,6 @@ Icon: H
 Foreground: teal_1
 Age: 48
 BodyType: 0
-XP: 120
 KillType: 0
 DamageType: 0
 TeamNum: 2
@@ -414,7 +403,6 @@ Icon: J
 Foreground: teal_1
 Age: 37
 BodyType: 1
-XP: 105
 KillType: 0
 DamageType: 0
 TeamNum: 2
@@ -444,7 +432,6 @@ Icon: N
 Foreground: yellow_2
 Age: 34
 BodyType: 1
-XP: 110
 KillType: 0
 DamageType: 0
 TeamNum: 3
@@ -473,7 +460,6 @@ Icon: G
 Foreground: light_gray_2
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -512,7 +498,6 @@ Icon: R
 Foreground: light_gray_2
 Age: 25
 BodyType: 2
-XP: 240
 KillType: 10
 DamageType: 0
 TeamNum: 1
@@ -552,7 +537,6 @@ Icon: R
 Foreground: light_gray_2
 Age: 25
 BodyType: 2
-XP: 280
 KillType: 10
 DamageType: 0
 TeamNum: 1
@@ -630,7 +614,6 @@ Icon: F
 Foreground: light_gray_2
 Age: 25
 BodyType: 2
-XP: 275
 KillType: 10
 DamageType: 4
 TeamNum: 1
@@ -672,7 +655,6 @@ Icon: S
 Foreground: light_gray_2
 Age: 25
 BodyType: 2
-XP: 600
 KillType: 10
 DamageType: 0
 TeamNum: 1
@@ -716,7 +698,6 @@ Icon: S
 Foreground: light_gray_2
 Age: 25
 BodyType: 0
-XP: 100
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -749,7 +730,6 @@ Icon: G
 Foreground: light_gray_2
 Age: 25
 BodyType: 0
-XP: 150
 KillType: 4
 DamageType: 0
 TeamNum: 1
@@ -805,7 +785,6 @@ Icon: G
 Foreground: red_12
 Age: 25
 BodyType: 0
-XP: 150
 KillType: 4
 DamageType: 0
 TeamNum: 1
@@ -840,7 +819,6 @@ Icon: E
 Foreground: red_5
 Age: 28
 BodyType: 0
-XP: 120
 KillType: 0
 DamageType: 0
 Faction: ebi

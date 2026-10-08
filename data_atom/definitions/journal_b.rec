@@ -5,7 +5,7 @@
 
 id: bar_tab
 name: Bar Tab
-xp: 150
+skill_points: 3
 #
 start_cond: HasFlag('b_bar_tab_accepted')
 start_text:
@@ -33,11 +33,12 @@ end_id: written_off
 end_cond: HasFlag('Killed(dec_vega)')
 end_text: Dec Vega is dead over 400 sat he never had. The bartender will not forget who did it.
 end_id: vega_dead
-end_xp: 50
+end_skill_points: 1
 
 id: dead_freight
 name: Dead Freight
-xp: 300
+skill_points: 6
+perk_points: 1
 #
 start_cond: HasFlag('b_freight_accepted')
 start_text:
@@ -57,7 +58,7 @@ end_id: buried
 
 id: shift_change
 name: Shift Change
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('b_shift_accepted')
 start_text:

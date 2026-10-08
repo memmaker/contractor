@@ -8,7 +8,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -49,7 +48,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -95,7 +93,6 @@ Description: Bartender
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 100
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -132,7 +129,6 @@ Description: Gun Thug Leader
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -174,7 +170,6 @@ LongDescription:
 Dialogue: solara_carter
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -215,7 +210,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -257,7 +251,6 @@ Description: Dec Vega
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -299,7 +292,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -340,7 +332,6 @@ Description: Richard Shaw
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1

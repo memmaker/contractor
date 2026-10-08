@@ -3,7 +3,7 @@
 
 id: e_eastside
 name: Eastside, after Jacob
-xp: 50
+skill_points: 1
 #
 start_cond: HasFlag('e_squatter_moved_in')
 start_text:
@@ -20,7 +20,7 @@ end_id: lenny_dead
 
 id: e_grim_gone
 name: An empty bar stool
-xp: 50
+skill_points: 1
 #
 start_cond: HasFlag('e_grim_left')
 start_text: Grim did not come back. He left something on your desk.

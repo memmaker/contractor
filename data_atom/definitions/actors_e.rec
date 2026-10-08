@@ -9,7 +9,6 @@ Foreground: light_gray_2
 Dialogue: squatter_lenny
 Age: 40
 BodyType: 0
-XP: 20
 HitPoints: 25
 ActionPoints: 6
 MeleeDamage: 1
@@ -39,7 +38,6 @@ Faction: jacob
 aggressive: true
 Age: 25
 BodyType: 0
-XP: 85
 HitPoints: 50
 ActionPoints: 7
 ArmorClass: 13
@@ -66,7 +64,6 @@ Foreground: light_gray_2
 Chatter: mourner_chatter
 Age: 50
 BodyType: 0
-XP: 10
 HitPoints: 15
 ActionPoints: 5
 MeleeDamage: 1

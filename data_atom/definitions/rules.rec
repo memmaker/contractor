@@ -94,37 +94,7 @@ HealingRate: max(1, end / 3)
 HitPoints: 15 + (2 * end) + str
 MeleeDamageBonus: max(1, str - 5)
 PartyLimit: floor(coo / 2.0)
-PerkRate: 3
 Speed: 2 * agi
-SkillRate: 3 + (int * 2)
-
-%rec: LevelTable
-
-xp: 0
-xp: 1000
-xp: 3000
-xp: 6000
-xp: 10000
-xp: 15000
-xp: 21000
-xp: 28000
-xp: 36000
-xp: 45000
-xp: 55000
-xp: 66000
-xp: 78000
-xp: 91000
-xp: 105000
-xp: 120000
-xp: 136000
-xp: 153000
-xp: 171000
-xp: 190000
-xp: 210000
-
-%rec: AfterTable
-
-xp: (currentLevel * (currentLevel - 1) / 2) * 1000
 
 %rec: PerkRequirements
 

@@ -122,7 +122,7 @@ effect: SetFlag('terra_vitae_friend')
 effect: EndConversation''')
 p.journal_entry('''id: slow_boat
 name: The Slow Boat
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(slow_boat)')
 start_text: Kade, a fixer in the commerce district, wants a package from Hiro, a courier off the Chiba freighter. Meet him at the east side taxi stand.
@@ -322,7 +322,7 @@ do: SetFlag('shani_taken')
 ''')
 p.journal_entry('''id: sweet_revenge
 name: Sweet Revenge
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(sweet_revenge)')
 start_text: Shani Kell, a braindance star hiding at Terra Vitae, wants revenge on Stromberg, the exec who sold her recording of the cleansing. Kill him, steal his black ledger from his office safe, or make him release her.
@@ -330,7 +330,7 @@ start_text: Shani Kell, a braindance star hiding at Terra Vitae, wants revenge o
 end_cond: HasFlag('sweet_revenge_betrayed')
 end_text: You sold Shani Kell to Stromberg for 800. His people collected her from Terra Vitae that night.
 end_id: betrayed
-end_xp: 100
+end_skill_points: 2
 #
 end_cond: HasFlag('sweet_revenge_exposed')
 end_text: Stromberg's ledger is on every screen. Fourteen angles of the cleansing, and the names of everyone who bought them.
@@ -534,7 +534,7 @@ effect: SetFlag('mott_tank_sold')
 effect: EndConversation''')
 p.journal_entry('''id: old_harley
 name: The '94 Harley
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(old_harley)')
 start_text: Dizzy's 1994 Harley was stripped: ignition, fuel cell, chrome tank. Ratchet's chop shop in the west, a burned-out car over there, and the scavengers at the wall.
@@ -549,7 +549,7 @@ end_id: rebuilt
 end_cond: HasFlag('harley_sold_ratchet')
 end_text: Ratchet paid 450 for the parts. A corporate kid has a racer. Dizzy still polishes a sculpture.
 end_id: sold
-end_xp: 100
+end_skill_points: 2
 ''')
 for name,talk in (('f_old_harley_rebuilt',False),('f_old_harley_sold',True)):
     t=Trip().do("Give('gold(300)')","Talk('biker_dizzy')","Choose('harley_accept')").go('zone_residential_west').do("Talk('chopper_ratchet')","Choose('ratchet_ignition_buy')").do("Give('mechanical_lockpick(5)')","SetSkill('Mechanics', 200)","Use('burned_car')","Take('harley_fuel_cell')").go('zone_residential_south').go('zone_wall_south').do("Talk('scavenger_mott')","Choose('mott_buy_tank')")
@@ -721,7 +721,7 @@ do: SetFlag('ecto_ghost_seen')
 ''')
 p.journal_entry('''id: ecto
 name: Ecto
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(ecto)')
 start_text: Lou's club Ecto in the commerce district is haunted after dark. Stay the night and make it stop. 350 sat.
@@ -928,7 +928,7 @@ do: SetFlag('amira_taken')
 ''')
 p.journal_entry('''id: false_papers
 name: False Papers
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(false_papers)')
 start_text: Amira, a refugee in the south district, needs papers for her family. Take her photo to Nils the forger in the west. He asks 250; she has 100.
@@ -943,7 +943,7 @@ end_id: delivered
 end_cond: HasFlag('papers_sold')
 end_text: You sold Amira's face to an EBI clerk for 300. The next day her corner was empty.
 end_id: sold
-end_xp: 50
+end_skill_points: 1
 ''')
 t=Trip().do("Talk('refugee_amira')","Choose('papers_accept')").go('zone_residential_west').do("Talk('forger_nils')","Choose('nils_order')","Choose('nils_pay')").do("WaitHours(12)").do("Talk('forger_nils')").go('zone_residential_south').do("Talk('refugee_amira')","Choose('papers_give')")
 p.playtest('f_false_papers_paid', 'False Papers: carry the photo, pay, wait twelve hours, carry the card back.', "HasFlag('QuestCompleted(false_papers, delivered)') && HasItem('amira_ring')", t)
@@ -1144,7 +1144,7 @@ do: RemoveActor('informant_pinky')
 ''')
 p.journal_entry('''id: payback
 name: Payback
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(payback)')
 start_text: Stripe, a lace junkie in the eastern district, pays 300 to know where Pinky hides, the informant who sold him to EBI. Just the where.
@@ -1167,7 +1167,7 @@ end_id: lied
 end_cond: HasFlag('stripe_doubts')
 end_text: Pinky ran. Stripe didn't believe you, and now he wonders about you.
 end_id: doubted
-end_xp: 100
+end_skill_points: 2
 ''')
 t=Trip().go('zone_residential_east').do("Talk('junkie_stripe')","Choose('payback_accept')").do("Talk('noodle_vendor_suki')","Choose('suki_pinky')").do("Talk('junkie_stripe')","Choose('payback_tell')").do("WaitHours(13)")
 p.playtest('f_payback_sold', 'Payback: ask around, sell the location, never meet Pinky. He is dead by morning.', "HasFlag('QuestCompleted(payback, sold)') && HasFlag('pinky_dead') && !HasFlag('TalkedTo(informant_pinky)')", t)
@@ -1390,7 +1390,8 @@ do: SetFlag('carmen_taken')
 ''')
 p.journal_entry('''id: carmen
 name: Carmen
-xp: 300
+skill_points: 6
+perk_points: 1
 #
 start_cond: HasFlag('JobAccepted(carmen)')
 start_text: Detective Rourke in the west thinks Carmen, a singer in the commerce district, killed five people. He needs two pieces of proof: the latest victim behind the pawnshop, a witness at the bar, her notes.
@@ -1406,7 +1407,7 @@ end_id: killed
 end_cond: HasFlag('carmen_bought')
 end_text: Carmen paid you 500. The bodies keep turning up in the west.
 end_id: bought
-end_xp: 50
+end_skill_points: 1
 ''')
 start=lambda: Trip().go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_accept')")
 p.playtest('f_carmen_ribbon_witness', 'Carmen: the ribbon off the victim and Tito\'s word, then the arrest.', "HasFlag('QuestCompleted(carmen, arrested)')", start().do("PickUp('velvet_ribbon')").go('zone_commerce').do("ForceChecks('success')","Talk('stagehand_tito')","Choose('tito_ask')").go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_accuse')"))
@@ -1602,7 +1603,7 @@ do: SetFlag('proxy_too_late')
 ''')
 p.journal_entry('''id: proxy
 name: Proxy Vote
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(proxy)')
 start_text: Carleton in the corporate district needs Hal’s share vote, from the south district, within two days. 500 sat.
@@ -1622,7 +1623,7 @@ end_id: coop
 end_cond: HasFlag('proxy_too_late')
 end_text: The vote came and went. Carleton lost by one.
 end_id: too_late
-end_xp: 0
+end_skill_points: 0
 ''')
 start=lambda: Trip().go('zone_corporate').do("Talk('exec_carleton')","Choose('proxy_accept')")
 p.playtest('f_proxy_favour', 'Proxy Vote: fetch parts for Hal’s dog, he signs.', "HasFlag('QuestCompleted(proxy, favour)')", start().go('zone_residential_south').do("Talk('shareholder_hal')","Choose('hal_ask')").go('zone_industry').do("Use('tool_crate')","Take('robot_repair_parts')").go('zone_residential_south').do("Talk('shareholder_hal')","Choose('hal_parts')").go('zone_corporate').do("Talk('exec_carleton')","Choose('proxy_give_real')"))
@@ -1795,7 +1796,7 @@ do: SetFlag('nueman_cleaners_sent')
 ''')
 p.journal_entry('''id: holiday
 name: A Holiday on Ice
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(holiday)')
 start_text: Nueman in the commerce district pays 600 for an engineer’s specs. Morrow, corporate district, never puts his briefcase down.
@@ -2002,7 +2003,7 @@ effect: EndConversation
 ''')
 p.journal_entry('''id: deadline
 name: Deadline
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(deadline)')
 start_text: Holly Jones, the news presenter, works off a debt to Fargo, a loan shark in the commerce district. Her assistant Caitlin in the corporate district wants her back on air.

@@ -63,8 +63,6 @@ const (
 	MeleeDamageBonus
 	DamageResistance
 	PartyLimit
-	SkillRate
-	PerkRate
 	DerivedStatCount
 )
 
@@ -90,12 +88,8 @@ func (s DerivedStat) String() string {
 		return "Melee Damage"
 	case PartyLimit:
 		return "Party Limit"
-	case PerkRate:
-		return "Perk Rate"
 	case Speed:
 		return "Speed"
-	case SkillRate:
-		return "Skill Rate"
 	}
 	return ""
 }
@@ -123,12 +117,8 @@ func DerivedStatFromString(name string) DerivedStat {
 		return MeleeDamageBonus
 	case "partylimit":
 		return PartyLimit
-	case "perkrate":
-		return PerkRate
 	case "speed":
 		return Speed
-	case "skillrate":
-		return SkillRate
 
 	}
 	panic("invalid derived stat name")
@@ -157,12 +147,8 @@ func (s DerivedStat) ToShortString() string {
 		return "MD"
 	case PartyLimit:
 		return "PL"
-	case PerkRate:
-		return "PR"
 	case Speed:
 		return "SP"
-	case SkillRate:
-		return "SR"
 	}
 	return ""
 }

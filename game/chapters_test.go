@@ -8,20 +8,20 @@ import (
 	"testing"
 )
 
-// Every ending of chapters 2 and 3 resolves from flags with the right XP.
+// Every ending of chapters 2 and 3 resolves from flags with the right skill points.
 func TestChaptersQuestOutcomes(t *testing.T) {
 	cases := []struct {
 		quest, name, outcome string
 		xp                   int
 		flags                []string
 	}{
-		{"recluse", "The Recluse", "faust_dead", 500, []string{"TalkedTo(logan_faust)", "Killed(logan_faust)"}},
-		{"recluse", "The Recluse", "sold_out", 500, []string{"faust_sold_out"}},
-		{"recluse", "The Recluse", "allied", 500, []string{"TalkedTo(logan_faust)", "faust_allied"}},
-		{"recluse", "The Recluse", "extorted", 500, []string{"TalkedTo(logan_faust)", "faust_extorted"}},
-		{"cryo", "The Long Sleep", "cryo_sleep", 1000, []string{"KnowsAbout(cryo_lab)", "PodFree(4)", "Ending(cryo_sleep)"}},
-		{"cryo", "The Long Sleep", "against_all_odds", 1000, []string{"KnowsAbout(cryo_lab)", "Ending(against_all_odds)"}},
-		{"cryo", "The Long Sleep", "sold_lab", 1000, []string{"KnowsAbout(cryo_lab)", "Ending(sold_lab)"}},
+		{"recluse", "The Recluse", "faust_dead", 10, []string{"TalkedTo(logan_faust)", "Killed(logan_faust)"}},
+		{"recluse", "The Recluse", "sold_out", 10, []string{"faust_sold_out"}},
+		{"recluse", "The Recluse", "allied", 10, []string{"TalkedTo(logan_faust)", "faust_allied"}},
+		{"recluse", "The Recluse", "extorted", 10, []string{"TalkedTo(logan_faust)", "faust_extorted"}},
+		{"cryo", "The Long Sleep", "cryo_sleep", 20, []string{"KnowsAbout(cryo_lab)", "PodFree(4)", "Ending(cryo_sleep)"}},
+		{"cryo", "The Long Sleep", "against_all_odds", 20, []string{"KnowsAbout(cryo_lab)", "Ending(against_all_odds)"}},
+		{"cryo", "The Long Sleep", "sold_lab", 20, []string{"KnowsAbout(cryo_lab)", "Ending(sold_lab)"}},
 		{"cryo", "The Long Sleep", "gave_up", 0, []string{"KnowsAbout(cryo_lab)", "Ending(gave_up)"}},
 		{"to_the_stars", "To The Stars", "scam", 0, []string{"KnowsAbout(golden_ticket)", "KnowsAbout(ticket_scam)"}},
 	}
@@ -49,7 +49,7 @@ func TestChaptersQuestOutcomes(t *testing.T) {
 		xp := -1
 		for _, r := range rewards {
 			if r.Text == c.name {
-				xp = r.XP
+				xp = r.SkillPoints
 			}
 		}
 		if xp != c.xp {

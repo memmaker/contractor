@@ -9,7 +9,6 @@ Dialogue: jana_miller
 Chatter: jana_miller_chatter
 Age: 37
 BodyType: 1
-XP: 105
 KillType: 0
 DamageType: 0
 TeamNum: 2
@@ -40,7 +39,6 @@ Dialogue: haruki_tanaka
 Chatter: haruki_tanaka_chatter
 Age: 48
 BodyType: 0
-XP: 120
 KillType: 0
 DamageType: 0
 TeamNum: 2
@@ -71,7 +69,6 @@ Chatter: c_receptionist_chatter
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 100
 KillType: 0
 DamageType: 0
 TeamNum: 1

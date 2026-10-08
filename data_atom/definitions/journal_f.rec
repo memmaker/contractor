@@ -4,7 +4,7 @@
 
 id: slow_boat
 name: The Slow Boat
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(slow_boat)')
 start_text: Kade, a fixer in the commerce district, wants a package from Hiro, a courier off the Chiba freighter. Meet him at the east side taxi stand.
@@ -26,7 +26,7 @@ end_id: olaf
 
 id: sweet_revenge
 name: Sweet Revenge
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(sweet_revenge)')
 start_text: Shani Kell, a braindance star hiding at Terra Vitae, wants revenge on Stromberg, the exec who sold her recording of the cleansing. Kill him, steal his black ledger from his office safe, or make him release her.
@@ -34,7 +34,7 @@ start_text: Shani Kell, a braindance star hiding at Terra Vitae, wants revenge o
 end_cond: HasFlag('sweet_revenge_betrayed')
 end_text: You sold Shani Kell to Stromberg for 800. His people collected her from Terra Vitae that night.
 end_id: betrayed
-end_xp: 100
+end_skill_points: 2
 #
 end_cond: HasFlag('sweet_revenge_exposed')
 end_text: Stromberg's ledger is on every screen. Fourteen angles of the cleansing, and the names of everyone who bought them.
@@ -50,7 +50,7 @@ end_id: released
 
 id: old_harley
 name: The '94 Harley
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(old_harley)')
 start_text: Dizzy's 1994 Harley was stripped: ignition, fuel cell, chrome tank. Ratchet's chop shop in the west, a burned-out car over there, and the scavengers at the wall.
@@ -65,11 +65,11 @@ end_id: rebuilt
 end_cond: HasFlag('harley_sold_ratchet')
 end_text: Ratchet paid 450 for the parts. A corporate kid has a racer. Dizzy still polishes a sculpture.
 end_id: sold
-end_xp: 100
+end_skill_points: 2
 
 id: ecto
 name: Ecto
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(ecto)')
 start_text: Lou's club Ecto in the commerce district is haunted after dark. Stay the night and make it stop. 350 sat.
@@ -91,7 +91,7 @@ end_id: talked
 
 id: false_papers
 name: False Papers
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(false_papers)')
 start_text: Amira, a refugee in the south district, needs papers for her family. Take her photo to Nils the forger in the west. He asks 250; she has 100.
@@ -106,11 +106,11 @@ end_id: delivered
 end_cond: HasFlag('papers_sold')
 end_text: You sold Amira's face to an EBI clerk for 300. The next day her corner was empty.
 end_id: sold
-end_xp: 50
+end_skill_points: 1
 
 id: payback
 name: Payback
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(payback)')
 start_text: Stripe, a lace junkie in the eastern district, pays 300 to know where Pinky hides, the informant who sold him to EBI. Just the where.
@@ -133,11 +133,12 @@ end_id: lied
 end_cond: HasFlag('stripe_doubts')
 end_text: Pinky ran. Stripe didn't believe you, and now he wonders about you.
 end_id: doubted
-end_xp: 100
+end_skill_points: 2
 
 id: carmen
 name: Carmen
-xp: 300
+skill_points: 6
+perk_points: 1
 #
 start_cond: HasFlag('JobAccepted(carmen)')
 start_text: Detective Rourke in the west thinks Carmen, a singer in the commerce district, killed five people. He needs two pieces of proof: the latest victim behind the pawnshop, a witness at the bar, her notes.
@@ -153,11 +154,11 @@ end_id: killed
 end_cond: HasFlag('carmen_bought')
 end_text: Carmen paid you 500. The bodies keep turning up in the west.
 end_id: bought
-end_xp: 50
+end_skill_points: 1
 
 id: proxy
 name: Proxy Vote
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(proxy)')
 start_text: Carleton in the corporate district needs Hal’s share vote, from the south district, within two days. 500 sat.
@@ -177,11 +178,11 @@ end_id: coop
 end_cond: HasFlag('proxy_too_late')
 end_text: The vote came and went. Carleton lost by one.
 end_id: too_late
-end_xp: 0
+end_skill_points: 0
 
 id: holiday
 name: A Holiday on Ice
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(holiday)')
 start_text: Nueman in the commerce district pays 600 for an engineer’s specs. Morrow, corporate district, never puts his briefcase down.
@@ -200,7 +201,7 @@ end_id: survived
 
 id: deadline
 name: Deadline
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(deadline)')
 start_text: Holly Jones, the news presenter, works off a debt to Fargo, a loan shark in the commerce district. Her assistant Caitlin in the corporate district wants her back on air.

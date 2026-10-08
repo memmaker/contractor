@@ -8,7 +8,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -43,7 +42,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -78,7 +76,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -113,7 +110,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -148,7 +144,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -183,7 +178,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -218,7 +212,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -253,7 +246,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -288,7 +280,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -323,7 +314,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -358,7 +348,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -393,7 +382,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -428,7 +416,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -463,7 +450,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 Flags: prohibits_open_carry
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 Faction: ebi
@@ -498,7 +484,6 @@ Icon: F
 Foreground: light_gray_1
 Age: 48
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -527,7 +512,6 @@ Description: An employee of EBI
 Long_Description: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -567,7 +551,6 @@ Description: An employee of EBI
 Long_Description: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -607,7 +590,6 @@ Description: An employee of EBI
 Long_Description: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -648,7 +630,6 @@ Icon: P
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

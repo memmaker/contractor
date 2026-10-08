@@ -5,7 +5,6 @@ Dialogue: town_lucy
 Icon: L
 Foreground: light_blue
 Description: Lucy
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -28,7 +27,6 @@ Dialogue: town_father_olaf
 Icon: O
 Foreground: light_blue
 Description: Father Olaf
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -50,7 +48,6 @@ Name: town_son_santiago
 Icon: S
 Foreground: light_blue
 Description: a scruffy looking guy
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -74,7 +71,6 @@ Icon: B
 Foreground: light_blue_4
 Dialogue: town_biopharma_bot
 Description: a BioPharma medical assistance bot
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -102,7 +98,6 @@ Dialogue: nova_starling
 Chatter: nova_starling_chatter
 Age: 34
 BodyType: 1
-XP: 110
 KillType: 0
 DamageType: 0
 TeamNum: 3
@@ -129,7 +124,6 @@ Name: mother_metal
 Icon: M
 Foreground: light_blue
 Description: 'Mother Metal'
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -153,7 +147,6 @@ Icon: D
 Foreground: light_blue
 Description: Dr. Winters
 Dialogue: dr_winters
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -177,7 +170,6 @@ Name: town_sunshine
 Icon: B
 Foreground: light_blue
 Description: a big, leather clad biker
-xp: 25
 body: human
 strength: 5
 perception: 5
@@ -200,7 +192,6 @@ Name: town_jeff
 Icon: J
 Foreground: light_blue
 Description: Jeff
-xp: 25
 body: human
 strength: 5
 perception: 5

@@ -64,8 +64,6 @@ type Actor struct {
 
 	AudioBaseName string
 
-	XP int
-
 	SpawnPosition           geometry.Point
 	SpawnMapName            string
 	CurrentPathBlockedCount int
@@ -966,10 +964,6 @@ func (a *Actor) SetCharSheet(character *d100.CharSheet) {
 	a.CharSheet = character
 }
 
-func (a *Actor) SetXP(xp int) {
-	a.XP = xp
-}
-
 func (a *Actor) ToRecord() recfile.Record {
 	actorRecord := append(recfile.Record{
 		recfile.Field{Name: "Name", Value: a.DisplayName},
@@ -979,7 +973,6 @@ func (a *Actor) ToRecord() recfile.Record {
 		recfile.Field{Name: "Bg", Value: recfile.RGBStr(a.Icon.Bg)},
 		recfile.Field{Name: "DialogueFile", Value: a.DialogueFile},
 		recfile.Field{Name: "Faction", Value: a.Faction},
-		recfile.Field{Name: "XP", Value: recfile.IntStr(a.XP)},
 	}, a.CharSheet.ToRecord()...)
 	return actorRecord
 }
@@ -1104,10 +1097,6 @@ func (a *Actor) SetFoVDirty() {
 func (a *Actor) GetMaxThrowRange() int {
 	strength := a.GetCharSheet().GetStat(d100.Strength)
 	return strength * 2
-}
-
-func (a *Actor) GetXP() int {
-	return a.XP
 }
 
 func (a *Actor) TryEquipRangedWeaponFirst() {

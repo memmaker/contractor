@@ -12,7 +12,6 @@ audio: rat
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -46,7 +45,6 @@ Dialogue: cleaner
 Chatter: cleaner_chatter
 Long_Description: 
 BodyType: 0
-XP: 10
 KillType: 0
 DamageType: 0
 TeamNum: 0
@@ -68,7 +66,6 @@ Icon: M
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -99,7 +96,6 @@ Icon: k
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -130,7 +126,6 @@ Icon: R
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

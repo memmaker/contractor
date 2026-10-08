@@ -23,7 +23,8 @@ type Quest struct {
 	// fixed
 	Identifier  string
 	DisplayName string
-	RewardInXP  int
+	SkillPoints int
+	PerkPoints  int
 
 	Starters []*JournalEntry
 	Progress []*JournalEntry
@@ -57,13 +58,13 @@ func (q *Quest) getOutcome() *JournalEntry {
 	return nil
 }
 
-func (q *Quest) OutcomeXP() int {
+func (q *Quest) OutcomeSkillPoints() int {
 	for _, entry := range q.Outcomes {
-		if entry.Identifier == q.Outcome && entry.XP >= 0 {
-			return entry.XP
+		if entry.Identifier == q.Outcome && entry.SkillPoints >= 0 {
+			return entry.SkillPoints
 		}
 	}
-	return q.RewardInXP
+	return q.SkillPoints
 }
 
 func (q *Quest) getStart() *JournalEntry {
@@ -136,8 +137,8 @@ func (j *JournalEntry) GetCondition() *govaluate.EvaluableExpression {
 
 type NamedJournalEntry struct {
 	*JournalEntry
-	Identifier string
-	XP         int // -1: use the quest's XP
+	Identifier  string
+	SkillPoints int // -1: use the quest's skill points
 }
 
 func (n *NamedJournalEntry) IsValid() bool {
@@ -145,7 +146,7 @@ func (n *NamedJournalEntry) IsValid() bool {
 }
 
 func (n *NamedJournalEntry) ToRecord(prefix string) recfile.Record {
-	return append(n.JournalEntry.ToRecord(prefix), recfile.Field{Name: prefix + "_id", Value: n.Identifier}, recfile.Field{Name: prefix + "_xp", Value: recfile.IntStr(n.XP)})
+	return append(n.JournalEntry.ToRecord(prefix), recfile.Field{Name: prefix + "_id", Value: n.Identifier}, recfile.Field{Name: prefix + "_skill_points", Value: recfile.IntStr(n.SkillPoints)})
 }
 func (j *JournalEntry) ToRecord(prefix string) recfile.Record {
 	return recfile.Record{
@@ -186,7 +187,7 @@ func NewQuestFromRecord(record recfile.Record, fMap map[string]govaluate.Express
 
 	currentJournalEntry := &NamedJournalEntry{
 		JournalEntry: &JournalEntry{},
-		XP:           -1,
+		SkillPoints:  -1,
 	}
 
 	stateFromFieldName := func(fieldName string) QuestState {
@@ -219,15 +220,17 @@ func NewQuestFromRecord(record recfile.Record, fMap map[string]govaluate.Express
 			quest.Identifier = field.Value
 		case "name":
 			quest.DisplayName = field.Value
-		case "xp":
-			quest.RewardInXP = recfile.StrInt(field.Value)
+		case "skill_points":
+			quest.SkillPoints = recfile.StrInt(field.Value)
+		case "perk_points":
+			quest.PerkPoints = recfile.StrInt(field.Value)
 		default:
 			if !strings.Contains(field.Name, "_") {
 				panic(fmt.Sprintf("Unknown field name: %s", field.Name))
 			}
 
-			if strings.HasSuffix(field.Name, "_xp") { // belongs to the entry before it, so it must not start a new one
-				currentJournalEntry.XP = recfile.StrInt(field.Value)
+			if strings.HasSuffix(field.Name, "_skill_points") { // belongs to the entry before it, so it must not start a new one
+				currentJournalEntry.SkillPoints = recfile.StrInt(field.Value)
 				continue
 			}
 			if (lastStateParsed == QuestCompleted && currentJournalEntry.IsValid()) ||
@@ -235,7 +238,7 @@ func NewQuestFromRecord(record recfile.Record, fMap map[string]govaluate.Express
 				commitCurrentEntry(currentJournalEntry)
 				currentJournalEntry = &NamedJournalEntry{
 					JournalEntry: &JournalEntry{},
-					XP:           -1,
+					SkillPoints:  -1,
 				}
 			}
 			lastStateParsed = stateFromFieldName(field.Name)
@@ -259,7 +262,8 @@ func (q *Quest) ToRecord() recfile.Record {
 	result := make([]recfile.Field, 0, 3+len(q.Starters)*2+len(q.Progress)*2+len(q.Outcomes)*3)
 	result = append(result, recfile.Field{Name: "ID", Value: q.Identifier})
 	result = append(result, recfile.Field{Name: "Name", Value: q.DisplayName})
-	result = append(result, recfile.Field{Name: "XP", Value: recfile.IntStr(q.RewardInXP)})
+	result = append(result, recfile.Field{Name: "skill_points", Value: recfile.IntStr(q.SkillPoints)})
+	result = append(result, recfile.Field{Name: "perk_points", Value: recfile.IntStr(q.PerkPoints)})
 
 	for _, entry := range q.Starters {
 		result = append(result, entry.ToRecord("start")...)
@@ -291,8 +295,9 @@ func (j *Journal) SetChangeHandler(onJournalChanged func()) {
 }
 
 type Reward struct {
-	XP   int
-	Text string
+	SkillPoints int
+	PerkPoints  int
+	Text        string
 }
 
 func (j *Journal) Update() []Reward {
@@ -306,7 +311,7 @@ func (j *Journal) Update() []Reward {
 			if hasNewState {
 				sawChanges = true
 				if quest.CurrentState == QuestCompleted && !wasCompleted {
-					rewards = append(rewards, Reward{XP: quest.OutcomeXP(), Text: quest.DisplayName})
+					rewards = append(rewards, Reward{SkillPoints: quest.OutcomeSkillPoints(), PerkPoints: quest.PerkPoints, Text: quest.DisplayName})
 					j.incrementFlag(fmt.Sprintf("QuestCompleted(%s)", quest.Identifier))
 				}
 				j.incrementFlag(flagToIncrement)

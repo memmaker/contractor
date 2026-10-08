@@ -10,7 +10,6 @@ Icon: K
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -42,7 +41,6 @@ Icon: L
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -74,7 +72,6 @@ Icon: C
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -107,7 +104,6 @@ Icon: T
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -139,7 +135,6 @@ Icon: N
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -171,7 +166,6 @@ Icon: F
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -205,7 +199,6 @@ Icon: g
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -236,7 +229,6 @@ Icon: g
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -268,7 +260,6 @@ Icon: H
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
