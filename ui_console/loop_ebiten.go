@@ -64,9 +64,11 @@ func (u EbitenUI) StartGameLoop(config *foundation.Configuration, application *c
 		}
 	}()
 
-	ebiten.RunGameWithOptions(gs, &ebiten.RunGameOptions{
+	if err := ebiten.RunGameWithOptions(gs, &ebiten.RunGameOptions{
 		GraphicsLibrary: ebiten.GraphicsLibraryOpenGL,
-	})
+	}); err != nil {
+		println(err.Error())
+	}
 }
 
 func (u EbitenUI) QuitGame(application *cview.Application) {
@@ -84,7 +86,10 @@ func mustLoadFontByName(fontName string) (fontFace font.Face, close func() error
 		return nil, nil
 	}
 	size := 24.0
-	deviceDPIScale := ebiten.Monitor().DeviceScaleFactor()
+	deviceDPIScale := 1.0
+	if m := ebiten.Monitor(); m != nil { // nil until the window exists
+		deviceDPIScale = m.DeviceScaleFactor()
+	}
 	dpi := 72 * deviceDPIScale
 	fontFace, faceErr := opentype.NewFace(tt, &opentype.FaceOptions{
 		Size:    size,
