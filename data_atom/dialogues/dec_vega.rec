@@ -39,6 +39,12 @@ o_test: RollSkill('social', 'Easy')
 o_succ: Instalments
 o_fail: PersuadeFail
 #
+o_text: Yellow eyes, shaking hands. Your liver's quitting. Keep drinking on his slate and you won't live to see that ship.
+o_id: diagnose_vega
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Diagnosis
+o_fail: DiagnosisFail
+#
 o_text: Why don't you just pay him?
 o_id: why_broke
 o_goto: Broke
@@ -71,6 +77,28 @@ o_goto: Kill
 #
 o_text: Walking.
 o_id: intimidate_fail_bye
+o_goto: End
+
+name: Diagnosis
+npc: (He looks at his hands for a long time.) Six weeks. I need six weeks.
++ (He pushes his wallet across the table.) Four hundred. Pay him. I'm done drinking here.
+effect: StackTransferFrom(NPC, 'vega_wallet')
+#
+o_text: Drink water.
+o_id: diagnosis_bye
+o_goto: End
+
+name: DiagnosisFail
+npc: My eyes are fine. Who are you, my mother? Go away.
+#
+o_text: Then let's talk instalments.
+o_id: diagnosis_fail_persuade
+o_test: RollSkill('social', 'Easy')
+o_succ: Instalments
+o_fail: PersuadeFail
+#
+o_text: Fine.
+o_id: diagnosis_fail_bye
 o_goto: End
 
 name: Instalments

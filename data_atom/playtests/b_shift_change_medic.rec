@@ -1,0 +1,48 @@
+# Shift Change (BioChemistry): convince the thug leader the meds spoiled in the sun. He gives the key away; return the crate.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(shift_change, returned)') && HasFlag('b_pallet_spoiled') && !HasFlag('b_pallet_bought') && !HasFlag('Killed(gun_thug_leader)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('ask_job')
+do: Choose('accept_shift')
+
+if: true
+do: GoTo('street_to_commerce')
+
+if: true
+do: Talk('gun_thug_leader')
+do: Choose('spoiled_pallet')
+do: Choose('spoiled_bye')
+do: Use('stolen_pallet')
+do: Take('medical_supplies')
+
+# EBI guards in the industrial district shoot open carry on sight: holster everything first
+if: true
+do: Unequip('10mm_smg')
+do: Unequip('bowel_disruptor')
+do: Unequip('one_time_tranquilizer_pistol')
+do: Equip('rugged_trenchcoat')
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('foreman_okafor')
+do: Choose('give_supplies')
+do: Choose('returned_bye')

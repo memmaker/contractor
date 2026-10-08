@@ -2,7 +2,7 @@
 
 %rec: OpeningBranch
 
-cond: HasFlag('b_pallet_bought')
+cond: HasFlag('b_pallet_bought') || HasFlag('b_pallet_spoiled')
 goto: Sold
 
 cond: HasFlag('b_shift_accepted')
@@ -28,6 +28,13 @@ o_id: buy_pallet
 o_cond: HasItem('gold', 300)
 o_goto: Bought
 #
+o_text: That's insulin and plasma under a tarp in the sun. Three days without cold, it's spoiled. Nobody buys it, and the EBI tracks every lot number.
+o_id: spoiled_pallet
+o_cond: !HasFlag('b_spoiled_tried')
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Spoiled
+o_fail: SpoiledFail
+#
 o_text: Nothing personal.
 o_id: kill_leader
 o_goto: Kill
@@ -44,6 +51,23 @@ effect: SetFlag('b_pallet_bought')
 #
 o_text: Pleasure.
 o_id: bought_bye
+o_goto: End
+
+name: Spoiled
+npc: (He lifts the tarp, sniffs, swears.) Three days of guarding garbage. (He throws you the key.) Take it back to Okafor. Tell him it was like that when we found it.
+effect: StackTransferFrom(NPC, 'pallet_key')
+effect: SetFlag('b_pallet_spoiled')
+#
+o_text: I'll tell him.
+o_id: spoiled_bye
+o_goto: End
+
+name: SpoiledFail
+npc: It's in boxes. Boxes keep things. Three hundred.
+effect: SetFlag('b_spoiled_tried')
+#
+o_text: I'll think about it.
+o_id: spoiled_fail_bye
 o_goto: End
 
 name: Sold

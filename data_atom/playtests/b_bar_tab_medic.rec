@@ -1,0 +1,27 @@
+# Bar Tab (BioChemistry): read Dec's yellow eyes, tell him his liver is quitting. He hands over the wallet and stops drinking on credit.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(bar_tab, paid)') && !HasFlag('Killed(dec_vega)')
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('bartender')
+do: Choose('ask_job')
+do: Choose('accept_tab')
+
+if: true
+do: Talk('dec_vega')
+do: Choose('diagnose_vega')
+do: Choose('diagnosis_bye')
+
+if: true
+do: Talk('bartender')
+do: Choose('pay_wallet')
+do: Choose('paid_wallet_bye')
