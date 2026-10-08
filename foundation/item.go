@@ -146,7 +146,6 @@ type Item interface {
 	GetText() string
 	TextVariables(funcs map[string]govaluate.ExpressionFunction) map[string]string
 	SetAlive(isAlive bool)
-	GetStatMod(stat d100.Stat) (int, bool)
 	GetSkillMod(skill d100.Skill) (int, bool)
 	IsBreakingNow() bool
 	IsThrowable() bool

@@ -25,8 +25,7 @@ do: Give('10mm_jhp(96)')
 do: Equip('10mm_smg')
 do: FireMode('Single')
 do: SetSkill('RangedCombat', 150)
-do: SetStat('Endurance', 10)
-do: SetStat('Perception', 10)
+do: SetDerivedStat('HitPoints', 40)
 do: GoTo('man_hole_east')
 
 if: true

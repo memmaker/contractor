@@ -160,10 +160,7 @@ func (g *GameState) playerDrown(defender *Actor) {
 	attackerLuckChance := d100.Percentage(g.Player.GetCharSheet().GetDerivedStat(d100.CriticalChance))
 	defenderLuckChance := d100.Percentage(defender.GetCharSheet().GetDerivedStat(d100.CriticalChance))
 
-	attackerStrength := d100.Percentage(g.Player.GetCharSheet().GetStat(d100.Strength) * 10)
-	defenderStrength := d100.Percentage(defender.GetCharSheet().GetStat(d100.Strength) * 10)
-
-	contestResult := d100.SkillContest(attackerStrength, attackerLuckChance, defenderStrength, defenderLuckChance)
+	contestResult := d100.SkillContest(g.Player.unarmedChance(), attackerLuckChance, defender.unarmedChance(), defenderLuckChance)
 
 	if defender.IsSleeping() || contestResult == 0 {
 		sourcedDamage := SourcedDamage{
@@ -189,7 +186,7 @@ func (g *GameState) playerBackstab(defender *Actor) {
 	defenderLuckChance := d100.Percentage(defender.GetCharSheet().GetDerivedStat(d100.CriticalChance))
 
 	attackerStealth := d100.Percentage(g.Player.GetCharSheet().GetSkill(d100.SkillForBackstabbing))
-	defenderAwareness := d100.Percentage(defender.GetCharSheet().GetStat(d100.Perception) * 10)
+	defenderAwareness := defender.awarenessChance()
 
 	contestResult := d100.SkillContest(attackerStealth, attackerLuckChance, defenderAwareness, defenderLuckChance)
 
@@ -257,10 +254,7 @@ func (g *GameState) playerNonLethalTakedown(victim *Actor) {
 	attackerLuckChance := d100.Percentage(g.Player.GetCharSheet().GetDerivedStat(d100.CriticalChance))
 	defenderLuckChance := d100.Percentage(victim.GetCharSheet().GetDerivedStat(d100.CriticalChance))
 
-	attackerStealth := d100.Percentage(g.Player.GetCharSheet().GetStat(d100.Strength) * 10)
-	defenderAwareness := d100.Percentage(victim.GetCharSheet().GetStat(d100.Strength) * 10)
-
-	contestResult := d100.SkillContest(attackerStealth, attackerLuckChance, defenderAwareness, defenderLuckChance)
+	contestResult := d100.SkillContest(g.Player.unarmedChance(), attackerLuckChance, victim.unarmedChance(), defenderLuckChance)
 
 	if contestResult == 0 {
 		victim.SetSleeping()

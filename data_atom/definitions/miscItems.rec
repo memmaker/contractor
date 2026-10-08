@@ -32,7 +32,7 @@ Description: Aviator sunglasses
 Name: aviator_sunglasses
 Weight: 1
 Category: Headgear
-stat_bonus: cool(1)
+skill_bonus: social(10)
 Cost: 1200
 Long_Description: These make you look ridiculously cool.
 chance_to_break_on_throw: 95

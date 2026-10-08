@@ -82,7 +82,6 @@ func (p Perk) MaxLevel() int {
 }
 
 type CharacterRequirement struct {
-	Stats        map[Stat]int
 	Skills       map[Skill]int
 	DerivedStats map[DerivedStat]int
 	Perks        map[Perk]int
@@ -90,11 +89,6 @@ type CharacterRequirement struct {
 
 func (r CharacterRequirement) String() string {
 	var tableRows []fxtools.TableRow
-	for s := Stat(0); s < StatCount; s++ {
-		if v, ok := r.Stats[s]; ok {
-			tableRows = append(tableRows, fxtools.NewTableRow(s.String(), strconv.Itoa(v)))
-		}
-	}
 	for s := Skill(0); s < Skill(SkillCount()); s++ {
 		if v, ok := r.Skills[s]; ok {
 			tableRows = append(tableRows, fxtools.NewTableRow(s.String(), strconv.Itoa(v)))

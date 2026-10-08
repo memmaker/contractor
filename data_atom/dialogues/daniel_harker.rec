@@ -220,7 +220,7 @@ o_goto: JacobDoubleThreat
 #
 o_text: I can see a list of solvent clients on your terminal. I am sure you can pay me 1000 sat right now.
 o_id: terminal_1000
-o_cond: Stat('Perception') > 6
+o_cond: Skill('Technology') >= 40
 o_goto: JacobTerminalThreat
 
 name: JacobDoubleThreat

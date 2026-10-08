@@ -53,7 +53,7 @@ from content import GUN, Pack, Trip
 
 p = Pack('g', 'Package G: example')
 
-# People and things. Extra keyword arguments become record fields (Strength=8, aggressive='true').
+# People and things. Extra keyword arguments become record fields (Awareness=8, aggressive='true').
 p.actor('zone_residential_south', 'widow_ruth', 'Ruth', 'An old woman who keeps looking at her empty wrist.', 'R',
         near=(30, 15), equipment=['gold(200)'])
 p.container('zone_residential_west', 'ruth_pawn_box', 'a pawnshop lockbox', ['ruth_watch'], near=(50, 10), lock='easy')
@@ -190,9 +190,14 @@ doors with `lockflag: flag`.
 
 **Playtest**: `%rec: outcomes` holds one `if:` that must become true; frames are `do:` lines run in
 order. Verbs are listed by `ref`: Talk, Choose (by o_id), GoTo (spot or actor), Use (object), Take
-(from the open container), PickUp (from floor or corpse), Kill, Give, SetSkill, ForceChecks('success' |
+(from the open container), PickUp (from floor or corpse), Kill, Give, SetSkill, SetDerivedStat('HitPoints', 45), ForceChecks('success' |
 'fail' | 'none'), Sneak, WaitHours, WaitMinutes, WaitUntil('23:00'), Equip, Unequip, Interact(object,
 menu label). `GUN` is a fighter loadout.
+
+**Character model**: skills only, no attributes, no XP. Every skill starts at 20, the three tagged
+skills at 40; quests hand out `skill_points` and `perk_points`. Derived stats are fixed (HitPoints 30,
+Speed 10, Awareness 5 …, see `rules.rec`); gear, drugs and perks change them. NPCs set their own
+`HitPoints`, `Speed`, `Awareness` (1–10, how well they notice sneaking) and `ActionPoints`.
 
 ## Conventions
 

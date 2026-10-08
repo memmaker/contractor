@@ -47,7 +47,7 @@ func standardFunctions() map[string]govaluate.ExpressionFunction {
 
 var derivedBaseValues = make(map[DerivedStat]*govaluate.EvaluableExpression)
 
-var VisibleDerivedStatCount = 12
+var VisibleDerivedStatCount = int(DerivedStatCount)
 
 type DerivedStat int
 
@@ -62,7 +62,7 @@ const (
 	CriticalImpactModifier
 	MeleeDamageBonus
 	DamageResistance
-	PartyLimit
+	Awareness
 	DerivedStatCount
 )
 
@@ -86,8 +86,8 @@ func (s DerivedStat) String() string {
 		return "Hit Points"
 	case MeleeDamageBonus:
 		return "Melee Damage"
-	case PartyLimit:
-		return "Party Limit"
+	case Awareness:
+		return "Awareness"
 	case Speed:
 		return "Speed"
 	}
@@ -115,8 +115,8 @@ func DerivedStatFromString(name string) DerivedStat {
 		return HitPoints
 	case "meleedamagebonus":
 		return MeleeDamageBonus
-	case "partylimit":
-		return PartyLimit
+	case "awareness":
+		return Awareness
 	case "speed":
 		return Speed
 
@@ -145,8 +145,8 @@ func (s DerivedStat) ToShortString() string {
 		return "HP"
 	case MeleeDamageBonus:
 		return "MD"
-	case PartyLimit:
-		return "PL"
+	case Awareness:
+		return "AW"
 	case Speed:
 		return "SP"
 	}

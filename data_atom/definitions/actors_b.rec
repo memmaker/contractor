@@ -20,12 +20,7 @@ CarryWeight: 150
 Sequence: 10
 HealingRate: 1
 CriticalChance: 4
-Strength: 6
-Perception: 6
-Endurance: 6
-Cool: 6
-Intelligence: 5
-Agility: 5
+Awareness: 6
 Luck: 5
 DREMP: 500
 equipment: ebi_guard_uniform

@@ -91,16 +91,6 @@ func NewItemFromRecord(record recfile.Record, itemFromString func(name string) f
 			item.EffectParameters["radius"] = field.AsInt()
 		case "charges":
 			item.Charges = fxtools.ParseInterval(field.Value).Roll()
-		case "stat_bonus":
-			if fxtools.LooksLikeAFunction(field.Value) {
-				name, args := fxtools.GetNameAndArgs(field.Value)
-				stat := d100.StatFromString(name)
-				bonus := args.GetInt(0)
-				if item.StatChanges.StatChanges == nil {
-					item.StatChanges.StatChanges = make(map[d100.Stat]int)
-				}
-				item.StatChanges.StatChanges[stat] = bonus
-			}
 		case "skill_bonus":
 			if fxtools.LooksLikeAFunction(field.Value) {
 				name, args := fxtools.GetNameAndArgs(field.Value)

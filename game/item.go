@@ -250,16 +250,6 @@ func (i *GenericItem) InventoryNameWithColors(colorCode string) string {
 
 func (i *GenericItem) getStatPairsAsStrings() []string {
 	var statPairs []string
-	if len(i.StatChanges.StatChanges) > 0 {
-		for stat := d100.Stat(0); stat < d100.StatCount; stat++ {
-			if chg, hasChg := i.StatChanges.StatChanges[stat]; hasChg {
-				var statName string
-				statName = stat.ToShortString()
-				statPairs = append(statPairs, fmt.Sprintf("%+d %s", chg, statName))
-			}
-		}
-	}
-
 	if len(i.StatChanges.SkillChanges) > 0 {
 		for skill := d100.Skill(0); skill < d100.Skill(d100.SkillCount()); skill++ {
 			if chg, hasChg := i.StatChanges.SkillChanges[skill]; hasChg {
@@ -284,16 +274,6 @@ func (i *GenericItem) getStatPairsAsStrings() []string {
 }
 func (i *GenericItem) getStatPairsAsRows() []fxtools.TableRow {
 	var statPairs []fxtools.TableRow
-	if len(i.StatChanges.StatChanges) > 0 {
-		for stat := d100.Stat(0); stat < d100.StatCount; stat++ {
-			if chg, hasChg := i.StatChanges.StatChanges[stat]; hasChg {
-				var statName string
-				statName = stat.String()
-				statPairs = append(statPairs, fxtools.NewTableRow(statName, fmt.Sprintf("%+d", chg)))
-			}
-		}
-	}
-
 	if len(i.StatChanges.SkillChanges) > 0 {
 		for skill := d100.Skill(0); skill < d100.Skill(d100.SkillCount()); skill++ {
 			if chg, hasChg := i.StatChanges.SkillChanges[skill]; hasChg {
@@ -398,7 +378,6 @@ func (i *GenericItem) IsBook() bool {
 
 func (i *GenericItem) IsSkillBook() bool {
 	return len(i.StatChanges.SkillChanges) == 1 &&
-		len(i.StatChanges.StatChanges) == 0 &&
 		len(i.StatChanges.DerivedStatChanges) == 0 &&
 		i.Category == foundation.ItemCategoryReadables
 }
@@ -494,7 +473,7 @@ func (i *GenericItem) IsConsumable() bool {
 	return i.Category == foundation.ItemCategoryFood || i.Category == foundation.ItemCategoryConsumables
 }
 func (i *GenericItem) IsDrug() bool {
-	return i.Charges > 0 && i.Category == foundation.ItemCategoryConsumables && (len(i.StatChanges.StatChanges) > 0 || len(i.StatChanges.SkillChanges) > 0 || len(i.StatChanges.DerivedStatChanges) > 0)
+	return i.Charges > 0 && i.Category == foundation.ItemCategoryConsumables && (len(i.StatChanges.SkillChanges) > 0 || len(i.StatChanges.DerivedStatChanges) > 0)
 }
 
 func (i *GenericItem) GetInternalName() string {
@@ -638,11 +617,6 @@ func (i *GenericItem) Degrade(degrade float64) {
 
 func (i *GenericItem) GetSkillMod(skill d100.Skill) (int, bool) {
 	mod, hasMod := i.StatChanges.SkillChanges[skill]
-	return mod, hasMod
-}
-
-func (i *GenericItem) GetStatMod(stat d100.Stat) (int, bool) {
-	mod, hasMod := i.StatChanges.StatChanges[stat]
 	return mod, hasMod
 }
 

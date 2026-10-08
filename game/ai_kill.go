@@ -53,7 +53,7 @@ func (b KillBehaviour) Execute(g *GameState, actor *Actor) (TransitionEvent, int
 	if !actor.CanSee(victim.Position()) && !actor.HasFlag(foundation.FlagRelentless) { // ensure visibility, else -> target lost
 
 		targetIsMuchFaster := float64(victim.MovementSpeed()) > float64(actor.MovementSpeed())*2
-		fartherThanCanBeDeduced := distanceToTarget > (actor.GetCharSheet().GetStat(d100.Intelligence) * 3)
+		fartherThanCanBeDeduced := distanceToTarget > 15
 
 		if fartherThanCanBeDeduced || targetIsMuchFaster {
 			return NewTargetLostEvent(victim), actor.TimeNeededForMovement()

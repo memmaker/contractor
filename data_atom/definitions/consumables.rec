@@ -44,17 +44,16 @@ cost: 150
 Description: Brainz
 Name: brainz
 Category: consumables
-stat_bonus: intelligence(2)
-stat_bonus: perception(2)
-stat_bonus: cool(1)
+skill_bonus: technology(10)
+skill_bonus: biochemistry(10)
+skill_bonus: social(5)
 charges: 5
 cost: 200
 
 Description: Buff
 Name: buff
 Category: consumables
-stat_bonus: strength(2)
-stat_bonus: endurance(2)
+skill_bonus: meleecombat(10)
 derived_stat_bonus: hitpoints(25)
 charges: 5
 cost: 100

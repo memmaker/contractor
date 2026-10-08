@@ -75,16 +75,6 @@ func NewPerkRequirements(record recfile.Record) d100.CharacterRequirement {
 	reqs := d100.CharacterRequirement{}
 	for _, field := range record {
 		switch strings.ToLower(field.Name) {
-		case "requirestat":
-			if fxtools.LooksLikeAFunction(field.Value) {
-				if reqs.Stats == nil {
-					reqs.Stats = make(map[d100.Stat]int)
-				}
-
-				name, args := fxtools.GetNameAndArgs(field.Value)
-				stat := d100.StatFromString(name)
-				reqs.Stats[stat] = args.GetInt(0)
-			}
 		case "requireskill":
 			if fxtools.LooksLikeAFunction(field.Value) {
 				if reqs.Skills == nil {

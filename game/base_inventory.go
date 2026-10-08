@@ -487,24 +487,6 @@ func (i *Inventory) GetSkillModifiersFromItems(skill d100.Skill) []d100.Modifier
 	return modifiers
 }
 
-func (i *Inventory) GetStatModifiersFromItems(stat d100.Stat) []d100.Modifier {
-	var modifiers []d100.Modifier
-	for _, invItem := range i.items {
-		first := invItem
-		if first.IsConsumable() || first.IsSkillBook() || first.IsEquippable() {
-			continue
-		}
-		if modValue, hasValue := first.GetStatMod(stat); hasValue {
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:   invItem.Name(),
-				Modifier: modValue,
-				Order:    0,
-			})
-		}
-	}
-	return modifiers
-}
-
 func (i *Inventory) GetDerivedStatModifiersFromItems(stat d100.DerivedStat) []d100.Modifier {
 	var modifiers []d100.Modifier
 	for _, invItem := range i.items {
@@ -775,26 +757,6 @@ func (i *Inventory) AfterTurn() {
 		item := i.items[id]
 		item.AfterEquippedTurn()
 	}
-}
-
-func (i *Inventory) GetStatModifiersFromEquippedItems(stat d100.Stat) []d100.Modifier {
-	var modifiers []d100.Modifier
-	for _, itemID := range i.equipSlots {
-		item := i.items[itemID]
-		if modValue, hasValue := item.GetStatMod(stat); hasValue {
-			modifiers = append(modifiers, d100.DefaultModifier{
-				Source:    item.Name(),
-				Modifier:  modValue,
-				Order:     0,
-				IsPercent: true,
-			})
-		}
-	}
-	slices.SortStableFunc(modifiers, func(i, j d100.Modifier) int {
-		return cmp.Compare(i.Description(), j.Description())
-	})
-	return modifiers
-
 }
 
 func (i *Inventory) GetSkillModifiersFromEquippedItems(skill d100.Skill) []d100.Modifier {

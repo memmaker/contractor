@@ -737,6 +737,9 @@ func (d SourcedDamage) ModifyDamageByArmor(target *Actor) SourcedDamage {
 	return d
 }
 
+// enduranceChance is the base chance to resist a critical effect (knockdown, knockout, crippling).
+const enduranceChance = 50
+
 func (d SourcedDamage) MakeItCritical(attackerCritMod int, victim *Actor) SourcedDamage {
 	d.IsCritical = true
 	dieRoll := d100.Die() + attackerCritMod
@@ -764,14 +767,14 @@ func (d SourcedDamage) headCriticals(victim *Actor, dieRoll int) SourcedDamage {
 	case dieRoll <= 45:
 		d.DamageAmount *= 2
 		d.TargetDTModifier -= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}
 	case dieRoll <= 70:
 		d.DamageAmount = int(float64(d.DamageAmount) * 2.5)
 		d.TargetDTModifier -= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}
@@ -779,7 +782,7 @@ func (d SourcedDamage) headCriticals(victim *Actor, dieRoll int) SourcedDamage {
 		d.DamageAmount = int(float64(d.DamageAmount) * 2.5)
 		d.TargetDTModifier -= 2
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}
@@ -787,7 +790,7 @@ func (d SourcedDamage) headCriticals(victim *Actor, dieRoll int) SourcedDamage {
 		d.DamageAmount *= 3
 		d.TargetDTModifier -= 4
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagBlind)
 		}
@@ -806,7 +809,7 @@ func (d SourcedDamage) armCriticals(victim *Actor, dieRoll int) SourcedDamage {
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagDistracted)
 	case dieRoll <= 70:
 		d.DamageAmount *= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.IsCrippling = true
 		}
@@ -830,7 +833,7 @@ func (d SourcedDamage) legCriticals(victim *Actor, dieRoll int) SourcedDamage {
 	case dieRoll <= 45:
 		d.DamageAmount = int(float64(d.DamageAmount) * 1.5)
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance), 0)
 		if !enduranceCheck.Success {
 			d.IsCrippling = true
 		}
@@ -838,7 +841,7 @@ func (d SourcedDamage) legCriticals(victim *Actor, dieRoll int) SourcedDamage {
 	case dieRoll <= 70:
 		d.DamageAmount *= 2
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.IsCrippling = true
 		}
@@ -852,7 +855,7 @@ func (d SourcedDamage) legCriticals(victim *Actor, dieRoll int) SourcedDamage {
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
 		d.IsCrippling = true
 		d.TargetDTModifier -= 4
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}
@@ -896,21 +899,21 @@ func (d SourcedDamage) eyesCriticals(victim *Actor, dieRoll int) SourcedDamage {
 	switch {
 	case dieRoll <= 20:
 		d.DamageAmount *= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10+40), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance+40), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagBlind)
 		}
 	case dieRoll <= 45:
 		d.DamageAmount *= 2
 		d.TargetDTModifier -= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10+30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance+30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagBlind)
 		}
 	case dieRoll <= 70:
 		d.DamageAmount *= 3
 		d.TargetDTModifier -= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10+20), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance+20), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagBlind)
 		}
@@ -938,14 +941,14 @@ func (d SourcedDamage) groinCriticals(victim *Actor, dieRoll int) SourcedDamage 
 	case dieRoll <= 45:
 		d.DamageAmount = int(float64(d.DamageAmount) * 1.5)
 		d.TargetDTModifier -= 2
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
 		}
 	case dieRoll <= 70:
 		d.DamageAmount = int(float64(d.DamageAmount) * 1.5)
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10-30), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance-30), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}
@@ -957,7 +960,7 @@ func (d SourcedDamage) groinCriticals(victim *Actor, dieRoll int) SourcedDamage 
 		d.DamageAmount *= 2
 		d.TargetDTModifier -= 4
 		d.ApplyStatus = append(d.ApplyStatus, foundation.FlagKnockedDown)
-		enduranceCheck := d100.SuccessRoll(d100.Percentage(victim.GetCharSheet().GetStat(d100.Endurance)*10), 0)
+		enduranceCheck := d100.SuccessRoll(d100.Percentage(enduranceChance), 0)
 		if !enduranceCheck.Success {
 			d.ApplyStatus = append(d.ApplyStatus, foundation.FlagUnconscious)
 		}

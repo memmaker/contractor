@@ -10,7 +10,7 @@ if: HasFlag('QuestCompleted(starter, reward_received)')
 %rec: frames
 
 if: true
-do: SetStat('Perception', 7)
+do: SetSkill('Technology', 40)
 
 if: true
 do: Talk('grim_beard')

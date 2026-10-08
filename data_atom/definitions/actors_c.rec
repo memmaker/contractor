@@ -22,12 +22,6 @@ CarryWeight: 100
 Sequence: 8
 HealingRate: 1
 CriticalChance: 2
-Strength: 4
-Perception: 5
-Endurance: 4
-Cool: 5
-Intelligence: 5
-Agility: 5
 Luck: 5
 DREMP: 500
 SkillBonusSocial: 40
