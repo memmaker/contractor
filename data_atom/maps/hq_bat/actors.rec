@@ -95,7 +95,6 @@ SkillBonusMeleeCombat: 25
 SkillBonusSocial: 87
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000150.pro
 Position: (23,10)
 

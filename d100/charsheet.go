@@ -331,8 +331,6 @@ func (cs *CharSheet) getDerivedStatBaseValue(ds DerivedStat) int {
 		return int(math.Floor(float64(cs.GetStat(Cool)) / 2.0))
 	case PerkRate:
 		return 3
-	case PoisonResistance:
-		return cs.GetStat(Endurance) * 5
 	case Speed:
 		return 2 * cs.GetStat(Agility)
 	case SkillRate:

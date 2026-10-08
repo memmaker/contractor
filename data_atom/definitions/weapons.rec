@@ -27,7 +27,7 @@
 %typedef: weapon_concealability enum big long short hand hidden
 %type: weapon_magazine_size int
 %type: weapon_burst_rounds int
-%typedef: weapon_damage_type enum Normal Laser Fire Plasma Electrical EMP Explosive Radiation Poison
+%typedef: weapon_damage_type enum Normal Laser Fire Plasma Electrical EMP Explosive Radiation
 %type: weapon_min_str int
 %typedef: weapon_attack_mode_one enum Fire_Single Fire_Burst Punch Kick Swing Thrust Throw Flame
 %typedef: weapon_attack_mode_two enum Fire_Single Fire_Burst Punch Kick Swing Thrust Throw Flame

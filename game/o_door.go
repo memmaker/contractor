@@ -328,7 +328,7 @@ func (g *GameState) NewDoor(rec recfile.Record, resolver func(objType string) te
 }
 
 func (b *Door) OnDamage(dmg SourcedDamage) []foundation.Animation {
-	if dmg.DamageType == DamageTypeEMP || dmg.DamageType == DamageTypeRadiation || dmg.DamageType == DamageTypePoison {
+	if dmg.DamageType == DamageTypeEMP || dmg.DamageType == DamageTypeRadiation {
 		return nil
 	}
 

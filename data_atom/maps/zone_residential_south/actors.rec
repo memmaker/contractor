@@ -43,7 +43,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 8
-DRPoison: 20
 SourceFile: 00000144.pro
 Equipment: key('home_keys','apartment keys')
 Equipment: street_wear(80)
@@ -97,7 +96,6 @@ DRElectrical: 30
 DREMP: 500
 DRExplosive: 20
 DRRadiation: 10
-DRPoison: 25
 Selling: 10mm_smg(70)
 Selling: 10mm_jhp(240)
 Selling: 10mm_smg(70)
@@ -145,7 +143,6 @@ Agility: 6
 Luck: 5
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 Equipment: cellardoor_jumpsuit(100)
 equipment: gold(552)
 SourceFile: 00000059.pro
@@ -197,7 +194,6 @@ DRElectrical: 40
 DREMP: 500
 DRExplosive: 25
 DRRadiation: 12
-DRPoison: 30
 equipment: combat_knife
 equipment: binge
 equipment: 10mm_pistol(90)
@@ -253,7 +249,6 @@ DRElectrical: 60
 DREMP: 500
 DRExplosive: 40
 DRRadiation: 12
-DRPoison: 30
 SourceFile: 00000137.pro
 equipment: 10mm_pistol
 equipment: 10mm_jhp
@@ -297,7 +292,6 @@ SkillBonusTechnology: 75
 SkillBonusSocial: 20
 DREMP: 500
 DRRadiation: 8
-DRPoison: 20
 Equipment: lab_coat_ebi
 equipment: 12_ga_shotgun_shells
 equipment: shotgun

@@ -133,7 +133,7 @@ func coldRay(g *GameState, zapper *Actor, aimPos geometry.Point) []foundation.An
 					Attacker:        zapper,
 					IsObviousAttack: true,
 					TargetingMode:   TargetingModeFireSingle,
-					DamageType:      DamageTypePoison,
+					DamageType:      DamageTypeNormal,
 					DamageAmount:    damage,
 				}
 				damageAnim := g.applyDamageToActorAnimated(damageWithSource, actor)

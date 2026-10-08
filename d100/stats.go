@@ -29,7 +29,7 @@ func (s Stat) GetDescription() string {
 	case Perception:
 		return "Perception affects your ranged combat skills, and your ability to detect traps and enemies."
 	case Endurance:
-		return "Endurance affects your Hit Points, Poison Resistance, and Radiation Resistance."
+		return "Endurance affects your Hit Points and healing."
 	case Cool:
 		return "Cool affects your ability to negotiate, and the size of your party."
 	case Intelligence:

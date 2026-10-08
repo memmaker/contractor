@@ -545,7 +545,6 @@ func (a *Actor) GetDetailInfo() string {
 
 	resistanceRows := []fxtools.TableRow{
 		{Columns: []string{"Physical:", fmt.Sprintf("%d", a.CharSheet.GetDerivedStat(d100.DamageResistance))}},
-		{Columns: []string{"Poison :", fmt.Sprintf("%d", a.CharSheet.GetDerivedStat(d100.PoisonResistance))}},
 	}
 
 	var skillRows []fxtools.TableRow
