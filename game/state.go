@@ -103,7 +103,6 @@ func (g *GameState) actorKilled(causeOfDeath SourcedDamage, victim *Actor) {
 	if causeOfDeath.IsActor() && causeOfDeath.Attacker == g.Player {
 		killedByPlayerFlag := fmt.Sprintf("KilledByPlayer(%s)", victim.GetInternalName())
 		g.gameFlags.SetFlag(killedByPlayerFlag)
-		//g.awardXP(victim.GetXP(), fmt.Sprintf("for killing %s", victim.Name()))
 		g.gameFlags.Increment("PlayerKillCount")
 	}
 

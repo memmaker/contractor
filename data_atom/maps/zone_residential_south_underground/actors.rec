@@ -12,7 +12,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -49,7 +48,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -86,7 +84,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -123,7 +120,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -160,7 +156,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -197,7 +192,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -230,7 +224,6 @@ dialogue: drake_gallows
 LongDescription: Drake Gallows
 Age: 25
 BodyType: 0
-XP: 50
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -273,7 +266,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -310,7 +302,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -347,7 +338,6 @@ aggressive: true
 Age: 25
 Gender: 1
 BodyType: 1
-XP: 25
 KillType: 7
 DamageType: 0
 TeamNum: 1
@@ -381,7 +371,6 @@ Chatter: duck_chatter
 LongDescription: A synthetic duck, white, mud on the servos. A collar tag reads COCO.
 Age: 25
 BodyType: 1
-XP: 25
 KillType: 17
 DamageType: 0
 TeamNum: 1
@@ -416,7 +405,6 @@ Icon: A
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

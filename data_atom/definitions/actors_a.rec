@@ -10,7 +10,6 @@ faction: wall_guard
 aggressive: false
 Age: 30
 BodyType: 0
-XP: 60
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -43,7 +42,6 @@ faction: wall_guard
 aggressive: false
 Age: 35
 BodyType: 0
-XP: 100
 KillType: 0
 DamageType: 0
 TeamNum: 1

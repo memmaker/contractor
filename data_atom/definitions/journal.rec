@@ -4,7 +4,7 @@
 
 id: tutorial
 name: Grim's legacy
-xp: 100
+skill_points: 2
 #
 start_cond: !HasItem('home_keys')
 start_text:
@@ -22,7 +22,8 @@ end_text: Grim is dead. His legacy is yours now.
 
 id: to_the_stars
 name: To The Stars
-xp: 500
+skill_points: 10
+perk_points: 1
 #
 start_cond: HasFlag('KnowsAbout(golden_ticket)')
 start_text:
@@ -33,13 +34,13 @@ start_text:
 end_cond: HasFlag('KnowsAbout(ticket_scam)')
 end_text: The ships leave without passengers. Nobody buys a way to the stars.
 end_id: scam
-end_xp: 0
+end_skill_points: 0
 
 ### Starter Quest ###
 
 id: starter
 name: Medical Extortion
-xp: 250
+skill_points: 5
 #
 start_cond: HasFlag('JobAccepted(starter)')
 start_text: Jacob wants you to extract 500 Sat from the Ripperdoc in the northside residential area.
@@ -73,7 +74,7 @@ prog_text: Jacob lives in the eastern residential district. Maybe there is more 
 end_cond: HasFlag('ContainerRemoved(jacob_safe, gold)') && HasFlag('ClientRewardReceived(starter)')
 end_text: You paid Jacob with his own money, and he paid you for it. Beautiful.
 end_id: paid_with_clients_money
-end_xp: 500
+end_skill_points: 10
 #
 end_cond: HasFlag('ClientRewardReceived(starter)')
 end_text: You have received your payment from Jacob.
@@ -98,7 +99,7 @@ end_id: client_extorted
 end_cond: HasFlag('JobDeclined(starter)') && HasFlag('starter(other_assassin_done)')
 end_text: Jacob found someone else for the job. Quinn Rix did it his way.
 end_id: job_lost
-end_xp: 0
+end_skill_points: 0
 
 
 
@@ -107,7 +108,8 @@ end_xp: 0
 
 id: find_mansion
 name: The Mansion
-xp: 300
+skill_points: 6
+perk_points: 1
 #
 start_cond: HasFlag('JobAccepted(mansion)') || HasFlag('LocationKnown(mansion)')
 start_text:
@@ -127,7 +129,8 @@ end_id: found
 
 id: recluse
 name: The Recluse
-xp: 500
+skill_points: 10
+perk_points: 1
 #
 start_cond: HasFlag('TalkedTo(logan_faust)') || HasFlag('Killed(logan_faust)') || HasFlag('KnowsAbout(cryo_lab)') || HasFlag('faust_sold_out') || HasFlag('safe_cracked')
 start_text:
@@ -167,7 +170,8 @@ end_id: extorted
 
 id: cryo
 name: The Long Sleep
-xp: 1000
+skill_points: 20
+perk_points: 1
 #
 start_cond: HasFlag('KnowsAbout(cryo_lab)')
 start_text:
@@ -214,4 +218,4 @@ end_text:
 + The night the ships lifted, the stars came down to meet them.
 + You watched the sky burn with a drink in your hand. It was, all things considered, a decent seat.
 end_id: gave_up
-end_xp: 0
+end_skill_points: 0

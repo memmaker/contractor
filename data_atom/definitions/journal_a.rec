@@ -4,7 +4,7 @@
 
 id: the_duck
 name: The Duck
-xp: 150
+skill_points: 3
 #
 start_cond: HasFlag('JobAccepted(duck)') || HasFlag('TalkedTo(synth_duck)')
 start_text:
@@ -25,16 +25,16 @@ end_id: sold_and_lied
 end_cond: HasFlag('duck_sold_to_bob')
 end_text: Bob has the duck in pieces and you have 300 sat. Anna is still waiting at the window.
 end_id: sold
-end_xp: 100
+end_skill_points: 2
 #
 end_cond: HasFlag('Killed(synth_duck)')
 end_text: The duck is dead. Nobody pays for that.
 end_id: duck_dead
-end_xp: 0
+end_skill_points: 0
 
 id: tags
 name: Tags
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('JobAccepted(tags)') || HasFlag('took_dog_tag')
 start_text:
@@ -51,7 +51,7 @@ end_id: returned
 end_cond: HasFlag('tag_sold') && HasFlag('lucy_knows')
 end_text: Shaw paid 400 for Burton's tag. Lucy found out. Terra Vitae's doors are closed to you.
 end_id: sold_and_caught
-end_xp: 50
+end_skill_points: 1
 #
 end_cond: HasFlag('tag_sold') && HasFlag('lied_to_lucy')
 end_text: Shaw paid 400 for Burton's tag. Lucy believes her son was never found. She still looks south.
@@ -60,11 +60,11 @@ end_id: sold_and_lied
 end_cond: HasFlag('tag_sold')
 end_text: Richard Shaw has Burton's tag in his case. Lucy is still waiting.
 end_id: sold
-end_xp: 100
+end_skill_points: 2
 
 id: rats
 name: Rats
-xp: 100
+skill_points: 2
 #
 start_cond: HasFlag('JobAccepted(rats)') || HasFlag('cleaner_went_down')
 start_text:
@@ -81,7 +81,7 @@ end_id: paid
 end_cond: HasFlag('KilledByPlayer(cleaner)')
 end_text: The cleaner is dead. The west gets dirtier from here.
 end_id: cleaner_killed
-end_xp: 0
+end_skill_points: 0
 #
 end_cond: HasFlag('cleaner_dead')
 end_text: You told the cleaner to do his own job. He did. The rats ate him, and the west has nobody to clean up after it now.

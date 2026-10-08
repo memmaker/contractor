@@ -131,7 +131,7 @@ effect: EndConversation''')
 
 p.journal_entry('''id: ruth
 name: Ruth's Watch
-xp: 100
+skill_points: 2
 #
 start_cond: HasFlag('JobAccepted(ruth)')
 start_text: Ruth in the south wants her watch back from the pawnshop lockbox in the west.
@@ -146,7 +146,7 @@ end_id: returned
 end_cond: HasFlag('ruth_watch_sold')
 end_text: You sold Ruth's watch back to Rook.
 end_id: sold
-end_xp: 25
+end_skill_points: 1
 ''')
 
 p.terminal_lead('ruth', "HasFlag('JobAccepted(ruth)')", 'Recover a keepsake, southside.',
@@ -179,8 +179,9 @@ Use `SaveTimeNow('t')` then `IsMinutesAfter('t', 20)` / `IsHoursAfter` / `IsDays
 `IsMap('zone_x')` to wait for the player, `LoadMap('zone_x')` before changing actors on another map.
 
 **Journal entry**: `start_cond`/`start_text`, optional `prog_cond`/`prog_text`, then any number of
-`end_cond`/`end_text`/`end_id` (+ optional `end_xp`). The first end condition that is true wins, so put
-the specific ones first. Completion sets `QuestCompleted(<id>, <end_id>)`, which playtests check.
+`end_cond`/`end_text`/`end_id` (+ optional `end_skill_points`). The first end condition that is true wins, so put
+the specific ones first. Quests are the only progression: `skill_points:` (about 1 per 50 old XP, a
+side contract gives 3–6) and `perk_points: 1` for the big ones. There is no XP and no level. Completion sets `QuestCompleted(<id>, <end_id>)`, which playtests check.
 
 **Flags the game sets on its own**: `TalkedTo(npc)`, `Killed(npc)`, `QuestCompleted(id, end_id)`,
 `WasAttacked(npc)`, `PlayerVisited(map)` and an item's `PickupFlag` when it is picked up, looted or taken

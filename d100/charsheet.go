@@ -56,7 +56,6 @@ func NewCharSheet() *CharSheet {
 		derivedStatAdjustments: make(map[DerivedStat]int),
 		skillAdjustments:       make(map[Skill]int),
 		taggedSkills:           make(map[Skill]bool),
-		level:                  1,
 	}
 	c.HealAPAndHPCompletely()
 	return c
@@ -67,8 +66,6 @@ type PerkLevel struct {
 	Level int
 }
 type CharSheet struct {
-	level int
-
 	availableStatPoints  int
 	availableSkillPoints int
 	availablePerks       int
@@ -92,7 +89,6 @@ type CharSheet struct {
 	onStatChangedHandler        func(Stat)
 	onDerivedStatChangedHandler func(DerivedStat)
 	onSkillChangedHandler       func(Skill)
-	xp                          int
 }
 
 type FactorModifier struct {
@@ -217,22 +213,6 @@ type Modifier interface {
 	ApplyForInterval(value fxtools.Interval) fxtools.Interval
 }
 
-func (cs *CharSheet) GetLevel() int {
-	return cs.level
-}
-
-func (cs *CharSheet) LevelUp() {
-	cs.level++
-	cs.availableSkillPoints += cs.GetDerivedStat(SkillRate)
-	cs.derivedStatAdjustments[HitPoints] = cs.getDerivedStatAdjustment(HitPoints) + cs.getHitPointIncrease()
-	if cs.level%cs.GetDerivedStat(PerkRate) == 0 {
-		cs.availablePerks++
-	}
-}
-
-func (cs *CharSheet) getHitPointIncrease() int {
-	return int(math.Floor(float64(cs.getStatBaseValue(Endurance))/2.0)) + 2
-}
 func (cs *CharSheet) GetStat(stat Stat) int {
 	baseValue := cs.getStatBaseValue(stat)
 	statValue := cs.onRetrieveStatHook(stat, baseValue)
@@ -329,12 +309,8 @@ func (cs *CharSheet) getDerivedStatBaseValue(ds DerivedStat) int {
 		return max(1, cs.GetStat(Strength)-5)
 	case PartyLimit:
 		return int(math.Floor(float64(cs.GetStat(Cool)) / 2.0))
-	case PerkRate:
-		return 3
 	case Speed:
 		return 2 * cs.GetStat(Agility)
-	case SkillRate:
-		return 3 + (cs.GetStat(Intelligence) * 2)
 	}
 	panic("invalid derived stat")
 	return 0
@@ -562,7 +538,6 @@ func (cs *CharSheet) GetHitPointsString() string {
 
 func (cs *CharSheet) ToRecord() recfile.Record {
 	record := recfile.Record{
-		recfile.Field{Name: "Level", Value: recfile.IntStr(cs.GetLevel())},
 		recfile.Field{Name: "AvailableStatPoints", Value: recfile.IntStr(cs.availableStatPoints)},
 		recfile.Field{Name: "AvailableSkillPoints", Value: recfile.IntStr(cs.availableSkillPoints)},
 		recfile.Field{Name: "AvailablePerks", Value: recfile.IntStr(cs.availablePerks)},
@@ -667,46 +642,6 @@ func (cs *CharSheet) SpendSkillPoints(skill Skill, points int) {
 	cs.onSkillChanged(skill)
 }
 
-func (cs *CharSheet) AddXP(xp int) bool {
-	if xp <= 0 {
-		return false
-	}
-	wasAbleToLevelBefore := cs.CanLevelUp()
-	cs.xp += xp
-
-	if cs.CanLevelUp() && !wasAbleToLevelBefore {
-		cs.LevelUp()
-		return true
-	}
-	return false
-}
-
-func (cs *CharSheet) CanLevelUp() bool {
-	return cs.xp >= cs.GetTotalXPForNextLevel(cs.level)
-}
-
-func (cs *CharSheet) GetTotalXPForNextLevel(currentLevel int) int {
-	if currentLevel >= len(levelTable) {
-		// (n*(n-1)/2) * 1,000 XP
-
-		if afterTableFormula != nil {
-			result, _ := afterTableFormula.Evaluate(map[string]interface{}{"currentLevel": currentLevel})
-			return int(result.(float64))
-		}
-
-		return (currentLevel * (currentLevel - 1) / 2) * 1000
-	}
-	return levelTable[currentLevel]
-}
-
-func (cs *CharSheet) GetCurrentXP() int {
-	return cs.xp
-}
-
-func (cs *CharSheet) GetXPNeededForNextLevel() int {
-	return cs.GetTotalXPForNextLevel(cs.level) - cs.xp
-}
-
 func (cs *CharSheet) SetSkillModifierHandler(handler func(skill Skill) []Modifier) {
 	cs.getSkillMods = handler
 }
@@ -772,9 +707,6 @@ func (cs *CharSheet) GetPerkLevel(perkID Perk) int {
 }
 
 func (cs *CharSheet) MeetsRequirements(requirements CharacterRequirement) bool {
-	if cs.level < requirements.Level {
-		return false
-	}
 	for stat, neededValue := range requirements.Stats {
 		if cs.GetStat(stat) < neededValue {
 			return false
@@ -807,43 +739,8 @@ func (cs *CharSheet) SetGodLike() {
 	}
 	cs.derivedStatAdjustments[HitPoints] = 999
 	cs.derivedStatAdjustments[ActionPoints] = 20
-	cs.level = 99
 	cs.availableSkillPoints = 0
 	cs.availableStatPoints = 0
-}
-
-func LoadLevelUpTable(table []int, afterTable string) {
-	levelTable = table
-	levelsAfterTable, err := govaluate.NewEvaluableExpressionWithFunctions(afterTable, standardFunctions())
-	if err != nil {
-		panic(err)
-	}
-	afterTableFormula = levelsAfterTable
-}
-
-var afterTableFormula *govaluate.EvaluableExpression
-var levelTable = []int{
-	0,
-	1000,
-	3000,
-	6000,
-	10000,
-	15000,
-	21000,
-	28000,
-	36000,
-	45000,
-	55000,
-	66000,
-	78000,
-	91000,
-	105000,
-	120000,
-	136000,
-	153000,
-	171000,
-	190000,
-	210000,
 }
 
 type Difficulty int
@@ -975,10 +872,6 @@ func (cs *CharSheet) GobEncode() ([]byte, error) {
 	buffer := &bytes.Buffer{}
 	gobber := gob.NewEncoder(buffer)
 
-	if err := gobber.Encode(cs.level); err != nil {
-		return nil, err
-	}
-
 	if err := gobber.Encode(cs.availableStatPoints); err != nil {
 		return nil, err
 	}
@@ -1010,19 +903,12 @@ func (cs *CharSheet) GobEncode() ([]byte, error) {
 	if err := gobber.Encode(cs.actionPointsCurrent); err != nil {
 		return nil, err
 	}
-	if err := gobber.Encode(cs.xp); err != nil {
-		return nil, err
-	}
 	return buffer.Bytes(), nil
 }
 
 func (cs *CharSheet) GobDecode(data []byte) error {
 	buffer := bytes.NewBuffer(data)
 	gobber := gob.NewDecoder(buffer)
-
-	if err := gobber.Decode(&cs.level); err != nil {
-		return err
-	}
 
 	if err := gobber.Decode(&cs.availableStatPoints); err != nil {
 		return err
@@ -1053,9 +939,6 @@ func (cs *CharSheet) GobDecode(data []byte) error {
 		return err
 	}
 	if err := gobber.Decode(&cs.actionPointsCurrent); err != nil {
-		return err
-	}
-	if err := gobber.Decode(&cs.xp); err != nil {
 		return err
 	}
 	return nil

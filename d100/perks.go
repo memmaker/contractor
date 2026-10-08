@@ -86,7 +86,6 @@ type CharacterRequirement struct {
 	Skills       map[Skill]int
 	DerivedStats map[DerivedStat]int
 	Perks        map[Perk]int
-	Level        int
 }
 
 func (r CharacterRequirement) String() string {

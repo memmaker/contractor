@@ -10,7 +10,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -53,7 +52,6 @@ Description: Gun Thug
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -95,7 +93,6 @@ faction: jacob
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 120
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -132,7 +129,6 @@ Chatter: beggar_chatter
 LongDescription: 
 Age: 60
 BodyType: 0
-XP: 10
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -162,7 +158,6 @@ Icon: S
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

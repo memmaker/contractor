@@ -676,9 +676,6 @@ func (g *GameState) transitionToMapLocation(levelName string, location string) {
 	g.currentMapName = loadedMap.GetName()
 
 	mapVisited := fmt.Sprintf("PlayerVisited(%s)", levelName)
-	if !g.gameFlags.HasFlag(mapVisited) {
-		g.awardXP(100, fmt.Sprintf("Discovered '%s'", loadedMap.GetDisplayName()))
-	}
 	g.gameFlags.Increment(mapVisited)
 
 	// Ensure correct map state
@@ -771,7 +768,7 @@ func (g *GameState) checkJournal() {
 	rewards := g.journal.Update()
 
 	for _, reward := range rewards {
-		g.awardXP(reward.XP, reward.Text)
+		g.awardPoints(reward)
 	}
 }
 
@@ -1018,12 +1015,16 @@ func (g *GameState) advanceTime(duration time.Duration) {
 	g.updateFoVAndDijkstraMap(g.Player)
 }
 
-func (g *GameState) awardXP(xp int, text string) {
-	didLevelUpNow := g.Player.GetCharSheet().AddXP(xp)
-	g.msg(foundation.HiLite("You received %s ("+text+")", strconv.Itoa(xp)+" XP"))
-	if didLevelUpNow {
+func (g *GameState) awardPoints(reward Reward) {
+	sheet := g.Player.GetCharSheet()
+	sheet.AddSkillPoints(reward.SkillPoints)
+	sheet.AddPerkPoints(reward.PerkPoints)
+	if reward.SkillPoints > 0 {
+		g.msg(foundation.HiLite("You received %s ("+reward.Text+")", strconv.Itoa(reward.SkillPoints)+" skill points"))
+	}
+	if reward.PerkPoints > 0 {
 		g.ui.PlayCue("ui/LEVELUP")
-		g.msg(foundation.HiLite(">>> You have gone up a level <<<"))
+		g.msg(foundation.HiLite(">>> You can choose %s <<<", strconv.Itoa(reward.PerkPoints)+" new perk(s)"))
 	}
 }
 

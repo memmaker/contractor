@@ -396,7 +396,6 @@ faction: wall_guard
 aggressive: false
 Age: 45
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -430,7 +429,6 @@ Icon: I
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -463,7 +461,6 @@ Icon: M
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

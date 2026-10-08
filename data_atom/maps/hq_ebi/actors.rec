@@ -8,7 +8,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 aggressive: false
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -43,7 +42,6 @@ Description: EBI Security Officer
 LongDescription: An EBI Security Officer tasked with patrolling urban zones and enforcing Eschaton’s policies in Edge Haven. As the corporate police force, they project authority while maintaining a visible presence to deter criminal activity. Equipped for both lethal and non-lethal engagement, their role is to maintain public order and corporate compliance.
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -80,7 +78,6 @@ Dialogue: dr_iris_kwan
 Chatter: dr_iris_kwan_chatter
 Age: 42
 BodyType: 1
-XP: 95
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -109,7 +106,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 aggressive: false
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -145,7 +141,6 @@ Dialogue: adrian_voss
 Chatter: adrian_voss_chatter
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -175,7 +170,6 @@ Description: EBI Security Officer
 LongDescription: An EBI Security Officer tasked with patrolling urban zones and enforcing Eschaton’s policies in Edge Haven. As the corporate police force, they project authority while maintaining a visible presence to deter criminal activity. Equipped for both lethal and non-lethal engagement, their role is to maintain public order and corporate compliance.
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -211,7 +205,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 aggressive: false
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -245,7 +238,6 @@ Description: Shop Owner
 LongDescription: 
 Age: 25
 BodyType: 0
-XP: 100
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -279,7 +271,6 @@ Description: An employee of EBI
 Long_Description: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -320,7 +311,6 @@ LongDescription: An EBI Security Guard tasked with patrolling urban zones and en
 aggressive: false
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -355,7 +345,6 @@ Dialogue: ebi_medic
 Long_Description: 
 Age: 25
 BodyType: 0
-XP: 85
 KillType: 0
 DamageType: 0
 TeamNum: 1

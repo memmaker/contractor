@@ -8,23 +8,23 @@ import (
 	"time"
 )
 
-// Every ending of the starter quest "The Debt" resolves from its flags, with the right XP.
+// Every ending of the starter quest "The Debt" resolves from its flags, with the right skill points.
 func TestStarterQuestOutcomes(t *testing.T) {
 	cases := []struct {
 		outcome string
 		xp      int
 		flags   []string
 	}{
-		{"reward_received", 250, []string{"JobAccepted(starter)", "starter(money_collected)", "ClientRewardReceived(starter)"}},
-		{"reward_received", 250, []string{"JobAccepted(starter)", "ContainerRemoved(ripperdoc_stash, gold)", "ClientRewardReceived(starter)"}},
-		{"reward_received", 250, []string{"JobAccepted(starter)", "Killed(daniel_harker)", "ClientRewardReceived(starter)"}},
-		{"paid_with_clients_money", 500, []string{"JobAccepted(starter)", "ContainerRemoved(jacob_safe, gold)", "ClientRewardReceived(starter)"}},
-		{"killed_client_for_daniel", 250, []string{"JobAccepted(starter)", "WorkFor(daniel_harker)", "Killed(jacob_thorne)"}},
-		{"killed_client", 250, []string{"JobAccepted(starter)", "Killed(jacob_thorne)"}},
-		{"client_backed_off", 250, []string{"JobAccepted(starter)", "jacob_backed_off"}},
-		{"client_extorted", 250, []string{"JobAccepted(starter)", "starter(client_extorted)"}},
+		{"reward_received", 5, []string{"JobAccepted(starter)", "starter(money_collected)", "ClientRewardReceived(starter)"}},
+		{"reward_received", 5, []string{"JobAccepted(starter)", "ContainerRemoved(ripperdoc_stash, gold)", "ClientRewardReceived(starter)"}},
+		{"reward_received", 5, []string{"JobAccepted(starter)", "Killed(daniel_harker)", "ClientRewardReceived(starter)"}},
+		{"paid_with_clients_money", 10, []string{"JobAccepted(starter)", "ContainerRemoved(jacob_safe, gold)", "ClientRewardReceived(starter)"}},
+		{"killed_client_for_daniel", 5, []string{"JobAccepted(starter)", "WorkFor(daniel_harker)", "Killed(jacob_thorne)"}},
+		{"killed_client", 5, []string{"JobAccepted(starter)", "Killed(jacob_thorne)"}},
+		{"client_backed_off", 5, []string{"JobAccepted(starter)", "jacob_backed_off"}},
+		{"client_extorted", 5, []string{"JobAccepted(starter)", "starter(client_extorted)"}},
 		{"job_lost", 0, []string{"JobDeclined(starter)", "starter(other_assassin_done)"}},
-		{"reward_received", 250, []string{"TalkedTo(drake_gallows)", "drake_freed", "ClientRewardReceived(starter)"}},
+		{"reward_received", 5, []string{"TalkedTo(drake_gallows)", "drake_freed", "ClientRewardReceived(starter)"}},
 	}
 	for _, c := range cases {
 		g := NewGameState(&foundation.Configuration{DataRootDir: "../data_atom"})
@@ -48,7 +48,7 @@ func TestStarterQuestOutcomes(t *testing.T) {
 		xp := -1
 		for _, r := range rewards {
 			if r.Text == "Medical Extortion" {
-				xp = r.XP
+				xp = r.SkillPoints
 			}
 		}
 		if xp != c.xp {

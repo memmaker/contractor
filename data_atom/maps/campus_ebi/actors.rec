@@ -10,7 +10,6 @@ Icon: I
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -42,7 +41,6 @@ Icon: s
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -73,7 +71,6 @@ Icon: s
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -104,7 +101,6 @@ Icon: s
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

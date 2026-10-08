@@ -430,18 +430,10 @@ func (c *CharsheetViewer) updateUIFromSheet() {
 			{Columns: []string{"Tag Skills:", fmt.Sprintf("%d/3", c.sheet.GetTagSkillCount())}},
 		}
 		infoLines = fxtools.TableLayout(tableRowsForCreateInfo, []fxtools.TextAlignment{fxtools.AlignLeft, fxtools.AlignRight})
-	} else if c.sheet.HasSkillPointsToSpend() {
-		skillPointsToSpend := c.getSkillPointsAvailable()
-		infoLines = []string{
-			fmt.Sprintf("Skill Points: %d", skillPointsToSpend),
-		}
 	} else {
-		tableRowsForLevelInfo := []fxtools.TableRow{
-			{Columns: []string{"Level:", strconv.Itoa(c.sheet.GetLevel())}},
-			{Columns: []string{"XP:", strconv.Itoa(c.sheet.GetCurrentXP())}},
-			{Columns: []string{"Next:", strconv.Itoa(c.sheet.GetXPNeededForNextLevel())}},
+		infoLines = []string{
+			fmt.Sprintf("Skill Points: %d", c.getSkillPointsAvailable()),
 		}
-		infoLines = fxtools.TableLayout(tableRowsForLevelInfo, []fxtools.TextAlignment{fxtools.AlignLeft, fxtools.AlignRight})
 	}
 	c.charPointsDisplay.SetText(strings.Join(infoLines, "\n"))
 

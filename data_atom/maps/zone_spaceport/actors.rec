@@ -10,7 +10,6 @@ faction: spaceport
 LongDescription: 
 Age: 25
 BodyType: 2
-XP: 200
 KillType: 10
 DamageType: 0
 TeamNum: 1
@@ -58,7 +57,6 @@ faction: spaceport
 LongDescription: 
 Age: 25
 BodyType: 2
-XP: 200
 KillType: 10
 DamageType: 0
 TeamNum: 1
@@ -105,7 +103,6 @@ Icon: W
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -136,7 +133,6 @@ Icon: T
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -168,7 +164,6 @@ Icon: m
 Foreground: light_gray_2
 Age: 35
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

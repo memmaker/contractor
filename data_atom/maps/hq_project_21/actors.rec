@@ -9,7 +9,6 @@ Icon: V
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -42,7 +41,6 @@ Icon: D
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1
@@ -74,7 +72,6 @@ Icon: C
 Foreground: light_gray_2
 Age: 30
 BodyType: 0
-XP: 40
 KillType: 0
 DamageType: 0
 TeamNum: 1

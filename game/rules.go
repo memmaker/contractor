@@ -5,7 +5,6 @@ import (
 	"github.com/memmaker/go/fxtools"
 	"github.com/memmaker/go/recfile"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
@@ -66,16 +65,6 @@ func loadD100Rules(definitionDirectory string) {
 		d100.LoadSkillDifficulties(skillDiffs)
 	}
 
-	if _, ok := rulesRecords["LevelTable"]; ok {
-		levelUpTable := fxtools.MapSlice(rulesRecords["LevelTable"][0].ToValueList(), func(i string) int {
-			val, _ := strconv.Atoi(i)
-			return val
-		})
-
-		afterTable := rulesRecords["AfterTable"][0].FindValueForKeyIgnoreCase("xp")
-		d100.LoadLevelUpTable(levelUpTable, afterTable)
-	}
-
 	if _, ok := rulesRecords["DerivedStats"]; ok {
 		derivedStatsBaseValues := rulesRecords["DerivedStats"][0].ToMap(",")
 		d100.LoadDerivedBaseValues(derivedStatsBaseValues)
@@ -86,8 +75,6 @@ func NewPerkRequirements(record recfile.Record) d100.CharacterRequirement {
 	reqs := d100.CharacterRequirement{}
 	for _, field := range record {
 		switch strings.ToLower(field.Name) {
-		case "requirelevel":
-			reqs.Level = field.AsInt()
 		case "requirestat":
 			if fxtools.LooksLikeAFunction(field.Value) {
 				if reqs.Stats == nil {

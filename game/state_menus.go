@@ -341,12 +341,6 @@ func (g *GameState) OpenWizardMenu() {
 			},
 		},
 		{
-			Name: "1000 XP",
-			Action: func() {
-				g.awardXP(1000, "for testing")
-			},
-		},
-		{
 			Name: "Add all Perks",
 			Action: func() {
 				g.Player.GetCharSheet().AddPerkPoints(int(d100.PerkCount))

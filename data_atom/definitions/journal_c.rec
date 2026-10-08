@@ -5,7 +5,7 @@
 
 id: lost_badge
 name: Lost Badge
-xp: 150
+skill_points: 3
 #
 start_cond: HasFlag('TalkedTo(chief_landry)') || HasItem('bat_badge')
 start_text:
@@ -29,7 +29,7 @@ end_id: kept
 
 id: silence
 name: Silence
-xp: 200
+skill_points: 4
 #
 start_cond: HasFlag('silence_accepted')
 start_text:
@@ -60,7 +60,7 @@ end_id: killed
 
 id: rent
 name: Rent
-xp: 100
+skill_points: 2
 #
 start_cond: HasFlag('TalkedTo(widow_marla)')
 start_text:

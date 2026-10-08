@@ -38,8 +38,6 @@ func NewActorFromRecord(record recfile.Record, palette textiles.ColorPalette, ne
 			icon.Char = field.AsRune()
 		case "foreground":
 			icon.Fg = palette.Get(field.Value)
-		case "xp":
-			actor.SetXP(field.AsInt())
 		case "zap_effect":
 			zapEffects = append(zapEffects, field.Value)
 		case "use_effect":
