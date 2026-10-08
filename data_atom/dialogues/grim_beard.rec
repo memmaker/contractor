@@ -57,6 +57,7 @@ o_goto: Goodbye
 name: GiveKeys
 npc: In a rush? Fine, here you go.
 + (Grim hands you the keys to the apartment.)
++ Lose them and the keypad takes 0451. Don't tell the other tenants.
 effect: SetFlag('grimKeysGiven')
 effect: StopScript('tutorial')
 effect: StackTransferFrom(NPC, 'home_keys')

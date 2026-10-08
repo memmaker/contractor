@@ -11,6 +11,10 @@ npc: Welcome to the Terra Vitae headquarters. How can I help you?
 o_text: I'm looking for a job.
 o_goto: LookingForJob
 #
+o_text: Half your doors have keypads. Am I welcome behind them?
+o_id: nova_codes
+o_goto: DoorCodes
+#
 o_text: Nothing, thanks.
 o_goto: End
 
@@ -41,3 +45,12 @@ effect: ReturnToPreviousNode
 name: End
 npc: Terra Vitae thanks you for your visit.
 effect: EndConversation
+
+name: DoorCodes
+npc: Friends of the earth are welcome everywhere. Offices: 0451. The bar's back rooms: 1996, the year the first wall went up.
++ Don't make me regret it.
+effect: SetFlag('knows_tv_codes')
+#
+o_text: Thank you.
+o_id: nova_codes_back
+o_goto: DefaultIntroduction

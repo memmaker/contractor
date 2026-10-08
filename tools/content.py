@@ -354,6 +354,31 @@ def lint(only=None):
             err(rel, f'key {n!r} opens no lock')
     for rel, _ in every(r"(?m)^(?:item|equipment):\s*key\s*$") | every(r"(?:PlayerAddItem|StackTransferFrom|GiveItem)\([^)]*['\"]key['\"]"):
         err(rel, "bare 'key' template opens no lock: use key('flag', 'name')")
+    # every number code can be found: a fixed code is written somewhere else in the game,
+    # a random one is revealed by a placed or handed-out item that reads RandomNumberCode('<lock name>')
+    texts = {rel: txt for rel, txt in files.items() if not rel.startswith('playtests/')}
+    texts.update(_read_all(os.path.join(DATA, 'text'), '.txt'))
+    def placed(item):
+        return any(re.search(r"(?m)^(?:item|equipment|Name):\s*" + re.escape(item) + r"\b", t) for r, t in maps.items()) or \
+            any(re.search(r"(?:PlayerAddItem|StackTransferFrom|GiveItem)\([^)]*['\"]" + re.escape(item) + r"['\"(]", t) for t in files.values())
+    revealers = {}
+    for rel, txt in defs.items():
+        for rec in txt.split('\n\n'):
+            for door in re.findall(r"RandomNumberCode\(" + q, rec):
+                m = re.search(r'(?m)^Name:\s*(\S+)', rec)
+                if m and placed(m.group(1)):
+                    revealers[door] = m.group(1)
+    for rel, txt in maps.items():
+        for rec in txt.split('\n\n'):
+            m = re.search(r'(?mi)^NumberLock:\s*(\S+)', rec)
+            if not m:
+                continue
+            code, name = m.group(1), re.search(r'(?m)^Name:\s*(\S+)', rec)
+            if code.lower() == 'random':
+                if not name or name.group(1) not in revealers:
+                    err(rel, f"random number lock {name.group(1) if name else '(unnamed)'!r}: no placed item reveals RandomNumberCode for it")
+            elif not any(re.search(r'(?<!\d)' + code + r'(?!\d)', re.sub(r'(?mi)^NumberLock:.*$', '', t)) for t in texts.values()):
+                err(rel, f'number lock code {code} is written nowhere in the game')
     for rel, n in every(r'RunScript\(' + q):
         if n not in scripts:
             err(rel, f'no script {n!r} (scripts/{n}.rec)')
@@ -428,6 +453,10 @@ if __name__ == '__main__':
         if len(sys.argv) > 2:  # just the files a pack owns
             only = set(open(os.path.join(DATA, 'packs', sys.argv[2] + '.manifest')).read().split())
         problems = lint(only)
+        if only is None:  # icons need the real loader: every actor, item and object on every map renders with an icon
+            r = subprocess.run(['go', 'test', './game', '-run', 'TestMapIcons'], cwd=ROOT, capture_output=True, text=True)
+            if r.returncode:
+                problems += [l.strip() for l in r.stdout.splitlines() if 'has no icon' in l or 'did not load' in l] or [r.stdout + r.stderr]
         print('\n'.join(problems) or 'lint: ok')
         sys.exit(1 if problems else 0)
     elif sys.argv[1:2] == ['spot'] and len(sys.argv) == 4:

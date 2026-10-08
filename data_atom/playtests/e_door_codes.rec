@@ -1,0 +1,16 @@
+# Nova Starling tells you Terra Vitae's door codes.
+
+%rec: outcomes
+
+if: HasFlag('knows_tv_codes')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('nova_starling')
+do: Choose('nova_codes')
+do: Choose('nova_codes_back')
