@@ -1,4 +1,4 @@
-# Diplomat A variant: Technology 40 spots the solvent clients, Harker pays 1000.
+# Diplomat A variant: BioChemistry 40 spots Harker's unlicensed stims, Harker pays 1000.
 
 %rec: outcomes
 
@@ -10,7 +10,7 @@ if: HasFlag('QuestCompleted(starter, reward_received)')
 %rec: frames
 
 if: true
-do: SetSkill('Technology', 40)
+do: SetSkill('BioChemistry', 40)
 
 if: true
 do: Talk('grim_beard')
@@ -27,8 +27,8 @@ do: Talk('daniel_harker')
 do: Choose('yes_collecting')
 do: Choose('work_something_out')
 do: Choose('want_more')
-do: Choose('terminal_1000')
-do: Choose('terminal_1000_thanks')
+do: Choose('stims_1000')
+do: Choose('stims_1000_thanks')
 do: Choose('bye')
 
 if: true
