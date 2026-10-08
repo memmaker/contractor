@@ -1,0 +1,24 @@
+# Terminal leads: read Lou's vague job offer at home, follow the lead to club Ecto, take the job there.
+
+%rec: outcomes
+
+if: HasFlag('JobRead(ecto)') && HasFlag('JobAccepted(ecto)')
+
+%rec: frames
+
+if: true
+do: Talk('grim_beard')
+do: Choose('keys_now')
+
+if: true
+do: Use('home_terminal')
+do: Choose('lead_ecto')
+do: Choose('lead_leave')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('club_lou')
+do: Choose('ecto_accept')
