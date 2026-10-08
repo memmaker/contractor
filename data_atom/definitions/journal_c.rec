@@ -39,7 +39,7 @@ start_text:
 start_cond: HasFlag('TalkedTo(protester_ines)')
 start_text: Ines protests the cleansing at the EBI campus gate, alone. EBI will not tolerate her for long.
 #
-prog_cond: HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('Killed(protester_ines)')
+prog_cond: HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('ines_clinic') || HasFlag('Killed(protester_ines)')
 prog_text: The campus is quiet. Voss pays on report.
 #
 end_cond: HasFlag('ines_warned')
@@ -49,6 +49,10 @@ end_id: warned
 end_cond: HasFlag('silence_paid') && HasFlag('ines_paid')
 end_text: Ines took 300 sat and went home. Voss paid 500 for a quiet campus. Everybody got something; nobody got what they wanted.
 end_id: paid_off
+#
+end_cond: HasFlag('silence_paid') && HasFlag('ines_clinic')
+end_text: Ines is in the Terra Vitae clinic with chlorine in her lungs. Voss paid 500 and never asked why the gate went quiet.
+end_id: clinic
 #
 end_cond: HasFlag('silence_paid') && HasFlag('ines_moved')
 end_text: Ines protests at the BAT gate now. Voss paid 500 for a problem that is now Bushido-ArmaTech's.

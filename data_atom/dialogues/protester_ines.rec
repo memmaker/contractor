@@ -1,4 +1,4 @@
-# Lone protester at the EBI campus gate. Flags: ines_paid, ines_moved, ines_warned, ines_refused
+# Lone protester at the EBI campus gate. Flags: ines_paid, ines_moved, ines_clinic, ines_warned, ines_refused
 %rec: OpeningBranch
 
 cond: IsMap('hq_bat')
@@ -22,6 +22,13 @@ o_id: ines_move
 o_test: RollSkill('social', 'Hard')
 o_succ: Moved
 o_fail: MoveRefused
+#
+o_text: That cough is chlorine scarring. You breathed the gas at the wall. Keep shouting in this air and you're dead by spring.
+o_id: ines_lungs
+o_cond: !HasFlag('ines_lungs_failed')
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Clinic
+o_fail: LungsRefused
 #
 o_text: Voss is sending someone. Be gone by tonight.
 o_id: ines_warn
@@ -58,6 +65,24 @@ effect: SetFlag('ines_refused')
 #
 o_text: Suit yourself.
 o_id: ines_refused_leave
+o_goto: End
+
+name: Clinic
+npc: (She coughs into her sleeve and looks at the blood.) I knew. I just didn't want to hear it from somebody who knew too.
++ Terra Vitae has a clinic. I'll say their names from a bed for a while.
+effect: SetFlag('ines_clinic')
+effect: RunScriptLeave(NPC)
+#
+o_text: Breathe slowly.
+o_id: ines_clinic_done
+o_goto: End
+
+name: LungsRefused
+npc: Everybody coughs here. Nice try, doctor.
+effect: SetFlag('ines_lungs_failed')
+#
+o_text: Suit yourself.
+o_id: ines_lungs_leave
 o_goto: End
 
 name: Warned

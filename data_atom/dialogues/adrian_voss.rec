@@ -29,7 +29,7 @@ o_goto: SilenceOffer
 #
 o_text: The campus is quiet.
 o_id: silence_report
-o_cond: HasFlag('silence_accepted') && !HasFlag('silence_paid') && (HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('Killed(protester_ines)'))
+o_cond: HasFlag('silence_accepted') && !HasFlag('silence_paid') && (HasFlag('ines_paid') || HasFlag('ines_moved') || HasFlag('ines_clinic') || HasFlag('Killed(protester_ines)'))
 o_goto: SilencePaid
 #
 o_text: I have to go.
