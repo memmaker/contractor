@@ -500,7 +500,7 @@ if __name__ == '__main__':
             only = set(open(os.path.join(DATA, 'packs', sys.argv[2] + '.manifest')).read().split())
         problems = lint(only)
         if only is None:  # icons need the real loader: every actor, item and object on every map renders with an icon
-            r = subprocess.run(['go', 'test', './game', '-run', 'TestMapIcons|TestDialogueExpressions'], cwd=ROOT, capture_output=True, text=True)
+            r = subprocess.run(['go', 'test', './game', '-run', 'TestMapIcons|TestDialogueExpressions|TestScriptExpressions'], cwd=ROOT, capture_output=True, text=True)
             if r.returncode:
                 problems += [l.strip() for l in r.stdout.splitlines() if 'has no icon' in l or 'did not load' in l] or [r.stdout + r.stderr]
         print('\n'.join(problems) or 'lint: ok')
