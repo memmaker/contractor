@@ -1,0 +1,63 @@
+# Package F "Ecto": Pixel has the key to the stash (ecto_stash) that holds the a holo emitter.
+%rec: OpeningBranch
+
+cond: HasFlag('ecto_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: I'm not doing anything. I'm just sitting here.
+#
+o_text: (Technology) Your signal is sloppy. I traced it from the club in two minutes. EBI will trace it in one.
+o_id: ecto_talk
+o_cond: HasFlag('JobAccepted(ecto)') && !HasItem('ecto_stash_key')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: Lou is paying me to find you. Pay me more.
+o_id: ecto_bribe
+o_cond: HasFlag('JobAccepted(ecto)') && !HasItem('holo_emitter') && !HasFlag('ecto_paid')
+o_goto: Bribe
+#
+o_text: Why a ghost?
+o_id: ecto_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: ecto_bye
+o_goto: Bye
+
+name: Lore
+npc: People believe in ghosts more than they believe in EBI. A ghost can empty a club. A fact can't. I'm studying.
+#
+o_text: Back.
+o_id: ecto_lore_back
+o_goto: Default
+
+name: Yield
+npc: (She goes pale.) EBI? No. No no. Take the emitter key, I'm out. Tell Lou it's over.
+effect: StackTransferFrom(NPC, 'ecto_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: Nobody traced anything. Go away, old man.
+effect: EndConversation
+
+name: Bribe
+npc: (She rolls her eyes.) Two hundred. Lou cheated my mom out of that club. The ghost stays.
+effect: StackTransferFrom(NPC, 'gold', 200)
+effect: SetFlag('ecto_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: Boo.
+effect: EndConversation
+
+name: Bye
+npc: Don't trace me.
+effect: EndConversation

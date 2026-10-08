@@ -111,3 +111,19 @@ lockflag: pallet_key
 lockdifficulty: medium
 item: medical_supplies
 Position: (46,8)
+
+Category: UnknownContainer
+Name: carmen_stash
+Description: a dressing-room trunk
+lockdifficulty: hard
+lockflag: carmen_stash_key
+item: carmen_diary
+Position: (63,18)
+
+Category: UnknownContainer
+Name: deadline_stash
+Description: a lockbox
+lockdifficulty: medium
+lockflag: deadline_stash_key
+item: holly_marker
+Position: (47,18)

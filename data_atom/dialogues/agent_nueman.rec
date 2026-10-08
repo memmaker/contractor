@@ -1,0 +1,69 @@
+# Package F "A Holiday on Ice": Nueman hires you. Flags: JobAccepted(holiday_on_ice), holiday_on_ice_paid, holiday_on_ice_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('holiday_on_ice_paid')
+goto: Done
+
+cond: HasFlag('holiday_on_ice_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(holiday_on_ice)') && HasItem('pump_specs')
+goto: Return
+
+cond: HasFlag('JobAccepted(holiday_on_ice)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Orbital Air wants a look at a new cold-pumping design. BAT is testing it. An engineer, Morrow, carries the specs to and from the lab in a briefcase.
+#
+o_text: Go on.
+o_id: holiday_on_ice_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: holiday_on_ice_decline
+o_goto: Bye
+
+name: Accepted
+npc: Pose as an inspector, or don't. Get me the specs. Four-fifty. It's just industrial espionage, nobody gets hurt.
+effect: SetFlag('JobAccepted(holiday_on_ice)')
+effect: EndConversation
+
+name: Waiting
+npc: Morrow. Corporate district. The briefcase.
+effect: EndConversation
+
+name: Return
+npc: (He doesn't even open them.) Good. Very good.
+#
+o_text: (Hand it over.) 450 sat, as agreed.
+o_id: holiday_on_ice_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: holiday_on_ice_keep
+o_goto: Bye
+
+name: Paid
+npc: Four-fifty. (He leaves fast.) If anyone asks, you never met an Orbital Air agent. Which is true.
+effect: StackTransferTo(NPC, 'pump_specs', 1)
+effect: StackTransferFrom(NPC, 'gold', 450)
+effect: SetFlag('holiday_on_ice_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Morrow's specs went to the other buyer. (He smiles too much.) You're learning.
+effect: EndConversation
+
+name: Done
+npc: Nueman? Never heard of him.
+effect: EndConversation
+
+name: Bye
+npc: Cold out today.
+effect: EndConversation

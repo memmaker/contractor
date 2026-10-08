@@ -1,0 +1,63 @@
+# Package F "A Holiday on Ice": Morrow has the key to the stash (holiday_on_ice_stash) that holds the pump specs.
+%rec: OpeningBranch
+
+cond: HasFlag('holiday_on_ice_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: I have a meeting. Is this about the inspection?
+#
+o_text: (Technology) I'm the inspection. Your pump design leaks heat at the third stage. Show me the specs.
+o_id: holiday_on_ice_talk
+o_cond: HasFlag('JobAccepted(holiday_on_ice)') && !HasItem('holiday_on_ice_stash_key')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: Somebody's paying to steal your specs. I could warn you for a price.
+o_id: holiday_on_ice_bribe
+o_cond: HasFlag('JobAccepted(holiday_on_ice)') && !HasItem('pump_specs') && !HasFlag('holiday_on_ice_paid')
+o_goto: Bribe
+#
+o_text: What do the pumps cool?
+o_id: holiday_on_ice_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: holiday_on_ice_bye
+o_goto: Bye
+
+name: Lore
+npc: Cold units. For the ships, they say. Thousands of them. Big enough for a person, if you ask me. Nobody asks me.
+#
+o_text: Back.
+o_id: holiday_on_ice_lore_back
+o_goto: Default
+
+name: Yield
+npc: (He goes red.) Third stage, yes. How did you... Here, the key, take the specs, review them. I need this signed off.
+effect: StackTransferFrom(NPC, 'holiday_on_ice_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: You're not an inspector. Security!
+effect: EndConversation
+
+name: Bribe
+npc: (He sweats.) Two-fifty. Don't tell security I was careless. Please.
+effect: StackTransferFrom(NPC, 'gold', 250)
+effect: SetFlag('holiday_on_ice_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: I changed the lock. Thank you.
+effect: EndConversation
+
+name: Bye
+npc: Excuse me.
+effect: EndConversation

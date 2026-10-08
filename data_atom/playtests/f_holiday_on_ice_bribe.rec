@@ -1,0 +1,30 @@
+# A Holiday on Ice (bribe).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(holiday_on_ice, bribed)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('agent_nueman')
+do: Choose('holiday_on_ice_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_corporate')
+
+if: true
+do: Talk('engineer_morrow')
+do: Choose('holiday_on_ice_bribe')

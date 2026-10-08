@@ -1,0 +1,35 @@
+# Payback (avoider).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(payback, delivered)') && !HasFlag('Killed(informant_pinky)') && !HasItem('payback_stash_key')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: SetSkill('Stealth', 200)
+do: SetSkill('Mechanics', 200)
+do: Give('mechanical_lockpick(5)')
+do: Sneak()
+do: Use('payback_stash')
+do: Take('stripe_ledger')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_give')

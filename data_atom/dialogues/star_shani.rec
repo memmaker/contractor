@@ -1,0 +1,63 @@
+# Package F "Sweet Revenge": Shani Kell has the key to the stash (sweet_revenge_stash) that holds the a braindance master.
+%rec: OpeningBranch
+
+cond: HasFlag('sweet_revenge_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Please don't say my name out loud.
+#
+o_text: Stromberg sent me. Give me the master and he stops hunting you.
+o_id: sweet_revenge_talk
+o_cond: HasFlag('JobAccepted(sweet_revenge)') && !HasItem('sweet_revenge_stash_key')
+o_test: RollSkill('social', 'Hard')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: I could tell him you weren't here.
+o_id: sweet_revenge_bribe
+o_cond: HasFlag('JobAccepted(sweet_revenge)') && !HasItem('bd_master') && !HasFlag('sweet_revenge_paid')
+o_goto: Bribe
+#
+o_text: Why run?
+o_id: sweet_revenge_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: sweet_revenge_bye
+o_goto: Bye
+
+name: Lore
+npc: He records everything. Every fear, every heartbeat. My last master was the night of the cleansing. I was at the south wall. He wants to sell that.
+#
+o_text: Back.
+o_id: sweet_revenge_lore_back
+o_goto: Default
+
+name: Yield
+npc: (She cries without a sound.) He'll never stop. But maybe he'll look away for a while. The key. Go.
+effect: StackTransferFrom(NPC, 'sweet_revenge_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: You're his dog. Every one of you says that. Go away.
+effect: EndConversation
+
+name: Bribe
+npc: (She presses money into your hand.) Three hundred. It's what I have. Tell him I went south, to the wall.
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('sweet_revenge_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: Thank you. Truly.
+effect: EndConversation
+
+name: Bye
+npc: Don't tell anyone you saw me.
+effect: EndConversation

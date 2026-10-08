@@ -1,0 +1,193 @@
+# Package F: ten more side contracts (inspired by Night City Stories, Greenwar, Northwest Passage).
+%rec: journalEntry
+%key: id
+
+id: slow_boat
+name: The Slow Boat
+xp: 250
+#
+start_cond: HasFlag('JobAccepted(slow_boat)')
+start_text: A courier off the Chiba freighter was knifed at the docks. Kade's chip ended up with Jalil, a smuggler in the eastern district. Kade pays 400.
+#
+prog_cond: HasItem('chiba_chip')
+prog_text: You have the Chiba chip. Kade is waiting in the commerce district.
+#
+end_cond: HasFlag('slow_boat_paid')
+end_text: Kade has his chip. It held the berth lists. Somebody decides who goes to the stars.
+end_id: delivered
+#
+end_cond: HasFlag('slow_boat_bribed')
+end_text: You took Jalil's money and told nobody. The chip is still out there.
+end_id: bribed
+end_xp: 125
+
+id: sweet_revenge
+name: Sweet Revenge
+xp: 250
+#
+start_cond: HasFlag('JobAccepted(sweet_revenge)')
+start_text: Stromberg wants Shani Kell's last braindance master. She is hiding at Terra Vitae. 500 sat.
+#
+prog_cond: HasItem('bd_master')
+prog_text: You have Shani's master. Stromberg pays in the corporate district.
+#
+end_cond: HasFlag('sweet_revenge_paid')
+end_text: Stromberg owns every second of Shani Kell now, including the night of the cleansing.
+end_id: delivered
+#
+end_cond: HasFlag('sweet_revenge_bribed')
+end_text: Shani paid you to look away. Stromberg will send someone less sentimental.
+end_id: bribed
+end_xp: 125
+
+id: old_harley
+name: The '94 Harley
+xp: 150
+#
+start_cond: HasFlag('JobAccepted(old_harley)')
+start_text: Dizzy's antique Harley lost its ignition module to Ratchet's chop shop in the west. 300 sat to bring it back.
+#
+prog_cond: HasItem('harley_ignition')
+prog_text: You have the Harley's ignition. Dizzy lives in the south.
+#
+end_cond: HasFlag('old_harley_paid')
+end_text: Dizzy's Harley runs. The only real engine in the dome, and you can hear it from the wall.
+end_id: delivered
+#
+end_cond: HasFlag('old_harley_bribed')
+end_text: Ratchet paid you and sold the module. Dizzy still polishes a bike that will never run.
+end_id: bribed
+end_xp: 75
+
+id: ecto
+name: Ecto
+xp: 200
+#
+start_cond: HasFlag('JobAccepted(ecto)')
+start_text: Lou's club Ecto is haunted. The ghost is a projector run by a netrunner kid called Pixel in the eastern district. 350 sat to end it.
+#
+prog_cond: HasItem('holo_emitter')
+prog_text: You have Pixel's holo emitter. Lou is in the commerce district.
+#
+end_cond: HasFlag('ecto_paid')
+end_text: Ecto is open again. The ghost was a box with a kid behind it.
+end_id: delivered
+#
+end_cond: HasFlag('ecto_bribed')
+end_text: Pixel paid you, and Lou's club stays haunted. Maybe it deserves to be.
+end_id: bribed
+end_xp: 100
+
+id: false_papers
+name: False Papers
+xp: 200
+#
+start_cond: HasFlag('JobAccepted(false_papers)')
+start_text: Amira, a refugee in the south district, paid Nils the forger for papers and got nothing. Her papers are in his locked drawer in the west.
+#
+prog_cond: HasItem('forged_sin')
+prog_text: You have Amira's papers. She waits in the south district.
+#
+end_cond: HasFlag('false_papers_paid')
+end_text: Amira's children have a name and a ration card. Nils has one customer less.
+end_id: delivered
+#
+end_cond: HasFlag('false_papers_bribed')
+end_text: Nils sold Amira's papers to someone with money. You were paid to forget her.
+end_id: bribed
+end_xp: 100
+
+id: payback
+name: Payback
+xp: 200
+#
+start_cond: HasFlag('JobAccepted(payback)')
+start_text: Stripe the lace junkie wants his ledger back from Pinky, the informant who sold him out to EBI. Pinky hides in the south. 300 sat.
+#
+prog_cond: HasItem('stripe_ledger')
+prog_text: You have Stripe's ledger. He is in the eastern district.
+#
+end_cond: HasFlag('payback_paid')
+end_text: Stripe has his ledger and a list of people to visit.
+end_id: delivered
+#
+end_cond: HasFlag('payback_bribed')
+end_text: Pinky paid you to say he left the dome. He still faces the door.
+end_id: bribed
+end_xp: 100
+
+id: carmen
+name: Carmen
+xp: 300
+#
+start_cond: HasFlag('JobAccepted(carmen)')
+start_text: Detective Rourke in the west believes Carmen, a singer in the commerce district, is the killer behind five murders. Her diary is the proof. 400 sat.
+#
+prog_cond: HasItem('carmen_diary')
+prog_text: You have Carmen's diary. Rourke is in the western district.
+#
+end_cond: HasFlag('carmen_paid')
+end_text: Rourke has Carmen's diary. Whether anyone upstairs reads it is another question.
+end_id: delivered
+#
+end_cond: HasFlag('carmen_bribed')
+end_text: Carmen paid you four hundred. The bodies keep turning up in the west.
+end_id: bribed
+end_xp: 150
+
+id: proxy_vote
+name: Proxy Vote
+xp: 250
+#
+start_cond: HasFlag('JobAccepted(proxy_vote)')
+start_text: Carleton of BAT needs old Hal's proxy vote to take over Liverpool Filtration, the dome's water. Hal lives in the south. 600 sat.
+#
+prog_cond: HasItem('proxy_vote')
+prog_text: You have Hal's proxy. Carleton is in the corporate district.
+#
+end_cond: HasFlag('proxy_vote_paid')
+end_text: BAT owns the dome's water now. Carleton remembers your name fondly.
+end_id: delivered
+#
+end_cond: HasFlag('proxy_vote_bribed')
+end_text: Hal paid you to walk away and the vote failed by fifteen shares. Carleton remembers your name too.
+end_id: bribed
+end_xp: 125
+
+id: holiday_on_ice
+name: A Holiday on Ice
+xp: 250
+#
+start_cond: HasFlag('JobAccepted(holiday_on_ice)')
+start_text: Nueman, an 'Orbital Air agent', wants Morrow's cold-pump specs. Morrow is a BAT engineer in the corporate district. 450 sat.
+#
+prog_cond: HasItem('pump_specs')
+prog_text: You have the pump specs. Nueman waits in the commerce district.
+#
+end_cond: HasFlag('holiday_on_ice_paid')
+end_text: Nueman has the specs. The cold units are big enough for a person, and somebody now knows it.
+end_id: delivered
+#
+end_cond: HasFlag('holiday_on_ice_bribed')
+end_text: Morrow paid you to stay quiet about his sloppy security. The specs stayed with BAT.
+end_id: bribed
+end_xp: 125
+
+id: deadline
+name: Deadline
+xp: 250
+#
+start_cond: HasFlag('JobAccepted(deadline)')
+start_text: Caitlin's sister Holly owes Fargo the loan shark. Her debt marker is in his lockbox in the commerce district. 350 sat.
+#
+prog_cond: HasItem('holly_marker')
+prog_text: You have Holly's marker. Caitlin is in the corporate district.
+#
+end_cond: HasFlag('deadline_paid')
+end_text: Holly's marker is confetti. Caitlin pays and pretends it never happened.
+end_id: delivered
+#
+end_cond: HasFlag('deadline_bribed')
+end_text: Fargo paid you, and Holly works at his club now.
+end_id: bribed
+end_xp: 125

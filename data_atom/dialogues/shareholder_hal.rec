@@ -1,0 +1,63 @@
+# Package F "Proxy Vote": Old Hal has the key to the stash (proxy_vote_stash) that holds the a signed proxy.
+%rec: OpeningBranch
+
+cond: HasFlag('proxy_vote_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Sit, sit. Nobody visits. You want tea? It's mostly water.
+#
+o_text: BAT wants your proxy, Hal. They'll get the plant anyway. Better you get paid.
+o_id: proxy_vote_talk
+o_cond: HasFlag('JobAccepted(proxy_vote)') && !HasItem('proxy_vote_stash_key')
+o_test: RollSkill('social', 'Easy')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: The other side would pay you for that vote. I could take it to them.
+o_id: proxy_vote_bribe
+o_cond: HasFlag('JobAccepted(proxy_vote)') && !HasItem('proxy_vote') && !HasFlag('proxy_vote_paid')
+o_goto: Bribe
+#
+o_text: Tell me about the plant.
+o_id: proxy_vote_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: proxy_vote_bye
+o_goto: Bye
+
+name: Lore
+npc: Liverpool Filtration. Every drop you drink in this dome comes through it. Whoever owns it owns you. I wanted it owned by nobody.
+#
+o_text: Back.
+o_id: proxy_vote_lore_back
+o_goto: Default
+
+name: Yield
+npc: (He looks at the photo for a long time.) You're right. They always get it. Here, the key. The proxy's in the box.
+effect: StackTransferFrom(NPC, 'proxy_vote_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: I built that plant. I'm not signing it over to the people who poison the water. Get out of my home.
+effect: EndConversation
+
+name: Bribe
+npc: (His eyes light up.) The co-op? They'd keep the plant public? Here, three hundred, all my savings. Tell Carleton I wouldn't sign.
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('proxy_vote_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: Monday. We'll see Monday.
+effect: EndConversation
+
+name: Bye
+npc: Come back for tea.
+effect: EndConversation

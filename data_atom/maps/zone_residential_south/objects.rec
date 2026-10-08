@@ -300,3 +300,19 @@ Description: your desk
 item: aviator_sunglasses
 item: mechanical_lockpick(2)
 Position: (50,7)
+
+Category: UnknownContainer
+Name: payback_stash
+Description: a strongbox
+lockdifficulty: medium
+lockflag: payback_stash_key
+item: stripe_ledger
+Position: (22,7)
+
+Category: UnknownContainer
+Name: proxy_vote_stash
+Description: a strongbox
+lockdifficulty: medium
+lockflag: proxy_vote_stash_key
+item: proxy_vote
+Position: (62,12)

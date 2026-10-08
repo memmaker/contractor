@@ -555,3 +555,21 @@ Description: a dresser
 item: gold(20)
 item: terra_vitae_pamphlet
 Position: (68,15)
+
+Category: UnknownContainer
+Name: old_harley_stash
+Description: a parts bin
+lockdifficulty: easy
+lockflag: old_harley_stash_key
+item: harley_ignition
+item: junk(2)
+Position: (32,13)
+
+Category: UnknownContainer
+Name: false_papers_stash
+Description: a locked drawer
+lockdifficulty: hard
+lockflag: false_papers_stash_key
+item: forged_sin
+item: lottery_slip(2)
+Position: (57,12)

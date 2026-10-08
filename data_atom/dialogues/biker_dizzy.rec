@@ -1,0 +1,69 @@
+# Package F "The '94 Harley": Dizzy hires you. Flags: JobAccepted(old_harley), old_harley_paid, old_harley_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('old_harley_paid')
+goto: Done
+
+cond: HasFlag('old_harley_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(old_harley)') && HasItem('harley_ignition')
+goto: Return
+
+cond: HasFlag('JobAccepted(old_harley)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Somebody lifted the ignition module off my '94 Harley. Antique, real gasoline, the last one in the dome. Without it she's a sculpture.
+#
+o_text: Who has it?
+o_id: old_harley_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: old_harley_decline
+o_goto: Bye
+
+name: Accepted
+npc: Ratchet. Runs a chop shop in the west, parts bin by the back wall. Three hundred if you bring it back. He don't mean no harm. He just don't mean anything.
+effect: SetFlag('JobAccepted(old_harley)')
+effect: EndConversation
+
+name: Waiting
+npc: Ratchet. West. The module. She's waiting.
+effect: EndConversation
+
+name: Return
+npc: (He holds the module like a newborn.) Oh, you beauty.
+#
+o_text: (Hand it over.) 300 sat, as agreed.
+o_id: old_harley_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: old_harley_keep
+o_goto: Bye
+
+name: Paid
+npc: Three hundred. Come by when she runs, I'll take you round the dome. Twice.
+effect: StackTransferTo(NPC, 'harley_ignition', 1)
+effect: StackTransferFrom(NPC, 'gold', 300)
+effect: SetFlag('old_harley_paid')
+effect: EndConversation
+
+name: Bribed
+npc: Ratchet's got a new jacket. Leather. Paid cash. Funny thing.
+effect: EndConversation
+
+name: Done
+npc: Hear that? That's a real engine.
+effect: EndConversation
+
+name: Bye
+npc: Keep the rubber side down.
+effect: EndConversation

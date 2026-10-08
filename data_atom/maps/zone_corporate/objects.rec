@@ -56,3 +56,11 @@ lockdifficulty: easy
 item: gold(250)
 item: electronic_lockpick
 Position: (72,19)
+
+Category: UnknownContainer
+Name: holiday_on_ice_stash
+Description: a briefcase
+lockdifficulty: hard
+lockflag: holiday_on_ice_stash_key
+item: pump_specs
+Position: (32,18)

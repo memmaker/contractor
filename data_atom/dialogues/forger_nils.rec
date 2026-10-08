@@ -1,0 +1,63 @@
+# Package F "False Papers": Nils has the key to the stash (false_papers_stash) that holds the a forged SIN card.
+%rec: OpeningBranch
+
+cond: HasFlag('false_papers_bribed')
+goto: Bribed
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Papers are an art. Art has a price. What do you need?
+#
+o_text: The refugee woman paid you. Give her the papers, or I make sure EBI hears your name.
+o_id: false_papers_talk
+o_cond: HasFlag('JobAccepted(false_papers)') && !HasItem('false_papers_stash_key')
+o_test: RollSkill('intimidate', 'Easy')
+o_succ: Yield
+o_fail: Refuse
+#
+o_text: She can't pay. You can. How much for me to forget her?
+o_id: false_papers_bribe
+o_cond: HasFlag('JobAccepted(false_papers)') && !HasItem('forged_sin') && !HasFlag('false_papers_paid')
+o_goto: Bribe
+#
+o_text: Who buys papers?
+o_id: false_papers_lore
+o_goto: Lore
+#
+o_text: Bye.
+o_id: false_papers_bye
+o_goto: Bye
+
+name: Lore
+npc: Refugees. Runaways. EBI, when they want someone to disappear on paper first. A Saudi passport with a level-three chip, four thousand. The ticket lottery uses my slips too.
+#
+o_text: Back.
+o_id: false_papers_lore_back
+o_goto: Default
+
+name: Yield
+npc: (He sighs, as if bored.) Fine. She paid. Here, the drawer key. Her card's on top.
+effect: StackTransferFrom(NPC, 'false_papers_stash_key', 1)
+effect: EndConversation
+
+name: Refuse
+npc: EBI buys my papers too. Threaten someone else.
+effect: EndConversation
+
+name: Bribe
+npc: (He smiles.) One-fifty. I'll sell her card to someone who can pay. That's not cruelty. It's a market.
+effect: StackTransferFrom(NPC, 'gold', 150)
+effect: SetFlag('false_papers_bribed')
+effect: EndConversation
+
+name: Bribed
+npc: Need a new name? Discount for friends.
+effect: EndConversation
+
+name: Bye
+npc: Stay legal.
+effect: EndConversation

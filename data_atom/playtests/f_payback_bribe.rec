@@ -1,0 +1,23 @@
+# Payback (bribe).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(payback, bribed)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('junkie_stripe')
+do: Choose('payback_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('informant_pinky')
+do: Choose('payback_bribe')

@@ -1,0 +1,69 @@
+# Package F "Proxy Vote": Carleton hires you. Flags: JobAccepted(proxy_vote), proxy_vote_paid, proxy_vote_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('proxy_vote_paid')
+goto: Done
+
+cond: HasFlag('proxy_vote_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(proxy_vote)') && HasItem('proxy_vote')
+goto: Return
+
+cond: HasFlag('JobAccepted(proxy_vote)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: BAT is buying Liverpool Filtration, quietly. The board votes Monday. One small shareholder is in the way: old Hal, south district. Fifteen shares, and he's sentimental.
+#
+o_text: You want his vote.
+o_id: proxy_vote_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: proxy_vote_decline
+o_goto: Bye
+
+name: Accepted
+npc: His signed proxy. He keeps it in a strongbox, he keeps the key on him. Six hundred. How you persuade him is your career path, not mine.
+effect: SetFlag('JobAccepted(proxy_vote)')
+effect: EndConversation
+
+name: Waiting
+npc: Old Hal. South district. A signature. This is how the top is reached.
+effect: EndConversation
+
+name: Return
+npc: (He checks the signature against a file.) Hal's own hand. Lovely.
+#
+o_text: (Hand it over.) 600 sat, as agreed.
+o_id: proxy_vote_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: proxy_vote_keep
+o_goto: Bye
+
+name: Paid
+npc: Six hundred. Monday morning, Liverpool Filtration belongs to BAT and the dome's water belongs to us. You're welcome in this building any time.
+effect: StackTransferTo(NPC, 'proxy_vote', 1)
+effect: StackTransferFrom(NPC, 'gold', 600)
+effect: SetFlag('proxy_vote_paid')
+effect: EndConversation
+
+name: Bribed
+npc: The vote failed. By fifteen shares. (His smile stays perfect.) I'll remember your face.
+effect: EndConversation
+
+name: Done
+npc: Busy. Always busy.
+effect: EndConversation
+
+name: Bye
+npc: My card. Don't call it.
+effect: EndConversation

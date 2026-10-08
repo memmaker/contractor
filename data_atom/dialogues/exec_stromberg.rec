@@ -1,0 +1,69 @@
+# Package F "Sweet Revenge": Stromberg hires you. Flags: JobAccepted(sweet_revenge), sweet_revenge_paid, sweet_revenge_bribed.
+%rec: OpeningBranch
+
+cond: HasFlag('sweet_revenge_paid')
+goto: Done
+
+cond: HasFlag('sweet_revenge_bribed')
+goto: Bribed
+
+cond: HasFlag('JobAccepted(sweet_revenge)') && HasItem('bd_master')
+goto: Return
+
+cond: HasFlag('JobAccepted(sweet_revenge)')
+goto: Waiting
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Shani Kell. Biggest braindance star in the dome. She walked out on her contract, and she took her last master recording with her. Terra Vitae is hiding her.
+#
+o_text: You want the recording.
+o_id: sweet_revenge_accept
+o_goto: Accepted
+#
+o_text: Not my kind of job.
+o_id: sweet_revenge_decline
+o_goto: Bye
+
+name: Accepted
+npc: The master. Her makeup case, at the commune; she keeps the key. Five hundred. And leave her face alone, it's worth more than you are.
+effect: SetFlag('JobAccepted(sweet_revenge)')
+effect: EndConversation
+
+name: Waiting
+npc: Terra Vitae. The master recording. My lawyers are patient. I'm not.
+effect: EndConversation
+
+name: Return
+npc: (He takes it with both hands.) Every second of her. Do you know what a dead star sells for? Twice what a living one does.
+#
+o_text: (Hand it over.) 500 sat, as agreed.
+o_id: sweet_revenge_give
+o_goto: Paid
+#
+o_text: Not yet.
+o_id: sweet_revenge_keep
+o_goto: Bye
+
+name: Paid
+npc: Five hundred. She'll sue. She'll lose. Have a good evening.
+effect: StackTransferTo(NPC, 'bd_master', 1)
+effect: StackTransferFrom(NPC, 'gold', 500)
+effect: SetFlag('sweet_revenge_paid')
+effect: EndConversation
+
+name: Bribed
+npc: My people say she's still at the commune with her master. You were there. Interesting.
+effect: EndConversation
+
+name: Done
+npc: You're not in my calendar.
+effect: EndConversation
+
+name: Bye
+npc: My time costs more than yours.
+effect: EndConversation

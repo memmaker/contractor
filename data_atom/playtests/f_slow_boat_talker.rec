@@ -1,0 +1,44 @@
+# The Slow Boat (talker).
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(slow_boat, delivered)') && !HasFlag('Killed(smuggler_jalil)') && HasItem('slow_boat_stash_key')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('fixer_kade')
+do: Choose('slow_boat_accept')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: ForceChecks('success')
+do: Talk('smuggler_jalil')
+do: Choose('slow_boat_talk')
+
+if: true
+do: Use('slow_boat_stash')
+do: Take('chiba_chip')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: Talk('fixer_kade')
+do: Choose('slow_boat_give')
