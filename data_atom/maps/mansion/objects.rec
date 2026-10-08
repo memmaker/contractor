@@ -88,3 +88,10 @@ Location: cellar_stairs
 TargetMap: cryo_lab
 TargetLocation: lab_entrance
 Position: (60,14)
+
+Category: UnknownContainer
+Name: pantry_shelf
+Description: a pantry shelf
+item: binge(2)
+item: buff
+Position: (20,10)

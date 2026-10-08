@@ -1,0 +1,50 @@
+# Noodle cart. Sells food, gossip about Jacob and the thugs (E2).
+%rec: OpeningBranch
+
+cond: HasFlag('Killed(jacob_thorne)')
+goto: JacobDead
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Noodles, ten sat. Gossip is free if you buy noodles.
+#
+o_text: (Buy noodles.) Ten.
+o_id: suki_buy
+o_cond: HasItem('gold', 10)
+o_goto: Buy
+#
+o_text: Who runs this street?
+o_id: suki_street
+o_goto: Street
+#
+o_text: Bye.
+o_id: suki_bye
+o_goto: Bye
+
+name: Buy
+npc: (A paper bowl, too hot to hold.) Jacob Thorne owes half this street. His boys collect on Fridays. Today is not Friday, so I'm smiling.
+effect: StackTransferTo(NPC, 'gold', 10)
+effect: StackTransferFrom(NPC, 'binge', 1)
+#
+o_text: Back.
+o_id: suki_buy_back
+o_goto: Default
+
+name: Street
+npc: Jacob, for now. He keeps a safe behind the painting, everybody knows, nobody is stupid enough. His thugs stand by the east door. The beggar by the terminal sees more than all of us.
+#
+o_text: Back.
+o_id: suki_street_back
+o_goto: Default
+
+name: JacobDead
+npc: Jacob's gone and his boys went wild. Two carts robbed this week. Someone moved into his house before the body was cold. (She lowers her voice.) Whoever did it, the street isn't better. Just different.
+effect: EndConversation
+
+name: Bye
+npc: Come back hungry.
+effect: EndConversation

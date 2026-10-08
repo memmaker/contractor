@@ -44,3 +44,12 @@ TargetMap: campus_ebi
 TargetLocation: hq_gate
 Position: (79,14)
 
+
+Category: UnknownContainer
+Name: ebi_evidence_locker
+Description: an evidence locker
+lockdifficulty: medium
+item: lottery_slip(3)
+item: gold(90)
+item: 9mm(10)
+Position: (12,9)

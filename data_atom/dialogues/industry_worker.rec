@@ -1,0 +1,26 @@
+# Nameless line worker. Short lore, the EBI open-carry rule.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: You're not on my shift roster.
+#
+o_text: Why are there so many guards?
+o_id: worker_guards
+o_goto: Guards
+#
+o_text: Sorry. Wrong door.
+o_id: worker_bye
+o_goto: Bye
+
+name: Guards
+npc: Somebody walked in with a rifle on his back last year and walked out with a cold unit. Now anyone carrying open gets shot first and asked later. Keep it under your coat, friend.
+effect: EndConversation
+
+name: Bye
+npc: Then find the right one.
+effect: EndConversation

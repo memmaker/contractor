@@ -1,0 +1,47 @@
+# Sewer hermit. Lore on the duck, the rats (R3), the cleaner.
+%rec: OpeningBranch
+
+cond: HasFlag('sewer_rats_poisoned')
+goto: Poisoned
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Quiet down here, until you came. What do you want, topsider?
+#
+o_text: There's a duck down here.
+o_id: abe_duck
+o_goto: Duck
+#
+o_text: The cleaner says the rats are a plague.
+o_id: abe_rats
+o_goto: Rats
+#
+o_text: Nothing. Sorry.
+o_id: abe_bye
+o_goto: Bye
+
+name: Duck
+npc: Coco. Paddles in the pond by the east tunnel since the rain. Somebody's girl lost her. A little one from up top with a big brother voice. Don't sell her to Bob, he'll turn her into a lamp.
+#
+o_text: Back.
+o_id: abe_duck_back
+o_goto: Default
+
+name: Rats
+npc: The rats eat what topside throws away. Kill them and the trash wins. The cleaner wants them gone so he can go home early. When he's gone, the west will learn what rats were for.
+#
+o_text: Back.
+o_id: abe_rats_back
+o_goto: Default
+
+name: Poisoned
+npc: (He holds a dead rat in his lap.) You did this. Poison, in my channel. Get out of my sight.
+effect: EndConversation
+
+name: Bye
+npc: Mind the mines. Bob put them there for the rats. He's not smart.
+effect: EndConversation

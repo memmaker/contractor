@@ -1,0 +1,85 @@
+# Density tour: every map's new cast talks, the new readables and containers open.
+
+%rec: outcomes
+
+if: HasFlag('TalkedTo(sewer_hermit_abe)') && HasFlag('TalkedTo(scavenger_mott)') && HasFlag('TalkedTo(wall_guard_ines)') && HasFlag('TalkedTo(noodle_vendor_suki)') && HasFlag('TalkedTo(worker_pell)') && HasFlag('TalkedTo(ebi_worker)') && HasFlag('TalkedTo(dock_clerk_wen)') && HasFlag('maren_told') && HasFlag('tamsin_gift')
+
+%rec: frames
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: Talk('sewer_hermit_abe')
+do: Choose('abe_duck')
+do: Choose('abe_duck_back')
+do: Choose('abe_bye')
+do: Use('sewer_graffiti')
+do: Use('maintenance_log')
+
+if: true
+do: GoTo('man_hole_east')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: Talk('wall_guard_ines')
+do: Choose('ines_bodies')
+do: Choose('ines_bodies_back')
+do: Choose('ines_bye')
+do: Talk('scavenger_mott')
+do: Choose('mott_dead')
+do: Choose('mott_dead_back')
+do: Choose('mott_bye')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_residential_east')
+
+if: true
+do: Talk('noodle_vendor_suki')
+do: Choose('suki_buy')
+do: Choose('suki_buy_back')
+do: Choose('suki_bye')
+do: Use('east_mailbox')
+do: Take('gold')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_eastern_rim')
+
+if: true
+do: GoTo('street_to_industry')
+
+if: true
+do: Talk('worker_pell')
+do: Choose('pell_meld')
+do: Choose('pell_gift_back')
+do: Choose('pell_bye')
+do: Talk('ebi_worker')
+do: Choose('worker_guards')
+do: Use('shift_board')
+do: Use('break_room_fridge')
+do: Take('water_ration')
+
+if: true
+do: GoTo('street_to_spaceport')
+
+if: true
+do: Talk('dock_clerk_wen')
+do: Choose('wen_passengers')
+do: Choose('wen_passengers_back')
+do: Choose('wen_bye')
+do: Talk('pilgrim_maren')
+do: Choose('maren_truth')
+
+if: true
+do: Use('spaceport_gate')
+do: Talk('loader_tamsin')
+do: Choose('tamsin_sit')
+do: Choose('tamsin_sit_back')
+do: Choose('tamsin_bye')

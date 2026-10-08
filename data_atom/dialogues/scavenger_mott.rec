@@ -1,0 +1,78 @@
+# Scavenger picking over the gate dead. Buys junk, sells water. Tags quest: wants the tag too.
+%rec: OpeningBranch
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: (He doesn't stop sorting.) Boots are worth more than rings. People forget that. Buying or selling?
+#
+o_text: (Sell junk.) I have scrap for you.
+o_id: mott_sell_junk
+o_cond: HasItem('junk')
+o_goto: SellJunk
+#
+o_text: (Buy water.) 20 sat.
+o_id: mott_buy_water
+o_cond: HasItem('gold', 20) && !HasFlag('mott_water_gone')
+o_goto: BuyWater
+#
+o_text: You pick the dead clean?
+o_id: mott_dead
+o_goto: Dead
+#
+o_text: Bye.
+o_id: mott_bye
+o_goto: Bye
+
+name: SellJunk
+npc: Fifteen for a piece. Don't tell me where it came from.
+effect: StackTransferTo(NPC, 'junk', 1)
+effect: StackTransferFrom(NPC, 'gold', 15)
+#
+o_text: Back.
+o_id: mott_junk_back
+o_goto: Default
+
+name: BuyWater
+npc: Clean, mostly.
+effect: StackTransferTo(NPC, 'gold', 20)
+effect: StackTransferFrom(NPC, 'water_ration', 1)
+effect: SetFlag('mott_water_gone')
+#
+o_text: Back.
+o_id: mott_water_back
+o_goto: Default
+
+name: Dead
+npc: The ones near the wall, the guards let me. The ones past the airlock, nobody goes. EBI tags got collected. Except one, the kid with the chain. Bring me that and I'll give you a hundred. Collectors pay more, but they ask questions.
+#
+o_text: (Give him the tag.) A hundred.
+o_id: mott_buy_tag
+o_cond: HasItem('burton_dog_tag')
+o_goto: TagSold
+#
+o_text: Back.
+o_id: mott_dead_back
+o_goto: Default
+
+name: TagSold
+npc: (It vanishes into a coat pocket.) Pleasure.
+effect: StackTransferTo(NPC, 'burton_dog_tag', 1)
+effect: StackTransferFrom(NPC, 'gold', 60)
+effect: SetFlag('tag_sold')
+effect: SetFlag('tag_sold_mott')
+#
+o_text: That's sixty.
+o_id: mott_tag_short
+o_goto: Short
+
+name: Short
+npc: That's what I have. Life's hard at the wall.
+effect: EndConversation
+
+name: Bye
+npc: Mind the mines past the pylons.
+effect: EndConversation

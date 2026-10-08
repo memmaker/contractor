@@ -22,7 +22,7 @@
 - [x] C3 zone_residential_west cast + Rent
 - [x] C4 hq_project_21 sysop + readable
 - [x] C5 hq_bat receptionist dialogue, Haruki/Jana Faust topics
-- [ ] every map: >= 3 NPCs with dialogue, 2 readables, 2 loot containers
+- [x] every map: >= 3 NPCs with dialogue, 2 readables, 2 loot containers (cryo_lab: ARK + sleepers instead of NPCs)
 
 ## Package D: closing the gaps at the mansion & lab
 - [x] D1 failed persuasion recovers (gate log or Mira's favour)

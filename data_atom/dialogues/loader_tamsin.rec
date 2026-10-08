@@ -1,0 +1,50 @@
+# Cargo loader. The containers, the freight scam (B2), a gift.
+%rec: OpeningBranch
+
+cond: HasFlag('QuestCompleted(dead_freight, public)')
+goto: Public
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Lunch. Ten minutes. Speak or sit.
+#
+o_text: What's in the containers?
+o_id: tamsin_containers
+o_goto: Containers
+#
+o_text: (Sit with her a while.)
+o_id: tamsin_sit
+o_cond: !HasFlag('tamsin_gift')
+o_goto: Sit
+#
+o_text: Bye.
+o_id: tamsin_bye
+o_goto: Bye
+
+name: Containers
+npc: Medical, military, and the cold units nobody's allowed to touch. We load a thousand berths' worth of cargo every launch. Funny how many people bought a ticket and how few berths there are.
+#
+o_text: Back.
+o_id: tamsin_containers_back
+o_goto: Default
+
+name: Sit
+npc: (You eat in silence. It's nice.) Here. Spare tin. Don't tell the bots.
+effect: StackTransferFrom(NPC, 'binge', 1)
+effect: SetFlag('tamsin_gift')
+#
+o_text: Thanks.
+o_id: tamsin_sit_back
+o_goto: Default
+
+name: Public
+npc: The manifest's on every screen in the city. They pulled half the shift in for questions. (She smiles with one side of her mouth.) Worth it.
+effect: EndConversation
+
+name: Bye
+npc: Mind the forklifts.
+effect: EndConversation

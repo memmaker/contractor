@@ -169,3 +169,10 @@ Description: filing cabinet
 item: terra_vitae_pamphlet(78)
 Position: (40,18)
 
+
+Category: UnknownContainer
+Name: donation_box
+Description: a donation box
+item: water_ration(2)
+item: gold(25)
+Position: (40,14)

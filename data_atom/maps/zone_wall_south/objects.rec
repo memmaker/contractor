@@ -61,3 +61,20 @@ Position: (42,14)
 Category: NamedLocation
 Identifier: south_gate
 Position: (42,3)
+
+Category: UnknownContainer
+Name: yard_locker
+Description: a guard locker
+lockdifficulty: easy
+item: 10mm_jhp(12)
+item: binge
+item: ebi_pamphlet_1
+Position: (47,11)
+
+Category: UnknownContainer
+Name: refugee_bundle
+Description: a refugee's bundle
+item: water_ration
+item: terra_vitae_pamphlet
+item: junk
+Position: (24,19)

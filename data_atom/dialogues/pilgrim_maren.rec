@@ -1,0 +1,51 @@
+# A believer in the golden ticket. Tell her the truth or let her keep hoping.
+%rec: OpeningBranch
+
+cond: HasFlag('maren_told')
+goto: Told
+
+cond: HasFlag('maren_hoping')
+goto: Hoping
+
+cond: true
+goto: Default
+
+%rec: Nodes
+
+name: Default
+npc: Are you here for the draw too? Nine days now. They'll call my number. I sold the flat for this slip.
+#
+o_text: The ships leave with cargo. There are no berths.
+o_id: maren_truth
+o_cond: HasFlag('wen_slipped') || HasFlag('QuestCompleted(dead_freight, public)') || HasFlag('QuestCompleted(recluse, allied)')
+o_goto: Truth
+#
+o_text: Good luck. I hope they call it.
+o_id: maren_hope
+o_goto: Hope
+#
+o_text: Bye.
+o_id: maren_bye
+o_goto: Bye
+
+name: Truth
+npc: (She looks at the slip for a long time.) ... I knew. I think I knew. Terra Vitae takes people in, don't they? Father Olaf. I'll go there. (She tears the slip in half and walks.)
+effect: SetFlag('maren_told')
+effect: EndConversation
+
+name: Hope
+npc: Thank you. You're the first person who said that like they meant it.
+effect: SetFlag('maren_hoping')
+effect: EndConversation
+
+name: Told
+npc: (She's packing.) Terra Vitae. Thank you, I think.
+effect: EndConversation
+
+name: Hoping
+npc: Any day now. Any day.
+effect: EndConversation
+
+name: Bye
+npc: Ten days tomorrow.
+effect: EndConversation
