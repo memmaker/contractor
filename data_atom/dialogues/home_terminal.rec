@@ -23,6 +23,103 @@ o_id: chapter1_offer
 o_cond: HasFlag('QuestCompleted(starter)')
 o_goto: chapter1_offer
 #
+# Side contracts: a vague lead to the client
+#
+o_text: (Job offer) Lost property, southside.
+o_id: lead_duck
+o_cond: !(HasFlag('JobAccepted(duck)') || HasFlag('TalkedTo(synth_duck)'))
+o_goto: lead_duck
+#
+o_text: (Job offer) A keepsake from outside the wall.
+o_id: lead_tags
+o_cond: !(HasFlag('JobAccepted(tags)') || HasFlag('took_dog_tag'))
+o_goto: lead_tags
+#
+o_text: (Job offer) Pest control, no questions.
+o_id: lead_rats
+o_cond: !(HasFlag('JobAccepted(rats)') || HasFlag('cleaner_went_down'))
+o_goto: lead_rats
+#
+o_text: (Job offer) Debt collection, commerce district.
+o_id: lead_bar_tab
+o_cond: !(HasFlag('b_bar_tab_accepted'))
+o_goto: lead_bar_tab
+#
+o_text: (Job offer) Paperwork retrieval, spaceport.
+o_id: lead_freight
+o_cond: !(HasFlag('b_freight_accepted'))
+o_goto: lead_freight
+#
+o_text: (Job offer) Recover stolen goods. Quietly.
+o_id: lead_shift
+o_cond: !(HasFlag('b_shift_accepted'))
+o_goto: lead_shift
+#
+o_text: (Job offer) Lost and found, corporate district.
+o_id: lead_badge
+o_cond: !(HasFlag('TalkedTo(chief_landry)') || HasItem('bat_badge'))
+o_goto: lead_badge
+#
+o_text: (Job offer) Crowd control, EBI campus.
+o_id: lead_silence
+o_cond: !(HasFlag('silence_accepted') || HasFlag('TalkedTo(protester_ines)'))
+o_goto: lead_silence
+#
+o_text: (Job offer) A widow in trouble, western residential.
+o_id: lead_rent
+o_cond: !(HasFlag('TalkedTo(widow_marla)'))
+o_goto: lead_rent
+#
+o_text: (Job offer) Courier pickup, freighter cargo.
+o_id: lead_slow_boat
+o_cond: !(HasFlag('JobAccepted(slow_boat)'))
+o_goto: lead_slow_boat
+#
+o_text: (Job offer) A personal matter, Terra Vitae.
+o_id: lead_sweet_revenge
+o_cond: !(HasFlag('JobAccepted(sweet_revenge)'))
+o_goto: lead_sweet_revenge
+#
+o_text: (Job offer) Parts hunt for a collector.
+o_id: lead_old_harley
+o_cond: !(HasFlag('JobAccepted(old_harley)'))
+o_goto: lead_old_harley
+#
+o_text: (Job offer) Night watch, nightclub.
+o_id: lead_ecto
+o_cond: !(HasFlag('JobAccepted(ecto)'))
+o_goto: lead_ecto
+#
+o_text: (Job offer) Courier work for a family without papers.
+o_id: lead_false_papers
+o_cond: !(HasFlag('JobAccepted(false_papers)'))
+o_goto: lead_false_papers
+#
+o_text: (Job offer) Information wanted: one person's whereabouts.
+o_id: lead_payback
+o_cond: !(HasFlag('JobAccepted(payback)'))
+o_goto: lead_payback
+#
+o_text: (Job offer) Investigation, off the books.
+o_id: lead_carmen
+o_cond: !(HasFlag('JobAccepted(carmen)'))
+o_goto: lead_carmen
+#
+o_text: (Job offer) Signature needed, deadline tight.
+o_id: lead_proxy
+o_cond: !(HasFlag('JobAccepted(proxy)'))
+o_goto: lead_proxy
+#
+o_text: (Job offer) Data recovery for an orbital firm.
+o_id: lead_holiday
+o_cond: !(HasFlag('JobAccepted(holiday)'))
+o_goto: lead_holiday
+#
+o_text: (Job offer) Missing person, known face.
+o_id: lead_deadline
+o_cond: !(HasFlag('JobAccepted(deadline)'))
+o_goto: lead_deadline
+#
 # Chapter 2/3: dealing with E.
 o_text: Report Faust's location to E.
 o_id: report_faust
@@ -183,3 +280,270 @@ name: retire
 npc: ** Contractor Client Interface **
 + > Account closed.
 effect: EndGame('gave_up')
+
+### Side contract leads ###
+
+name: lead_duck
+npc: ** Contractor Client Interface **
++ > Pet retrieval. Owner is distraught.
++ > Last seen heading underground.
++ > Ask for Anna Whitaker, southside residential.
+effect: SetFlag('JobRead(duck)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_tags
+npc: ** Contractor Client Interface **
++ > A grieving mother wants something of her son's back.
++ > The gate watch won't like it.
++ > Ask for Lucy at Terra Vitae.
+effect: SetFlag('JobRead(tags)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_rats
+npc: ** Contractor Client Interface **
++ > Something under the southside needs to go quiet.
++ > The man hired for it lost his nerve.
++ > Ask for the cleaner, western residential.
+effect: SetFlag('JobRead(rats)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_bar_tab
+npc: ** Contractor Client Interface **
++ > A bar owner is tired of waiting for his money.
++ > The debtor has friends.
++ > Ask the bartender at La Boom.
+effect: SetFlag('JobRead(bar_tab)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_freight
+npc: ** Contractor Client Interface **
++ > A collector wants a document nobody is meant to read.
++ > It is well guarded.
++ > Ask for Richard Shaw, commerce district.
+effect: SetFlag('JobRead(freight)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_shift
+npc: ** Contractor Client Interface **
++ > Medical supplies went missing before an inventory count.
++ > Discretion valued.
++ > Ask for Foreman Okafor, industrial district.
+effect: SetFlag('JobRead(shift)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_badge
+npc: ** Contractor Client Interface **
++ > A security chief misplaced something embarrassing.
++ > He would rather his bosses didn't hear.
++ > Ask for Chief Landry, corporate district.
+effect: SetFlag('JobRead(badge)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_silence
+npc: ** Contractor Client Interface **
++ > A client wants a problem at his gate to stop being a problem.
++ > Method at your discretion.
++ > Ask for Adrian Voss at the EBI campus.
+effect: SetFlag('JobRead(silence)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_rent
+npc: ** Contractor Client Interface **
++ > A family is about to lose their flat.
++ > Somebody is counting on that.
++ > Ask for Marla, western residential.
+effect: SetFlag('JobRead(rent)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_slow_boat
+npc: ** Contractor Client Interface **
++ > A package came in on a boat. The courier hasn't checked in.
++ > Easy money, supposedly.
++ > Ask for Kade, commerce district.
+effect: SetFlag('JobRead(slow_boat)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_sweet_revenge
+npc: ** Contractor Client Interface **
++ > Someone wants out from under a powerful man.
++ > Discretion essential.
++ > Ask for Shani at Terra Vitae.
+effect: SetFlag('JobRead(sweet_revenge)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_old_harley
+npc: ** Contractor Client Interface **
++ > An old machine needs pieces nobody makes any more.
++ > Legwork across the dome.
++ > Ask for Dizzy, southside residential.
+effect: SetFlag('JobRead(old_harley)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_ecto
+npc: ** Contractor Client Interface **
++ > The owner says his place is haunted.
++ > Bring a strong stomach. Work after dark.
++ > Ask for Lou at club Ecto, commerce district.
+effect: SetFlag('JobRead(ecto)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_false_papers
+npc: ** Contractor Client Interface **
++ > Pay is poor. The need is not.
++ > Ask for Amira, southside residential.
+effect: SetFlag('JobRead(false_papers)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_payback
+npc: ** Contractor Client Interface **
++ > Somebody was sold out. He wants to know where the seller sleeps.
++ > Just the where.
++ > Ask for Stripe, eastern residential.
+effect: SetFlag('JobRead(payback)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_carmen
+npc: ** Contractor Client Interface **
++ > An old cop is counting bodies his bosses won't count.
++ > He needs proof.
++ > Ask for Detective Rourke, western residential.
+effect: SetFlag('JobRead(carmen)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_proxy
+npc: ** Contractor Client Interface **
++ > A board vote is close. One small shareholder is not answering.
++ > Two days.
++ > Ask for Carleton, corporate district.
+effect: SetFlag('JobRead(proxy)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_holiday
+npc: ** Contractor Client Interface **
++ > An engineer holds specs that belong to someone else.
++ > Generous pay. Very generous.
++ > Ask for Nueman, commerce district.
+effect: SetFlag('JobRead(holiday)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
+
+name: lead_deadline
+npc: ** Contractor Client Interface **
++ > A well-known woman hasn't come home.
++ > Debts may be involved.
++ > Ask for Caitlin, corporate district.
+effect: SetFlag('JobRead(deadline)')
+#
+o_text: Go back.
+o_goto: DefaultIntroduction
+#
+o_text: Leave.
+o_id: lead_leave
+o_goto: End
