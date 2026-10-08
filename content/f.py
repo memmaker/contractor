@@ -1211,8 +1211,9 @@ lockdifficulty: hard
 item: carmen_diary''', near=(62,20))
 p.item('velvet_ribbon', 'a velvet ribbon', 'A dark red velvet ribbon, tied in a neat bow. It came off a dead man’s wrist.', 5)
 p.item('carmen_diary', 'Carmen’s diary', 'A diary in tidy handwriting. Five names. Five dates. Five reasons, each one worse.', 50)
-EVID="((HasItem('velvet_ribbon') && HasFlag('carmen_witness')) || (HasItem('velvet_ribbon') && HasItem('carmen_diary')) || (HasFlag('carmen_witness') && HasItem('carmen_diary')))"
-p.dialogue('detective_rourke', f'''# F7 Carmen. Two of three pieces of evidence (ribbon on the victim, Tito's testimony, the diary) and Rourke makes the arrest.
+_ev=["HasItem('velvet_ribbon')", "HasFlag('carmen_witness')", "HasItem('carmen_diary')", "HasFlag('carmen_autopsy')"]
+EVID="("+" || ".join(f"({a} && {b})" for i,a in enumerate(_ev) for b in _ev[i+1:])+")"
+p.dialogue('detective_rourke', f'''# F7 Carmen. Two of four pieces of evidence (ribbon on the victim, Tito's testimony, the diary, your read of the wounds) and Rourke makes the arrest.
 %rec: OpeningBranch
 
 cond: HasFlag('carmen_arrested') || HasFlag('carmen_dead_paid')
@@ -1255,9 +1256,32 @@ o_id: carmen_dead
 o_cond: HasFlag('Killed(singer_carmen)')
 o_goto: DeadPaid
 #
+o_text: I looked at the body. Those cuts aren't gang work: one clean stroke each, a scalpel, somebody trained.
+o_id: carmen_autopsy
+o_cond: !HasFlag('carmen_autopsy') && !HasFlag('carmen_autopsy_failed')
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Autopsy
+o_fail: AutopsyFailed
+#
 o_text: Not enough yet.
 o_id: carmen_notyet
 o_goto: Bye
+
+name: Autopsy
+npc: (He writes it down.) A scalpel. Carmen dressed wounds in the war, before she sang. That's one.
+effect: SetFlag('carmen_autopsy')
+#
+o_text: I'll find the rest.
+o_id: autopsy_back
+o_goto: Waiting
+
+name: AutopsyFailed
+npc: Cuts are cuts. Bring me something a judge can hold.
+effect: SetFlag('carmen_autopsy_failed')
+#
+o_text: Fine.
+o_id: autopsy_failed_back
+o_goto: Waiting
 
 name: Arrest
 npc: (He reads, listens, nods.) That'll hold. I'll bring her in at dawn. Four hundred. And thank you. Really.
@@ -1435,6 +1459,7 @@ end_skill_points: 1
 start=lambda: Trip().go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_accept')")
 p.playtest('f_carmen_ribbon_witness', 'Carmen: the ribbon off the victim and Tito\'s word, then the arrest.', "HasFlag('QuestCompleted(carmen, arrested)')", start().do("PickUp('velvet_ribbon')").go('zone_commerce').do("ForceChecks('success')","Talk('stagehand_tito')","Choose('tito_ask')").go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_accuse')"))
 p.playtest('f_carmen_diary', 'Carmen (avoider): bribe Tito, crack the trunk for her diary.', "HasFlag('QuestCompleted(carmen, arrested)') && HasItem('carmen_diary')", start().go('zone_commerce').do("ForceChecks('fail')","Talk('stagehand_tito')","Choose('tito_ask')","Choose('tito_pay')").do("ForceChecks('none')","SetSkill('Stealth', 200)","SetSkill('Mechanics', 200)","Give('mechanical_lockpick(5)')","Sneak()","Use('carmen_trunk')","Take('carmen_diary')").go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_accuse')"))
+p.playtest('f_carmen_autopsy', 'Carmen (BioChemistry): read the wounds for Rourke, add the ribbon, then the arrest.', "HasFlag('QuestCompleted(carmen, arrested)') && HasFlag('carmen_autopsy')", start().do("PickUp('velvet_ribbon')").do("ForceChecks('success')","Talk('detective_rourke')","Choose('carmen_autopsy')","Choose('autopsy_back')","Choose('carmen_accuse')"))
 p.playtest('f_carmen_confront', 'Carmen (fighter): tell her you know.', "HasFlag('QuestCompleted(carmen, killed)')", start().go('zone_commerce').do(*GUN,"Talk('singer_carmen')","Choose('carmen_confront')").do("Kill('singer_carmen')").do("Unequip('10mm_smg')").go('zone_residential_west').do("Talk('detective_rourke')","Choose('carmen_dead')"))
 p.playtest('f_carmen_bought', 'Carmen (grey): she pays you to forget.', "HasFlag('QuestCompleted(carmen, bought)')", start().go('zone_commerce').do("Talk('singer_carmen')","Choose('carmen_sellout')"))
 # ===== F8 Proxy Vote: a two-day deadline; earn, forge, or give the vote away =====

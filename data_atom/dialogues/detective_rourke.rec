@@ -1,4 +1,4 @@
-# F7 Carmen. Two of three pieces of evidence (ribbon on the victim, Tito's testimony, the diary) and Rourke makes the arrest.
+# F7 Carmen. Two of four pieces of evidence (ribbon on the victim, Tito's testimony, the diary, your read of the wounds) and Rourke makes the arrest.
 %rec: OpeningBranch
 
 cond: HasFlag('carmen_arrested') || HasFlag('carmen_dead_paid')
@@ -33,7 +33,7 @@ npc: What have you got?
 #
 o_text: It's enough. Arrest her.
 o_id: carmen_accuse
-o_cond: ((HasItem('velvet_ribbon') && HasFlag('carmen_witness')) || (HasItem('velvet_ribbon') && HasItem('carmen_diary')) || (HasFlag('carmen_witness') && HasItem('carmen_diary')))
+o_cond: ((HasItem('velvet_ribbon') && HasFlag('carmen_witness')) || (HasItem('velvet_ribbon') && HasItem('carmen_diary')) || (HasItem('velvet_ribbon') && HasFlag('carmen_autopsy')) || (HasFlag('carmen_witness') && HasItem('carmen_diary')) || (HasFlag('carmen_witness') && HasFlag('carmen_autopsy')) || (HasItem('carmen_diary') && HasFlag('carmen_autopsy')))
 o_goto: Arrest
 #
 o_text: She's dead. She came at me.
@@ -41,9 +41,32 @@ o_id: carmen_dead
 o_cond: HasFlag('Killed(singer_carmen)')
 o_goto: DeadPaid
 #
+o_text: I looked at the body. Those cuts aren't gang work: one clean stroke each, a scalpel, somebody trained.
+o_id: carmen_autopsy
+o_cond: !HasFlag('carmen_autopsy') && !HasFlag('carmen_autopsy_failed')
+o_test: RollSkill('biochemistry', 'Medium')
+o_succ: Autopsy
+o_fail: AutopsyFailed
+#
 o_text: Not enough yet.
 o_id: carmen_notyet
 o_goto: Bye
+
+name: Autopsy
+npc: (He writes it down.) A scalpel. Carmen dressed wounds in the war, before she sang. That's one.
+effect: SetFlag('carmen_autopsy')
+#
+o_text: I'll find the rest.
+o_id: autopsy_back
+o_goto: Waiting
+
+name: AutopsyFailed
+npc: Cuts are cuts. Bring me something a judge can hold.
+effect: SetFlag('carmen_autopsy_failed')
+#
+o_text: Fine.
+o_id: autopsy_failed_back
+o_goto: Waiting
 
 name: Arrest
 npc: (He reads, listens, nods.) That'll hold. I'll bring her in at dawn. Four hundred. And thank you. Really.

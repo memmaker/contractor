@@ -34,6 +34,7 @@ maps/zone_residential_south/actors_f.rec
 maps/zone_residential_west/actors_f.rec
 maps/zone_residential_west/objects_f.rec
 maps/zone_wall_south/actors_f.rec
+playtests/f_carmen_autopsy.rec
 playtests/f_carmen_bought.rec
 playtests/f_carmen_confront.rec
 playtests/f_carmen_diary.rec
