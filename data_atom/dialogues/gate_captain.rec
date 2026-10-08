@@ -32,6 +32,20 @@ o_id: bribe_captain
 o_cond: HasFlag('JobAccepted(tags)') && HasItem('gold', 200) && !HasFlag('a_yard_open')
 o_goto: Bribed
 #
+o_text: (Point at the trucks outside. While he looks, lift the yard key off his belt.)
+o_id: lift_yard_key
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_lift_failed')
+o_test: RollSkill('stealth', 'Medium')
+o_succ: KeyLifted
+o_fail: LiftFailed
+#
+o_text: Your airlock log shows a fault. Let me look at the panel before it locks you in.
+o_id: spoof_airlock
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_spoof_failed')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Spoofed
+o_fail: SpoofFailed
+#
 o_text: EBI records office. We're cataloguing the south gate remains. Open the airlock.
 o_id: bluff_captain
 o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_bluff_failed')
@@ -54,6 +68,20 @@ o_text: (Nod at the yard door.) I need five minutes with the dead outside. Two h
 o_id: bribe_captain
 o_cond: HasFlag('JobAccepted(tags)') && HasItem('gold', 200) && !HasFlag('a_yard_open')
 o_goto: Bribed
+#
+o_text: (Point at the trucks outside. While he looks, lift the yard key off his belt.)
+o_id: lift_yard_key
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_lift_failed')
+o_test: RollSkill('stealth', 'Medium')
+o_succ: KeyLifted
+o_fail: LiftFailed
+#
+o_text: Your airlock log shows a fault. Let me look at the panel before it locks you in.
+o_id: spoof_airlock
+o_cond: HasFlag('JobAccepted(tags)') && !HasFlag('a_yard_open') && !HasFlag('a_spoof_failed')
+o_test: RollSkill('technology', 'Hard')
+o_succ: Spoofed
+o_fail: SpoofFailed
 #
 o_text: EBI records office. We're cataloguing the south gate remains. Open the airlock.
 o_id: bluff_captain
@@ -118,6 +146,32 @@ effect: SetFlag('a_yard_open')
 effect: ClearFlag('south_gate_locked')
 effect: ClearFlag('interior_airlock_closed')
 effect: ClearFlag('exterior_airlock_closed')
+effect: EndConversation
+
+name: KeyLifted
+npc: Trucks? Those are EBI. (He turns back. The yard key is already in your pocket.) Move along.
+effect: SetFlag('a_yard_open')
+effect: ClearFlag('south_gate_locked')
+effect: ClearFlag('interior_airlock_closed')
+effect: ClearFlag('exterior_airlock_closed')
+effect: EndConversation
+
+name: LiftFailed
+npc: (He slaps your hand off his belt.) Next time I break it. Move along.
+effect: SetFlag('a_lift_failed')
+effect: EndConversation
+
+name: Spoofed
+npc: (You open the panel, cycle the airlock, and leave it in maintenance mode.) Fault cleared? (He shrugs.) Good. Don't touch it again.
+effect: SetFlag('a_yard_open')
+effect: ClearFlag('south_gate_locked')
+effect: ClearFlag('interior_airlock_closed')
+effect: ClearFlag('exterior_airlock_closed')
+effect: EndConversation
+
+name: SpoofFailed
+npc: (The panel beeps three times and locks.) What did you do? Get away from my gate.
+effect: SetFlag('a_spoof_failed')
 effect: EndConversation
 
 name: BluffFailed

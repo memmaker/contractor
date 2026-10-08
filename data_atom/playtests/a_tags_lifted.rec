@@ -1,0 +1,45 @@
+# Tags (stealth): lift the yard key off the captain's belt, walk out to the dead, bring Lucy the tag.
+
+%rec: outcomes
+
+if: HasFlag('QuestCompleted(tags, returned)') && HasFlag('a_yard_open') && !HasFlag('Killed(gate_captain)')
+
+%rec: frames
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('ask_photo')
+do: Choose('accept_tags')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_home')
+
+if: true
+do: GoTo('street_to_wall')
+
+if: true
+do: ForceChecks('success')
+do: Talk('gate_captain')
+do: Choose('lift_yard_key')
+
+if: true
+do: ForceChecks('none')
+do: Use('wall_yard_door')
+do: PickUp('burton_dog_tag')
+
+if: true
+do: GoTo('street_to_south')
+
+if: true
+do: Talk('taxi_driver')
+do: Choose('go_terra_vitae')
+
+if: true
+do: Talk('town_lucy')
+do: Choose('give_tag')
+do: Choose('returned_bye')
