@@ -1,0 +1,18 @@
+# Once Bob's truck is through, buy the SMG and a box of ammo straight across the counter.
+
+%rec: outcomes
+
+if: HasItem('10mm_smg') && HasItem('10mm_jhp', 24)
+
+%rec: frames
+
+if: true
+do: ForceChecks('success')
+do: Give('gold(600)')
+do: Talk('big_bob')
+do: Choose('bob_problem')
+do: Choose('bob_help')
+do: Choose('bob_permit')
+do: Choose('bob_through_done')
+do: Choose('bob_smg')
+do: Choose('bob_smg_ammo')

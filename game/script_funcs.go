@@ -98,6 +98,9 @@ func (g *GameState) GetScriptFuncs() map[string]govaluate.ExpressionFunction {
 				count = int(args[2].(float64))
 			}
 			removedItem := sourceActor.GetInventory().RemoveItemsByNameAndCount(itemName, count)
+			if len(removedItem) == 0 && sourceActor.GetVendorInventory() != nil { // shopkeepers sell from their stock
+				removedItem = sourceActor.GetVendorInventory().RemoveItemsByNameAndCount(itemName, count)
+			}
 			if len(removedItem) > 0 {
 				g.Player.GetInventory().AddItems(removedItem)
 				g.msg(foundation.HiLite("%s received.", removedItem[0].Name()))
