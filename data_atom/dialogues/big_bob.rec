@@ -139,6 +139,11 @@ o_id: sell_duck_bob
 o_cond: HasItem('synth_duck_item')
 o_goto: SellDuck
 #
+o_text: That 10mm SMG on the shelf. I'll take it.
+o_id: bob_smg
+o_cond: HasItem('gold', 500)
+o_goto: BuySMG
+#
 o_text: What's the neighborhood like?
 o_goto: TellMeAboutNeighborhood
 #
@@ -171,3 +176,31 @@ effect: StackTransferTo(NPC, 'synth_duck_item')
 effect: PlayerAddGold(300)
 effect: SetFlag('duck_sold_to_bob')
 effect: EndConversation
+
+name: BuySMG
+npc: Good choice! It's a reliable weapon. You'll need some ammo for it, too.
++ That burst fire mode can be a real life saver, but it eats through ammo like crazy.
+effect: StackTransferTo(NPC, 'gold', 500)
+effect: StackTransferFrom(NPC, '10mm_smg')
+#
+o_text: Thanks, I am good on ammo.
+o_goto: DefaultIntroduction
+#
+o_text: I'll take some ammo.
+o_id: bob_smg_ammo
+o_cond: HasItem('gold', 50)
+o_goto: BuyAmmo
+#
+o_text: I better get going.
+o_goto: Exit
+
+name: BuyAmmo
+npc: Here you go. Enjoy your purchase!
+effect: StackTransferTo(NPC, 'gold', 50)
+effect: StackTransferFrom(NPC, '10mm_jhp', 24)
+#
+o_text: Nice doing business with you.
+o_goto: DefaultIntroduction
+#
+o_text: That's all I need for now.
+o_goto: Exit
