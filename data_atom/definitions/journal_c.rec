@@ -78,6 +78,10 @@ end_cond: HasFlag('rent_watch_sold')
 end_text: Marla sold her husband's watch to Rook. The rent is paid; the watch is in his window.
 end_id: watch_sold
 #
+end_cond: HasFlag('rent_ledger_torn')
+end_text: Marla's page is gone from Rook's ledger. Without it he can't prove she owes a thing.
+end_id: ledger_torn
+#
 end_cond: HasFlag('Killed(pawn_rook)')
 end_text: Rook is dead. Nobody collects the rent in the west now.
 end_id: rook_dead

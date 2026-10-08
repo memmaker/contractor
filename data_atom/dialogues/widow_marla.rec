@@ -1,7 +1,7 @@
 # Widow in the west. Her husband died at the wall. Flags: rent_paid, rent_waived, rent_watch_sold
 %rec: OpeningBranch
 
-cond: HasFlag('rent_paid') || HasFlag('rent_waived') || HasFlag('rent_watch_sold') || HasFlag('Killed(pawn_rook)')
+cond: HasFlag('rent_paid') || HasFlag('rent_waived') || HasFlag('rent_watch_sold') || HasFlag('rent_ledger_torn') || HasFlag('Killed(pawn_rook)')
 goto: Settled
 
 cond: true
